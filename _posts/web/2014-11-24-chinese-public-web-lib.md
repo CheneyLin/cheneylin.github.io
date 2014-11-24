@@ -1,7 +1,7 @@
 ---
 layout: post
 category : web
-tagline: "Supporting tagline"
+tagline: "Public web js/css lib we use"
 tags : [sae, jquery]
 ---
 {% include JB/setup %}
@@ -11,11 +11,13 @@ In China, Googleapis.com is can not visite, I must use this services.
 ## SAE
 
 [lib.sinaapp.com](http://lib.sinaapp.com/), supports these products.
-* bootstrap
-* jquery
-* jquery.cookie
-* jquery-ui
-* zepto
+
+  *   bootstrap
+  *   jquery
+  *   jquery.cookie
+  *   jquery-ui
+  *   zepto
+
 and webfont too.
 
 ## BAIDU
