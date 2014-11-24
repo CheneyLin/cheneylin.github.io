@@ -23,7 +23,10 @@ and webfont too.
 [developer.baidu.com](http://developer.baidu.com/wiki/index.php?title=docs/cplat/libs), almost supports.
 but there are someone pointed out baidu used cookie to do some dirty works.
 
+## 360
 
+[useso.com](http://libs.useso.com/)
+Other good chioce.
 
 Please take a look at [{{ site.categories.api.first.title }}]({{ BASE_PATH }}{{ site.categories.api.first.url }})
 or jump right into [Usage]({{ BASE_PATH }}{{ site.categories.usage.first.url }}) if you'd like.
