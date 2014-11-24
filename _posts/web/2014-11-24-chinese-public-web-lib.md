@@ -1,0 +1,29 @@
+---
+layout: post
+category : web
+tagline: "Supporting tagline"
+tags : [sae, jquery]
+---
+{% include JB/setup %}
+
+In China, Googleapis.com is can not visite, I must use this services.
+
+## SAE
+
+[lib.sinaapp.com](http://lib.sinaapp.com/), supports these products.
+* bootstrap
+* jquery
+* jquery.cookie
+* jquery-ui
+* zepto
+and webfont too.
+
+## BAIDU
+
+[developer.baidu.com](http://developer.baidu.com/wiki/index.php?title=docs/cplat/libs), almost supports.
+but there are someone pointed out baidu used cookie to do some dirty works.
+
+
+
+Please take a look at [{{ site.categories.api.first.title }}]({{ BASE_PATH }}{{ site.categories.api.first.url }})
+or jump right into [Usage]({{ BASE_PATH }}{{ site.categories.usage.first.url }}) if you'd like.
