@@ -17,8 +17,8 @@ tagline: Welcome to my page
 
 Email:<cio@gpwzw.com>
 
-Website:[http://www.70apps.com]
+Website:[www.70apps.com](http://www.70apps.com)
 
-iOS Works:[https://itunes.apple.com/us/artist/gpwzw.com/id483504269]
+iOS Works:[itunes.apple.com](https://itunes.apple.com/us/artist/gpwzw.com/id483504269)
 
-Android Works:[https://play.google.com/store/apps/details?id=com.gpwzw.appchinesewordcross]
+Android Works:[play.google.com](https://play.google.com/store/apps/details?id=com.gpwzw.appchinesewordcross)
