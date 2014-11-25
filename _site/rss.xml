@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>Cheney Lin</title>
+        <description>Cheney Lin - Cheney Lin</description>
+        <link>http://cheneylin.github.io</link>
+        <link>http://cheneylin.github.io</link>
+        <lastBuildDate>2014-11-25T18:19:06+08:00</lastBuildDate>
+        <pubDate>2014-11-25T18:19:06+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>Ruby Gem Taobao Source</title>
+                <description>
+&lt;p&gt;rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.&lt;/p&gt;
+
+&lt;h2 id=&quot;terminal-command&quot;&gt;Terminal Command&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gem source -l
+*** CURRENT SOURCES ***
+
+https://rubygems.org/
+$ gem sources --remove http://rubygems.org/  
+$ gem sources -a http://ruby.taobao.org/  
+$ gem sources -l  
+*** CURRENT SOURCES ***  
+
+http://ruby.taobao.org  
+# 请确保只有 ruby.taobao.org  
+$ gem install jekyll
+...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source</link>
+                <guid>http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source</guid>
+                <pubDate>2014-11-25T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>Collie Js Framework</title>
+                <description>
+&lt;p&gt;Sangmin is a Senior JavaScript developer working at NHN and the creator of the JavaScript animation library Collie.&lt;/p&gt;
+
+&lt;p&gt;I use collie framework to developed some HTML5 game.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.adobe.com/cn/devnet/html5/articles/introducing-collie.html&quot;&gt;A intro from adobe.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;colliejs-framework&quot;&gt;COLLIEJS Framework&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://jindo.dev.naver.com/collie/index.html&quot;&gt;CollieJS&lt;/a&gt; is a javascript framework.&lt;/p&gt;
+
+&lt;h1 id=&quot;classes&quot;&gt;Classes&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Animation&lt;/li&gt;
+  &lt;li&gt;AnimationCycle&lt;/li&gt;
+  &lt;li&gt;AnimationDelay&lt;/li&gt;
+  &lt;li&gt;AnimationQueue&lt;/li&gt;
+  &lt;li&gt;AnimationRepeat&lt;/li&gt;
+  &lt;li&gt;AnimationTimeline&lt;/li&gt;
+  &lt;li&gt;AnimationTransition&lt;/li&gt;
+  &lt;li&gt;Box2d&lt;/li&gt;
+  &lt;li&gt;Circle&lt;/li&gt;
+  &lt;li&gt;Component&lt;/li&gt;
+  &lt;li&gt;ComponentEvent&lt;/li&gt;
+  &lt;li&gt;DisplayObject&lt;/li&gt;
+  &lt;li&gt;FPSConsole&lt;/li&gt;
+  &lt;li&gt;ImageNumber&lt;/li&gt;
+  &lt;li&gt;Layer&lt;/li&gt;
+  &lt;li&gt;LayerEvent&lt;/li&gt;
+  &lt;li&gt;Map&lt;/li&gt;
+  &lt;li&gt;MovableObject&lt;/li&gt;
+  &lt;li&gt;PathFinding&lt;/li&gt;
+  &lt;li&gt;Polyline&lt;/li&gt;
+  &lt;li&gt;Pool&lt;/li&gt;
+  &lt;li&gt;Rectangle&lt;/li&gt;
+  &lt;li&gt;Sensor&lt;/li&gt;
+  &lt;li&gt;Text&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;namespaces&quot;&gt;Namespaces&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;collie&lt;/li&gt;
+  &lt;li&gt;Effect&lt;/li&gt;
+  &lt;li&gt;ImageManager&lt;/li&gt;
+  &lt;li&gt;Matrix&lt;/li&gt;
+  &lt;li&gt;Profiling&lt;/li&gt;
+  &lt;li&gt;Renderer&lt;/li&gt;
+  &lt;li&gt;Timer&lt;/li&gt;
+  &lt;li&gt;Transform&lt;/li&gt;
+  &lt;li&gt;util&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;More information visit &lt;a href=&quot;http://jindo.dev.naver.com/collie/doc/index.html?l=en&quot;&gt;Api Refence&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;sample-code&quot;&gt;Sample Code&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div id=&quot;container&quot;&amp;gt;&amp;lt;/div&amp;gt;
+
+&amp;lt;!-- Load a script --&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;http://jindo.dev.naver.com/collie/deploy/collie.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+// Load the logo.png image
+collie.ImageManager.add({
+    &quot;logo&quot; : &quot;http://jindo.dev.naver.com/collie/img/small/logo.png&quot;
+});
+
+// Create a layer
+var layer = new collie.Layer({
+    width : 300,
+    height : 300
+});
+
+// Create an object that will be displayed on the screen
+var item = new collie.DisplayObject({
+    x : &quot;center&quot;,
+    y : &quot;center&quot;,
+    velocityRotate : 180,
+    backgroundImage : &quot;logo&quot; // The background image is re-sized to the pre-loaded logo.png size
+}).addTo(layer); // Add to a layer
+
+// Add a layer to renderer
+collie.Renderer.addLayer(layer);
+
+// Retrieve renderer from the container ID element
+collie.Renderer.load(document.getElementById(&quot;container&quot;));
+
+// Start rendering
+collie.Renderer.start();
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div id=&quot;container&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Load a script --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://jindo.dev.naver.com/collie/deploy/collie.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+// Load the logo.png image
+collie.ImageManager.add({
+    &quot;logo&quot; : &quot;images/collie.png&quot;
+});
+
+// Create a layer
+var layer = new collie.Layer({
+    width : 300,
+    height : 300
+});
+
+// Create an object that will be displayed on the screen
+var item = new collie.DisplayObject({
+    x : &quot;center&quot;,
+    y : &quot;center&quot;,
+    velocityRotate : 180,
+    backgroundImage : &quot;logo&quot; // The background image is re-sized to the pre-loaded logo.png size
+}).addTo(layer); // Add to a layer
+
+// Add a layer to renderer
+collie.Renderer.addLayer(layer);
+
+// Retrieve renderer from the container ID element
+collie.Renderer.load(document.getElementById(&quot;container&quot;));
+
+// Start rendering
+collie.Renderer.start();
+&lt;/script&gt;
+
+&lt;h2 id=&quot;basic-usages&quot;&gt;Basic Usages&lt;/h2&gt;
+
+&lt;p&gt;1.Make your layer for contain objects.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Layer&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var layer = new collie.Layer();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.Make Object for display on layer.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.DisplayObject&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Use MovableObject if you want to use velocity or force attributes.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.MovableObject&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Other objects extends collie.DisplayObject&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Text&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Circle&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Polyline&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Rectangle&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Make sure that you should be append object to layer after make object.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;new collie.DisplayObject().addTo(layer);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.You can load image for make stylish animation..&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.ImageManager&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;collie.ImageManager.add({
+	sample : &quot;image.png&quot;,
+	sample2 : &quot;image2.png&quot;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4.If you want to animate objects, you can use collie.Timer&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Timer&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;collie.Timer is just initializer. you can find more detail description here.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;collie.Timer.repeat()&lt;/li&gt;
+  &lt;li&gt;collie.Timer.delay()&lt;/li&gt;
+  &lt;li&gt;collie.Timer.cycle()&lt;/li&gt;
+  &lt;li&gt;collie.Timer.transition()&lt;/li&gt;
+  &lt;li&gt;collie.Timer.queue()&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;collie.Timer.timeline()&lt;/p&gt;
+
+    &lt;p&gt;collie.Timer.cycle(oDisplayObject, 1000, {
+ 	to : 10,
+ 	loop : 3
+ });&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;5.You can use event if you want to run callback when occurs user action.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.DisplayObject&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Layer&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;new collie.DisplayObject().attach({
+	click : function (e) {
+		console.log(e.x, e.y);
+	}
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;6.Renderer can help for start animation if you are ready to run.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;collie.Renderer&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;collie.Renderer.addLayer(layer);
+collie.Renderer.load(document.getElementById(&quot;container&quot;));
+collie.Renderer.start();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;demos&quot;&gt;Demos&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jindo.dev.naver.com/collie/demo/drag/&quot;&gt;drag&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jindo.dev.naver.com/collie/demo/box2d/&quot;&gt;box2d&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jindo.dev.naver.com/collie/index.html&quot;&gt;more on http://jindo.dev.naver.com/collie/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;works&quot;&gt;Works&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://mgtv.sinaapp.com/jphn/&quot;&gt;JingPaiHongNian&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://cheneylin.github.io/web/2014/11/25/collie-js-framework</link>
+                <guid>http://cheneylin.github.io/web/2014/11/25/collie-js-framework</guid>
+                <pubDate>2014-11-25T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>Chinese Public Web Lib</title>
+                <description>
+&lt;p&gt;In China, Googleapis.com is can not visite, I must use this services.&lt;/p&gt;
+
+&lt;h2 id=&quot;sae&quot;&gt;SAE&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://lib.sinaapp.com/&quot;&gt;lib.sinaapp.com&lt;/a&gt;, supports these products.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;bootstrap&lt;/li&gt;
+  &lt;li&gt;jquery&lt;/li&gt;
+  &lt;li&gt;jquery.cookie&lt;/li&gt;
+  &lt;li&gt;jquery-ui&lt;/li&gt;
+  &lt;li&gt;zepto&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;and webfont too.&lt;/p&gt;
+
+&lt;h2 id=&quot;baidu&quot;&gt;BAIDU&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://developer.baidu.com/wiki/index.php?title=docs/cplat/libs&quot;&gt;developer.baidu.com&lt;/a&gt;, almost supports.&lt;/p&gt;
+
+&lt;p&gt;but there are someone pointed out baidu used cookie to do some dirty works.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;360&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://libs.useso.com/&quot;&gt;useso.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Other good chioce.&lt;/p&gt;
+</description>
+                <link>http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib</link>
+                <guid>http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib</guid>
+                <pubDate>2014-11-24T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>

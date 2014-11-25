@@ -1,0 +1,14 @@
+
+http://cheneylin.github.io/archive.html
+http://cheneylin.github.io/atom.xml
+http://cheneylin.github.io/categories.html
+http://cheneylin.github.io/index.html
+http://cheneylin.github.io/index_old.html
+http://cheneylin.github.io/pages.html
+http://cheneylin.github.io/rss.xml
+http://cheneylin.github.io/sitemap.txt
+http://cheneylin.github.io/tags.html
+
+http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source
+http://cheneylin.github.io/web/2014/11/25/collie-js-framework
+http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib

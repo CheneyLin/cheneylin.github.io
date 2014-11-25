@@ -6,9 +6,9 @@ tags : [ruby, gem, mac]
 ---
 {% include JB/setup %}
 
-rubygems.org is slowly to visite in Chinese, Use Taobao source to speen gem install.
+rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.
 
-## COLLIEJS Framework
+## Terminal Command
 
     $ gem source -l
     *** CURRENT SOURCES ***
