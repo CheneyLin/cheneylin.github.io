@@ -101,7 +101,7 @@ More information visit [Api Refence](http://jindo.dev.naver.com/collie/doc/index
 <script type="text/javascript">
 // Load the logo.png image
 collie.ImageManager.add({
-    "logo" : "http://jindo.dev.naver.com/collie/img/small/logo.png"
+    "logo" : "images/collie.png"
 });
 
 // Create a layer
