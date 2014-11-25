@@ -57,7 +57,42 @@ More information visit [Api Refence](http://jindo.dev.naver.com/collie/doc/index
 
 ## Sample Code
 
-<pre><code>
+  <div id="container"></div>
+
+  <!-- Load a script -->
+  <script type="text/javascript" src="http://jindo.dev.naver.com/collie/deploy/collie.min.js"></script>
+  <script type="text/javascript">
+  // Load the logo.png image
+  collie.ImageManager.add({
+      "logo" : "http://jindo.dev.naver.com/collie/img/small/logo.png"
+  });
+
+  // Create a layer
+  var layer = new collie.Layer({
+      width : 300,
+      height : 300
+  });
+
+  // Create an object that will be displayed on the screen
+  var item = new collie.DisplayObject({
+      x : "center",
+      y : "center",
+      velocityRotate : 180,
+      backgroundImage : "logo" // The background image is re-sized to the pre-loaded logo.png size
+  }).addTo(layer); // Add to a layer
+
+  // Add a layer to renderer
+  collie.Renderer.addLayer(layer);
+
+  // Retrieve renderer from the container ID element
+  collie.Renderer.load(document.getElementById("container"));
+
+  // Start rendering
+  collie.Renderer.start();
+  </script>
+
+Run
+
 <div id="container"></div>
 
 <!-- Load a script -->
@@ -70,8 +105,8 @@ collie.ImageManager.add({
 
 // Create a layer
 var layer = new collie.Layer({
-    width : 320,
-    height : 480
+    width : 300,
+    height : 300
 });
 
 // Create an object that will be displayed on the screen
@@ -91,16 +126,13 @@ collie.Renderer.load(document.getElementById("container"));
 // Start rendering
 collie.Renderer.start();
 </script>
-</code></pre>
 
 ##Basic Usages
 
 1.  Make your layer for contain objects.
 *collie.Layer*
 
-<pre><code>
-var layer = new collie.Layer();
-</code></pre>
+  var layer = new collie.Layer();
 
 2.  Make Object for display on layer.
 *collie.DisplayObject*
@@ -117,20 +149,16 @@ Other objects extends collie.DisplayObject
 
 Make sure that you should be append object to layer after make object.
 
-<pre><code>
-new collie.DisplayObject().addTo(layer);
-</code></pre>
+  new collie.DisplayObject().addTo(layer);
 
 3.  You can load image for make stylish animation..
 
 *collie.ImageManager*
 
-<pre><code>
-collie.ImageManager.add({
-	sample : "image.png",
-	sample2 : "image2.png"
-});
-<pre><code>
+  collie.ImageManager.add({
+  	sample : "image.png",
+  	sample2 : "image2.png"
+  });
 
 4.  If you want to animate objects, you can use collie.Timer
 
@@ -145,34 +173,28 @@ collie.Timer.transition()
 collie.Timer.queue()
 collie.Timer.timeline()
 
-<pre><code>
-collie.Timer.cycle(oDisplayObject, 1000, {
-	to : 10,
-	loop : 3
-});
-<pre><code>
+<pre><code>  collie.Timer.cycle(oDisplayObject, 1000, {
+  	to : 10,
+  	loop : 3
+  });
 
 5.  You can use event if you want to run callback when occurs user action.
 *collie.DisplayObject*
 *collie.Layer*
 
-<pre><code>
-new collie.DisplayObject().attach({
-	click : function (e) {
-		console.log(e.x, e.y);
-	}
-});
-<pre><code>
+  new collie.DisplayObject().attach({
+  	click : function (e) {
+  		console.log(e.x, e.y);
+  	}
+  });
 
 6.  Renderer can help for start animation if you are ready to run.
 
 *collie.Renderer*
 
-<pre><code>
-collie.Renderer.addLayer(layer);
-collie.Renderer.load(document.getElementById("container"));
-collie.Renderer.start();
-<pre><code>
+  collie.Renderer.addLayer(layer);
+  collie.Renderer.load(document.getElementById("container"));
+  collie.Renderer.start();
 
 ## Demos
 
