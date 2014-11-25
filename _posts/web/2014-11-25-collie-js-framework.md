@@ -10,6 +10,8 @@ Sangmin is a Senior JavaScript developer working at NHN and the creator of the J
 
 I use collie framework to developed some HTML5 game.
 
+[A intro from adobe.com](http://www.adobe.com/cn/devnet/html5/articles/introducing-collie.html).
+
 ## COLLIEJS Framework
 
 [CollieJS](http://jindo.dev.naver.com/collie/index.html) is a javascript framework.
