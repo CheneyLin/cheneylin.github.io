@@ -93,6 +93,87 @@ collie.Renderer.start();
 </script>
 </code></pre>
 
+##Basic Usages
+
+1.  Make your layer for contain objects.
+*collie.Layer*
+
+<pre><code>
+var layer = new collie.Layer();
+</code></pre>
+
+2.  Make Object for display on layer.
+*collie.DisplayObject*
+
+Use MovableObject if you want to use velocity or force attributes.
+*collie.MovableObject*
+
+Other objects extends collie.DisplayObject
+
+*collie.Text*
+*collie.Circle*
+*collie.Polyline*
+*collie.Rectangle*
+
+Make sure that you should be append object to layer after make object.
+
+<pre><code>
+new collie.DisplayObject().addTo(layer);
+</code></pre>
+
+3.  You can load image for make stylish animation..
+
+*collie.ImageManager*
+
+<pre><code>
+collie.ImageManager.add({
+	sample : "image.png",
+	sample2 : "image2.png"
+});
+<pre><code>
+
+4.  If you want to animate objects, you can use collie.Timer
+
+*collie.Timer*
+
+collie.Timer is just initializer. you can find more detail description here.
+
+collie.Timer.repeat()
+collie.Timer.delay()
+collie.Timer.cycle()
+collie.Timer.transition()
+collie.Timer.queue()
+collie.Timer.timeline()
+
+<pre><code>
+collie.Timer.cycle(oDisplayObject, 1000, {
+	to : 10,
+	loop : 3
+});
+<pre><code>
+
+5.  You can use event if you want to run callback when occurs user action.
+*collie.DisplayObject*
+*collie.Layer*
+
+<pre><code>
+new collie.DisplayObject().attach({
+	click : function (e) {
+		console.log(e.x, e.y);
+	}
+});
+<pre><code>
+
+6.  Renderer can help for start animation if you are ready to run.
+
+*collie.Renderer*
+
+<pre><code>
+collie.Renderer.addLayer(layer);
+collie.Renderer.load(document.getElementById("container"));
+collie.Renderer.start();
+<pre><code>
+
 ## Demos
 
   *  [drag](http://jindo.dev.naver.com/collie/demo/drag/)
