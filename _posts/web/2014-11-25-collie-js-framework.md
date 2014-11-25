@@ -1,7 +1,7 @@
 ---
 layout: post
 category : web
-tagline: "High Performance Mobile Web Game Development in HTML5”"
+tagline: "High Performance Mobile Web Game Development in HTML5"
 tags : [js, canvas, DOM, HTML5, game]
 ---
 {% include JB/setup %}
