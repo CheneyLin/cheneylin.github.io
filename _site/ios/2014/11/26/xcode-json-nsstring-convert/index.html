@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Hello World!</title>
-    
-    
+    <title>Xcode Json Nsstring Convert</title>
+    <meta name="description" content="【教程】苹果iOS5下的的NSJSONSerialization类">
+    <meta name="keyword" content="疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,推送,raywenderlich">
     <meta name="author" content="Cheney Lin">
 
     <!-- Enable responsive viewport -->
@@ -136,59 +136,184 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>Hello World!  <small>Supporting tagline</small></h1>
+  <h1>Xcode Json Nsstring Convert <small>苹果iOS5下的的NSJSONSerialization类</small></h1>
 </div>
 
-<div class="row">
+<div class="row post-full">
   <div class="col-xs-12">
+    <div class="date">
+      <span>26 November 2014</span>
+    </div>
+    <div class="content">
+      
+<p>在iOS 5 中，苹果引入了一个解析JSON串的NSJSONSerialization类。
+通过该类，我们可以完成JSON数据与NSDictionary和NSArray之间的转化。</p>
+
+<p>以前，我记得我用的是第三方的插件。但是，苹果出了这套解析后，效率也大大了超过了其他的JSON解析第三方类库。所以，推荐使用NSJSONSerialization类来完成转化。</p>
+
+<h2 id="nsdictionarynsarrayjson">将NSDictionary或NSArray转化为JSON串</h2>
+
+<p>将字典或者数组转化为JSON串</p>
+
+<pre><code>- (NSData *)toJSONData:(id)theData{
+
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&amp;error];
+
+    if ([jsonData length] &gt; 0 &amp;&amp; error == nil){
+        return jsonData;
+    }else{
+        return nil;
+    }
+}
+</code></pre>
+
+<p>使用这个方法的返回，我们就可以得到想要的JSON串</p>
+
+<pre><code>NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                             encoding:NSUTF8StringEncoding];
+</code></pre>
+
+<h2 id="jsonnsdictionarynsarray">将JSON串转化为NSDictionary或NSArray</h2>
+
+<p>将NSString转化为NSData</p>
+
+<pre><code>[jsonString dataUsingEncoding:NSASCIIStringEncoding];
+</code></pre>
+
+<p>将JSON串转化为字典或者数组</p>
+
+<pre><code>- (id)toArrayOrNSDictionary:(NSData *)jsonData{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&amp;error];
+
+    if (jsonObject != nil &amp;&amp; error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+         return nil;
+    }
+
+}
+</code></pre>
+
+<h2 id="jsonnsarraynsdictionary">将JSON串与NSArray和NSDictionary的操作进行封装</h2>
+
+<p>当然，也有很多时候，我们将这些操作，分别定义在NSObject和NSString的一个分类中</p>
+
+<p>直接贴：</p>
+
+<h3 id="nsstringnsarraynsdictionary">将NSString转化为NSArray或者NSDictionary</h3>
+
+<pre><code>#import "NSString+JSONCategories.h"
+@implementation NSString(JSONCategories)
+-(id)JSONValue;
+{
+    NSData* data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    __autoreleasing NSError* error = nil;
+    id result = [NSJSONSerialization JSONObjectWithData:data
+                                                options:kNilOptions
+                                                  error:&amp;error];
+    if (error != nil) return nil;
+    return result;
+}
+@end
+</code></pre>
+
+<h3 id="nsarraynsdictionarynsstring">将NSArray或者NSDictionary转化为NSString</h3>
+
+<pre><code>import "NSObject+JSONCategories.h"
+@implementation NSObject (JSONCategories)
+-(NSData*)JSONString;
+{
+    NSError* error = nil;
+    id result = [NSJSONSerialization dataWithJSONObject:self
+                                                options:kNilOptions
+                                                  error:&amp;error];
+    if (error != nil) return nil;
+    return result;
+}
+@end
+</code></pre>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#ios-ref">
+    		ios <span>2</span>
+    	</a></li>
     
-<p>Read <a href="http://jekyllbootstrap.com/usage/jekyll-quick-start.html">Jekyll Quick Start</a></p>
-
-<p>Complete usage and documentation available at: <a href="http://jekyllbootstrap.com">Jekyll Bootstrap</a></p>
-
-<h2 id="update-author-attributes">Update Author Attributes</h2>
-
-<p>In <code>_config.yml</code> remember to specify your own data:</p>
-
-<pre><code>title : My Blog =)
-
-author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username
-</code></pre>
-
-<p>The theme should reference these variables whenever needed.</p>
-
-<h2 id="sample-posts">Sample Posts</h2>
-
-<p>This blog contains sample posts which help stage pages and blog data.
-When you don’t need the samples anymore just delete the <code>_posts/core-samples</code> folder.</p>
-
-<pre><code>$ rm -rf _posts/core-samples
-</code></pre>
-
-<p>Here’s a sample “posts list”.</p>
-
-<ul class="posts">
   
-    <li><span>26 Nov 2014</span> &raquo; <a href="/ios/2014/11/26/xcode-json-nsstring-convert">Xcode Json Nsstring Convert</a></li>
-  
-    <li><span>26 Nov 2014</span> &raquo; <a href="/ios/2014/11/26/apple-push-notification-service">Apple Push Notification Service</a></li>
-  
-    <li><span>25 Nov 2014</span> &raquo; <a href="/web/2014/11/25/ruby-gem-taobao-source">Ruby Gem Taobao Source</a></li>
-  
-    <li><span>25 Nov 2014</span> &raquo; <a href="/web/2014/11/25/collie-js-framework">Collie Js Framework</a></li>
-  
-    <li><span>24 Nov 2014</span> &raquo; <a href="/web/2014/11/24/chinese-public-web-lib">Chinese Public Web Lib</a></li>
-  
-</ul>
 
-<h2 id="to-do">To-Do</h2>
 
-<p>This theme is still unfinished. If you’d like to be added as a contributor, <a href="http://github.com/plusjade/jekyll-bootstrap">please fork</a>!
-We need to clean up the themes, make theme usage guides with theme-specific markup examples.</p>
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#apple-ref">apple <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#json-ref">json <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#xcode-ref">xcode <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#mac-ref">mac <span>3</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <ul class="pagination">
+    
+      <li class="prev"><a href="/ios/2014/11/26/apple-push-notification-service" title="Apple Push Notification Service">&laquo; Previous</a></li>
+    
+      <li><a href="/archive.html">Archive</a></li>
+    
+      <li class="next disabled"><a>Next &rarr;</a>
+    
+    </ul>
+    <hr>
+    
+
+
+  <div class="ds-thread" data-thread-key="/ios/2014/11/26/xcode-json-nsstring-convert" data-title="Xcode Json Nsstring Convert" data-url="http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"linchangyu"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+
 
   </div>
 </div>

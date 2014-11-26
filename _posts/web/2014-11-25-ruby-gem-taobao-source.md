@@ -5,6 +5,7 @@ description: rubygems.org is slowly to visite in China
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: "Speed Ruby GEM"
 tags : [ruby, gem, mac]
+postid: 3
 ---
 {% include JB/setup %}
 

@@ -1,15 +1,16 @@
 
-http://cheneylin.github.io/archive.html
-http://cheneylin.github.io/atom.xml
-http://cheneylin.github.io/categories.html
-http://cheneylin.github.io/index.html
-http://cheneylin.github.io/index_old.html
-http://cheneylin.github.io/pages.html
-http://cheneylin.github.io/rss.xml
-http://cheneylin.github.io/sitemap.txt
-http://cheneylin.github.io/tags.html
+http://www.linchangyu.com/archive.html
+http://www.linchangyu.com/atom.xml
+http://www.linchangyu.com/categories.html
+http://www.linchangyu.com/index.html
+http://www.linchangyu.com/index_old.html
+http://www.linchangyu.com/pages.html
+http://www.linchangyu.com/rss.xml
+http://www.linchangyu.com/sitemap.txt
+http://www.linchangyu.com/tags.html
 
-http://cheneylin.github.io/ios/2014/11/26/apple-push-notification-service
-http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source
-http://cheneylin.github.io/web/2014/11/25/collie-js-framework
-http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib
+http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert
+http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service
+http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source
+http://www.linchangyu.com/web/2014/11/25/collie-js-framework
+http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib

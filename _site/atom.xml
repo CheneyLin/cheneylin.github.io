@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
  
  <title>Cheney Lin</title>
- <link href="http://cheneylin.github.io/" rel="self"/>
- <link href="http://cheneylin.github.io"/>
- <updated>2014-11-26T14:49:00+08:00</updated>
- <id>http://cheneylin.github.io</id>
+ <link href="http://www.linchangyu.com/" rel="self"/>
+ <link href="http://www.linchangyu.com"/>
+ <updated>2014-11-26T15:31:50+08:00</updated>
+ <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
    <email>cio@gpwzw.com</email>
@@ -13,10 +13,112 @@
 
  
  <entry>
-   <title>Apple Push Notification Service</title>
-   <link href="http://cheneylin.github.io/ios/2014/11/26/apple-push-notification-service"/>
+   <title>Xcode Json Nsstring Convert</title>
+   <link href="http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert"/>
    <updated>2014-11-26T00:00:00+08:00</updated>
-   <id>http://cheneylin.github.io/ios/2014/11/26/apple-push-notification-service</id>
+   <id>http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert</id>
+   <content type="html">
+&lt;p&gt;在iOS 5 中，苹果引入了一个解析JSON串的NSJSONSerialization类。
+通过该类，我们可以完成JSON数据与NSDictionary和NSArray之间的转化。&lt;/p&gt;
+
+&lt;p&gt;以前，我记得我用的是第三方的插件。但是，苹果出了这套解析后，效率也大大了超过了其他的JSON解析第三方类库。所以，推荐使用NSJSONSerialization类来完成转化。&lt;/p&gt;
+
+&lt;h2 id=&quot;nsdictionarynsarrayjson&quot;&gt;将NSDictionary或NSArray转化为JSON串&lt;/h2&gt;
+
+&lt;p&gt;将字典或者数组转化为JSON串&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (NSData *)toJSONData:(id)theData{
+
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&amp;amp;error];
+
+    if ([jsonData length] &amp;gt; 0 &amp;amp;&amp;amp; error == nil){
+        return jsonData;
+    }else{
+        return nil;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用这个方法的返回，我们就可以得到想要的JSON串&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                             encoding:NSUTF8StringEncoding];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;jsonnsdictionarynsarray&quot;&gt;将JSON串转化为NSDictionary或NSArray&lt;/h2&gt;
+
+&lt;p&gt;将NSString转化为NSData&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[jsonString dataUsingEncoding:NSASCIIStringEncoding];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将JSON串转化为字典或者数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (id)toArrayOrNSDictionary:(NSData *)jsonData{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&amp;amp;error];
+
+    if (jsonObject != nil &amp;amp;&amp;amp; error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+         return nil;
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;jsonnsarraynsdictionary&quot;&gt;将JSON串与NSArray和NSDictionary的操作进行封装&lt;/h2&gt;
+
+&lt;p&gt;当然，也有很多时候，我们将这些操作，分别定义在NSObject和NSString的一个分类中&lt;/p&gt;
+
+&lt;p&gt;直接贴：&lt;/p&gt;
+
+&lt;h3 id=&quot;nsstringnsarraynsdictionary&quot;&gt;将NSString转化为NSArray或者NSDictionary&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#import &quot;NSString+JSONCategories.h&quot;
+@implementation NSString(JSONCategories)
+-(id)JSONValue;
+{
+    NSData* data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    __autoreleasing NSError* error = nil;
+    id result = [NSJSONSerialization JSONObjectWithData:data
+                                                options:kNilOptions
+                                                  error:&amp;amp;error];
+    if (error != nil) return nil;
+    return result;
+}
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;nsarraynsdictionarynsstring&quot;&gt;将NSArray或者NSDictionary转化为NSString&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;import &quot;NSObject+JSONCategories.h&quot;
+@implementation NSObject (JSONCategories)
+-(NSData*)JSONString;
+{
+    NSError* error = nil;
+    id result = [NSJSONSerialization dataWithJSONObject:self
+                                                options:kNilOptions
+                                                  error:&amp;amp;error];
+    if (error != nil) return nil;
+    return result;
+}
+@end
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Apple Push Notification Service</title>
+   <link href="http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service"/>
+   <updated>2014-11-26T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service</id>
    <content type="html">
 &lt;p&gt;&lt;em&gt;本文译自&lt;a href=&quot;http://www.raywenderlich.com&quot;&gt;http://www.raywenderlich.com&lt;/a&gt;。原文由iOS教程团队 Matthijs Hollemans 撰写，经原网站管理员授权本博翻译。&lt;/em&gt;&lt;/p&gt;
 
@@ -484,9 +586,9 @@ Message successfully delivered
  
  <entry>
    <title>Ruby Gem Taobao Source</title>
-   <link href="http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source"/>
+   <link href="http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source"/>
    <updated>2014-11-25T00:00:00+08:00</updated>
-   <id>http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source</id>
+   <id>http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source</id>
    <content type="html">
 &lt;p&gt;rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.&lt;/p&gt;
 
@@ -513,9 +615,9 @@ $ gem install jekyll
  
  <entry>
    <title>Collie Js Framework</title>
-   <link href="http://cheneylin.github.io/web/2014/11/25/collie-js-framework"/>
+   <link href="http://www.linchangyu.com/web/2014/11/25/collie-js-framework"/>
    <updated>2014-11-25T00:00:00+08:00</updated>
-   <id>http://cheneylin.github.io/web/2014/11/25/collie-js-framework</id>
+   <id>http://www.linchangyu.com/web/2014/11/25/collie-js-framework</id>
    <content type="html">
 &lt;p&gt;Sangmin is a Senior JavaScript developer working at NHN and the creator of the JavaScript animation library Collie.&lt;/p&gt;
 
@@ -748,9 +850,9 @@ collie.Renderer.start();
  
  <entry>
    <title>Chinese Public Web Lib</title>
-   <link href="http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib"/>
+   <link href="http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib"/>
    <updated>2014-11-24T00:00:00+08:00</updated>
-   <id>http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib</id>
+   <id>http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib</id>
    <content type="html">
 &lt;p&gt;In China, Googleapis.com is can not visite, I must use these services.&lt;/p&gt;
 

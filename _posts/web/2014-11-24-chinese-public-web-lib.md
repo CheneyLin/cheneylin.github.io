@@ -5,6 +5,7 @@ description: In China, Googleapis.com is can not visite, I must use these servic
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: "Public web js/css lib we use"
 tags : [sae, jquery]
+postid: 1
 ---
 {% include JB/setup %}
 

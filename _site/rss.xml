@@ -3,12 +3,114 @@
 <channel>
         <title>Cheney Lin</title>
         <description>Cheney Lin - Cheney Lin</description>
-        <link>http://cheneylin.github.io</link>
-        <link>http://cheneylin.github.io</link>
-        <lastBuildDate>2014-11-26T14:49:00+08:00</lastBuildDate>
-        <pubDate>2014-11-26T14:49:00+08:00</pubDate>
+        <link>http://www.linchangyu.com</link>
+        <link>http://www.linchangyu.com</link>
+        <lastBuildDate>2014-11-26T15:31:50+08:00</lastBuildDate>
+        <pubDate>2014-11-26T15:31:50+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>Xcode Json Nsstring Convert</title>
+                <description>
+&lt;p&gt;在iOS 5 中，苹果引入了一个解析JSON串的NSJSONSerialization类。
+通过该类，我们可以完成JSON数据与NSDictionary和NSArray之间的转化。&lt;/p&gt;
+
+&lt;p&gt;以前，我记得我用的是第三方的插件。但是，苹果出了这套解析后，效率也大大了超过了其他的JSON解析第三方类库。所以，推荐使用NSJSONSerialization类来完成转化。&lt;/p&gt;
+
+&lt;h2 id=&quot;nsdictionarynsarrayjson&quot;&gt;将NSDictionary或NSArray转化为JSON串&lt;/h2&gt;
+
+&lt;p&gt;将字典或者数组转化为JSON串&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (NSData *)toJSONData:(id)theData{
+
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&amp;amp;error];
+
+    if ([jsonData length] &amp;gt; 0 &amp;amp;&amp;amp; error == nil){
+        return jsonData;
+    }else{
+        return nil;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用这个方法的返回，我们就可以得到想要的JSON串&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                             encoding:NSUTF8StringEncoding];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;jsonnsdictionarynsarray&quot;&gt;将JSON串转化为NSDictionary或NSArray&lt;/h2&gt;
+
+&lt;p&gt;将NSString转化为NSData&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[jsonString dataUsingEncoding:NSASCIIStringEncoding];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将JSON串转化为字典或者数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (id)toArrayOrNSDictionary:(NSData *)jsonData{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&amp;amp;error];
+
+    if (jsonObject != nil &amp;amp;&amp;amp; error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+         return nil;
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;jsonnsarraynsdictionary&quot;&gt;将JSON串与NSArray和NSDictionary的操作进行封装&lt;/h2&gt;
+
+&lt;p&gt;当然，也有很多时候，我们将这些操作，分别定义在NSObject和NSString的一个分类中&lt;/p&gt;
+
+&lt;p&gt;直接贴：&lt;/p&gt;
+
+&lt;h3 id=&quot;nsstringnsarraynsdictionary&quot;&gt;将NSString转化为NSArray或者NSDictionary&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#import &quot;NSString+JSONCategories.h&quot;
+@implementation NSString(JSONCategories)
+-(id)JSONValue;
+{
+    NSData* data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    __autoreleasing NSError* error = nil;
+    id result = [NSJSONSerialization JSONObjectWithData:data
+                                                options:kNilOptions
+                                                  error:&amp;amp;error];
+    if (error != nil) return nil;
+    return result;
+}
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;nsarraynsdictionarynsstring&quot;&gt;将NSArray或者NSDictionary转化为NSString&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;import &quot;NSObject+JSONCategories.h&quot;
+@implementation NSObject (JSONCategories)
+-(NSData*)JSONString;
+{
+    NSError* error = nil;
+    id result = [NSJSONSerialization dataWithJSONObject:self
+                                                options:kNilOptions
+                                                  error:&amp;amp;error];
+    if (error != nil) return nil;
+    return result;
+}
+@end
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert</link>
+                <guid>http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert</guid>
+                <pubDate>2014-11-26T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>Apple Push Notification Service</title>
@@ -475,8 +577,8 @@ Message successfully delivered
 &lt;p&gt;&lt;img title=&quot;Cheney Lin&quot; src=&quot;/images/lcy.png&quot; alt=&quot;Cheney Hollemans&quot; width=&quot;100&quot; height=&quot;100&quot; /&gt;
 译者：&lt;a href=&quot;http://twitter.com/#!/linchangyu&quot;&gt;Cheney Lin&lt;/a&gt;, &lt;a href=&quot;http://www.linchangyu.com/&quot;&gt;linchangyu.com&lt;/a&gt;, 全栈开发者。&lt;/p&gt;
 </description>
-                <link>http://cheneylin.github.io/ios/2014/11/26/apple-push-notification-service</link>
-                <guid>http://cheneylin.github.io/ios/2014/11/26/apple-push-notification-service</guid>
+                <link>http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service</link>
+                <guid>http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service</guid>
                 <pubDate>2014-11-26T00:00:00+08:00</pubDate>
         </item>
 
@@ -504,8 +606,8 @@ $ gem install jekyll
 ...
 &lt;/code&gt;&lt;/pre&gt;
 </description>
-                <link>http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source</link>
-                <guid>http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source</guid>
+                <link>http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source</link>
+                <guid>http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source</guid>
                 <pubDate>2014-11-25T00:00:00+08:00</pubDate>
         </item>
 
@@ -739,8 +841,8 @@ collie.Renderer.start();
   &lt;li&gt;&lt;a href=&quot;http://mgtv.sinaapp.com/jphn/&quot;&gt;JingPaiHongNian&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-                <link>http://cheneylin.github.io/web/2014/11/25/collie-js-framework</link>
-                <guid>http://cheneylin.github.io/web/2014/11/25/collie-js-framework</guid>
+                <link>http://www.linchangyu.com/web/2014/11/25/collie-js-framework</link>
+                <guid>http://www.linchangyu.com/web/2014/11/25/collie-js-framework</guid>
                 <pubDate>2014-11-25T00:00:00+08:00</pubDate>
         </item>
 
@@ -775,8 +877,8 @@ collie.Renderer.start();
 
 &lt;p&gt;Other good chioce.&lt;/p&gt;
 </description>
-                <link>http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib</link>
-                <guid>http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib</guid>
+                <link>http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib</link>
+                <guid>http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib</guid>
                 <pubDate>2014-11-24T00:00:00+08:00</pubDate>
         </item>
 
