@@ -4,7 +4,7 @@
  <title>Cheney Lin</title>
  <link href="http://cheneylin.github.io/" rel="self"/>
  <link href="http://cheneylin.github.io"/>
- <updated>2014-11-25T18:38:05+08:00</updated>
+ <updated>2014-11-26T09:48:32+08:00</updated>
  <id>http://cheneylin.github.io</id>
  <author>
    <name>Cheney Lin</name>
@@ -19,6 +19,8 @@
    <id>http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source</id>
    <content type="html">
 &lt;p&gt;rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.&lt;/p&gt;
+
+&lt;p&gt;More information visit &lt;a href=&quot;http://ruby.taobao.org/&quot;&gt;http://ruby.taobao.org/&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;terminal-command&quot;&gt;Terminal Command&lt;/h2&gt;
 
@@ -280,7 +282,7 @@ collie.Renderer.start();
    <updated>2014-11-24T00:00:00+08:00</updated>
    <id>http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib</id>
    <content type="html">
-&lt;p&gt;In China, Googleapis.com is can not visite, I must use this services.&lt;/p&gt;
+&lt;p&gt;In China, Googleapis.com is can not visite, I must use these services.&lt;/p&gt;
 
 &lt;h2 id=&quot;sae&quot;&gt;SAE&lt;/h2&gt;
 

@@ -1,6 +1,8 @@
 ---
 layout: post
 category : web
+description: High Performance Mobile Web Game Development in HTML5
+keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: "High Performance Mobile Web Game Development in HTML5"
 tags : [js, canvas, DOM, HTML5, game]
 ---

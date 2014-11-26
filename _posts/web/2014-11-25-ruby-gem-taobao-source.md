@@ -1,12 +1,16 @@
 ---
 layout: post
 category : web
+description: rubygems.org is slowly to visite in China
+keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: "Speed Ruby GEM"
 tags : [ruby, gem, mac]
 ---
 {% include JB/setup %}
 
 rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.
+
+More information visit <http://ruby.taobao.org/>.
 
 ## Terminal Command
 

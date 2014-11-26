@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>{{ page.title }}</title>
     {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
+    {% if page.keyword %}<meta name="keyword" content="{{ page.keyword }}">{% endif %}
     <meta name="author" content="{{ site.author.name }}">
 
     <!-- Enable responsive viewport -->
@@ -81,9 +82,7 @@
 
     <div id="footer">
       <div class="container">
-        <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}
-          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
-          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }} with <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
         </p>
       </div>
     </div>

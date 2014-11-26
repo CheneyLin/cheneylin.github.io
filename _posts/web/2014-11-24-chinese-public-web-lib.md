@@ -1,12 +1,14 @@
 ---
 layout: post
 category : web
+description: In China, Googleapis.com is can not visite, I must use these services.
+keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: "Public web js/css lib we use"
 tags : [sae, jquery]
 ---
 {% include JB/setup %}
 
-In China, Googleapis.com is can not visite, I must use this services.
+In China, Googleapis.com is can not visite, I must use these services.
 
 ## SAE
 

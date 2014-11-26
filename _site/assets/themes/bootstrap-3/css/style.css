@@ -15,10 +15,15 @@
 
 /* Jekyll Bootstrap Colors */
 h1, h2, h3, h4 {
-  color: #f22430;
+  color: #428bca;
 }
 #footer {
-  background-color: #fdcd60;
+  background-color: #428bca;
+}
+
+
+#footer a{
+  color: #0000aa;
 }
 
 
@@ -46,25 +51,27 @@ h1, h2, h3, h4 {
 .tag_box {
   list-style: none;
   margin: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  -webkit-padding-start: 4px; }
 
 .tag_box li {
-  line-height: 28px; }
+  line-height: 36px; }
 
 .tag_box li i {
-  opacity: 0.9; }
+  opacity: 0.9;
+  margin: 4px 4px 0px 0px; }
 
 .tag_box.inline li {
   float: left; }
 
 .tag_box a {
-  padding: 3px 6px;
+  padding: 6px 12px 6px 12px;
   margin: 2px;
-  background: #eee;
+  background: #aaccff;
   color: #555;
   border-radius: 3px;
   text-decoration: none;
-  border: 1px dashed #cccccc; }
+  border: 1px solid #428bca; }
 
 .tag_box a span {
   vertical-align: super;
