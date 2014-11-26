@@ -1,9 +1,10 @@
 ---
 layout: post
+title: 苹果iOS5下的的NSJSONSerialization类
 category : iOS
 description: 【教程】苹果iOS5下的的NSJSONSerialization类
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,推送,raywenderlich
-tagline: "苹果iOS5下的的NSJSONSerialization类"
+tagline: 【教程】
 tags: [apple, json, xcode, mac]
 postid: 5
 ---

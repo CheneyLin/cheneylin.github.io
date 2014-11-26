@@ -4,7 +4,7 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2014-11-26T15:31:50+08:00</updated>
+ <updated>2014-11-26T15:39:59+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
@@ -13,7 +13,7 @@
 
  
  <entry>
-   <title>Xcode Json Nsstring Convert</title>
+   <title>苹果iOS5下的的NSJSONSerialization类</title>
    <link href="http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert"/>
    <updated>2014-11-26T00:00:00+08:00</updated>
    <id>http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert</id>
@@ -115,7 +115,7 @@
  </entry>
  
  <entry>
-   <title>Apple Push Notification Service</title>
+   <title>苹果iOS系统下的推送机制及实现</title>
    <link href="http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service"/>
    <updated>2014-11-26T00:00:00+08:00</updated>
    <id>http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service</id>
@@ -585,7 +585,7 @@ Message successfully delivered
  </entry>
  
  <entry>
-   <title>Ruby Gem Taobao Source</title>
+   <title>使用淘宝的备用源加快Ruby Gem的访问速度</title>
    <link href="http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source"/>
    <updated>2014-11-25T00:00:00+08:00</updated>
    <id>http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source</id>
@@ -614,7 +614,7 @@ $ gem install jekyll
  </entry>
  
  <entry>
-   <title>Collie Js Framework</title>
+   <title>高性能移动HTML5应用开发框架Collie</title>
    <link href="http://www.linchangyu.com/web/2014/11/25/collie-js-framework"/>
    <updated>2014-11-25T00:00:00+08:00</updated>
    <id>http://www.linchangyu.com/web/2014/11/25/collie-js-framework</id>
@@ -849,7 +849,7 @@ collie.Renderer.start();
  </entry>
  
  <entry>
-   <title>Chinese Public Web Lib</title>
+   <title>大陆常用网站开发开源资源加速公共库</title>
    <link href="http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib"/>
    <updated>2014-11-24T00:00:00+08:00</updated>
    <id>http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib</id>

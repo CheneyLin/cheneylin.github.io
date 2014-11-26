@@ -1,9 +1,10 @@
 ---
 layout: post
 category : iOS
+title: 苹果iOS系统下的推送机制及实现
 description: 【教程】苹果iOS系统下的推送机制及实现
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,推送,raywenderlich
-tagline: "苹果iOS系统下的推送机制及实现"
+tagline: 【教程】
 tags : [apple, push, service, APNS, mac, raywenderlich]
 postid: 4
 ---

@@ -5,13 +5,13 @@
         <description>Cheney Lin - Cheney Lin</description>
         <link>http://www.linchangyu.com</link>
         <link>http://www.linchangyu.com</link>
-        <lastBuildDate>2014-11-26T15:31:50+08:00</lastBuildDate>
-        <pubDate>2014-11-26T15:31:50+08:00</pubDate>
+        <lastBuildDate>2014-11-26T15:39:59+08:00</lastBuildDate>
+        <pubDate>2014-11-26T15:39:59+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
-                <title>Xcode Json Nsstring Convert</title>
+                <title>苹果iOS5下的的NSJSONSerialization类</title>
                 <description>
 &lt;p&gt;在iOS 5 中，苹果引入了一个解析JSON串的NSJSONSerialization类。
 通过该类，我们可以完成JSON数据与NSDictionary和NSArray之间的转化。&lt;/p&gt;
@@ -113,7 +113,7 @@
         </item>
 
         <item>
-                <title>Apple Push Notification Service</title>
+                <title>苹果iOS系统下的推送机制及实现</title>
                 <description>
 &lt;p&gt;&lt;em&gt;本文译自&lt;a href=&quot;http://www.raywenderlich.com&quot;&gt;http://www.raywenderlich.com&lt;/a&gt;。原文由iOS教程团队 Matthijs Hollemans 撰写，经原网站管理员授权本博翻译。&lt;/em&gt;&lt;/p&gt;
 
@@ -583,7 +583,7 @@ Message successfully delivered
         </item>
 
         <item>
-                <title>Ruby Gem Taobao Source</title>
+                <title>使用淘宝的备用源加快Ruby Gem的访问速度</title>
                 <description>
 &lt;p&gt;rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.&lt;/p&gt;
 
@@ -612,7 +612,7 @@ $ gem install jekyll
         </item>
 
         <item>
-                <title>Collie Js Framework</title>
+                <title>高性能移动HTML5应用开发框架Collie</title>
                 <description>
 &lt;p&gt;Sangmin is a Senior JavaScript developer working at NHN and the creator of the JavaScript animation library Collie.&lt;/p&gt;
 
@@ -847,7 +847,7 @@ collie.Renderer.start();
         </item>
 
         <item>
-                <title>Chinese Public Web Lib</title>
+                <title>大陆常用网站开发开源资源加速公共库</title>
                 <description>
 &lt;p&gt;In China, Googleapis.com is can not visite, I must use these services.&lt;/p&gt;
 
