@@ -5,8 +5,8 @@
         <description>Cheney Lin - Cheney Lin</description>
         <link>http://cheneylin.github.io</link>
         <link>http://cheneylin.github.io</link>
-        <lastBuildDate>2014-11-26T09:48:32+08:00</lastBuildDate>
-        <pubDate>2014-11-26T09:48:32+08:00</pubDate>
+        <lastBuildDate>2014-11-26T09:56:27+08:00</lastBuildDate>
+        <pubDate>2014-11-26T09:56:27+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -111,8 +111,8 @@ collie.ImageManager.add({
 
 // Create a layer
 var layer = new collie.Layer({
-    width : 300,
-    height : 300
+    width : 240,
+    height : 240
 });
 
 // Create an object that will be displayed on the screen
@@ -142,13 +142,13 @@ collie.Renderer.start();
 &lt;script type=&quot;text/javascript&quot;&gt;
 // Load the logo.png image
 collie.ImageManager.add({
-    &quot;logo&quot; : &quot;images/collie.png&quot;
+    &quot;logo&quot; : &quot;/images/collie.png&quot;
 });
 
 // Create a layer
 var layer = new collie.Layer({
-    width : 300,
-    height : 300
+    width : 240,
+    height : 240
 });
 
 // Create an object that will be displayed on the screen

@@ -73,8 +73,8 @@ More information visit [Api Refence](http://jindo.dev.naver.com/collie/doc/index
 
     // Create a layer
     var layer = new collie.Layer({
-        width : 300,
-        height : 300
+        width : 240,
+        height : 240
     });
 
     // Create an object that will be displayed on the screen
@@ -103,13 +103,13 @@ More information visit [Api Refence](http://jindo.dev.naver.com/collie/doc/index
 <script type="text/javascript">
 // Load the logo.png image
 collie.ImageManager.add({
-    "logo" : "images/collie.png"
+    "logo" : "/images/collie.png"
 });
 
 // Create a layer
 var layer = new collie.Layer({
-    width : 300,
-    height : 300
+    width : 240,
+    height : 240
 });
 
 // Create an object that will be displayed on the screen
