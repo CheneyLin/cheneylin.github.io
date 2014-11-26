@@ -4,7 +4,7 @@
  <title>Cheney Lin</title>
  <link href="http://cheneylin.github.io/" rel="self"/>
  <link href="http://cheneylin.github.io"/>
- <updated>2014-11-26T14:37:38+08:00</updated>
+ <updated>2014-11-26T14:49:00+08:00</updated>
  <id>http://cheneylin.github.io</id>
  <author>
    <name>Cheney Lin</name>
@@ -304,12 +304,15 @@ Enter PEM pass phrase:Verifying-Enter PEM pass phrase:
 
 &lt;p&gt;最后，我们把这两个文件合并成一个 .pem 文件：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ cat PushChatCert.pem PushChatKey.pem &amp;amp;amp;gt; ck.pem
+&lt;pre&gt;&lt;code&gt;$ cat PushChatCert.pem PushChatKey.pem &amp;gt; ck.pem
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;想测试一下证书是否正常，来试一下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ telnet gateway.sandbox.push.apple.com &amp;lt;/span&amp;gt;&amp;lt;span class=&quot;lit&quot;&amp;gt;2195Trying&amp;lt;/span&amp;gt;&amp;lt;span class=&quot;lit&quot;&amp;gt;17.172.&amp;lt;/span&amp;gt;&amp;lt;span class=&quot;lit&quot;&amp;gt;232.226...Connected to gateway.sandbox.push-apple.com.akadns.net.Escape character is&#39;^]&#39;.
+&lt;pre&gt;&lt;code&gt;$ telnet gateway.sandbox.push.apple.com 2195
+Trying 17.172..232.226...
+Connected to gateway.sandbox.push-apple.com.akadns.net.
+Escape character is&#39;^]&#39;.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;这里是生成一个普通的网络连接，如果有上面的信息，说明你的电脑可以联上APNS服务器，按Ctrl+C关闭连接。&lt;/p&gt;
@@ -318,7 +321,7 @@ Enter PEM pass phrase:Verifying-Enter PEM pass phrase:
 
 &lt;p&gt;这次我们试一试用私钥和证书进行SSL加密连接：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ openssl s_client -connect gateway.sandbox.push.apple.com:&amp;lt;/span&amp;gt;&amp;lt;span class=&quot;lit&quot;&amp;gt;2195-cert PushChatCert.pem -key PushChatKey.pem
+&lt;pre&gt;&lt;code&gt;$ openssl s_client -connect gateway.sandbox.push.apple.com:2195 -cert PushChatCert.pem -key PushChatKey.pem
 Enterpass phrase forPushChatKey.pem:
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -435,8 +438,10 @@ Enterpass phrase forPushChatKey.pem:
 &lt;p&gt;&lt;a href=&quot;http://d1xzuxjlafny7l.cloudfront.net/downloads/SimplePush.zip&quot;&gt;下载SimplePush源代码&lt;/a&gt;，解开后，修改simplepush.php中的以下几个地方：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;// Put your device token here (without spaces):
-$deviceToken =&#39;0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78&#39;;&amp;lt;/span&amp;gt;&amp;lt;span class=&quot;com&quot;&amp;gt;// Put your private key&#39;s passphrase here:
-$passphrase =&#39;pushchat&#39;;&amp;lt;/span&amp;gt;&amp;lt;span class=&quot;com&quot;&amp;gt;// Put your alert message here:
+$deviceToken =&#39;0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78&#39;;
+// Put your private key&#39;s passphrase here:
+$passphrase =&#39;pushchat&#39;;
+// Put your alert message here:
 $message =&#39;My first push notification!&#39;;
 &lt;/code&gt;&lt;/pre&gt;
 

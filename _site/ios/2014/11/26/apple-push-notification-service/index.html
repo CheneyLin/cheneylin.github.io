@@ -432,12 +432,15 @@ Enter PEM pass phrase:Verifying-Enter PEM pass phrase:
 
 <p>最后，我们把这两个文件合并成一个 .pem 文件：</p>
 
-<pre><code>$ cat PushChatCert.pem PushChatKey.pem &amp;amp;gt; ck.pem
+<pre><code>$ cat PushChatCert.pem PushChatKey.pem &gt; ck.pem
 </code></pre>
 
 <p>想测试一下证书是否正常，来试一下：</p>
 
-<pre><code>$ telnet gateway.sandbox.push.apple.com &lt;/span&gt;&lt;span class="lit"&gt;2195Trying&lt;/span&gt;&lt;span class="lit"&gt;17.172.&lt;/span&gt;&lt;span class="lit"&gt;232.226...Connected to gateway.sandbox.push-apple.com.akadns.net.Escape character is'^]'.
+<pre><code>$ telnet gateway.sandbox.push.apple.com 2195
+Trying 17.172..232.226...
+Connected to gateway.sandbox.push-apple.com.akadns.net.
+Escape character is'^]'.
 </code></pre>
 
 <p>这里是生成一个普通的网络连接，如果有上面的信息，说明你的电脑可以联上APNS服务器，按Ctrl+C关闭连接。</p>
@@ -446,7 +449,7 @@ Enter PEM pass phrase:Verifying-Enter PEM pass phrase:
 
 <p>这次我们试一试用私钥和证书进行SSL加密连接：</p>
 
-<pre><code>$ openssl s_client -connect gateway.sandbox.push.apple.com:&lt;/span&gt;&lt;span class="lit"&gt;2195-cert PushChatCert.pem -key PushChatKey.pem
+<pre><code>$ openssl s_client -connect gateway.sandbox.push.apple.com:2195 -cert PushChatCert.pem -key PushChatKey.pem
 Enterpass phrase forPushChatKey.pem:
 </code></pre>
 
@@ -563,8 +566,10 @@ Enterpass phrase forPushChatKey.pem:
 <p><a href="http://d1xzuxjlafny7l.cloudfront.net/downloads/SimplePush.zip">下载SimplePush源代码</a>，解开后，修改simplepush.php中的以下几个地方：</p>
 
 <pre><code>// Put your device token here (without spaces):
-$deviceToken ='0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78';&lt;/span&gt;&lt;span class="com"&gt;// Put your private key's passphrase here:
-$passphrase ='pushchat';&lt;/span&gt;&lt;span class="com"&gt;// Put your alert message here:
+$deviceToken ='0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78';
+// Put your private key's passphrase here:
+$passphrase ='pushchat';
+// Put your alert message here:
 $message ='My first push notification!';
 </code></pre>
 

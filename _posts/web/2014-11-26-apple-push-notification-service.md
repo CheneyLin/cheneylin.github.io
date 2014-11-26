@@ -295,11 +295,14 @@ APNS需要认证证书！
 
 最后，我们把这两个文件合并成一个 .pem 文件：
 
-    $ cat PushChatCert.pem PushChatKey.pem &amp;gt; ck.pem
+    $ cat PushChatCert.pem PushChatKey.pem > ck.pem
 
 想测试一下证书是否正常，来试一下：
 
-    $ telnet gateway.sandbox.push.apple.com </span><span class="lit">2195Trying</span><span class="lit">17.172.</span><span class="lit">232.226...Connected to gateway.sandbox.push-apple.com.akadns.net.Escape character is'^]'.
+    $ telnet gateway.sandbox.push.apple.com 2195
+    Trying 17.172..232.226...
+    Connected to gateway.sandbox.push-apple.com.akadns.net.
+    Escape character is'^]'.
 
 这里是生成一个普通的网络连接，如果有上面的信息，说明你的电脑可以联上APNS服务器，按Ctrl+C关闭连接。
 
@@ -307,7 +310,7 @@ APNS需要认证证书！
 
 这次我们试一试用私钥和证书进行SSL加密连接：
 
-    $ openssl s_client -connect gateway.sandbox.push.apple.com:</span><span class="lit">2195-cert PushChatCert.pem -key PushChatKey.pem
+    $ openssl s_client -connect gateway.sandbox.push.apple.com:2195 -cert PushChatCert.pem -key PushChatKey.pem
     Enterpass phrase forPushChatKey.pem:
 
 你应该可以看到接下来的整个输出，我们已经站在正确的起跑线上了。
@@ -416,8 +419,10 @@ APNS需要认证证书！
 <a href="http://d1xzuxjlafny7l.cloudfront.net/downloads/SimplePush.zip">下载SimplePush源代码</a>，解开后，修改simplepush.php中的以下几个地方：
 
     // Put your device token here (without spaces):
-    $deviceToken ='0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78';</span><span class="com">// Put your private key's passphrase here:
-    $passphrase ='pushchat';</span><span class="com">// Put your alert message here:
+    $deviceToken ='0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78';
+    // Put your private key's passphrase here:
+    $passphrase ='pushchat';
+    // Put your alert message here:
     $message ='My first push notification!';
 
 复制设备识别ID到变量$deviceToken，别留下任何一个空格，完完全全就是64个16进制字符；指定私钥的口令和要发送的信息内容；复制ck.pem到脚本所在文件夹，ck.pem包括了证书和私钥。
