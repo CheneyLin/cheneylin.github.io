@@ -9,6 +9,7 @@ http://cheneylin.github.io/rss.xml
 http://cheneylin.github.io/sitemap.txt
 http://cheneylin.github.io/tags.html
 
+http://cheneylin.github.io/ios/2014/11/26/apple-push-notification-service
 http://cheneylin.github.io/web/2014/11/25/ruby-gem-taobao-source
 http://cheneylin.github.io/web/2014/11/25/collie-js-framework
 http://cheneylin.github.io/web/2014/11/24/chinese-public-web-lib
