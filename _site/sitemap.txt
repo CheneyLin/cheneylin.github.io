@@ -9,6 +9,8 @@ http://www.linchangyu.com/rss.xml
 http://www.linchangyu.com/sitemap.txt
 http://www.linchangyu.com/tags.html
 
+http://www.linchangyu.com/web/2014/11/27/opensource-js-css-framewok
+http://www.linchangyu.com/web/2014/11/27/html5-video-canvas-show
 http://www.linchangyu.com/ios/2014/11/26/xcode-json-nsstring-convert
 http://www.linchangyu.com/ios/2014/11/26/apple-push-notification-service
 http://www.linchangyu.com/web/2014/11/25/ruby-gem-taobao-source

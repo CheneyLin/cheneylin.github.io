@@ -4,13 +4,276 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2014-11-26T15:39:59+08:00</updated>
+ <updated>2014-11-28T17:31:01+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
    <email>cio@gpwzw.com</email>
  </author>
 
+ 
+ <entry>
+   <title>开源的js/css框架（收集中）</title>
+   <link href="http://www.linchangyu.com/web/2014/11/27/opensource-js-css-framewok"/>
+   <updated>2014-11-27T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/web/2014/11/27/opensource-js-css-framewok</id>
+   <content type="html">
+&lt;p&gt;国内的互联网企业有许多开源项目，其中就包括前端的很多优秀框架，摘录如下：&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;网易&lt;/h2&gt;
+
+&lt;h3 id=&quot;nec&quot;&gt;NEC&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://nec.netease.com/&quot;&gt;http://nec.netease.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;网易员工开源的CSS框架，特别是整理出一套规范，很值得研究。&lt;/p&gt;
+
+&lt;h3 id=&quot;nej&quot;&gt;NEJ&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://nej.netease.com/&quot;&gt;http://nej.netease.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;更好的JS解决方案，有点复杂，其中JS底层的一些架构技术值得学习。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;依赖管理&lt;/p&gt;
+
+    &lt;p&gt;优化开发阶段脚本文件依赖关系管理，所有脚本按需打包发布，上线产品分离依赖因此无任依赖相关开销&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;平台适配&lt;/p&gt;
+
+    &lt;p&gt;支持桌面及移动平台、浏览器及混合应用开发，补丁模式无缝扩展适配平台，配置方式灵活定制目标平台&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;自由定制&lt;/p&gt;
+
+    &lt;p&gt;按实际需求定制脚本，支持多种定制方式，包括按平台定制、按功能定制、按模块定制等&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;方案集成&lt;/p&gt;
+
+    &lt;p&gt;多种实践解决方案集成，包括多类型前端模板方案、按需载入模块化调度方案、多模式切换跨域数据通讯方案等等&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;控件体系&lt;/p&gt;
+
+    &lt;p&gt;支持便捷api调用，同时也支持产品自由扩展定制，集高度重用与灵活扩展于一体&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;工具支持&lt;/p&gt;
+
+    &lt;p&gt;一键产品打包发布，优化产品输出，自动版本管理；工具支持项目迁移使用依赖系统及打包工具；&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;腾讯&lt;/h2&gt;
+
+&lt;h3 id=&quot;web&quot;&gt;移动Web整体应用方案&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://alloyteam.github.io/Spirit/&quot;&gt;http://alloyteam.github.io/Spirit/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;移动Web开发规范&lt;/p&gt;
+
+    &lt;p&gt;移动Web开发规范，基于日常开发的沉淀，总结了字体、交互、性能等方面的最佳实践，是移动Web开发的指导标准。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JM(JavaScript Mobile)&lt;/p&gt;
+
+    &lt;p&gt;JM(JavaScript Mobile)，轻量级高性能JavaScript基础库，经实践项目积累沉淀而成。为拥抱移动互联网设计，专注移动web项目。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JMUI(Based on JM)&lt;/p&gt;
+
+    &lt;p&gt;JMUI，建立在JM的UI组件库，基于HTML5与CSS3，涵盖了目前互联网上各类常见的UI组件，可方便地投入项目使用。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;css3&quot;&gt;css3动画库&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://css3lib.alloyteam.com/&quot;&gt;http://css3lib.alloyteam.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这个只是收集CSS3特效的一个集合，但是很实用。&lt;/p&gt;
+
+&lt;p&gt;更多腾讯前端工具请访问 博客主页&lt;a href=&quot;http://www.AlloyTeam.com/&quot;&gt;http://www.AlloyTeam.com/&lt;/a&gt;或项目清单&lt;a href=&quot;http://alloyteam.github.io/&quot;&gt;http://alloyteam.github.io/&lt;/a&gt;。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>HTML5实现视频的分离显示</title>
+   <link href="http://www.linchangyu.com/web/2014/11/27/html5-video-canvas-show"/>
+   <updated>2014-11-27T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/web/2014/11/27/html5-video-canvas-show</id>
+   <content type="html">
+&lt;p&gt;HTML5中的canvas可以实现很多图像、多媒体方面的功能，比如把视频的内容二次处理后在canvas上显示。&lt;/p&gt;
+
+&lt;h2 id=&quot;drawimage&quot;&gt;强大的drawImage&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;var video = document.querySelector(&#39;video&#39;);
+var canvas1 = document.querySelector(&#39;#canvas1&#39;);
+var ctx1 = canvas1.getContext(&#39;2d&#39;);
+ctx1.drawImage(video, 0,0, 320, 180, 0,0, 320, 180);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;完整代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html &amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta charset=&quot;utf-8&quot; /&amp;gt;
+&amp;lt;title&amp;gt;&amp;lt;/title&amp;gt;
+
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;div style=&quot;position:absolute;&quot;&amp;gt;
+    &amp;lt;input type=&quot;button&quot; id=&quot;play&quot; value=&quot;play&quot;&amp;gt;
+    &amp;lt;span id=&quot;position&quot;&amp;gt;00:00&amp;lt;/span&amp;gt; / &amp;lt;span id=&quot;duration&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;/div&amp;gt;
+  &amp;lt;div style=&quot;position:absolute;top:350px;display:none;&quot;&amp;gt;
+   &amp;lt;video width=&quot;848&quot; height=&quot;480&quot; loop&amp;gt;
+    &amp;lt;source src=&quot;test.mp4&quot; type=&quot;video/mp4&quot;/&amp;gt;
+  &amp;lt;/video&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div style=&quot;position:absolute;left:10px;top:50px;&quot;&amp;gt;
+  &amp;lt;canvas id=&quot;canvas1&quot; width=&quot;320&quot; height=&quot;180&quot;&amp;gt;&amp;lt;/canvas&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div style=&quot;position:absolute;left:350px;top:50px;&quot;&amp;gt;
+  &amp;lt;canvas id=&quot;canvas2&quot; width=&quot;320&quot; height=&quot;180&quot;&amp;gt;&amp;lt;/canvas&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div style=&quot;position:absolute;left:10px;top:250px;&quot;&amp;gt;
+  &amp;lt;canvas id=&quot;canvas3&quot; width=&quot;320&quot; height=&quot;180&quot;&amp;gt;&amp;lt;/canvas&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div style=&quot;position:absolute;left:350px;top:250px;&quot;&amp;gt;
+  &amp;lt;canvas id=&quot;canvas4&quot; width=&quot;320&quot; height=&quot;180&quot;&amp;gt;&amp;lt;/canvas&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div style=&quot;position:absolute;left:10px;top:450px;&quot;&amp;gt;
+  &amp;lt;canvas id=&quot;canvas5&quot; width=&quot;320&quot; height=&quot;180&quot;&amp;gt;&amp;lt;/canvas&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div style=&quot;position:absolute;left:350px;top:450px;&quot;&amp;gt;
+  &amp;lt;canvas id=&quot;canvas6&quot; width=&quot;320&quot; height=&quot;180&quot;&amp;gt;&amp;lt;/canvas&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;script &amp;gt;
+
+    var addEvent = (function () {
+        if (document.addEventListener) {
+            return function (el, type, fn) {
+                if (el &amp;amp;&amp;amp; el.nodeName || el === window) {
+                    el.addEventListener(type, fn, false);
+                } else if (el &amp;amp;&amp;amp; el.length) {
+                    for (var i = 0; i &amp;lt; el.length; i++) {
+                        addEvent(el[i], type, fn);
+                    }
+                }
+            };
+        } else {
+            return function (el, type, fn) {
+                if (el &amp;amp;&amp;amp; el.nodeName || el === window) {
+                    el.attachEvent(&#39;on&#39; + type, function () { return fn.call(el, window.event); });
+                } else if (el &amp;amp;&amp;amp; el.length) {
+                    for (var i = 0; i &amp;lt; el.length; i++) {
+                        addEvent(el[i], type, fn);
+                    }
+                }
+            };
+        }
+    })();
+
+&amp;lt;/script&amp;gt;
+&amp;lt;script&amp;gt;
+    var video = document.querySelector(&#39;video&#39;);
+    var togglePlay = document.querySelector(&#39;#play&#39;);
+    var position = document.querySelector(&#39;#position&#39;);
+    var canvas1 = document.querySelector(&#39;#canvas1&#39;);
+    var ctx1 = canvas1.getContext(&#39;2d&#39;);
+    var canvas2 = document.querySelector(&#39;#canvas2&#39;);
+    var ctx2 = canvas2.getContext(&#39;2d&#39;);
+    var canvas3 = document.querySelector(&#39;#canvas3&#39;);
+    var ctx3 = canvas3.getContext(&#39;2d&#39;);
+    var canvas4 = document.querySelector(&#39;#canvas4&#39;);
+    var ctx4 = canvas4.getContext(&#39;2d&#39;);
+    var canvas5 = document.querySelector(&#39;#canvas5&#39;);
+    var ctx5 = canvas5.getContext(&#39;2d&#39;);
+    var canvas6 = document.querySelector(&#39;#canvas6&#39;);
+    var ctx6 = canvas6.getContext(&#39;2d&#39;);
+var vleft=10;
+var vtop=80;
+var vmargin=4;
+var vwidth=392;
+var vheight=156;
+var canvaswidth=320;
+var canvasheight=180;
+    addEvent(togglePlay, &#39;click&#39;, function () {
+        //video.playbackRate = 1;
+        if (video.paused) {
+            if (video.ended) video.currentTime = 0;
+            video.play();
+            this.value = &quot;pause&quot;;
+        } else {
+            video.pause();
+            this.value = &quot;play&quot;;
+        }
+    });
+
+    setInterval(function () {
+        position.innerHTML = asTime(video.currentTime);
+        ctx1.drawImage(video, vleft,vtop, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx2.drawImage(video, vleft+vwidth+vmargin,vtop, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx3.drawImage(video, vleft+vwidth*2+vmargin,vtop, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx4.drawImage(video, vleft, vtop+vheight+vmargin, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx5.drawImage(video, vleft+vwidth+vmargin,vtop+vheight+vmargin, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx6.drawImage(video, vleft+vwidth*2+vmargin,vtop+vheight+vmargin, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+    }, 1000 / 25);
+
+    addEvent(video, &#39;ended&#39;, function () {
+        togglePlay.value = &quot;play&quot;;
+    });
+
+    addEvent(video, &#39;canplay&#39;, function () {
+        video.muted = true;
+        document.querySelector(&#39;#duration&#39;).innerHTML = asTime(this.duration);
+        startCanvas();
+    });
+
+
+    function startCanvas() {
+        //canvas.setAttribute(&#39;height&#39;, Math.floor(video.height));
+        //canvas.setAttribute(&#39;width&#39;, Math.floor(video.width));
+
+        //ctx.translate(0, canvas.height );
+        //ctx.scale(1, -1);
+        //ctx.globalAlpha = 0.3;
+        ctx1.drawImage(video, vleft,vtop, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx2.drawImage(video, vleft+vwidth+vmargin,vtop, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx3.drawImage(video, vleft+vwidth*2+vmargin,vtop, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx4.drawImage(video, vleft, vtop+vheight+vmargin, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx5.drawImage(video, vleft+vwidth+vmargin,vtop+vheight+vmargin, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+        ctx6.drawImage(video, vleft+vwidth*2+vmargin,vtop+vheight+vmargin, vwidth, vheight, 0,0, canvaswidth, canvasheight);
+
+
+    }
+
+    function asTime(t) {
+        t = Math.round(t);
+        var s = t % 60;
+        var m = Math.round(t / 60);
+
+        return two(m) + &#39;:&#39; + two(s);
+    }
+
+    function two(s) {
+        s += &quot;&quot;;
+        if (s.length &amp;lt; 2) s = &quot;0&quot; + s;
+        return s;
+    }
+&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>苹果iOS5下的的NSJSONSerialization类</title>
