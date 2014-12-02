@@ -5,10 +5,190 @@
         <description>Cheney Lin - Cheney Lin</description>
         <link>http://www.linchangyu.com</link>
         <link>http://www.linchangyu.com</link>
-        <lastBuildDate>2014-11-28T17:31:01+08:00</lastBuildDate>
-        <pubDate>2014-11-28T17:31:01+08:00</pubDate>
+        <lastBuildDate>2014-12-01T19:50:06+08:00</lastBuildDate>
+        <pubDate>2014-12-01T19:50:06+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>APP调用Custom URL Scheme</title>
+                <description>
+&lt;p&gt;Custom URL scheme 的好处就是，你可以在其它程序中通过这个url打开应用程序。如Ａ应用程序注册了一个url scheme:myApp,  那么就在mobile浏览器中就可以通过&amp;lt;href=’myApp://’&amp;gt;打开你的应用程序Ａ。&lt;/p&gt;
+
+&lt;h2 id=&quot;android&quot;&gt;Android&lt;/h2&gt;
+
+&lt;p&gt;首先在AndroidManifast.xml要被指定Scheme的Activity下设置如下参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;intent-filter&amp;gt;  
+  &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot;&amp;gt;&amp;lt;/category&amp;gt;  
+  &amp;lt;action android:name=&quot;android.intent.action.VIEW&quot;&amp;gt;&amp;lt;/action&amp;gt;  
+  &amp;lt;data android:scheme=&quot;mgtv&quot;&amp;gt;&amp;lt;/data&amp;gt;  
+&amp;lt;/intent-filter&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样即指定了接收Uri的Scheme为 mgtv 且 Action为View的Intent。&lt;/p&gt;
+
+&lt;p&gt;利用如下Intent调用Activity&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(&quot;mgtv://?action=play&amp;amp;data=12345&quot;)));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或在浏览器中调用A链接打开&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;a href=&quot;mgtv://?action=play&amp;amp;data=12345&quot;&amp;gt;打开你的应用程序&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在接收的Activity中使用如下代码获得数据&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//获得Scheme名称  
+this.getIntent().getScheme();
+//获得Uri全部路径
+this.getIntent().getDataString();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;ios&quot;&gt;iOS&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;images/xcodeurlscheme.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如果没有URL types，随意点一个key行后面＋号，输入大写URL选择URL types&lt;/li&gt;
+  &lt;li&gt;右键URL types，选择add row&lt;/li&gt;
+  &lt;li&gt;item0下改成url identifier，后面的value值随意写，com.xx,xx&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist&lt;/p&gt;
+
+    &lt;p&gt;[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@”todolist://”]];&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在其他应用里就可以用以上语句启动你的app。&lt;/p&gt;
+
+&lt;p&gt;在自定义了 URL scheme 的应用中，app delegate 必须实现以下方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application
+  openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+  annotation:(id)annotation
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例如，假设我们使用以下的 URL scheme，我们可以像这样创建一个 URL：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString *customURL = @&quot;mgtv://?action=play&amp;amp;data=12345&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 web 开发中，字符串 ?action=play&amp;amp;data=12345 被称作查询询串(query string)。&lt;/p&gt;
+
+&lt;p&gt;在被调用(设置了自定义 URL)的应用的 app delegate 中，获取参数的代码如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+        sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  NSLog(@&quot;Calling Application Bundle ID: %@&quot;, sourceApplication);
+  NSLog(@&quot;URL scheme:%@&quot;, [url scheme]);
+  NSLog(@&quot;URL query: %@&quot;, [url query]);
+
+  return YES;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上代码在应用被调用时的输出为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Calling Application Bundle ID: com.hunantv.app
+URL scheme:mgtv
+URL query: action=play&amp;amp;data=12345
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;额外功能&lt;/h3&gt;
+
+&lt;p&gt;果处理成功的Scheme如包含了TestBAPP://callsuccess，那么说明你调用其他的APP成功了。
+如果不是，那么说明是别的APP如TestAAPP调用了你的APP，此时在你的APPDelegate里面添加如下函数以及实现处理，这里是直接返回告诉TestAAPP调用成功的标识TestAAPP://callsuccess：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url  
+{  
+    // Do something with the url here  
+    if (!url)  
+    {  
+        return NO;  
+    }  
+    NSString *handleUrl = [url absoluteString];  
+    if ([handleUrl isEqualToString:@&quot;TestBApp://callsuccess&quot;]) {  
+        return YES;  
+    }else{  
+        NSString *urlstr = @&quot;TestAAPP:/com.baidu.sidepath.TestA&amp;amp;_callback=TestAApp://callsuccess&quot;;  
+        NSURL *handlbackeUrl = [NSURL URLWithString:urlstr];  
+        [[UIApplication sharedApplication] openURL:handlbackeUrl];  
+
+    }
+}  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果你不想直接返回callback，而是想启动一个页面那么，此时要考虑你的应用是否已经启动，可以如下判断使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url  
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{  
+    NSString *handleUrl = [url absoluteString];  
+    if ([handleUrl isEqualToString:@&quot;TestBApp://callsuccess&quot;]) {  
+        return YES;  
+    }else{  
+        UINavigationController *vc = (UINavigationController *)_window.rootViewController;  
+        if (vc == nil) {  
+            PathViewController *controller = [[PathViewController alloc] initWithNibName:@&quot;PathViewController&quot; bundle:nil];  
+
+            self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];  
+            self.mUINavigationController = [[UINavigationController alloc] init];  
+
+
+            [self.mUINavigationController pushViewController:controller animated:YES];  
+            [self.window addSubview:self.mUINavigationController.view];  
+
+
+            // Override point for customization after application launch.  
+            self.window.backgroundColor = [UIColor whiteColor];  
+            [self.window makeKeyAndVisible];  
+        }  
+        return YES;  
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也就是把appdelegate里面的didFinishLaunchingWithOptions初始化app的代码拷贝进去。此时会启动PathViewController这个页面。然后在这个页面里面可以添加一个返回按钮来返回到调用APP。&lt;/p&gt;
+
+&lt;p&gt;再次 在TestAAPp里面使用URl Scheme调起你的APP&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (void)buttonPressed:(UIButton *)button
+{
+  NSString *customURL = @&quot;mgtv://play/12345&quot;;
+
+  if ([[UIApplication sharedApplication]
+    canOpenURL:[NSURL URLWithString:customURL]])
+  {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:customURL]];
+  }
+  else
+  {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@&quot;URL error&quot;
+                          message:[NSString stringWithFormat:
+                            @&quot;No custom URL defined for %@&quot;, customURL]
+                          delegate:self cancelButtonTitle:@&quot;Ok&quot;
+                          otherButtonTitles:nil];
+    [alert show];
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看更多苹果官方资料：&amp;lt;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html》&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;其他&lt;/h2&gt;
+
+&lt;p&gt;iOS与Android在这儿有点小区别，在iOS中如果系统注册了url scheme且安装了那个应用程序，通过上面那种网页的方式就可以启动应用程序，如果没有注册或没有安装那个应用程序，就没有任何效果（你注册的url scheme不能是http://xxx 这样的）。&lt;/p&gt;
+
+&lt;p&gt;在Android系统中注册了url scheme且安装了那个应用程序，通过上面那种网页的方式就可以启动应用程序，如果没有注册或没有安装那个应用程序，就没有任何效果；如果注册了是http://xxx这样的，就会弹了一个对话框让你选，是打开网页还是程序。&lt;/p&gt;
+
+&lt;p&gt;iOS中不能注册http://xxx这样的url scheme,而Android是可以的。&lt;/p&gt;
+</description>
+                <link>http://www.linchangyu.com/app/2014/12/01/app-url-scheme</link>
+                <guid>http://www.linchangyu.com/app/2014/12/01/app-url-scheme</guid>
+                <pubDate>2014-12-01T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>开源的js/css框架（收集中）</title>

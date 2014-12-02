@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>APP调用Custom URL Scheme</title>
+    <meta name="description" content="【教程】APP调用Custom URL Scheme">
+    <meta name="keyword" content="疯狂填字,芒果轻应用,麒麟工作室,林长宇">
+    <meta name="author" content="Cheney Lin">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap styles -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Sticky Footer -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bs-sticky-footer.css" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link href="/assets/themes/bootstrap-3/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/lcy.png" width="64" height="64">Cheney Lin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="jb-navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+          <form class="navbar-form navbar-right" role="search" action="http://zhannei.baidu.com/cse/search" method="get" target="_blank">
+          <input type="hidden" name="s" value="10670906174234479444"> <input type="hidden" name="entry" value="1">
+            <div class="form-group">
+              <input name="q" type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="container">
+        
+<div class="page-header">
+  <h1>APP调用Custom URL Scheme <small>【教程】</small></h1>
+</div>
+
+<div class="row post-full">
+  <div class="col-xs-12">
+    <div class="date">
+      <span>01 December 2014</span>
+    </div>
+    <div class="content">
+      
+<p>Custom URL scheme 的好处就是，你可以在其它程序中通过这个url打开应用程序。如Ａ应用程序注册了一个url scheme:myApp,  那么就在mobile浏览器中就可以通过&lt;href=’myApp://’&gt;打开你的应用程序Ａ。</p>
+
+<h2 id="android">Android</h2>
+
+<p>首先在AndroidManifast.xml要被指定Scheme的Activity下设置如下参数</p>
+
+<pre><code>&lt;intent-filter&gt;  
+  &lt;category android:name="android.intent.category.DEFAULT"&gt;&lt;/category&gt;  
+  &lt;action android:name="android.intent.action.VIEW"&gt;&lt;/action&gt;  
+  &lt;data android:scheme="mgtv"&gt;&lt;/data&gt;  
+&lt;/intent-filter&gt;  
+</code></pre>
+
+<p>这样即指定了接收Uri的Scheme为 mgtv 且 Action为View的Intent。</p>
+
+<p>利用如下Intent调用Activity</p>
+
+<pre><code>startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mgtv://?action=play&amp;data=12345")));
+</code></pre>
+
+<p>或在浏览器中调用A链接打开</p>
+
+<pre><code>&lt;a href="mgtv://?action=play&amp;data=12345"&gt;打开你的应用程序&lt;/a&gt;
+</code></pre>
+
+<p>在接收的Activity中使用如下代码获得数据</p>
+
+<pre><code>//获得Scheme名称  
+this.getIntent().getScheme();
+//获得Uri全部路径
+this.getIntent().getDataString();
+</code></pre>
+
+<h2 id="ios">iOS</h2>
+<p><img src="images/xcodeurlscheme.jpg" /></p>
+
+<ol>
+  <li>如果没有URL types，随意点一个key行后面＋号，输入大写URL选择URL types</li>
+  <li>右键URL types，选择add row</li>
+  <li>item0下改成url identifier，后面的value值随意写，com.xx,xx</li>
+  <li>
+    <p>加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist</p>
+
+    <p>[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@”todolist://”]];</p>
+  </li>
+</ol>
+
+<p>在其他应用里就可以用以上语句启动你的app。</p>
+
+<p>在自定义了 URL scheme 的应用中，app delegate 必须实现以下方法：</p>
+
+<pre><code>- (BOOL)application:(UIApplication *)application
+  openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+  annotation:(id)annotation
+</code></pre>
+
+<p>例如，假设我们使用以下的 URL scheme，我们可以像这样创建一个 URL：</p>
+
+<pre><code>NSString *customURL = @"mgtv://?action=play&amp;data=12345";
+</code></pre>
+
+<p>在 web 开发中，字符串 ?action=play&amp;data=12345 被称作查询询串(query string)。</p>
+
+<p>在被调用(设置了自定义 URL)的应用的 app delegate 中，获取参数的代码如下:</p>
+
+<pre><code>- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+        sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  NSLog(@"Calling Application Bundle ID: %@", sourceApplication);
+  NSLog(@"URL scheme:%@", [url scheme]);
+  NSLog(@"URL query: %@", [url query]);
+
+  return YES;
+}
+</code></pre>
+
+<p>以上代码在应用被调用时的输出为：</p>
+
+<pre><code>Calling Application Bundle ID: com.hunantv.app
+URL scheme:mgtv
+URL query: action=play&amp;data=12345
+</code></pre>
+
+<h3 id="section">额外功能</h3>
+
+<p>果处理成功的Scheme如包含了TestBAPP://callsuccess，那么说明你调用其他的APP成功了。
+如果不是，那么说明是别的APP如TestAAPP调用了你的APP，此时在你的APPDelegate里面添加如下函数以及实现处理，这里是直接返回告诉TestAAPP调用成功的标识TestAAPP://callsuccess：</p>
+
+<pre><code>- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url  
+{  
+    // Do something with the url here  
+    if (!url)  
+    {  
+        return NO;  
+    }  
+    NSString *handleUrl = [url absoluteString];  
+    if ([handleUrl isEqualToString:@"TestBApp://callsuccess"]) {  
+        return YES;  
+    }else{  
+        NSString *urlstr = @"TestAAPP:/com.baidu.sidepath.TestA&amp;_callback=TestAApp://callsuccess";  
+        NSURL *handlbackeUrl = [NSURL URLWithString:urlstr];  
+        [[UIApplication sharedApplication] openURL:handlbackeUrl];  
+
+    }
+}  
+</code></pre>
+
+<p>如果你不想直接返回callback，而是想启动一个页面那么，此时要考虑你的应用是否已经启动，可以如下判断使用：</p>
+
+<pre><code>- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url  
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{  
+    NSString *handleUrl = [url absoluteString];  
+    if ([handleUrl isEqualToString:@"TestBApp://callsuccess"]) {  
+        return YES;  
+    }else{  
+        UINavigationController *vc = (UINavigationController *)_window.rootViewController;  
+        if (vc == nil) {  
+            PathViewController *controller = [[PathViewController alloc] initWithNibName:@"PathViewController" bundle:nil];  
+
+            self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];  
+            self.mUINavigationController = [[UINavigationController alloc] init];  
+
+
+            [self.mUINavigationController pushViewController:controller animated:YES];  
+            [self.window addSubview:self.mUINavigationController.view];  
+
+
+            // Override point for customization after application launch.  
+            self.window.backgroundColor = [UIColor whiteColor];  
+            [self.window makeKeyAndVisible];  
+        }  
+        return YES;  
+    }
+  }
+</code></pre>
+
+<p>也就是把appdelegate里面的didFinishLaunchingWithOptions初始化app的代码拷贝进去。此时会启动PathViewController这个页面。然后在这个页面里面可以添加一个返回按钮来返回到调用APP。</p>
+
+<p>再次 在TestAAPp里面使用URl Scheme调起你的APP</p>
+
+<pre><code>- (void)buttonPressed:(UIButton *)button
+{
+  NSString *customURL = @"mgtv://play/12345";
+
+  if ([[UIApplication sharedApplication]
+    canOpenURL:[NSURL URLWithString:customURL]])
+  {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:customURL]];
+  }
+  else
+  {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URL error"
+                          message:[NSString stringWithFormat:
+                            @"No custom URL defined for %@", customURL]
+                          delegate:self cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil];
+    [alert show];
+  }
+}
+</code></pre>
+
+<p>查看更多苹果官方资料：&lt;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html》</p>
+
+<h2 id="section-1">其他</h2>
+
+<p>iOS与Android在这儿有点小区别，在iOS中如果系统注册了url scheme且安装了那个应用程序，通过上面那种网页的方式就可以启动应用程序，如果没有注册或没有安装那个应用程序，就没有任何效果（你注册的url scheme不能是http://xxx 这样的）。</p>
+
+<p>在Android系统中注册了url scheme且安装了那个应用程序，通过上面那种网页的方式就可以启动应用程序，如果没有注册或没有安装那个应用程序，就没有任何效果；如果注册了是http://xxx这样的，就会弹了一个对话框让你选，是打开网页还是程序。</p>
+
+<p>iOS中不能注册http://xxx这样的url scheme,而Android是可以的。</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#app-ref">
+    		app <span>1</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#app-ref">app <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#iOS-ref">iOS <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#android-ref">android <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <ul class="pagination">
+    
+      <li class="prev"><a href="/web/2014/11/27/opensource-js-css-framewok" title="开源的js/css框架（收集中）">&laquo; Previous</a></li>
+    
+      <li><a href="/archive.html">Archive</a></li>
+    
+      <li class="next disabled"><a>Next &rarr;</a>
+    
+    </ul>
+    <hr>
+    
+
+
+  <div class="ds-thread" data-thread-key="/app/2014/12/01/app-url-scheme" data-title="APP调用Custom URL Scheme" data-url="http://www.linchangyu.com/app/2014/12/01/app-url-scheme"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"linchangyu"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <div class="container">
+        <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p>&copy; 2014 Cheney Lin with <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+        </p>
+      </div>
+    </div>
+
+    
+
+
+    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"></script>
+    <script src="/assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
