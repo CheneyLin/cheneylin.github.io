@@ -41,7 +41,7 @@ Custom URL scheme 的好处就是，你可以在其它程序中通过这个url�
     this.getIntent().getDataString();
 
 ##iOS
-<img src="images/xcodeurlscheme.jpg">
+<img src="/images/xcodeurlscheme.jpg">
 
 1.  如果没有URL types，随意点一个key行后面＋号，输入大写URL选择URL types
 2.  右键URL types，选择add row
@@ -54,10 +54,9 @@ Custom URL scheme 的好处就是，你可以在其它程序中通过这个url�
 
 在自定义了 URL scheme 的应用中，app delegate 必须实现以下方法：
 
-    - (BOOL)application:(UIApplication *)application
-      openURL:(NSURL *)url
-      sourceApplication:(NSString *)sourceApplication
-      annotation:(id)annotation
+    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+                                           sourceApplication:(NSString *)sourceApplication
+                                                  annotation:(id)annotation
 
 例如，假设我们使用以下的 URL scheme，我们可以像这样创建一个 URL：
 
@@ -68,7 +67,8 @@ Custom URL scheme 的好处就是，你可以在其它程序中通过这个url�
 在被调用(设置了自定义 URL)的应用的 app delegate 中，获取参数的代码如下:
 
     - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-            sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+                                           sourceApplication:(NSString *)sourceApplication
+                                                  annotation:(id)annotation
     {
       NSLog(@"Calling Application Bundle ID: %@", sourceApplication);
       NSLog(@"URL scheme:%@", [url scheme]);
