@@ -180,27 +180,25 @@ this.getIntent().getDataString();
 </code></pre>
 
 <h2 id="ios">iOS</h2>
-<p><img src="images/xcodeurlscheme.jpg" /></p>
+<p><img src="/images/xcodeurlscheme.jpg" /></p>
 
 <ol>
   <li>如果没有URL types，随意点一个key行后面＋号，输入大写URL选择URL types</li>
   <li>右键URL types，选择add row</li>
   <li>item0下改成url identifier，后面的value值随意写，com.xx,xx</li>
-  <li>
-    <p>加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist</p>
-
-    <p>[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@”todolist://”]];</p>
-  </li>
+  <li>加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist</li>
 </ol>
 
-<p>在其他应用里就可以用以上语句启动你的app。</p>
+<p>在其他应用里就可以用以下语句启动你的app</p>
+
+<pre><code>[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"todolist://"]];
+</code></pre>
 
 <p>在自定义了 URL scheme 的应用中，app delegate 必须实现以下方法：</p>
 
-<pre><code>- (BOOL)application:(UIApplication *)application
-  openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-  annotation:(id)annotation
+<pre><code>- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+                                       sourceApplication:(NSString *)sourceApplication
+                                              annotation:(id)annotation
 </code></pre>
 
 <p>例如，假设我们使用以下的 URL scheme，我们可以像这样创建一个 URL：</p>
@@ -213,7 +211,8 @@ this.getIntent().getDataString();
 <p>在被调用(设置了自定义 URL)的应用的 app delegate 中，获取参数的代码如下:</p>
 
 <pre><code>- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-        sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+                                       sourceApplication:(NSString *)sourceApplication
+                                              annotation:(id)annotation
 {
   NSLog(@"Calling Application Bundle ID: %@", sourceApplication);
   NSLog(@"URL scheme:%@", [url scheme]);
@@ -308,7 +307,9 @@ URL query: action=play&amp;data=12345
 }
 </code></pre>
 
-<p>查看更多苹果官方资料：&lt;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html》</p>
+<p>查看更多苹果官方资料：</p>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html">https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html</a></p>
 
 <h2 id="section-1">其他</h2>
 

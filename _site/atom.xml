@@ -4,7 +4,7 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2014-12-01T19:50:06+08:00</updated>
+ <updated>2014-12-02T19:57:14+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
@@ -52,27 +52,25 @@ this.getIntent().getDataString();
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&quot;ios&quot;&gt;iOS&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;images/xcodeurlscheme.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/xcodeurlscheme.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;如果没有URL types，随意点一个key行后面＋号，输入大写URL选择URL types&lt;/li&gt;
   &lt;li&gt;右键URL types，选择add row&lt;/li&gt;
   &lt;li&gt;item0下改成url identifier，后面的value值随意写，com.xx,xx&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist&lt;/p&gt;
-
-    &lt;p&gt;[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@”todolist://”]];&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;在其他应用里就可以用以上语句启动你的app。&lt;/p&gt;
+&lt;p&gt;在其他应用里就可以用以下语句启动你的app&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@&quot;todolist://&quot;]];
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在自定义了 URL scheme 的应用中，app delegate 必须实现以下方法：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application
-  openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-  annotation:(id)annotation
+&lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+                                       sourceApplication:(NSString *)sourceApplication
+                                              annotation:(id)annotation
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;例如，假设我们使用以下的 URL scheme，我们可以像这样创建一个 URL：&lt;/p&gt;
@@ -85,7 +83,8 @@ this.getIntent().getDataString();
 &lt;p&gt;在被调用(设置了自定义 URL)的应用的 app delegate 中，获取参数的代码如下:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-        sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+                                       sourceApplication:(NSString *)sourceApplication
+                                              annotation:(id)annotation
 {
   NSLog(@&quot;Calling Application Bundle ID: %@&quot;, sourceApplication);
   NSLog(@&quot;URL scheme:%@&quot;, [url scheme]);
@@ -180,7 +179,9 @@ URL query: action=play&amp;amp;data=12345
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;查看更多苹果官方资料：&amp;lt;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html》&lt;/p&gt;
+&lt;p&gt;查看更多苹果官方资料：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html&quot;&gt;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;其他&lt;/h2&gt;
 

@@ -48,9 +48,9 @@ Custom URL scheme 的好处就是，你可以在其它程序中通过这个url�
 3.  item0下改成url identifier，后面的value值随意写，com.xx,xx
 4.  加一行，选择url schemes，item后面值写成你需要的，譬如上面的todolist
 
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"todolist://"]];
+在其他应用里就可以用以下语句启动你的app
 
-在其他应用里就可以用以上语句启动你的app。
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"todolist://"]];
 
 在自定义了 URL scheme 的应用中，app delegate 必须实现以下方法：
 
