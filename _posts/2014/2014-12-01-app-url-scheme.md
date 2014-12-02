@@ -159,7 +159,9 @@ Custom URL scheme 的好处就是，你可以在其它程序中通过这个url�
       }
     }
 
-查看更多苹果官方资料：<https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html》
+查看更多苹果官方资料：
+
+<https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html>
 
 
 ##其他
