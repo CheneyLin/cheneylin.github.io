@@ -4,13 +4,51 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2014-12-02T19:57:14+08:00</updated>
+ <updated>2014-12-05T18:27:22+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
    <email>cio@gpwzw.com</email>
  </author>
 
+ 
+ <entry>
+   <title>轻应用开发设计规范</title>
+   <link href="http://www.linchangyu.com/app/2014/12/05/html5-app-design-guide"/>
+   <updated>2014-12-05T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/app/2014/12/05/html5-app-design-guide</id>
+   <content type="html">
+&lt;h2 id=&quot;section&quot;&gt;概述  &lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;定义:以微信传播为主要渠道的 HTML5 应用  &lt;/li&gt;
+  &lt;li&gt;技术:HTML5、JS、CSS、Jquery、Zepto、collie  &lt;/li&gt;
+  &lt;li&gt;资源:PSD、JPG、PNG、MP4、MP3、OGG  &lt;/li&gt;
+  &lt;li&gt;设备:Google Nexus 5以上,三星Galaxy Notes以上,iPhone4以上  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;设计交付&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;文案&lt;/h3&gt;
+
+&lt;p&gt;项目受众、整体风格、分页索引及说明  &lt;/p&gt;
+
+&lt;h3 id=&quot;vi&quot;&gt;品牌 VI&lt;/h3&gt;
+
+&lt;p&gt;图像、文字、图文布局、色彩风格  &lt;/p&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;分页设计:     &lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;按页单独交付 PSD 格式分层文件  &lt;/li&gt;
+  &lt;li&gt;文件宽高 800px*1200px  &lt;/li&gt;
+  &lt;li&gt;内容区面积(元素最小显示区域)800px  *1040px   d) 内容排版方式为底部裁剪、上下裁剪、按比例分布  &lt;/li&gt;
+  &lt;li&gt;动画设计:按帧提供单图序列(统一大小)和拼图(固定大 小左右拼凑)  &lt;/li&gt;
+  &lt;li&gt;视频文件:兼容 iPhone 的 mp4 格式,不低于 480px*320px, 尽量分节以缩小单个文件容量  &lt;/li&gt;
+  &lt;li&gt;音频文件:提供 2 声道 mp4、ogg 文件,尽量也提供 wav 源文件备用  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
  
  <entry>
    <title>APP调用Custom URL Scheme</title>

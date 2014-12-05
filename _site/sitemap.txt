@@ -9,6 +9,7 @@ http://www.linchangyu.com/rss.xml
 http://www.linchangyu.com/sitemap.txt
 http://www.linchangyu.com/tags.html
 
+http://www.linchangyu.com/app/2014/12/05/html5-app-design-guide
 http://www.linchangyu.com/app/2014/12/01/app-url-scheme
 http://www.linchangyu.com/web/2014/11/27/opensource-js-css-framewok
 http://www.linchangyu.com/web/2014/11/27/html5-video-canvas-show
