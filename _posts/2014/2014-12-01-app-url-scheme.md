@@ -6,7 +6,7 @@ description: 【教程】APP调用Custom URL Scheme
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【教程】
 tags: [app, iOS, android]
-postid: 6
+postid: 8
 ---
 {% include JB/setup %}
 

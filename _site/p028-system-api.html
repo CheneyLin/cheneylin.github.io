@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Pages</title>
+    <title>【028】系统设计：接口</title>
     
     
     <meta name="author" content="Cheney Lin">
@@ -106,7 +106,7 @@
     
       
       	
-      	<li class="active"><a href="/pages.html" class="active">Pages</a></li>
+      	<li><a href="/pages.html">Pages</a></li>
       	
       
     
@@ -153,108 +153,47 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>Pages </h1>
+  <h1>【028】系统设计：接口  <small>Project No.028</small></h1>
 </div>
 
 <div class="row">
   <div class="col-xs-12">
     
+<h2 id="section">规范</h2>
+
+<p>接口统一返回json格式数据</p>
+
+<h3 id="section-1">返回正常</h3>
+
+<pre><code>{"status":0,"info":"server is running."}
+</code></pre>
+
+<h3 id="section-2">返回错误</h3>
+
+<pre><code>{"status":-1,"info":"server is not running."}
+</code></pre>
+
+<h2 id="section-3">接口路径</h2>
 
 <ul>
-
-
-
-
-  
-    
-      
-      	
-      	<li><a href="/archive.html">Archive</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/atom.xml">Atom Feed</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/categories.html">Categories</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/index.html">Cheney Lin</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/index_old.html">Hello World!</a></li>
-      	
-      
-    
-  
-    
-  
-    
-  
-    
-      
-      	
-      	<li class="active"><a href="/pages.html" class="active">Pages</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/projects.html">Projects</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/rss.xml">RSS Feed</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/sitemap.txt">Sitemap</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/tags.html">Tags</a></li>
-      	
-      
-    
-  
-
-
-
-
+  <li>开发接口：http://xxx.xxx.xxx.xxx/dev/api/</li>
+  <li>测试接口：http://xxx.xxx.xxx.xxx/test/api/</li>
+  <li>线上接口：http://xxx.xxx.xxx.xxx/v1/api/</li>
 </ul>
+
+<h2 id="section-4">接口列表</h2>
+
+<h3 id="loginphp">login.php</h3>
+
+<p>输入格式</p>
+
+<pre><code>{"username":"test","password":"098f6bcd4621d373cade4e832627b4f6","device":"e57b9648d9f0ca9620eff0fa42162273"}
+</code></pre>
+
+<p>输入出格式</p>
+
+<pre><code>{"status":0,"info":"\u767b\u5f55\u6210\u529f","userid":2,"username":"test","unique_code":"098f6bcd4621d373cade4e832627b4f6"}
+</code></pre>
 
   </div>
 </div>

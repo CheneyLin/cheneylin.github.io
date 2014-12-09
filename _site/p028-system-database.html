@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Pages</title>
+    <title>【028】系统设计：数据库</title>
     
     
     <meta name="author" content="Cheney Lin">
@@ -106,7 +106,7 @@
     
       
       	
-      	<li class="active"><a href="/pages.html" class="active">Pages</a></li>
+      	<li><a href="/pages.html">Pages</a></li>
       	
       
     
@@ -153,108 +153,44 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>Pages </h1>
+  <h1>【028】系统设计：数据库  <small>Project No.028</small></h1>
 </div>
 
 <div class="row">
   <div class="col-xs-12">
     
+<h2 id="section">规范</h2>
+
+<h3 id="section-1">命名</h3>
+
+<p>命名采用小写加下划线格式。</p>
 
 <ul>
-
-
-
-
-  
-    
-      
-      	
-      	<li><a href="/archive.html">Archive</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/atom.xml">Atom Feed</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/categories.html">Categories</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/index.html">Cheney Lin</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/index_old.html">Hello World!</a></li>
-      	
-      
-    
-  
-    
-  
-    
-  
-    
-      
-      	
-      	<li class="active"><a href="/pages.html" class="active">Pages</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/projects.html">Projects</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/rss.xml">RSS Feed</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/sitemap.txt">Sitemap</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/tags.html">Tags</a></li>
-      	
-      
-    
-  
-
-
-
-
+  <li>表名：app_userinfo</li>
+  <li>字段：user_level</li>
 </ul>
+
+<h3 id="section-2">其他</h3>
+
+<p>字符集：utf-8</p>
+
+<h2 id="section-3">表定义</h2>
+
+<h3 id="userinfo">userinfo</h3>
+
+<p>用户表</p>
+
+<p>CREATE TABLE <code>userinfo</code> (
+  <code>id</code> int(10) NOT NULL AUTO_INCREMENT,
+  <code>username</code> varchar(255) DEFAULT NULL,
+  <code>password</code> varchar(255) DEFAULT NULL COMMENT ‘MD5 encode’,
+  <code>device_no</code> varchar(255) DEFAULT NULL,
+  <code>status</code> enum(‘NO’,’YES’) DEFAULT NULL,
+  <code>register_time</code> int(10) DEFAULT NULL,
+  <code>email</code> varchar(255) DEFAULT NULL,
+  <code>phone_num</code> varchar(20) DEFAULT NULL,
+  PRIMARY KEY (<code>id</code>)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=’用户信息表’;</p>
 
   </div>
 </div>
