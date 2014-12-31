@@ -4,13 +4,478 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2014-12-09T19:53:20+08:00</updated>
+ <updated>2014-12-12T11:27:15+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
    <email>cio@gpwzw.com</email>
  </author>
 
+ 
+ <entry>
+   <title>jQuery UI 插件入门</title>
+   <link href="http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-factory-guide"/>
+   <updated>2014-12-12T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-factory-guide</id>
+   <content type="html">
+&lt;h2 id=&quot;how-to-use-the-widget-factory&quot;&gt;How To Use the Widget Factory&lt;/h2&gt;
+
+&lt;p&gt;To start, we’ll create a progress bar that just lets us set the progress once. As we can see below, this is done by calling jQuery.widget() with two parameters: the name of the plugin to create, and an object literal containing functions to support our plugin. When our plugin gets called, it will create a new plugin instance and all functions will be executed within the context of that instance. This is different from a standard jQuery plugin in two important ways. First, the context is an object, not a DOM element. Second, the context is always a single object, never a collection.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.progressbar&quot;, {
+  _create: function() {
+    var progress = this.options.value + &quot;%&quot;;
+    this.element
+    .addClass( &quot;progressbar&quot; )
+    .text( progress );
+  }
+  });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The name of the plugin must contain a namespace, in this case we’ve used the custom namespace. You can only create namespaces that are one level deep, therefore, custom.progressbar is a valid plugin name whereas very.custom.progressbar is not.&lt;/p&gt;
+
+&lt;p&gt;We can also see that the widget factory has provided two properties for us. this.element is a jQuery object containing exactly one element. If our plugin is called on a jQuery object containing multiple elements, a separate plugin instance will be created for each element, and each instance will have its own this.element. The second property, this.options, is a hash containing key/value pairs for all of our plugin’s options. These options can be passed to our plugin as shown here.&lt;/p&gt;
+
+&lt;p&gt;$( “&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;” ).appendTo( “body” ).progressbar({ value: 20 });&lt;/p&gt;
+
+&lt;p&gt;When we call jQuery.widget() it extends jQuery by adding a function to jQuery.fn (the system for creating a standard plugin). The name of the function it adds is based on the name you pass to jQuery.widget(), without the namespace - in our case “progressbar”. The options passed to our plugin are the values that get set in this.options inside of our plugin instance. As shown below, we can specify default values for any of our options. When designing your API, you should figure out the most common use case for your plugin so that you can set appropriate default values and make all options truly optional.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.progressbar&quot;, {
+// Default options.
+options: {
+  value: 0
+  },
+  _create: function() {
+    var progress = this.options.value + &quot;%&quot;;
+    this.element
+    .addClass( &quot;progressbar&quot; )
+    .text( progress );
+  }
+  });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;calling-plugin-methods&quot;&gt;Calling Plugin Methods&lt;/h2&gt;
+
+&lt;p&gt;Now that we can initialize our progress bar, we’ll add the ability to perform actions by calling methods on our plugin instance. To define a plugin method, we just include the function in the object literal that we pass to jQuery.widget(). We can also define “private” methods by prepending an underscore to the function name.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $.widget( &quot;custom.progressbar&quot;, {
+
+    options: {
+      value: 0
+      },
+
+      _create: function() {
+        var progress = this.options.value + &quot;%&quot;;
+        this.element
+        .addClass( &quot;progressbar&quot; )
+        .text( progress );
+        },
+
+        // Create a public method.
+        value: function( value ) {
+
+          // No value passed, act as a getter.
+          if ( value === undefined ) {
+            return this.options.value;
+          }
+
+          // Value passed, act as a setter.
+          this.options.value = this._constrain( value );
+          var progress = this.options.value + &quot;%&quot;;
+          this.element.text( progress );
+          },
+
+          // Create a private method.
+          _constrain: function( value ) {
+            if ( value &amp;gt; 100 ) {
+              value = 100;
+            }
+            if ( value &amp;lt; 0 ) {
+              value = 0;
+            }
+            return value;
+          }
+          });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To call a method on a plugin instance, you pass the name of the method to the jQuery plugin. If you are calling a method that accepts parameters, you simply pass those parameters after the method name.&lt;/p&gt;
+
+&lt;p&gt;Note: Executing methods by passing the method name to the same jQuery function that was used to initialize the plugin may seem odd. This is done to prevent pollution of the jQuery namespace while maintaining the ability to chain method calls. Later in this article we’ll see alternative uses that may feel more natural.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;          var bar = $( &quot;&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;&quot; )
+          .appendTo( &quot;body&quot; )
+          .progressbar({ value: 20 });
+
+          // Get the current value.
+          alert( bar.progressbar( &quot;value&quot; ) );
+
+          // Update the value.
+          bar.progressbar( &quot;value&quot;, 50 );
+
+          // Get the current value again.
+          alert( bar.progressbar( &quot;value&quot; ) );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;working-with-options&quot;&gt;Working with Options&lt;/h2&gt;
+
+&lt;p&gt;One of the methods that are automatically available to our plugin is the option() method. The option() method allows you to get and set options after initialization. This method works exactly like jQuery’s .css() and .attr() methods: You can pass just a name to use it as a getter, a name and value to use it as a single setter, or a hash of name/value pairs to set multiple values. When used as a getter, the plugin will return the current value of the option that corresponds to the name that was passed in. When used as a setter, the plugin’s _setOption method will be called for each option that is being set. We can specify a _setOption method in our plugin to react to option changes. For actions to perform independent of the number of options changed, we can override _setOptions().&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $.widget( &quot;custom.progressbar&quot;, {
+    options: {
+      value: 0
+      },
+      _create: function() {
+        this.options.value = this._constrain(this.options.value);
+        this.element.addClass( &quot;progressbar&quot; );
+        this.refresh();
+        },
+        _setOption: function( key, value ) {
+          if ( key === &quot;value&quot; ) {
+            value = this._constrain( value );
+          }
+          this._super( key, value );
+          },
+          _setOptions: function( options ) {
+            this._super( options );
+            this.refresh();
+            },
+            refresh: function() {
+              var progress = this.options.value + &quot;%&quot;;
+              this.element.text( progress );
+              },
+              _constrain: function( value ) {
+                if ( value &amp;gt; 100 ) {
+                  value = 100;
+                }
+                if ( value &amp;lt; 0 ) {
+                  value = 0;
+                }
+                return value;
+              }
+              });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;adding-callbacks&quot;&gt;Adding Callbacks&lt;/h2&gt;
+
+&lt;p&gt;One of the easiest ways to make your plugin extensible is to add callbacks so users can react when the state of your plugin changes. We can see below how to add a callback to our progress bar to signify when the progress has reached 100%. The _trigger() method takes three parameters: the name of the callback, a jQuery event object that initiated the callback, and a hash of data relevant to the event. The callback name is the only required parameter, but the others can be very useful for users who want to implement custom functionality on top of your plugin. For example, if we were building a draggable plugin, we could pass the mousemove event when triggering a drag callback; this would allow users to react to the drag based on the x/y coordinates provided by the event object. Note that the original event passed to _trigger() must be a jQuery event, not a native browser event.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $.widget( &quot;custom.progressbar&quot;, {
+    options: {
+      value: 0
+      },
+      _create: function() {
+        this.options.value = this._constrain(this.options.value);
+        this.element.addClass( &quot;progressbar&quot; );
+        this.refresh();
+        },
+        _setOption: function( key, value ) {
+          if ( key === &quot;value&quot; ) {
+            value = this._constrain( value );
+          }
+          this._super( key, value );
+          },
+          _setOptions: function( options ) {
+            this._super( options );
+            this.refresh();
+            },
+            refresh: function() {
+              var progress = this.options.value + &quot;%&quot;;
+              this.element.text( progress );
+              if ( this.options.value == 100 ) {
+                this._trigger( &quot;complete&quot;, null, { value: 100 } );
+              }
+              },
+              _constrain: function( value ) {
+                if ( value &amp;gt; 100 ) {
+                  value = 100;
+                }
+                if ( value &amp;lt; 0 ) {
+                  value = 0;
+                }
+                return value;
+              }
+              });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Callback functions are essentially just additional options, so you can get and set them just like any other option. Whenever a callback is executed, a corresponding event is triggered as well. The event type is determined by concatenating the plugin name and the callback name. The callback and event both receive the same two parameters: an event object and a hash of data relevant to the event, as we’ll see below. Your plugin may have functionality that you want to allow the user to prevent. The best way to support this is by creating cancelable callbacks. Users can cancel a callback, or its associated event, the same way they cancel any native event, by calling event.preventDefault() or returning false. If the user cancels the callback, the _trigger() method will return false so you can implement the appropriate functionality within your plugin.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var bar = $( &quot;&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;&quot; )
+.appendTo( &quot;body&quot; )
+.progressbar({
+  complete: function( event, data ) {
+    alert( &quot;Callbacks are great!&quot; );
+  }
+  })
+  .bind( &quot;progressbarcomplete&quot;, function( event, data ) {
+    alert( &quot;Events bubble and support many handlers for extreme flexibility.&quot; );
+    alert( &quot;The progress bar value is &quot; + data.value );
+    });
+
+    bar.progressbar( &quot;option&quot;, &quot;value&quot;, 100 );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;looking-under-the-hood&quot;&gt;Looking Under the Hood&lt;/h2&gt;
+
+&lt;p&gt;Now that we’ve seen how to build a plugin using the widget factory, let’s take a look at how it actually works. When you call jQuery.widget(), it creates a constructor for your plugin and sets the object literal that you pass in as the prototype for your plugin instances. All of the functionality that automatically gets added to your plugin comes from a base widget prototype, which is defined as jQuery.Widget.prototype. When a plugin instance is created, it is stored on the original DOM element using jQuery.data, with the plugin name as the key.&lt;/p&gt;
+
+&lt;p&gt;Because the plugin instance is directly linked to the DOM element, you can access the plugin instance directly instead of going through the exposed plugin method if you want. This will allow you to call methods directly on the plugin instance instead of passing method names as strings and will also give you direct access to the plugin’s properties.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  var bar = $( &quot;&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;&quot; )
+  .appendTo( &quot;body&quot; )
+  .progressbar()
+  .data( &quot;custom-progressbar&quot; );
+
+  // Call a method directly on the plugin instance.
+  bar.option( &quot;value&quot;, 50 );
+
+  // Access properties on the plugin instance.
+  alert( bar.options.value );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can also create an instance without going through the plugin method, by calling the constructor directly, with the options and element arguments:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var bar = $.custom.progressbar( {}, $( &quot;&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;&quot; ).appendTo( &quot;body&quot;) );
+
+// Same result as before.
+alert( bar.options.value );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;extending-a-plugins-prototype&quot;&gt;Extending a Plugin’s Prototype&lt;/h2&gt;
+
+&lt;p&gt;One of the biggest benefits of having a constructor and prototype for a plugin is the ease of extending the plugin. By adding or modifying methods on the plugin’s prototype, we can modify the behavior of all instances of our plugin. For example, if we wanted to add a method to our progress bar to reset the progress to 0% we could add this method to the prototype and it would instantly be available to be called on any plugin instance.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $.custom.progressbar.prototype.reset = function() {
+    this._setOption( &quot;value&quot;, 0 );
+  };
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For more information on extending widgets, including how to build entirely new widgets on top of existing ones, see Extending Widgets with the Widget Factory.&lt;/p&gt;
+
+&lt;h2 id=&quot;cleaning-up&quot;&gt;Cleaning Up&lt;/h2&gt;
+
+&lt;p&gt;In some cases, it will make sense to allow users to apply and then later unapply your plugin. You can accomplish this via the _destroy() method. Within the _destroy() method, you should undo anything your plugin may have done during initialization or later use. _destroy() is called by the destroy() method, which is automatically called if the element that your plugin instance is tied to is removed from the DOM, so this can be used for garbage collection as well. That base destroy() method also handles some general cleanup operations, like removing the instance reference from the widget’s DOM element, unbinding all events in the widget’s namespace from the element, and unbinding generally all events that were added using _bind().&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.progressbar&quot;, {
+options: {
+value: 0
+},
+_create: function() {
+this.options.value = this._constrain(this.options.value);
+this.element.addClass( &quot;progressbar&quot; );
+this.refresh();
+},
+_setOption: function( key, value ) {
+  if ( key === &quot;value&quot; ) {
+    value = this._constrain( value );
+  }
+  this._super( key, value );
+  },
+  _setOptions: function( options ) {
+    this._super( options );
+    this.refresh();
+    },
+    refresh: function() {
+      var progress = this.options.value + &quot;%&quot;;
+      this.element.text( progress );
+      if ( this.options.value == 100 ) {
+        this._trigger( &quot;complete&quot;, null, { value: 100 } );
+      }
+      },
+      _constrain: function( value ) {
+        if ( value &amp;gt; 100 ) {
+          value = 100;
+        }
+        if ( value &amp;lt; 0 ) {
+          value = 0;
+        }
+        return value;
+        },
+        _destroy: function() {
+          this.element
+          .removeClass( &quot;progressbar&quot; )
+          .text( &quot;&quot; );
+        }
+        });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;closing-comments&quot;&gt;Closing Comments&lt;/h2&gt;
+
+&lt;p&gt;The widget factory is only one way of creating stateful plugins. There are a few different models that can be used and each have their own advantages and disadvantages. The widget factory solves lots of common problems for you and can greatly improve productivity, it also greatly improves code reuse, making it a great fit for jQuery UI as well as many other stateful plugins.&lt;/p&gt;
+
+&lt;p&gt;You may have noticed that in this article we used the custom namespace. The ui namespace is reserved for official jQuery UI plugins. When building your own plugins, you should create your own namespace. This makes it clear where the plugin came from and if it is part of a larger collection.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;http://learn.jquery.com/jquery-ui/widget-factory/how-to-use-the-widget-factory/&lt;/em&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>jQuery UI 插件扩展</title>
+   <link href="http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-extending-guide"/>
+   <updated>2014-12-12T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-extending-guide</id>
+   <content type="html">
+&lt;p&gt;jQuery UI’s widget factory makes it easy to build widgets that extend the functionality of existing widgets. Doing so allows you to build powerful widgets on top of an existing base, as well as make small tweaks to an existing widget’s functionality.&lt;/p&gt;
+
+&lt;p&gt;Note: This article assumes some basic knowledge of what the widget factory is and how it works. If you’re unfamiliar with this, read up on how to use the widget factory first.&lt;/p&gt;
+
+&lt;h2 id=&quot;creating-widget-extensions&quot;&gt;Creating Widget Extensions&lt;/h2&gt;
+
+&lt;p&gt;Creating widgets with the widget factory is done by passing the name of the widget and a prototype object to $.widget(). The following creates a “superDialog” widget in the “custom” namespace.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.superDialog&quot;, {} );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To allow for extension, $.widget() optionally accepts the constructor of a widget to use as a parent. When specifying a parent widget, pass it as the second argument - after the widget’s name, and before the widget’s prototype object.&lt;/p&gt;
+
+&lt;p&gt;Like the previous example, the following also creates a “superDialog” widget in the “custom” namespace. However, this time the constructor of jQuery UI’s dialog widget ($.ui.dialog) is passed, indicating that the superDialog widget should use jQuery UI’s dialog widget as a parent.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.superDialog&quot;, $.ui.dialog, {} );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here superDialog and dialog are essentially equivalent widgets with different names and namepaces. To make our new widget more interesting we can add methods to its prototype object.&lt;/p&gt;
+
+&lt;p&gt;A widget’s prototype object is the final argument passed to $.widget(). So far, our examples have been using an empty object. Let’s add a method to this object:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.superDialog&quot;, $.ui.dialog, {
+  red: function() {
+    this.element.css( &quot;color&quot;, &quot;red&quot; );
+  }
+  });
+
+  // Create a new &amp;lt;div&amp;gt;, convert it into a superDialog, and call the red() method.
+  $( &quot;&amp;lt;div&amp;gt;I am red&amp;lt;/div&amp;gt;&quot; )
+  .superDialog()
+  .superDialog( &quot;red&quot; );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now the superDialog has a red() method that will change the color of its text to red. Note how the widget factory automatically sets this to the widget’s instance object. For a full list of the methods and properties available on the instance, see the widget factory’s API documentation.&lt;/p&gt;
+
+&lt;h2 id=&quot;extending-existing-methods&quot;&gt;Extending Existing Methods&lt;/h2&gt;
+
+&lt;p&gt;Sometimes you need to tweak or add to the behavior of existing widget methods. The do this, specify a method with the same name as the method you want to override on the prototype object. The following example overrides dialog’s open() method. Since dialogs automatically open by default, “open” will be logged when this code runs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $.widget( &quot;custom.superDialog&quot;, $.ui.dialog, {
+    open: function() {
+      console.log( &quot;open&quot; );
+    }
+    });
+
+    // Create a new &amp;lt;div&amp;gt;, and convert it into a superDialog.
+    $( &quot;&amp;lt;div&amp;gt;&quot; ).superDialog();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;While this runs, there’s a problem. Since we overrode the default behavior of open(), the dialog no longer displays on the screen.&lt;/p&gt;
+
+&lt;p&gt;When we place methods on the prototype object, we are not actually overriding the original method - rather, we are placing a new method at a higher level in the prototype chain.&lt;/p&gt;
+
+&lt;p&gt;To make the parent’s methods available, the widget factory provides two methods - _super() and _superApply().&lt;/p&gt;
+
+&lt;h2 id=&quot;using-super-and-superapply-to-access-parents&quot;&gt;Using _super() and _superApply() to Access Parents&lt;/h2&gt;
+
+&lt;p&gt;_super() and _superApply() invoke methods of the same name in the parent widget. Refer to the following example. Like the previous one, this example also overrides the open() method to log “open”. However, this time _super() is run to invoke dialog’s open() and open the dialog.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.superDialog&quot;, $.ui.dialog, {
+  open: function() {
+    console.log( &quot;open&quot; );
+
+    // Invoke the parent widget&#39;s open().
+    return this._super();
+  }
+  });
+
+$( &quot;&amp;lt;div&amp;gt;&quot; ).superDialog();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;_super() and _superApply() were designed to behave like the native Function.prototype.call() and Function.prototype.apply() methods. Therefore, _super() accepts an argument list, and _superApply() accepts a single array of arguments. This difference is shown in the example below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.widget( &quot;custom.superDialog&quot;, $.ui.dialog, {
+  _setOption: function( key, value ) {
+
+    // Both invoke dialog&#39;s setOption() method. _super() requires the arguments
+    // be passed as an argument list, _superApply() as a single array.
+    this._super( key, value );
+    this._superApply( arguments );
+  }
+  });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;redefining-widgets&quot;&gt;Redefining Widgets&lt;/h2&gt;
+
+&lt;p&gt;jQuery UI 1.9 added the ability for widgets to redefine themselves. Therefore, instead of creating a new widget, we can pass $.widget() an existing widget’s name and constructor. The following example adds the same logging in open(), but doesn’t create a new widget to do so.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;        $.widget( &quot;ui.dialog&quot;, $.ui.dialog, {
+          open: function() {
+            console.log( &quot;open&quot; );
+            return this._super();
+          }
+          });
+
+          $( &quot;&amp;lt;div&amp;gt;&quot; ).dialog();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this approach you can extend an existing widget’s method and still have access to the original methods using _super() - all without creating a new widget.&lt;/p&gt;
+
+&lt;h2 id=&quot;widgets-and-polymorphism&quot;&gt;Widgets and Polymorphism&lt;/h2&gt;
+
+&lt;p&gt;One word of warning when interacting with widget extensions and their plugins. The parent widget’s plugin cannot be used to invoke methods on elements that are child widgets. This is shown in the example below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;          $.widget( &quot;custom.superDialog&quot;, $.ui.dialog, {} );
+
+            var dialog = $( &quot;&amp;lt;div&amp;gt;&quot; ).superDialog();
+
+            // This works.
+            dialog.superDialog( &quot;close&quot; );
+
+            // This doesn&#39;t.
+            dialog.dialog( &quot;close&quot; );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Above, the parent widget’s plugin, dialog(), cannot invoke the close() method on an element that is a superDialog. For more on the invoking widget methods see Widget Method Invocation.&lt;/p&gt;
+
+&lt;h2 id=&quot;customizing-individual-instances&quot;&gt;Customizing Individual Instances&lt;/h2&gt;
+
+&lt;p&gt;All the examples we have looked at so far have extended methods on the widget’s prototype. Methods overridden on the prototype affect all instances of the widget.&lt;/p&gt;
+
+&lt;p&gt;To show this, refer to the example below; both instances of the dialog use the same open() method.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;            $.widget( &quot;ui.dialog&quot;, $.ui.dialog, {
+              open: function() {
+                console.log( &quot;open&quot; );
+                return this._super();
+              }
+              });
+
+              // Create two dialogs, both use the same open(), therefore &quot;open&quot; is logged twice.
+              $( &quot;&amp;lt;div&amp;gt;&quot; ).dialog();
+              $( &quot;&amp;lt;div&amp;gt;&quot; ).dialog();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;While this is powerful, sometimes you only need to change the behavior for a single instance of the widget. To do this, obtain a reference to the instance and override the method using normal JavaScript property assignment. The example below shows this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;              var dialogInstance = $( &quot;&amp;lt;div&amp;gt;&quot; )
+              .dialog()
+
+              // Retrieve the dialog&#39;s instance and store it.
+              .data( &quot;ui-dialog&quot; );
+
+              // Override the close() method for this dialog
+              dialogInstance.close = function() {
+                console.log( &quot;close&quot; );
+              };
+
+              // Create a second dialog
+              $( &quot;&amp;lt;div&amp;gt;&quot; ).dialog();
+
+              // Select both dialogs and call close() on each of them.
+              // &quot;close&quot; will only be logged once.
+              $( &quot;:data(ui-dialog)&quot; ).dialog( &quot;close&quot; );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This technique of overriding methods for individual instances is perfect for one-off customizations.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;http://learn.jquery.com/jquery-ui/widget-factory/extending-widgets/&lt;/em&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>轻应用开发设计规范</title>
