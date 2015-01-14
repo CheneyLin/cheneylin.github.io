@@ -4,6 +4,8 @@ http://www.linchangyu.com/atom.xml
 http://www.linchangyu.com/categories.html
 http://www.linchangyu.com/index.html
 http://www.linchangyu.com/index_old.html
+http://www.linchangyu.com/p015-system-api.html
+http://www.linchangyu.com/p015-system-database.html
 http://www.linchangyu.com/p028-system-api.html
 http://www.linchangyu.com/p028-system-database.html
 http://www.linchangyu.com/pages.html
@@ -12,6 +14,7 @@ http://www.linchangyu.com/rss.xml
 http://www.linchangyu.com/sitemap.txt
 http://www.linchangyu.com/tags.html
 
+http://www.linchangyu.com/app/2014/12/29/android-third-app-package-guide
 http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-factory-guide
 http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-extending-guide
 http://www.linchangyu.com/app/2014/12/05/html5-app-design-guide

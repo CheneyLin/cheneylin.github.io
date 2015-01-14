@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>【015】系统设计：数据库</title>
+    
+    
+    <meta name="author" content="Cheney Lin">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap styles -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Sticky Footer -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bs-sticky-footer.css" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link href="/assets/themes/bootstrap-3/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/lcy.png" width="64" height="64">Cheney Lin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="jb-navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/projects.html">Projects</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+
+          </ul>
+          <form class="navbar-form navbar-right" role="search" action="http://zhannei.baidu.com/cse/search" method="get" target="_blank">
+          <input type="hidden" name="s" value="10670906174234479444"> <input type="hidden" name="entry" value="1">
+            <div class="form-group">
+              <input name="q" type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="container">
+        
+<div class="page-header">
+  <h1>【015】系统设计：数据库  <small>Project No.015</small></h1>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    
+<h2 id="section">规范</h2>
+
+<h3 id="section-1">命名</h3>
+
+<p>命名采用驼峰体。</p>
+
+<ul>
+  <li>表名：tblAppUserInfo</li>
+  <li>字段：userLevel</li>
+</ul>
+
+<h3 id="section-2">其他</h3>
+
+<p>数据库：MSSQL</p>
+
+<p>字符集：utf-8</p>
+
+<h2 id="section-3">表定义</h2>
+
+<h3 id="tblqyyact">tblQYYAct</h3>
+
+<p>互动活动</p>
+
+<pre><code>/**********************************************************************
+*****    类型:数据表
+*****    名称:tblQYYAct
+*****    标题:互动活动
+*****    备注:-
+*****    日期:2015-1-7 15:51:12
+*****    版权:All4One 1.0.0
+**********************************************************************/
+--DROP TABLE tblQYYAct
+CREATE TABLE tblQYYAct(
+  [ID] [decimal](18, 0) IDENTITY(1,1) NOT NULL,
+  [actType] [int] NOT NULL CONSTRAINT [DF_tblQYYAct_actType]  DEFAULT (0),
+  [actTitle] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYAct_actTitle]  DEFAULT ('-'),
+  [actURL] [varchar](3000) NOT NULL CONSTRAINT [DF_tblQYYAct_actURL]  DEFAULT ('-'),
+  [memo] [varchar](3000) NOT NULL CONSTRAINT [DF_tblQYYAct_memo]  DEFAULT ('-'),
+  [status] [int] NOT NULL CONSTRAINT [DF_tblQYYAct_status]  DEFAULT (0),
+  [updateDate] [datetime] NOT NULL CONSTRAINT [DF_tblQYYAct_updateDate]  DEFAULT (getdate()),
+  CONSTRAINT [PK_tblQYYAct] PRIMARY KEY CLUSTERED
+  (
+    [ID] ASC
+    )
+    ) ON [PRIMARY]
+</code></pre>
+
+<h3 id="tblqyyactoption">tblQYYActOption</h3>
+
+<p>互动活动参数表</p>
+
+<pre><code>/**********************************************************************
+*****    类型:数据表
+*****    名称:tblQYYActOption
+*****    标题:活动参数表
+*****    备注:-
+*****    日期:2015-1-7 16:17:43
+*****    版权:All4One 1.0.0
+**********************************************************************/
+--DROP TABLE tblQYYActOption
+CREATE TABLE tblQYYActOption(
+  [ID] [decimal](18, 0) IDENTITY(1,1) NOT NULL,
+  [ListID] [int] NOT NULL CONSTRAINT [DF_tblQYYActOption_ListID]  DEFAULT (0),
+  [optionIndex] [int] NOT NULL CONSTRAINT [DF_tblQYYActOption_optionIndex]  DEFAULT (0),
+  [optionName] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActOption_optionName]  DEFAULT ('-'),
+  [optionIntro] [varchar](3000) NOT NULL CONSTRAINT [DF_tblQYYActOption_optionIntro]  DEFAULT ('-'),
+  [optionConfig] [varchar](3000) NOT NULL CONSTRAINT [DF_tblQYYActOption_optionConfig]  DEFAULT ('-'),
+  [data1] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActOption_data1]  DEFAULT (0),
+  [data2] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActOption_data2]  DEFAULT (0),
+  [data3] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActOption_data3]  DEFAULT (0),
+  [status] [int] NOT NULL CONSTRAINT [DF_tblQYYActOption_status]  DEFAULT (0),
+  CONSTRAINT [PK_tblQYYActOption] PRIMARY KEY CLUSTERED
+  (
+    [ID] ASC
+    )
+    ) ON [PRIMARY]
+</code></pre>
+
+<h3 id="tblqyyactuser">tblQYYActUser</h3>
+
+<p>互动用户表</p>
+
+<pre><code>/**********************************************************************
+*****    类型:数据表
+*****    名称:tblQYYActUser
+*****    标题:互动用户表
+*****    备注:
+*****    日期:2015-1-7 17:34:01
+*****    版权:All4One 1.0.0
+**********************************************************************/
+--DROP TABLE tblQYYActUser
+CREATE TABLE tblQYYActUser(
+  [ID] [decimal](18, 0) IDENTITY(1,1) NOT NULL,
+  [actID] [int] NOT NULL CONSTRAINT [DF_tblQYYActUser_actID]  DEFAULT (0),
+  [userName] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActUser_userName]  DEFAULT ('-'),
+  [userPhone] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActUser_userPhone]  DEFAULT ('-'),
+  [IP] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActUser_IP]  DEFAULT ('-'),
+  [data1] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActUser_data1]  DEFAULT (0),
+  [data2] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActUser_data2]  DEFAULT (0),
+  [data3] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActUser_data3]  DEFAULT (0),
+  [updateTime] [datetime] NOT NULL CONSTRAINT [DF_tblQYYActUser_updateTime]  DEFAULT (getdate()),
+  [sessionID] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActUser_sessionID]  DEFAULT ('-'),
+  CONSTRAINT [PK_tblQYYActUser] PRIMARY KEY CLUSTERED
+  (
+    [ID] ASC
+    )
+    ) ON [PRIMARY]
+</code></pre>
+
+<h3 id="tblqyyactlog">tblQYYActLog</h3>
+
+<p>互动记录表</p>
+
+<pre><code>/**********************************************************************
+*****    类型:数据表
+*****    名称:tblQYYActLog
+*****    标题:互动记录表
+*****    备注:-
+*****    日期:2015-1-7 17:06:38
+*****    版权:All4One 1.0.0
+**********************************************************************/
+--DROP TABLE tblQYYActLog
+CREATE TABLE tblQYYActLog(
+  [ID] [decimal](18, 0) IDENTITY(1,1) NOT NULL,
+  [actID] [int] NOT NULL CONSTRAINT [DF_tblQYYActLog_actID]  DEFAULT (0),
+  [userID] [int] NOT NULL CONSTRAINT [DF_tblQYYActLog_userID]  DEFAULT (0),
+  [userName] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLog_userName]  DEFAULT ('-'),
+  [userPhone] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLog_userPhone]  DEFAULT ('-'),
+  [logType] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLog_logType]  DEFAULT ('-'),
+  [logAction] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLog_logAction]  DEFAULT ('-'),
+  [logStatus] [int] NOT NULL CONSTRAINT [DF_tblQYYActLog_logStatus]  DEFAULT (0),
+  [logData1] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActLog_logData1]  DEFAULT (0),
+  [logData2] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActLog_logData2]  DEFAULT (0),
+  [memo] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLog_memo]  DEFAULT ('-'),
+  [updateTime] [datetime] NOT NULL CONSTRAINT [DF_tblQYYActLog_updateTime]  DEFAULT (getdate()),
+  CONSTRAINT [PK_tblQYYActLog] PRIMARY KEY CLUSTERED
+  (
+    [ID] ASC
+    )
+    ) ON [PRIMARY]
+
+
+/**********************************************************************
+*****    类型:数据表
+*****    名称:tblQYYActLogHistory
+*****    标题:互动记录表审计表
+*****    备注:-
+*****    日期:2015-1-7 17:06:38
+*****    版权:All4One 1.0.0
+**********************************************************************/
+--DROP TABLE tblQYYActLogHistory
+CREATE TABLE tblQYYActLogHistory(
+  [ID] [decimal](18, 0) NOT NULL,
+  [actID] [int] NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_actID]  DEFAULT (0),
+  [userID] [int] NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_userID]  DEFAULT (0),
+  [userName] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_userName]  DEFAULT ('-'),
+  [userPhone] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_userPhone]  DEFAULT ('-'),
+  [logType] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_logType]  DEFAULT ('-'),
+  [logAction] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_logAction]  DEFAULT ('-'),
+  [logStatus] [int] NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_logStatus]  DEFAULT (0),
+  [logData1] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_logData1]  DEFAULT (0),
+  [logData2] [decimal](18, 0) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_logData2]  DEFAULT (0),
+  [memo] [varchar](200) NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_memo]  DEFAULT ('-'),
+  [updateTime] [datetime] NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_updateTime]  DEFAULT (getdate()),
+  [HistoryUpdateTime] [datetime] NOT NULL CONSTRAINT [DF_tblQYYActLogHistory_HistoryUpdateTime]  DEFAULT (getdate())
+  ) ON [PRIMARY]
+
+
+/**********************************************************************
+*****    类型:触发器
+*****    名称:trQYYActLog_History
+*****    标题:互动记录表审计触发器
+*****    日期:2015-1-7 17:06:38
+*****    版权:All4One 1.0.0
+**********************************************************************/
+--DROP TRIGGER trQYYActLog_History
+CREATE TRIGGER trQYYActLog_History
+ON tblQYYActLog
+AFTER INSERT,UPDATE
+AS
+BEGIN
+INSERT INTO tblQYYActLogHistory SELECT *,getdate() as HistoryUpdateTime FROM INSERTED
+END
+</code></pre>
+
+  </div>
+</div>
+
+
+      </div>
+      <div class="container">
+        <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p>&copy; 2015 Cheney Lin with <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+        </p>
+      </div>
+    </div>
+
+    
+
+
+    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"></script>
+    <script src="/assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
+

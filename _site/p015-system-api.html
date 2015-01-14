@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>【028】系统设计：接口</title>
+    <title>【015】系统设计：接口</title>
     
     
     <meta name="author" content="Cheney Lin">
@@ -105,6 +105,14 @@
   
     
       
+    
+  
+    
+      
+    
+  
+    
+      
       	
       	<li><a href="/pages.html">Pages</a></li>
       	
@@ -153,7 +161,7 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>【028】系统设计：接口  <small>Project No.028</small></h1>
+  <h1>【015】系统设计：接口  <small>Project No.015</small></h1>
 </div>
 
 <div class="row">
@@ -161,38 +169,170 @@
     
 <h2 id="section">规范</h2>
 
-<p>接口统一返回json格式数据</p>
+<p>接口统一返回jsonp格式数据</p>
 
-<h3 id="section-1">返回正常</h3>
-
-<pre><code>{"status":0,"info":"server is running."}
+<pre><code>//返回正常
+callback({
+  "status":0,
+  "name":"login",
+  "data":"server is running."
+  });
+//返回错误
+callback({
+  "status":-1,
+  "name":"login",
+  "data":"server is running."
+  });
+//返回数据
+callback({
+  "status":0,
+  "name":"userinfo",
+  "data":[{
+    "username": "vip",
+    "userlevel": 5
+    }]
+  });
 </code></pre>
 
-<h3 id="section-2">返回错误</h3>
-
-<pre><code>{"status":-1,"info":"server is not running."}
-</code></pre>
-
-<h2 id="section-3">接口路径</h2>
+<h2 id="section-1">接口路径</h2>
 
 <ul>
-  <li>开发接口：http://xxx.xxx.xxx.xxx/dev/api/</li>
-  <li>测试接口：http://xxx.xxx.xxx.xxx/test/api/</li>
-  <li>线上接口：http://xxx.xxx.xxx.xxx/v1/api/</li>
+  <li>接口：?a=Login&amp;p=ProjectID</li>
 </ul>
 
-<h2 id="section-4">接口列表</h2>
+<h2 id="section-2">接口列表</h2>
 
-<h3 id="loginphp">login.php</h3>
+<h3 id="info">info</h3>
 
-<p>输入格式</p>
+<p>输入</p>
 
-<pre><code>{"username":"test","password":"098f6bcd4621d373cade4e832627b4f6","device":"e57b9648d9f0ca9620eff0fa42162273"}
+<pre><code>{
+  "p": 1
+}
 </code></pre>
 
-<p>输入出格式</p>
+<p>输出</p>
 
-<pre><code>{"status":0,"info":"\u767b\u5f55\u6210\u529f","userid":2,"username":"test","unique_code":"098f6bcd4621d373cade4e832627b4f6"}
+<pre><code>//登录成功
+{
+  "status":0,
+  "name":"login",
+  "data":[{
+    "optionname": "Happy New Year",
+    "optionIntro": "",
+    "data1": 1,
+    "data2": 1,
+    "data3": 1
+    }
+    ,{
+    "optionname": "Happy New Year",
+    "optionIntro": "",
+    "data1": 1,
+    "data2": 1,
+    "data3": 1
+    }
+    ,{
+    "optionname": "Happy New Year",
+    "optionIntro": "",
+    "data1": 1,
+    "data2": 1,
+    "data3": 1
+    }]
+}
+//登录失败
+{
+  "status":-1,
+  "name":"login",
+  "data":"server error."
+}
+</code></pre>
+
+<h3 id="login">login</h3>
+
+<p>输入</p>
+
+<pre><code>{
+  "p": 1,
+  "username":"lin",
+  "userphone":"13888888888"
+}
+</code></pre>
+
+<p>输出</p>
+
+<pre><code>//登录成功
+{
+  "status":0,
+  "name":"login",
+  "data":"sessionid"
+}
+//登录失败
+{
+  "status":-1,
+  "name":"login",
+  "data":"server error."
+}
+</code></pre>
+
+<h3 id="vote">vote</h3>
+
+<p>输入</p>
+
+<pre><code>{
+  "p": 1,
+  "sessionid":"sessionid",
+  "options":"1,2"
+}
+</code></pre>
+
+<p>输出</p>
+
+<pre><code>//成功
+{
+  "status":0,
+  "name":"vote",
+  "data":[{
+    "logstatus": 1,
+    "logdata1": 1,
+    "logdata2": 1
+    }]
+}
+//失败
+{
+  "status":-1,
+  "name":"vote",
+  "data":"server error."
+}
+</code></pre>
+
+<h3 id="lottery">lottery</h3>
+
+<p>输入</p>
+
+<pre><code>{
+  "p": 1,
+  "sessionid":"sessionid"
+}
+</code></pre>
+
+<p>输出</p>
+
+<pre><code>//成功
+{
+  "status":0,
+  "name":"lottery",
+  "data":[{
+    "logstatus": 1,
+    "logdata1": 1,
+    "logdata2": 1
+    }]
+  }
+  //失败
+  {
+    "status":-1,
+    "name":"lottery",
+    "data":"server error."
+  }
 </code></pre>
 
   </div>
@@ -208,7 +348,7 @@
 
     <div id="footer">
       <div class="container">
-        <p>&copy; 2014 Cheney Lin with <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+        <p>&copy; 2015 Cheney Lin with <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
         </p>
       </div>
     </div>
