@@ -4,7 +4,7 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2015-01-13T16:43:17+08:00</updated>
+ <updated>2015-01-14T19:07:21+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
@@ -568,7 +568,7 @@ $( &quot;&amp;lt;div&amp;gt;&quot; ).superDialog();
 
 &lt;ol&gt;
   &lt;li&gt;按页单独交付 PSD 格式分层文件  &lt;/li&gt;
-  &lt;li&gt;文件宽高 800px*1260px  &lt;/li&gt;
+  &lt;li&gt;文件宽高 800px&lt;em&gt;1300px（微信中iphone6plus 可视面积为414&lt;/em&gt;672=800*1298） &lt;/li&gt;
   &lt;li&gt;内容区面积(元素最小显示区域)800px*1040px，内容排版方式可以选择是居上、居下、居中、按比例布局  &lt;/li&gt;
   &lt;li&gt;动画设计:按帧提供单图序列(统一大小)和拼图(固定大小左右拼贴)  &lt;/li&gt;
   &lt;li&gt;视频文件:兼容 iPhone 的 mp4 格式,不低于 480px*320px, 尽量分节以缩小单个文件容量  &lt;/li&gt;
