@@ -23,10 +23,13 @@ postid: 11
 
 另：几个常用的Package命令：
 
-  1.新浪微博（编辑界面）：com.sina.weibo,com.sina.weibo.EditActivity
-  2.腾讯微博（编辑界面）：com.tencent.WBlog,com.tencent.WBlog.activity.MicroblogInput
-  3.微信：com.tencent.mm,com.tencent.mm.ui.LauncherUI
-  4.QQ:com.tencent.mobileqq,com.tencent.mobileqq.activity.HomeActivity
+1.新浪微博（编辑界面）：com.sina.weibo,com.sina.weibo.EditActivity
+
+2.腾讯微博（编辑界面）：com.tencent.WBlog,com.tencent.WBlog.activity.MicroblogInput
+
+3.微信：com.tencent.mm,com.tencent.mm.ui.LauncherUI
+
+4.QQ:com.tencent.mobileqq,com.tencent.mobileqq.activity.HomeActivity
 
 ##判断是否应用已经安装
 
