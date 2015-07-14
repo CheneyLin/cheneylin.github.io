@@ -14,6 +14,8 @@ http://www.linchangyu.com/rss.xml
 http://www.linchangyu.com/sitemap.txt
 http://www.linchangyu.com/tags.html
 
+http://www.linchangyu.com/web/2015/07/14/markdown-template
+http://www.linchangyu.com/ios/2015/07/14/iphone-app-url-scheme-list
 http://www.linchangyu.com/app/2014/12/29/android-third-app-package-guide
 http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-factory-guide
 http://www.linchangyu.com/web/2014/12/12/jquery-ui-widget-extending-guide

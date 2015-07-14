@@ -4,13 +4,614 @@
  <title>Cheney Lin</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2015-01-14T19:07:21+08:00</updated>
+ <updated>2015-07-14T17:31:32+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>Cheney Lin</name>
    <email>cio@gpwzw.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Markdown语法</title>
+   <link href="http://www.linchangyu.com/web/2015/07/14/markdown-template"/>
+   <updated>2015-07-14T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/web/2015/07/14/markdown-template</id>
+   <content type="html">
+&lt;p&gt;该文件用来测试和展示书写README的各种markdown语法。GitHub的markdown语法在标准的markdown语法基础上做了扩充，称之为&lt;code&gt;GitHub Flavored Markdown&lt;/code&gt;。简称&lt;code&gt;GFM&lt;/code&gt;，GFM在GitHub上有广泛应用，除了README文件外，issues和wiki均支持markdown语法。&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;超级大标题&lt;/h1&gt;
+
+&lt;h2 id=&quot;a-nameindex&quot;&gt;&lt;a name=&quot;index&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#line&quot;&gt;横线&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#title&quot;&gt;标题&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#text&quot;&gt;文本&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;普通文本&lt;/li&gt;
+      &lt;li&gt;单行文本&lt;/li&gt;
+      &lt;li&gt;多行文本&lt;/li&gt;
+      &lt;li&gt;文字高亮&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#link&quot;&gt;链接&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;文字超链接
+        &lt;ul&gt;
+          &lt;li&gt;链接外部URL&lt;/li&gt;
+          &lt;li&gt;链接本仓库里的URL&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;锚点&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#piclink&quot;&gt;图片超链接&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#pic&quot;&gt;图片&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;来源于网络的图片&lt;/li&gt;
+      &lt;li&gt;GitHub仓库中的图片&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#dot&quot;&gt;列表&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;圆点列表&lt;/li&gt;
+      &lt;li&gt;数字列表&lt;/li&gt;
+      &lt;li&gt;复选框列表&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#blockquotes&quot;&gt;块引用&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#code&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#table&quot;&gt;表格&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#emoji&quot;&gt;表情&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;line&quot;&gt;&lt;/a&gt;
+##&lt;em&gt;**、—、___显示虚横线
+**&lt;/em&gt;
+—
+___&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;title&quot;&gt;&lt;/a&gt;
+#一级标题
+##二级标题
+###三级标题
+####四级标题
+#####五级标题
+######六级标题&lt;/p&gt;
+
+&lt;h2 id=&quot;a-nametext&quot;&gt;&lt;a name=&quot;text&quot;&gt;&lt;/a&gt;显示文本&lt;/h2&gt;
+&lt;p&gt;###普通文本
+这是一段普通的文本
+####关于换行
+直接回车不能换行，&lt;br /&gt;
+可以使用&amp;lt;br&amp;gt;。
+但是使用html标签就丧失了markdown的意义。&lt;br /&gt;
+可以在上一行文本后面补两个空格，&lt;br /&gt;
+这样下一行的文本就换行了。&lt;/p&gt;
+
+&lt;p&gt;或者就是在两行文本直接加一个空行。&lt;/p&gt;
+
+&lt;p&gt;也能实现换行效果，不过这个行间距有点大。
+###单行文本
+    Hello,大家好，我是果冻虾仁。
+###文本块
+    欢迎到访
+    很高兴见到您
+    祝您，早上好，中午好，下午好，晚安
+###部分文字高亮
+Thank &lt;code&gt;You&lt;/code&gt; . Please &lt;code&gt;Call&lt;/code&gt; Me &lt;code&gt;Coder&lt;/code&gt;
+####高亮功能更适合做一篇文章的tag
+例如:&lt;br /&gt;
+&lt;code&gt;java&lt;/code&gt; &lt;code&gt;网络编程&lt;/code&gt; &lt;code&gt;Socket&lt;/code&gt; &lt;code&gt;全双工&lt;/code&gt;
+####删除线
+这是一个 ~~删除线~~
+####斜体
+&lt;em&gt;斜体1&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;斜体2&lt;/em&gt;
+####粗体
+&lt;strong&gt;粗体1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;粗体2&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-namelink&quot;&gt;&lt;a name=&quot;link&quot;&gt;&lt;/a&gt;链接&lt;/h2&gt;
+&lt;p&gt;###链接外部URL
+&lt;a href=&quot;http://blog.csdn.net/guodongxiaren&quot; title=&quot;悬停显示&quot;&gt;我的博客&lt;/a&gt;   语法如下：
+&lt;code&gt;
+[我的博客](http://blog.csdn.net/guodongxiaren &quot;悬停显示&quot;)
+&lt;/code&gt;
+###链接的另一种写法
+[我的博客][1]  &lt;/p&gt;
+
+&lt;p&gt;[1]:http://blog.csdn.net/guodongxiaren “悬停显示”   语法如下：
+&lt;code&gt;
+[我的博客][1]
+[1]:http://blog.csdn.net/guodongxiaren &quot;悬停显示&quot;
+&lt;/code&gt;
+中括号[ ]里的id，可以是数字，字母等的组合。这两行可以不连着写，&lt;strong&gt;一般把第二行的链接统一放在文章末尾&lt;/strong&gt;，id上下对应就行了。这样正文看起来会比较干净。&lt;/p&gt;
+
+&lt;h3 id=&quot;url&quot;&gt;链接本仓库里的URL&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;./Book&quot;&gt;Book&lt;/a&gt;
+语法如下：
+&lt;code&gt;
+[Book](./Book)
+&lt;/code&gt;
+如果文件要引用的文件不存在，则待点击的文本为红色。引用的文件存在存在则文本为蓝色。
+###锚点
+我们可以使用HTML的锚点标签（&lt;code&gt;#&lt;/code&gt;）来设置锚点：&lt;a href=&quot;#index&quot;&gt;回到目录&lt;/a&gt;&lt;br /&gt;
+但其实呢，每一个标题都是一个锚点，不需要用标签来指定，比如我们 &lt;a href=&quot;#TEST&quot;&gt;回到顶部&lt;/a&gt;
+不过不幸的是，由于对中文支持的不好，所以中文标题貌似是不能视作标签的。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-namepic&quot;&gt;&lt;a name=&quot;pic&quot;&gt;&lt;/a&gt;显示图片&lt;/h2&gt;
+&lt;p&gt;###来源于网络的图片
+&lt;img src=&quot;http://www.baidu.com/img/bdlogo.gif&quot; alt=&quot;baidu&quot; title=&quot;百度logo&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;github&quot;&gt;GitHub仓库中的图片&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/guodongxiaren/ImageCache/raw/master/Logo/foryou.gif&quot; alt=&quot;&quot; /&gt;
+###&lt;a name=&quot;piclink&quot;&gt;给图片加上超链接
+&lt;a href=&quot;http://blog.csdn.net/guodongxiaren/article/details/23690801&quot;&gt;![head]&lt;/a&gt;
+[head]:https://github.com/guodongxiaren/ImageCache/raw/master/Logo/jianxin.jpg “点击图片进入我的博客”&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-namedot&quot;&gt;&lt;a name=&quot;dot&quot;&gt;&lt;/a&gt;列表&lt;/h2&gt;
+&lt;p&gt;###圆点列表
+* 昵称：果冻虾仁
+* 别名：隔壁老王
+* 英文名：Jelly&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;更多圆点&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;编程语言
+    &lt;ul&gt;
+      &lt;li&gt;脚本语言
+        &lt;ul&gt;
+          &lt;li&gt;Python&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;数字列表&lt;/h3&gt;
+&lt;p&gt;####一般效果
+就是在数字后面加一个点，再加一个空格。不过看起来起来可能不够明显。
+面向对象的三个基本特征：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;封装&lt;/li&gt;
+  &lt;li&gt;继承&lt;/li&gt;
+  &lt;li&gt;多态&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;数字列表自动排序&lt;/h4&gt;
+&lt;p&gt;也可以在第一行指定&lt;code&gt;1. &lt;/code&gt;，而接下来的几行用星号&lt;code&gt;*&lt;/code&gt;（或者继续用数字1. ）就可以了，它会自动显示成2、3、4……。
+面向对象的七大原则：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;开闭原则
+    &lt;ul&gt;
+      &lt;li&gt;里氏转换原则&lt;/li&gt;
+      &lt;li&gt;依赖倒转原则&lt;/li&gt;
+      &lt;li&gt;接口隔离原则&lt;/li&gt;
+      &lt;li&gt;组合/聚合复用原则&lt;/li&gt;
+      &lt;li&gt;“迪米特”法则&lt;/li&gt;
+      &lt;li&gt;单一直则原则&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;section-4&quot;&gt;多级数字列表&lt;/h4&gt;
+&lt;p&gt;和圆点的列表一样，数字列表也有多级结构：  &lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;这是一级的数字列表，数字1还是1
+    &lt;ol&gt;
+      &lt;li&gt;这是二级的数字列表，阿拉伯数字在显示的时候变成了罗马数字
+        &lt;ol&gt;
+          &lt;li&gt;这是三级的数字列表，数字在显示的时候变成了英文字母&lt;/li&gt;
+          &lt;li&gt;四级的数字列表显示效果，就不再变化了，依旧是英文字母&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;复选框列表&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;[x] C&lt;/li&gt;
+  &lt;li&gt;[x] C++&lt;/li&gt;
+  &lt;li&gt;[x] Java&lt;/li&gt;
+  &lt;li&gt;[x] Qt&lt;/li&gt;
+  &lt;li&gt;[x] Android&lt;/li&gt;
+  &lt;li&gt;[ ] C#&lt;/li&gt;
+  &lt;li&gt;[ ] .NET&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;您可以使用这个功能来标注某个项目各项任务的完成情况。
+##&lt;a name=&quot;blockquotes&quot;&gt;&lt;/a&gt;块引用&lt;/p&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;常用于引用文本&lt;/h3&gt;
+&lt;p&gt;####文本摘自《深入理解计算机系统》P27
+　令人吃惊的是，在哪种字节顺序是合适的这个问题上，人们表现得非常情绪化。实际上术语“little endian”（小端）和“big endian”（大端）出自Jonathan Swift的《格利佛游记》一书，其中交战的两个派别无法就应该从哪一端打开一个半熟的鸡蛋达成一致。因此，争论沦为关于社会政治的争论。只要选择了一种规则并且始终如一的坚持，其实对于哪种字节排序的选择都是任意的。
+&amp;gt;&lt;b&gt;“端”（endian）的起源&lt;/b&gt;&lt;br /&gt;
+以下是Jonathan Swift在1726年关于大小端之争历史的描述：&lt;br /&gt;
+“……下面我要告诉你的是，Lilliput和Blefuscu这两大强国在过去36个月里一直在苦战。战争开始是由于以下的原因：我们大家都认为，吃鸡蛋前，原始的方法是打破鸡蛋较大的一端，可是当今的皇帝的祖父小时候吃鸡蛋，一次按古法打鸡蛋时碰巧将一个手指弄破了，因此他的父亲，当时的皇帝，就下了一道敕令，命令全体臣民吃鸡蛋时打破较小的一端，违令者重罚。”&lt;/p&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;块引用有多级结构&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;数据结构
+&amp;gt;树
+»二叉树
+»&amp;gt;平衡二叉树
+»»满二叉树&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;a-namecode&quot;&gt;&lt;a name=&quot;code&quot;&gt;&lt;/a&gt;代码高亮&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Java
+public static void main(String[]args){} //Java
+&lt;/code&gt;
+&lt;code&gt;c
+int main(int argc, char *argv[]) //C
+&lt;/code&gt;
+&lt;code&gt;Bash
+echo &quot;hello GitHub&quot;#Bash
+&lt;/code&gt;
+&lt;code&gt;javascript
+document.getElementById(&quot;myH1&quot;).innerHTML=&quot;Welcome to my Homepage&quot;; //javascipt
+&lt;/code&gt;
+&lt;code&gt;cpp
+string &amp;amp;operator+(const string&amp;amp; A,const string&amp;amp; B) //cpp
+&lt;/code&gt;
+##&lt;a name=&quot;table&quot;&gt;&lt;/a&gt;显示表格
+表头1  | 表头2
+————- | ————-
+Content Cell  | Content Cell
+Content Cell  | Content Cell&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;表头1&lt;/th&gt;
+      &lt;th&gt;表头2&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content Cell&lt;/td&gt;
+      &lt;td&gt;Content Cell&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content Cell&lt;/td&gt;
+      &lt;td&gt;Content Cell&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名字&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Help&lt;/td&gt;
+      &lt;td&gt;Display the help window.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Close&lt;/td&gt;
+      &lt;td&gt;Closes a window&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;表格中也可以使用普通文本的删除线，斜体等效果&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名字&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Help&lt;/td&gt;
+      &lt;td&gt;~~Display the~~ help window.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Close&lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;Closes&lt;/em&gt; a window&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;表格可以指定对齐方式&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;左对齐&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;居中&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;右对齐&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;col 3 is&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;some wordy text&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;$1600&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;col 2 is&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;centered&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;$12&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;zebra stripes&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;are neat&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;$1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;a-nameemoji&quot;&gt;&lt;a name=&quot;emoji&quot;&gt;&lt;/a&gt;添加表情&lt;/h2&gt;
+&lt;p&gt;Github的Markdown语法支持添加emoji表情，输入不同的符号码（两个冒号包围的字符）可以显示出不同的表情。&lt;/p&gt;
+
+&lt;p&gt;比如&lt;code&gt;:blush:&lt;/code&gt;，可以显示:blush:。&lt;/p&gt;
+
+&lt;p&gt;具体每一个表情的符号码，可以查询GitHub的官方网页&lt;a href=&quot;http://www.emoji-cheat-sheet.com&quot;&gt;http://www.emoji-cheat-sheet.com&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;但是这个网页每次都打开&lt;strong&gt;奇慢&lt;/strong&gt;。。所以我整理到了本repo中，大家可以直接在此查看&lt;a href=&quot;https://github.com/guodongxiaren/README/blob/master/emoji.md&quot;&gt;emoji&lt;/a&gt;。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>苹果iOS系统下检查第三方APP是否安装及跳转启动</title>
+   <link href="http://www.linchangyu.com/ios/2015/07/14/iphone-app-url-scheme-list"/>
+   <updated>2015-07-14T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/ios/2015/07/14/iphone-app-url-scheme-list</id>
+   <content type="html">
+&lt;p&gt;在iOS系统，使用Url Scheme框架在APP间互相跳转和传递数据，本文只介绍如果检测和跳转。&lt;/p&gt;
+
+&lt;h2 id=&quot;url-scheme&quot;&gt;Url Scheme框架&lt;/h2&gt;
+
+&lt;p&gt;如果你想知道ios设备中是否安装QQ这个软件，我们可以通过一个简单方法判断到：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@&quot;mqq://&quot;]])
+{
+    NSLog(@&quot;install--&quot;);
+}
+else
+{
+    NSLog(@&quot;no---&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果你想跳转打开QQ，就可以用以下的代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@&quot;mqq://&quot;]];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更多相关信息可以查看我另外一篇博文：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.linchangyu.com/app/2014/12/01/app-url-scheme/&quot;&gt;APP调用Custom URL Scheme&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;appurl-scheme-&quot;&gt;常用APP的Url Scheme 前缀&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;
+QQ mqq://
+微信是 weixin://
+网易新闻 newsapp://
+淘宝 taobao://
+点评 dianping:// dianping://search
+微博 sinaweibo://
+weico微博 weico://
+支付宝 alipay://
+豆瓣fm： doubanradio://
+微盘 sinavdisk://
+网易公开课 ntesopen://
+美团 imeituan://
+人人 renren://
+我查查 wcc://
+1号店 wccbyihaodian://
+有道词典 yddictproapp://
+知乎 zhihu://
+优酷 youku://
+ZAKER zakeripad://
+mdict mdict://
+京东hd openApp.jdiPad://
+易迅 icson://；yixunipad://
+wunderlist wunderlist://
+支付宝 alipay://
+查找朋友 grenada://；findmyfriends://；fmf1://
+查找iphone fmip1://
+触宝拨号：dialer://
+蜂窝网络：prefs:root=MOBILE_DATA_SETTINGS_ID
+WIFI：prefs:root=WIFI（WIFI这几个字母一定要大写）
+定位服务：prefs:root=LOCATION_SERVICES
+备忘录：mobilenotes://
+高德地图：iosamap://
+今日头条 snssdk141://
+挖财记账 wacai://
+QQ音乐 :QQmusic://
+猎豹浏览器:sinaweibosso.422729959://
+UC浏览器:ucbrowser://
+支付宝:alipay://
+新浪微博:weibo://
+优酷:youku://
+节奏大师:节奏大师tencentrm://
+刀塔传奇:刀塔传奇teiron2273://
+天天动听:ttpod://
+淘宝taobao://
+名片全能王camcard://
+支付宝alipay://
+豆瓣fm：doubanradio://
+微盘 sinavdisk://
+网易公开课ntesopen://
+我查查 wcc://
+1号店wccbyihaodian://
+有道词典yddictproapp://
+知乎zhihu://
+墨客 com.moke.moke-1://
+名片全能王 camcard://
+扫描全能王 camscanner://
+12306订票助手 trainassist://
+金山词霸 com.kingsoft.powerword.6://
+节奏大师 tencentrm://
+凤凰新闻 comIfeng3GifengNews://
+高铁管家 gtgj://
+飞信 fetion://
+豆瓣FM doubanradio://
+大智慧 dzhiphone://
+布卡漫画 buka://
+爱奇艺PPS ppstream://
+哔哩哔哩动画 bilibili://
+56视频 com.56Video://
+365日历 rili365://
+58同城 wbmain://
+遇见 iaround://
+陌陌 momochat://
+旺旺卖家版 wangwangseller://
+有道词典 yddict://
+掌阅iReader iReader://
+艺龙旅行 elongIPhone://
+迅雷+迅雷云播 thunder://
+熊猫公交 wb1405365637://
+携程无线 CtripWireless://
+无线苏州 SuZhouTV://
+唯品会 vipshop://
+微视 weishiiosscheme://
+微拍 wpweipai://
+旺信 wangxin://
+网易公开课 ntesopen://
+网易将军令 netease-mkey://
+万年历 youloft.419805549://
+土豆视频 tudou://
+同花顺 amihexin://
+天涯社区 tianya://
+天气通Pro sinaweatherpro://
+天气通 sinaweather://
+墨迹天气 rm434209233MojiWeather://
+腾讯新闻 qqnews://
+腾讯微云 weiyun://
+腾讯地图 sosomap://
+淘宝旅行 taobaotravel://
+人人 renrenios://
+蜻蜓FM qtfmp://
+浦发银行 wx1cb534bb13ba3dbd://
+招商银行 cmbmobilebank://
+支付宝 alipay://
+建设银行 wx2654d9155d70a468://
+工商银行 com.icbc.iphoneclient://
+酷我音乐 com.kuwo.kwmusic.kwmusicForKwsing://
+酷狗音乐 kugouURL://
+京东 openApp.jdMobile://
+QQ音乐 qqmusic://
+QQ斗地主 tencent382://
+QQ浏览器 mttbrowser://
+QQ安全中心 qmtoken://
+QQ国际版 mqqiapi://
+PPTV pptv://
+爱奇艺视频 qiyi-iphone://
+暴风影音 com.baofeng.play://
+保卫萝卜2 wb2217954495://
+保卫萝卜 wb1308702128://
+百度云 baiduyun://
+百度音乐 baidumusic://
+百度视频 baiduvideoiphone:// 或 bdviphapp://
+百度糯米 bainuo://
+百度魔图 photowonder://
+百度魔拍 wondercamera://
+百度地图 baidumap://
+百度导航 bdNavi://
+百度视频hd BaiduVideoiPad://；baiduvideoipadapp://
+百度相册hd BaiDuCloudAlbumHD://
+百度浏览器hd bdbrowser://
+百度文库hd bdwenku://
+搜狗输入法 com.sogou.sogouinput://
+搜狐视频 sohuvideo-iphone:// 或 sohuvideo://
+搜狐新闻 sohunews://
+随手记 FDMoney://
+腾讯企业邮箱 qqbizmailDistribute2://
+腾讯手机管家 mqqsecure://
+腾讯视频 tenvideo:// 或 tenvideo2:// 或 tenvideo3://
+腾讯微博 TencentWeibo://
+天猫 tmall://
+天天星连萌 tencent100689806://
+天天爱消除 tencent100689805://
+天天酷跑 tencent100692648://
+天天飞车 tencent100695850://
+天天动听 ttpod://
+威锋网 com.weiphone.forum://
+新浪微博 weibo:// 或 sinaweibo://
+网易邮箱 neteasemail://
+百度输入法 BaiduIMShop://
+C浏览器 ucbrowser://
+一个one clover-one://
+当当hd dangdanghd://；ddhd://
+大众点评hd dianpinghd://
+多看阅读 duokan-reader://
+艺龙旅行hd elongiPad://
+圈点hd skitch://
+印象笔记hd enx://
+电话 mobilephone://
+备忘录 mobilenotes://
+设置 prefs:root=SETTING
+定位服务 prefs:root=LOCATION_SERVICES
+E-Mail MESSAGE://
+popAgraph popagraphtumblr://
+dropbox db-auth://；dbapi-1://；dbapi-2://；dbapi-3://
+goodreader ghttp://；ghttps://；grhttp://；grhttps://；giwhttp://；giwhttps://；gropen://；com.goodreader.sendtogr://
+ifttt ifttt://
+名片全能王hd camcard://；CamCardHDOpenAPI://
+拉手团购hd LaShouGroupHDPay://
+美团hd iMeituan://
+evermemo evermemo://
+网易云课堂 wangyiyunketang://
+网易公开课 ntesopen://
+订票助手2 trainassistfree://
+pcalc lite pcalc://
+爱奇艺视频 QIYIHD-iPad://
+三国kill sgk://
+扇贝新闻 shanbaynews://
+扇贝单词 shanbay://
+扇贝单词hd shanbaywordshd://
+skype skype://
+搜狐视频hd sohu-SViPad://；sohuvideohd://
+teamviewer:teamviewer8://
+格志 griddiary://；sumi-interactive://
+淘宝hd taobao://；itaobao://；taobaohd://
+天猫 tmall://
+腾讯视频hd tenvideohd://；tenvideo2://
+qq通讯录 tencentappqqpim://
+同步推正版HD tbtui://；tuihd://
+航旅纵横pro umetrippro://
+mathpad myscriptmathpad://
+雅虎天气！ yweather://
+一号店 ipadstore://
+优酷hd youkuhd://
+知乎 zhihu://
+欧陆词典pro eudic://
+拓词 towordsp://
+TuneIn Radio tunein:// 或 tuneinpro://
+OfficeSuite mobisystemsofficesuite://
+WPS Office KingsoftOfficeApp://
+Line line://
+1Password onepassword://
+Clear(著名的Todo应用) clearapp://
+Chrome谷歌浏览器 googlechrome://
+Calendars 5 calendars://
+PDF Expert 5 pdfexpert5presence://
+Documents 5 rdocs://
+nPlayer nplayer-http://
+GPlayer gplayer://
+AVPlayer HD AVPlayerHD://
+AVPlayer AVPlayer://
+Ace Player aceplayer://
+&lt;/code&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>安卓第三方应用调起常见问题</title>
@@ -31,10 +632,13 @@ startActivityForResult(intent, 0);
 
 &lt;p&gt;另：几个常用的Package命令：&lt;/p&gt;
 
-&lt;p&gt;1.新浪微博（编辑界面）：com.sina.weibo,com.sina.weibo.EditActivity
-  2.腾讯微博（编辑界面）：com.tencent.WBlog,com.tencent.WBlog.activity.MicroblogInput
-  3.微信：com.tencent.mm,com.tencent.mm.ui.LauncherUI
-  4.QQ:com.tencent.mobileqq,com.tencent.mobileqq.activity.HomeActivity&lt;/p&gt;
+&lt;p&gt;1.新浪微博（编辑界面）：com.sina.weibo,com.sina.weibo.EditActivity&lt;/p&gt;
+
+&lt;p&gt;2.腾讯微博（编辑界面）：com.tencent.WBlog,com.tencent.WBlog.activity.MicroblogInput&lt;/p&gt;
+
+&lt;p&gt;3.微信：com.tencent.mm,com.tencent.mm.ui.LauncherUI&lt;/p&gt;
+
+&lt;p&gt;4.QQ:com.tencent.mobileqq,com.tencent.mobileqq.activity.HomeActivity&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;判断是否应用已经安装&lt;/h2&gt;
 
