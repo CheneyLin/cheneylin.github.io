@@ -118,8 +118,39 @@ li  {list-style: none;}
 
 @media (max-width:768px)
 {
+    .navbar-brand img{
+        width:44px;
+        height:44px;
+        margin: 5px;
+        }
+
     .page-header{
-        display: none;
+        margin:0;
+        padding:0;
+        border:0;
+        }
+
+    h1{
+        margin:0 0 5px 0;
+        padding:0;
+        font-size: 16pt;
+        color:  #AAAAAA;
+        }
+
+    h2{
+        margin:20px 0 5px 0;
+        padding:0 0 5px 0;
+        font-size: 15pt;
+        color:  #62abea;
+        width:80%;
+        border-bottom:4px solid #62abea;
+        }
+
+    h3{
+        margin:10px 0 10px 0;
+        padding:0;
+        font-size: 13pt;
+        color:  #72bbfa;
         }
 
 
