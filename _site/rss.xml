@@ -1,14 +1,166 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-        <title>Cheney Lin</title>
-        <description>Cheney Lin - Cheney Lin</description>
+        <title>风雨雷电堂</title>
+        <description>风雨雷电堂 - 老林</description>
         <link>http://www.linchangyu.com</link>
         <link>http://www.linchangyu.com</link>
-        <lastBuildDate>2015-07-14T17:35:06+08:00</lastBuildDate>
-        <pubDate>2015-07-14T17:35:06+08:00</pubDate>
+        <lastBuildDate>2015-07-21T21:15:26+08:00</lastBuildDate>
+        <pubDate>2015-07-21T21:15:26+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>iOS开发Extra系列：NSString***</title>
+                <description>
+&lt;p&gt;在iOS系统，NSString可能是最常用的对象，很多用法跟其他语言不一样。&lt;/p&gt;
+
+&lt;h2 id=&quot;nsstring&quot;&gt;字符串对象NSString&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;使用格式创建字符串&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;+ (id)stringWithFormat:(NSString *)format...
+- (id)initWithFormat:(NSString *)format...
+
+NSString *str = &quot;hello&quot;;
+NSString *string = [NSString stringWithFormat:@&quot;%@ world&quot;,str];
+NSLog(string); 结果：hello world
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;常用的替换符&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;%@ NSString实例
+%d,%D,%i 整数
+%4d,%4D,%4i 格式化整数
+%ld,%lD,%li 长整数
+%u,%U 无符号整数
+%x 将无符号整数以十六进制小写字母显示
+%X 将无符号整数以十六进制大写字母显示
+%f 小数
+%c 字符
+%s C语言字符串
+%% 显示％字符本身
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;nsrange&quot;&gt;范围集合NSRange&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;定义&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;typedef struct _NSRange
+{
+     unsigned int location;
+     unsigned int length;
+}NSRange;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;nsmakerange&quot;&gt;NSMakeRange函数&lt;/h3&gt;
+
+&lt;p&gt;这个函数比较特殊 返回一个NSRange的对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NSMakeRanger(unsigned int location,unsigned int length);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NSRange range = NSMakeRanger(0,5);
+NSLog(@&quot;location is %d,length is %d&quot;,range.location,range.length);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;查找&lt;/h3&gt;
+
+&lt;p&gt;如果找到就返回范围，否则NSRange的location项被设置为NSNotFound&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; - (NSRange)rangeOfString:(NSString *)subString;
+ - (NSRange)rangeOfString:(NSString *)subString option:(unsigned)mask;
+ - (NSRange)rangeOfString:(NSString *)subString option:(unsigned)mask range:(NSRange)range;
+
+//mask常用选项列表
+//NSCaseInsensitiveSearch   不区分字母大小写
+//NSLiteralSearch           对字符串进行字节单位的比较，一般可提高检索速度
+//NSBackwardsSearch         从范围的末尾开始检索
+//NSAnchoredSearch          仅检索制定范围的前部。忽略字符串中间的检索字符
+
+NSString *string = @&quot;hello world&quot;;
+NSRange range = [string rangeOfString:@&quot;he&quot;];
+if(range.location != NSNotFound)
+{
+        NSLog(@&quot; location=%d,length=%d&quot;,range.location,range.length);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;截取字符串&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt; NSString  
+ //返回字符串开头至index位的字符串 不包含索引位
+ - (NSString *)substringToIndex:(unsigned)index;
+
+ //返回字符串第index位至末尾的字符串 包含索引位
+ - (NSString *)substringFromIndex:(unsigned)index;
+
+  //返回字符串中范围range内的字符串
+ - (NSString *)substringWithRange:(NSRange)range;
+
+  //包含索引位
+ NSString *string = [string substringWithRange:NSMakeRange(5,2)];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;比较字符串&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString *String1 = @&quot;NSStringInformation.txt&quot;;
+
+//hasPrefix 前缀比较
+[String1 hasPrefix:@&quot;NSString&quot;] = = 1 ?  NSLog(@&quot;YES&quot;) : NSLog(@&quot;NO&quot;);
+
+//hasSuffix 后缀比较
+[String1 hasSuffix:@&quot;.txt&quot;] = = 1 ?  NSLog(@&quot;YES&quot;) : NSLog(@&quot;NO&quot;);
+
+//isEqualToString 完全比较
+if([string1 isEqualToString:@&quot;&quot;])
+{
+    NSLog(@&quot;string1 is blank&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;替换字符串&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt; NSString newString  = [oldString stringByReplacingOccurrencesOfString:@&quot;x&quot; withString:@&quot;y&quot;];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;读取文本文件&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString
+ + (id)stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)enc error:(NSError **)error     //自动释放内存
+
+ - (id)initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc error:(NSError **)error
+
+ NSString *string = [NSString stringWithContentsOfFile:@&quot;/user/test/yw.txt&quot; encoding:NSUTF8StringEncoding error:&amp;amp;error];
+ if(string){}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;输出文本文件&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString
+ - (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error
+ //参数 atomically 暂时将文件保存到辅助文件中
+ //path
+ The file to which to write the receiver. If path contains a tilde (~) character, you must expand it withstringByExpandingTildeInPath before invoking this method.
+
+
+//扩展路径
+NSString *Path = @&quot;~/NSData.txt&quot;;
+NSString *absolutePath = [Path stringByExpandingTildeInPath];
+NSLog(@&quot;absolutePath:%@&quot;,absolutePath);
+NSLog(@&quot;Path:%@&quot;,[absolutePath stringByAbbreviatingWithTildeInPath]);
+
+//文件扩展名
+NSString *Path = @&quot;~/NSData.txt&quot;;
+NSLog(@&quot;Extension:%@&quot;,[Path pathExtension]);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://www.linchangyu.com/ios/2015/07/16/iOS_NSString_extra</link>
+                <guid>http://www.linchangyu.com/ios/2015/07/16/iOS_NSString_extra</guid>
+                <pubDate>2015-07-16T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>Markdown语法</title>

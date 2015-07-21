@@ -8,10 +8,10 @@ highlighter: pygments
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : Cheney Lin
-tagline: Site Tagline
+title : 风雨雷电堂
+tagline: 独立手机应用游戏开发者
 author :
-  name : Cheney Lin
+  name : 老林
   email : cio@gpwzw.com
   github : cheneylin
   twitter : cheneylin
@@ -84,7 +84,7 @@ JB :
     duosuo :
       short_name : linchangyu
     disqus :
-        short_name : linchangyu
+      short_name : linchangyu
     livefyre :
       site_id : 123
     intensedebate :
@@ -100,9 +100,11 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #
   analytics :
-    provider : false
+    provider : baidu
     google :
         tracking_id : 'UA-123-12'
+    baidu :
+        tracking_id : '4785b99b80e16b513797fed0b7f9237d'
     getclicky :
       site_id :
     mixpanel :

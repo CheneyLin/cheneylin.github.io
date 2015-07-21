@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>大陆常用网站开发开源资源加速公共库</title>
-    <meta name="description" content="In China, Googleapis.com is can not visite, I must use these services.">
-    <meta name="keyword" content="疯狂填字,芒果轻应用,麒麟工作室,林长宇">
+    <title>iOS开发Extra系列：NSString***</title>
+    <meta name="description" content="【源码】iOS开发Extra系列：NSString">
+    <meta name="keyword" content="疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,url scheme">
     <meta name="author" content="老林">
 
     <!-- Enable responsive viewport -->
@@ -157,43 +157,159 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>大陆常用网站开发开源资源加速公共库 <small>【资源】</small></h1>
+  <h1>iOS开发Extra系列：NSString*** <small>【源码】</small></h1>
 </div>
 
 <div class="row post-full">
   <div class="col-xs-12">
     <div class="date">
-      <span>24 November 2014</span>
+      <span>16 July 2015</span>
     </div>
     <div class="content">
       
-<p>In China, Googleapis.com is can not visite, I must use these services.</p>
+<p>在iOS系统，NSString可能是最常用的对象，很多用法跟其他语言不一样。</p>
 
-<h2 id="sae">SAE</h2>
+<h2 id="nsstring">字符串对象NSString</h2>
 
-<p><a href="http://lib.sinaapp.com/">lib.sinaapp.com</a>, supports these products.</p>
+<h3 id="section">使用格式创建字符串</h3>
 
-<ul>
-  <li>bootstrap</li>
-  <li>jquery</li>
-  <li>jquery.cookie</li>
-  <li>jquery-ui</li>
-  <li>zepto</li>
-</ul>
+<pre><code>+ (id)stringWithFormat:(NSString *)format...
+- (id)initWithFormat:(NSString *)format...
 
-<p>and webfont too.</p>
+NSString *str = "hello";
+NSString *string = [NSString stringWithFormat:@"%@ world",str];
+NSLog(string); 结果：hello world
+</code></pre>
 
-<h2 id="baidu">BAIDU</h2>
+<h3 id="section-1">常用的替换符</h3>
 
-<p><a href="http://developer.baidu.com/wiki/index.php?title=docs/cplat/libs">developer.baidu.com</a>, almost supports.</p>
+<pre><code>%@ NSString实例
+%d,%D,%i 整数
+%4d,%4D,%4i 格式化整数
+%ld,%lD,%li 长整数
+%u,%U 无符号整数
+%x 将无符号整数以十六进制小写字母显示
+%X 将无符号整数以十六进制大写字母显示
+%f 小数
+%c 字符
+%s C语言字符串
+%% 显示％字符本身
+</code></pre>
 
-<p>but there are someone pointed out baidu used cookie to do some dirty works.</p>
+<h2 id="nsrange">范围集合NSRange</h2>
 
-<h2 id="section">360</h2>
+<h3 id="section-2">定义</h3>
 
-<p><a href="http://libs.useso.com/">useso.com</a></p>
+<pre><code>typedef struct _NSRange
+{
+     unsigned int location;
+     unsigned int length;
+}NSRange;
+</code></pre>
 
-<p>Other good chioce.</p>
+<h3 id="nsmakerange">NSMakeRange函数</h3>
+
+<p>这个函数比较特殊 返回一个NSRange的对象。</p>
+
+<pre><code>NSMakeRanger(unsigned int location,unsigned int length);
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>NSRange range = NSMakeRanger(0,5);
+NSLog(@"location is %d,length is %d",range.location,range.length);
+</code></pre>
+
+<h3 id="section-3">查找</h3>
+
+<p>如果找到就返回范围，否则NSRange的location项被设置为NSNotFound</p>
+
+<pre><code> - (NSRange)rangeOfString:(NSString *)subString;
+ - (NSRange)rangeOfString:(NSString *)subString option:(unsigned)mask;
+ - (NSRange)rangeOfString:(NSString *)subString option:(unsigned)mask range:(NSRange)range;
+
+//mask常用选项列表
+//NSCaseInsensitiveSearch   不区分字母大小写
+//NSLiteralSearch           对字符串进行字节单位的比较，一般可提高检索速度
+//NSBackwardsSearch         从范围的末尾开始检索
+//NSAnchoredSearch          仅检索制定范围的前部。忽略字符串中间的检索字符
+
+NSString *string = @"hello world";
+NSRange range = [string rangeOfString:@"he"];
+if(range.location != NSNotFound)
+{
+        NSLog(@" location=%d,length=%d",range.location,range.length);
+}
+</code></pre>
+
+<h3 id="section-4">截取字符串</h3>
+
+<pre><code> NSString  
+ //返回字符串开头至index位的字符串 不包含索引位
+ - (NSString *)substringToIndex:(unsigned)index;
+
+ //返回字符串第index位至末尾的字符串 包含索引位
+ - (NSString *)substringFromIndex:(unsigned)index;
+
+  //返回字符串中范围range内的字符串
+ - (NSString *)substringWithRange:(NSRange)range;
+
+  //包含索引位
+ NSString *string = [string substringWithRange:NSMakeRange(5,2)];
+</code></pre>
+
+<h3 id="section-5">比较字符串</h3>
+
+<pre><code>NSString *String1 = @"NSStringInformation.txt";
+
+//hasPrefix 前缀比较
+[String1 hasPrefix:@"NSString"] = = 1 ?  NSLog(@"YES") : NSLog(@"NO");
+
+//hasSuffix 后缀比较
+[String1 hasSuffix:@".txt"] = = 1 ?  NSLog(@"YES") : NSLog(@"NO");
+
+//isEqualToString 完全比较
+if([string1 isEqualToString:@""])
+{
+    NSLog(@"string1 is blank");
+}
+</code></pre>
+
+<h3 id="section-6">替换字符串</h3>
+
+<pre><code> NSString newString  = [oldString stringByReplacingOccurrencesOfString:@"x" withString:@"y"];
+</code></pre>
+
+<h3 id="section-7">读取文本文件</h3>
+
+<pre><code>NSString
+ + (id)stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)enc error:(NSError **)error     //自动释放内存
+
+ - (id)initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc error:(NSError **)error
+
+ NSString *string = [NSString stringWithContentsOfFile:@"/user/test/yw.txt" encoding:NSUTF8StringEncoding error:&amp;error];
+ if(string){}
+</code></pre>
+
+<h3 id="section-8">输出文本文件</h3>
+
+<pre><code>NSString
+ - (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error
+ //参数 atomically 暂时将文件保存到辅助文件中
+ //path
+ The file to which to write the receiver. If path contains a tilde (~) character, you must expand it withstringByExpandingTildeInPath before invoking this method.
+
+
+//扩展路径
+NSString *Path = @"~/NSData.txt";
+NSString *absolutePath = [Path stringByExpandingTildeInPath];
+NSLog(@"absolutePath:%@",absolutePath);
+NSLog(@"Path:%@",[absolutePath stringByAbbreviatingWithTildeInPath]);
+
+//文件扩展名
+NSString *Path = @"~/NSData.txt";
+NSLog(@"Extension:%@",[Path pathExtension]);
+</code></pre>
 
     </div>
 
@@ -206,8 +322,8 @@
 
   
      
-    	<li><a href="/categories.html#web-ref">
-    		web <span>8</span>
+    	<li><a href="/categories.html#ios-ref">
+    		ios <span>4</span>
     	</a></li>
     
   
@@ -225,9 +341,13 @@
 
   
      
-    	<li><a href="/tags.html#sae-ref">sae <span>1</span></a></li>
+    	<li><a href="/tags.html#apple-ref">apple <span>4</span></a></li>
      
-    	<li><a href="/tags.html#jquery-ref">jquery <span>1</span></a></li>
+    	<li><a href="/tags.html#iOS-ref">iOS <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#OC-ref">OC <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#NSString-ref">NSString <span>1</span></a></li>
     
   
 
@@ -239,18 +359,18 @@
     <hr>
     <ul class="pagination">
     
-      <li class="prev disabled"><a>&larr; Previous</a></li>
+      <li class="prev"><a href="/web/2015/07/14/markdown-template" title="Markdown语法">&laquo; Previous</a></li>
     
       <li><a href="/archive.html">Archive</a></li>
     
-      <li class="next"><a href="/web/2014/11/25/collie-js-framework" title="高性能移动HTML5应用开发框架Collie">Next &raquo;</a></li>
+      <li class="next disabled"><a>Next &rarr;</a>
     
     </ul>
     <hr>
     
 
 
-  <div class="ds-thread" data-thread-key="/web/2014/11/24/chinese-public-web-lib" data-title="大陆常用网站开发开源资源加速公共库" data-url="http://www.linchangyu.com/web/2014/11/24/chinese-public-web-lib"></div>
+  <div class="ds-thread" data-thread-key="/ios/2015/07/16/iOS_NSString_extra" data-title="iOS开发Extra系列：NSString***" data-url="http://www.linchangyu.com/ios/2015/07/16/iOS_NSString_extra"></div>
 <script type="text/javascript">
 var duoshuoQuery = {short_name:"linchangyu"};
   (function() {
