@@ -18,7 +18,7 @@ postid: 15
 其原因是iOS 6加强了通讯录访问控制，要求开发人员显式声明需要访问通讯录，方法是调用 ABAddressBookRequestAccessWithCompletion
 方法，具体参见官方文档：
 
-http://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/index.html
+[http://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/index.html](http://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/index.html)
 
 
 我自已写了一个过程CheckAddressBookAuthorization放在helper里
@@ -56,7 +56,7 @@ http://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/index
 
     }
 
-可以在load页调用以让用户打开权限，以后在调用AddressBook相关操作时都使用此方法来调用，便是实际上只有第一次调用才会弹出允许的提示窗口，所以如果第一次被拒绝了，就只能跪求用户去设置里打开了。
+可以在load页调用以让用户打开权限，以后在调用AddressBook相关操作时都使用此方法来调用，但是只有第一次调用iOS才会弹出允许的提示窗口，所以如果第一次被拒绝了，就只能跪求用户去设置里打开了。
 
     [ActionHelper CheckAddressBookAuthorization:^(bool isAuthorized){
         if(isAuthorized)
