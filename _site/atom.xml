@@ -4,7 +4,7 @@
  <title>风雨雷电堂</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2015-07-21T21:45:16+08:00</updated>
+ <updated>2015-07-24T11:10:33+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>老林</name>
@@ -128,10 +128,16 @@ if([string1 isEqualToString:@&quot;&quot;])
 
 &lt;h3 id=&quot;section-6&quot;&gt;替换字符串&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code&gt; NSString newString  = [oldString stringByReplacingOccurrencesOfString:@&quot;x&quot; withString:@&quot;y&quot;];
+&lt;pre&gt;&lt;code&gt; NSString *newString  = [oldString stringByReplacingOccurrencesOfString:@&quot;x&quot; withString:@&quot;y&quot;];
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;section-7&quot;&gt;读取文本文件&lt;/h3&gt;
+&lt;h3 id=&quot;section-7&quot;&gt;分离字符串成数组&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;NSString *string = @&quot;A|B|C|D&quot;;
+NSArray *array = [string componentsSeparatedByString:@&quot;|&quot;];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;读取文本文件&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;NSString
  + (id)stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)enc error:(NSError **)error     //自动释放内存
@@ -142,7 +148,7 @@ if([string1 isEqualToString:@&quot;&quot;])
  if(string){}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;section-8&quot;&gt;输出文本文件&lt;/h3&gt;
+&lt;h3 id=&quot;section-9&quot;&gt;输出文本文件&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;NSString
  - (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error

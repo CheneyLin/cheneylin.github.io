@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>iOS开发Extra系列：NSString***</title>
+    <link rel="apple-touch-icon" href="/images/lcy.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/lcy.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/lcy.png" />
     <meta name="description" content="【源码】iOS开发Extra系列：NSString">
     <meta name="keyword" content="疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,url scheme">
     <meta name="author" content="老林">
@@ -287,10 +290,16 @@ if([string1 isEqualToString:@""])
 
 <h3 id="section-6">替换字符串</h3>
 
-<pre><code> NSString newString  = [oldString stringByReplacingOccurrencesOfString:@"x" withString:@"y"];
+<pre><code> NSString *newString  = [oldString stringByReplacingOccurrencesOfString:@"x" withString:@"y"];
 </code></pre>
 
-<h3 id="section-7">读取文本文件</h3>
+<h3 id="section-7">分离字符串成数组</h3>
+
+<pre><code>NSString *string = @"A|B|C|D";
+NSArray *array = [string componentsSeparatedByString:@"|"];
+</code></pre>
+
+<h3 id="section-8">读取文本文件</h3>
 
 <pre><code>NSString
  + (id)stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)enc error:(NSError **)error     //自动释放内存
@@ -301,7 +310,7 @@ if([string1 isEqualToString:@""])
  if(string){}
 </code></pre>
 
-<h3 id="section-8">输出文本文件</h3>
+<h3 id="section-9">输出文本文件</h3>
 
 <pre><code>NSString
  - (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error
@@ -413,7 +422,6 @@ var duoshuoQuery = {short_name:"linchangyu"};
         </p>
       </div>
     </div>
-
     
 
 
