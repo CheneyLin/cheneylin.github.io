@@ -1,0 +1,33 @@
+/* CSS Document */
+
+#codesrc{
+  height:500px;
+  width:100%;
+  outline:none;
+  border-color:#428bca;
+  background:#FAFAFA;
+  }
+
+#codedest {
+  height:500px;
+  width:100%;
+  outline:none;
+  border-color:#428bca;
+  background:#EEE;
+  }
+
+button {
+  margin:5px;
+  }
+
+#results	{
+  padding:5px;
+  margin:5px;
+  color:#AA0000;
+  border:1px #EEE solid;
+  }
+
+#results i{
+  color:#AAAAAA;
+  font-size:small;
+  }

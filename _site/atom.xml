@@ -4,13 +4,83 @@
  <title>风雨雷电堂</title>
  <link href="http://www.linchangyu.com/" rel="self"/>
  <link href="http://www.linchangyu.com"/>
- <updated>2015-07-24T11:10:33+08:00</updated>
+ <updated>2015-07-27T20:21:11+08:00</updated>
  <id>http://www.linchangyu.com</id>
  <author>
    <name>老林</name>
    <email>cio@gpwzw.com</email>
  </author>
 
+ 
+ <entry>
+   <title>iOS开发检测通讯录权限并申请开启</title>
+   <link href="http://www.linchangyu.com/ios/2015/07/21/iOS_addressBook_authorization"/>
+   <updated>2015-07-21T00:00:00+08:00</updated>
+   <id>http://www.linchangyu.com/ios/2015/07/21/iOS_addressBook_authorization</id>
+   <content type="html">
+&lt;p&gt;在iOS 6中，以前工作正常的访问通讯录的iPhone程序可能会出错，现象是程序启动时不提醒用户是否允许程序访问通讯录，同时在“设置-&amp;gt;隐私-&amp;gt;通讯录”中看不到你的程序。另外，对通讯录进行操作的代码会报类似于以下消息的错误：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Could not compile statement for query (ABCCopyArrayOfAllInstancesOfClassInSourceMatchingProperties):  
+SELECT ROWID, Name, ExternalIdentifier, Type, ConstraintsPath, ExternalModificationTag, ExternalSyncTag, AccountID, Enabled, SyncData, MeIdentifier, Capabilities FROM ABStore WHERE Enabled = ?;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其原因是iOS 6加强了通讯录访问控制，要求开发人员显式声明需要访问通讯录，方法是调用 ABAddressBookRequestAccessWithCompletion
+方法，具体参见官方文档：&lt;/p&gt;
+
+&lt;p&gt;http://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/index.html&lt;/p&gt;
+
+&lt;p&gt;我自已写了一个过程CheckAddressBookAuthorization放在helper里&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+(void)CheckAddressBookAuthorization:(void (^)(bool isAuthorized))block
+{
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+    ABAuthorizationStatus authStatus = ABAddressBookGetAuthorizationStatus();
+
+    if (authStatus != kABAuthorizationStatusAuthorized)
+    {
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 if (error)
+                 {
+                     NSLog(@&quot;Error: %@&quot;, (__bridge NSError *)error);
+                 }
+                 else if (!granted)
+                 {
+
+                     block(NO);
+                 }
+                 else
+                 {
+                     block(YES);
+                 }
+             });  
+         });  
+    }
+    else
+    {
+        block(YES);
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以在load页调用以让用户打开权限，以后在调用AddressBook相关操作时都使用此方法来调用，便是实际上只有第一次调用才会弹出允许的提示窗口，所以如果第一次被拒绝了，就只能跪求用户去设置里打开了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ActionHelper CheckAddressBookAuthorization:^(bool isAuthorized){
+    if(isAuthorized)
+    {
+        [self appViewPromptLoad:@&quot;导入通讯录&quot;];
+        ...
+    }
+    else
+    {
+        [self appViewPromptInfo:@&quot;请到设置&amp;gt;隐私&amp;gt;通讯录打开本应用的权限设置&quot;];
+    }
+}];
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>iOS开发Extra系列：NSString***</title>
