@@ -8,8 +8,6 @@ tagline: 【教程】
 tags: [app, html5, 微信, 轻应用]
 postid: 9
 ---
-{% include JB/setup %}
-
 ##概述  
 
 1. 定义:以微信传播为主要渠道的 HTML5 应用  

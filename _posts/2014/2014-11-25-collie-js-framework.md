@@ -8,7 +8,6 @@ tagline: 【资源】
 tags : [js, canvas, DOM, HTML5, game]
 postid: 2
 ---
-{% include JB/setup %}
 
 Sangmin is a Senior JavaScript developer working at NHN and the creator of the JavaScript animation library Collie.
 

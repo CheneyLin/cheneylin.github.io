@@ -8,7 +8,6 @@ tagline: 【教程】
 tags: [app, android, app, 安卓]
 postid: 11
 ---
-{% include JB/setup %}
 
 ##调用第三方APP
 

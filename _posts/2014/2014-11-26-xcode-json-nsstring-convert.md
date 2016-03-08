@@ -8,7 +8,6 @@ tagline: 【教程】
 tags: [apple, json, xcode, mac]
 postid: 5
 ---
-{% include JB/setup %}
 
 在iOS 5 中，苹果引入了一个解析JSON串的NSJSONSerialization类。
 通过该类，我们可以完成JSON数据与NSDictionary和NSArray之间的转化。

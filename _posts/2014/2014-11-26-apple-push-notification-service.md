@@ -8,7 +8,6 @@ tagline: 【教程】
 tags : [apple, push, service, APNS, mac, raywenderlich]
 postid: 4
 ---
-{% include JB/setup %}
 
 *本文译自<http://www.raywenderlich.com>。原文由iOS教程团队 Matthijs Hollemans 撰写，经原网站管理员授权本博翻译。*
 

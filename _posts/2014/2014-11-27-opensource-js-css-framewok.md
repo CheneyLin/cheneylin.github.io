@@ -8,7 +8,6 @@ tagline: 【资源】
 tags: [css, js, framework]
 postid: 7
 ---
-{% include JB/setup %}
 
 国内的互联网企业有许多开源项目，其中就包括前端的很多优秀框架，摘录如下：
 

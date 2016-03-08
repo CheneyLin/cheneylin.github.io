@@ -1,4 +1,4 @@
----
+63---
 layout: post
 category : iOS
 title: 苹果iOS系统下检查第三方APP是否安装及跳转启动
@@ -8,13 +8,12 @@ tagline: 【教程】
 tags : [apple, iOS, url scheme, app]
 postid: 12
 ---
-{% include JB/setup %}
 
 在iOS系统，使用Url Scheme框架在APP间互相跳转和传递数据，本文只介绍如果检测和跳转。
 
 ##Url Scheme框架
 
-如果你想知道ios设备中是否安装QQ这个软件，我们可以通过一个简单方法判断到：
+如果你想知道ios设备中是否安装QQ这个软件，我们可以通过一个简单方法判断到
 
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"mqq://"]])
     {
@@ -25,11 +24,11 @@ postid: 12
         NSLog(@"no---");
     }
 
-如果你想跳转打开QQ，就可以用以下的代码：
+如果你想跳转打开QQ，就可以用以下的代码
 
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mqq://"]];
 
-更多相关信息可以查看我另外一篇博文：
+更多相关信息可以查看我另外一篇博文
 
 [APP调用Custom URL Scheme](http://www.linchangyu.com/app/2014/12/01/app-url-scheme/)
 
@@ -45,7 +44,7 @@ postid: 12
     微博 sinaweibo://
     weico微博 weico://
     支付宝 alipay://
-    豆瓣fm： doubanradio://
+    豆瓣fm  doubanradio://
     微盘 sinavdisk://
     网易公开课 ntesopen://
     美团 imeituan://
@@ -63,12 +62,12 @@ postid: 12
     支付宝 alipay://
     查找朋友 grenada://；findmyfriends://；fmf1://
     查找iphone fmip1://
-    触宝拨号：dialer://
-    蜂窝网络：prefs:root=MOBILE_DATA_SETTINGS_ID
-    WIFI：prefs:root=WIFI（WIFI这几个字母一定要大写）
-    定位服务：prefs:root=LOCATION_SERVICES
-    备忘录：mobilenotes://
-    高德地图：iosamap://
+    触宝拨号 dialer://
+    蜂窝网络 prefs:root=MOBILE_DATA_SETTINGS_ID
+    WIFI prefs:root=WIFI（WIFI这几个字母一定要大写）
+    定位服务 prefs:root=LOCATION_SERVICES
+    备忘录 mobilenotes://
+    高德地图 iosamap://
     今日头条 snssdk141://
     挖财记账 wacai://
     QQ音乐 :QQmusic://
@@ -83,7 +82,7 @@ postid: 12
     淘宝taobao://
     名片全能王camcard://
     支付宝alipay://
-    豆瓣fm：doubanradio://
+    豆瓣fm doubanradio://
     微盘 sinavdisk://
     网易公开课ntesopen://
     我查查 wcc://
@@ -246,4 +245,46 @@ postid: 12
     AVPlayer HD AVPlayerHD://
     AVPlayer AVPlayer://
     Ace Player aceplayer://
-    
+    易信 yixin://
+    Whatsapp whatsapp://
+
+##常用iOS 系统功能的Url Scheme 前缀
+
+    蜂窝网络 prefs:root=MOBILE_DATA_SETTINGS_ID
+    VPN prefs:root=General&path=Network/VPN
+    Wi-Fi prefs:root=WIFI
+    定位服务 prefs:root=LOCATION_SERVICES
+    个人热点 prefs:root=INTERNET_TETHERING
+    关于本机 prefs:root=General&path=About
+    辅助功能 prefs:root=General&path=ACCESSIBILITY
+    飞行模式 prefs:root=AIRPLANE_MODE
+    锁定 prefs:root=General&path=AUTOLOCK
+    亮度 prefs:root=Brightness
+    蓝牙 prefs:root=General&path=Bluetooth
+    时间设置 prefs:root=General&path=DATE_AND_TIME
+    FaceTime prefs:root=FACETIME
+    设置 prefs:root=General
+    键盘设置 prefs:root=General&path=Keyboard
+    iCloud prefs:root=CASTLE
+    iCloud备份 prefs:root=CASTLE&path=STORAGE_AND_BACKUP
+    语言 prefs:root=General&path=INTERNATIONAL
+    定位 prefs:root=LOCATION_SERVICES
+    音乐 prefs:root=MUSIC
+    Music Equalizer prefs:root=MUSIC&path=EQ
+    Music Volume Limit prefs:root=MUSIC&path=VolumeLimit
+    Network prefs:root=General&path=Network
+    Nike + iPod prefs:root=NIKE_PLUS_IPOD
+    Notes prefs:root=NOTES
+    Notification prefs:root=NOTIFICATIONS_ID
+    Phone prefs:root=Phone
+    Photos prefs:root=Photos
+    Profile prefs:root=General&path=ManagedConfigurationList
+    Reset prefs:root=General&path=Reset
+    Safari prefs:root=Safari
+    Siri prefs:root=General&path=Assistant
+    Sounds prefs:root=Sounds
+    Software Update prefs:root=General&path=SOFTWARE_UPDATE_LINK
+    Store prefs:root=STORE
+    Twitter prefs:root=TWITTER
+    Usage prefs:root=General&path=USAGE
+    Wallpaper prefs:root=Wallpaper

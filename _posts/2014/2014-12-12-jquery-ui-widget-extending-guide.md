@@ -8,8 +8,6 @@ tagline: 【教程】
 tags: [jQuery, javascript]
 postid: 11
 ---
-{% include JB/setup %}
-
 jQuery UI's widget factory makes it easy to build widgets that extend the functionality of existing widgets. Doing so allows you to build powerful widgets on top of an existing base, as well as make small tweaks to an existing widget's functionality.
 
 Note: This article assumes some basic knowledge of what the widget factory is and how it works. If you're unfamiliar with this, read up on how to use the widget factory first.

@@ -8,7 +8,6 @@ tagline: 【教程】
 tags: [app, iOS, android]
 postid: 8
 ---
-{% include JB/setup %}
 
 Custom URL scheme 的好处就是，你可以在其它程序中通过这个url打开应用程序。如Ａ应用程序注册了一个url scheme:myApp,  那么就在mobile浏览器中就可以通过<href='myApp://'>打开你的应用程序Ａ。
 

@@ -8,7 +8,7 @@ tagline: 【资源】
 tags : [sae, jquery]
 postid: 1
 ---
-{% include JB/setup %}
+
 
 In China, Googleapis.com is can not visite, I must use these services.
 

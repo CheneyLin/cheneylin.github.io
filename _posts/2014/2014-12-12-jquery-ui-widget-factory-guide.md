@@ -8,7 +8,6 @@ tagline: 【教程】
 tags: [jQuery, javascript]
 postid: 10
 ---
-{% include JB/setup %}
 
 ##How To Use the Widget Factory
 

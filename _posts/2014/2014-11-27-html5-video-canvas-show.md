@@ -8,7 +8,6 @@ tagline: 【技巧】
 tags: [html5, canvas, js, video]
 postid: 6
 ---
-{% include JB/setup %}
 
 HTML5中的canvas可以实现很多图像、多媒体方面的功能，比如把视频的内容二次处理后在canvas上显示。
 

@@ -8,7 +8,6 @@ tagline: 【源码】
 tags : [apple, iOS, OC, AddressBook, ABAuthorizationStatus, ABAddressBookGetAuthorizationStatus, ABAddressBookRequestAccessWithCompletion]
 postid: 15
 ---
-{% include JB/setup %}
 
 在iOS 6中，以前工作正常的访问通讯录的iPhone程序可能会出错，现象是程序启动时不提醒用户是否允许程序访问通讯录，同时在“设置->隐私->通讯录”中看不到你的程序。另外，对通讯录进行操作的代码会报类似于以下消息的错误：
 

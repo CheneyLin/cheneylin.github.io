@@ -8,7 +8,6 @@ tagline: 【资源】
 tags : [ruby, gem, mac]
 postid: 3
 ---
-{% include JB/setup %}
 
 rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.
 
