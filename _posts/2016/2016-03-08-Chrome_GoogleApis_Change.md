@@ -13,7 +13,7 @@ postid: 16
 
 网上有用Chrome扩展解决这个问题的例子，自己研究了一下，分享给大家：
 
-crx下载：https://github.com/CheneyLin/ChromeGoogleApiChange/blob/master/extension.crx?raw=true
+crx下载：[extension.crx](https://github.com/CheneyLin/ChromeGoogleApiChange/blob/master/extension.crx?raw=true)
 
 需要打开Chrome的扩展设置页，将crx文件拖入安装。
 
@@ -22,4 +22,4 @@ crx下载：https://github.com/CheneyLin/ChromeGoogleApiChange/blob/master/exten
 
 chrome.webRequest.onBeforeRequest.addListener
 
-github：https://github.com/CheneyLin/ChromeGoogleApiChange
+github：[ChromeGoogleApiChange](https://github.com/CheneyLin/ChromeGoogleApiChange)
