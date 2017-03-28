@@ -210,11 +210,15 @@ table {
     background-color: transparent;
     border-collapse: collapse;
     border-spacing: 0;
-    border: 1px solid #eee;
+    border: 1px solid #ccc;
 }
 th,td{
     padding: 8px;
     line-height: 20px;
     vertical-align: top;
-    border: 1px solid #eee;
+    border: 1px solid #ccc;
+    font-size: small;
+}
+th{
+    font-weight: bold;
 }
