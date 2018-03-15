@@ -63,5 +63,5 @@ $ jekyll s
 
 # 参考
 
- 1. 安装CocoaPods遇到的问题 https://www.jianshu.com/p/f5ebfadb0a20
- 2. Jekyll官网 https://jekyllrb.com/
+ 1. [安装CocoaPods遇到的问题](https://www.jianshu.com/p/f5ebfadb0a20)
+ 2. [Jekyll官网](https://jekyllrb.com/)
