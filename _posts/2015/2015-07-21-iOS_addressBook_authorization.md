@@ -57,6 +57,7 @@ postid: 15
 
 可以在load页调用以让用户打开权限，以后在调用AddressBook相关操作时都使用此方法来调用，但是只有第一次调用iOS才会弹出允许的提示窗口，所以如果第一次被拒绝了，就只能跪求用户去设置里打开了。
 
+```
     [ActionHelper CheckAddressBookAuthorization:^(bool isAuthorized){
         if(isAuthorized)
         {
@@ -68,3 +69,4 @@ postid: 15
             [self appViewPromptInfo:@"请到设置>隐私>通讯录打开本应用的权限设置"];
         }
     }];
+```
