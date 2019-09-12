@@ -2,11 +2,12 @@
 layout: post
 title: HTML5实现视频的分离显示
 category : web
-description: 【技巧】HTML5实现视频的分离显示
+description: 视频分离显示的黑科技
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,推送,raywenderlich
 tagline: 【技巧】
 tags: [html5, canvas, js, video]
 postid: 6
+headimage: https://cdn.pixabay.com/photo/2017/08/28/15/57/mobile-gaming-2690100_1280.jpg
 ---
 
 HTML5中的canvas可以实现很多图像、多媒体方面的功能，比如把视频的内容二次处理后在canvas上显示。

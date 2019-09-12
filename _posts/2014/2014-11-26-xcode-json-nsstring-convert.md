@@ -2,11 +2,12 @@
 layout: post
 title: 苹果iOS5下的的NSJSONSerialization类
 category : iOS
-description: 【教程】苹果iOS5下的的NSJSONSerialization类
+description: NSJSONSerialization类实现JSON数据
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,推送,raywenderlich
 tagline: 【教程】
 tags: [apple, json, xcode, mac]
 postid: 5
+headimage: https://cdn.pixabay.com/photo/2015/02/02/11/09/office-620822_1280.jpg
 ---
 
 在iOS 5 中，苹果引入了一个解析JSON串的NSJSONSerialization类。

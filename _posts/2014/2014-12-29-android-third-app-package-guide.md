@@ -2,11 +2,12 @@
 layout: post
 title: 安卓第三方应用调起常见问题
 category : app
-description: 【教程】安卓第三方应用调起常见问题
+description: 安卓开发实践出真知
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【教程】
 tags: [app, android, app, 安卓]
 postid: 11
+headimage: https://cdn.pixabay.com/photo/2015/10/23/09/21/finger-1002577_1280.jpg
 ---
 
 ##调用第三方APP

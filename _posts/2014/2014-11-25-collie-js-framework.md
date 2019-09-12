@@ -2,11 +2,12 @@
 layout: post
 category: web
 title: 高性能移动HTML5应用开发框架Collie
-description: High Performance Mobile Web Game Development in HTML5
+description: Mobile Web Game Development in HTML5
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【资源】
 tags : [js, canvas, DOM, HTML5, game]
 postid: 2
+headimage: https://cdn.pixabay.com/photo/2018/06/19/10/01/internet-3484137_1280.jpg
 ---
 
 Sangmin is a Senior JavaScript developer working at NHN and the creator of the JavaScript animation library Collie.

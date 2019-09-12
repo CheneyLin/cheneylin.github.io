@@ -2,11 +2,12 @@
 layout: post
 title: 开源的js/css框架（收集中）
 category : web
-description: 【资源】开源的js/css框架（收集中）
+description: 不要重复造轮子
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【资源】
 tags: [css, js, framework]
 postid: 7
+headimage: https://cdn.pixabay.com/photo/2016/11/04/13/31/css-1797778_1280.jpg
 ---
 
 国内的互联网企业有许多开源项目，其中就包括前端的很多优秀框架，摘录如下：

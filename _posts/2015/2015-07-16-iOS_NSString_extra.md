@@ -2,11 +2,12 @@
 layout: post
 category : iOS
 title: iOS开发Extra系列：NSString***
-description: 【源码】iOS开发Extra系列：NSString
+description: 字符串的应用比较常见，记录在此
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,url scheme
 tagline: 【源码】
 tags : [apple, iOS, OC, NSString]
 postid: 14
+headimage : https://cdn.pixabay.com/photo/2017/10/31/19/05/web-design-2906159_1280.jpg
 ---
 
 

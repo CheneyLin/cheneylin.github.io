@@ -7,7 +7,7 @@ keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,谷歌浏览器,
 tagline: 【扩展】
 tags : [chrome, googleapis, cdnjs]
 postid: 16
-headimage: /images/2016/search-engine-76519_1280.png
+headimage: https://cdn.pixabay.com/photo/2016/06/03/12/37/internet-search-engine-1433323_1280.jpg
 ---
 
 访问国外很多网站时，发现调用googleapis的js失败，只能自己想办法解决。

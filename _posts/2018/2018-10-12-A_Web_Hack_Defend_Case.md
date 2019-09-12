@@ -2,7 +2,7 @@
 layout: post
 category : web
 title: 一次防刷攻击事件的处理记录
-description: 【日志】如何使用微信、极验等技术手段防止低成本刷接口攻击
+description: 如何使用微信、极验等技术手段防止低成本刷接口攻击
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,Jekyll,Gem
 tagline: 【日志】
 tags : [Web, Api, Attack, Hack, Fake IP, geetest]

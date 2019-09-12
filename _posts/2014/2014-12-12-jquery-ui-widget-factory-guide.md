@@ -2,11 +2,12 @@
 layout: post
 title: jQuery UI 插件入门
 category : web
-description: 【教程】jQuery UI 插件入门
+description: 未来的翻译任务
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【教程】
 tags: [jQuery, javascript]
 postid: 10
+headimage: https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_1280.jpg
 ---
 
 ##How To Use the Widget Factory

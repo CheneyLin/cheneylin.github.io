@@ -2,11 +2,12 @@
 layout: post
 title: 轻应用开发设计规范
 category : app
-description: 【教程】轻应用开发设计规范
+description: 自用规范
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【教程】
 tags: [app, html5, 微信, 轻应用]
 postid: 9
+headimage: https://cdn.pixabay.com/photo/2015/05/28/14/38/ux-787980_1280.jpg
 ---
 ##概述  
 

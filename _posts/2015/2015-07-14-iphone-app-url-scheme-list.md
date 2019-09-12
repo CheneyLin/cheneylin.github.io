@@ -2,11 +2,12 @@
 layout: post
 category : iOS
 title: 苹果iOS系统下检查第三方APP是否安装及跳转启动
-description: 【教程】苹果iOS系统下检查第三方APP是否安装及跳转启动
+description: 使用URL Scheme来判断
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,url scheme
 tagline: 【教程】
 tags : [apple, iOS, url scheme, app]
 postid: 12
+headimage: https://cdn.pixabay.com/photo/2016/06/13/08/03/social-media-1453843_1280.jpg
 ---
 
 在iOS系统，使用Url Scheme框架在APP间互相跳转和传递数据，本文只介绍如果检测和跳转。

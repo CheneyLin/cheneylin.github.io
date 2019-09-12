@@ -2,11 +2,12 @@
 layout: post
 category : iOS
 title: 苹果iOS系统下的推送机制及实现
-description: 【教程】苹果iOS系统下的推送机制及实现
+description: iOS Pushnotify Development
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,推送,raywenderlich
 tagline: 【教程】
 tags : [apple, push, service, APNS, mac, raywenderlich]
 postid: 4
+headimage: https://cdn.pixabay.com/photo/2014/05/02/21/48/blogger-336371_1280.jpg
 ---
 
 *本文译自<http://www.raywenderlich.com>。原文由iOS教程团队 Matthijs Hollemans 撰写，经原网站管理员授权本博翻译。*

@@ -2,7 +2,7 @@
 layout: post
 category : web
 title: 给你的网站增加免费HTTPS证书（SSL+WINDOWS+IIS）
-description: 【日志】在阿里云购买免费SSL证书，并安装到windows服务器上
+description: 阿里云居然有免费的SSL证书
 keyword: 麒麟工作室,林长宇,HTTPS,WINDOWS,SSL,ALIYUN
 tagline: 【日志】
 tags : [Web, Https,Aliyun,Windows,IIS]

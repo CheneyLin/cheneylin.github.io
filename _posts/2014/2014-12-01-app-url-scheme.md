@@ -2,11 +2,12 @@
 layout: post
 title: APP调用Custom URL Scheme
 category : app
-description: 【教程】APP调用Custom URL Scheme
+description: iOS和Android下应用间跳转实践
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【教程】
 tags: [app, iOS, android]
 postid: 8
+headimage: https://cdn.pixabay.com/photo/2017/02/20/15/15/check-2082845_1280.jpg
 ---
 
 Custom URL scheme 的好处就是，你可以在其它程序中通过这个url打开应用程序。如Ａ应用程序注册了一个url scheme:myApp,  那么就在mobile浏览器中就可以通过<href='myApp://'>打开你的应用程序Ａ。

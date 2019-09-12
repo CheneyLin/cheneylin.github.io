@@ -2,11 +2,12 @@
 layout: post
 category : iOS
 title: iOS开发检测通讯录权限并申请开启
-description: 【源码】iOS开发检测通讯录权限并申请开启
+description: 开发中的项目用到了，记录一下
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,url scheme
 tagline: 【源码】
 tags : [apple, iOS, OC, AddressBook, ABAuthorizationStatus, ABAddressBookGetAuthorizationStatus, ABAddressBookRequestAccessWithCompletion]
 postid: 15
+headimage : /images/2018/internet-3113279_1280.jpg
 ---
 
 在iOS 6中，以前工作正常的访问通讯录的iPhone程序可能会出错，现象是程序启动时不提醒用户是否允许程序访问通讯录，同时在“设置->隐私->通讯录”中看不到你的程序。另外，对通讯录进行操作的代码会报类似于以下消息的错误：

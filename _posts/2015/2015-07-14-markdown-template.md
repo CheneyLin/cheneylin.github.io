@@ -1,12 +1,13 @@
 ---
 layout: post
 category : web
-title: Markdown语法
-description: 【参考】Markdown语法
+title: Markdown语法参考手册
+description: 用来写博客的MD格式参考手册
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,苹果开发者,url scheme
 tagline: 【参考】
 tags : [github, Markdown, md]
 postid: 13
+headimage: https://cdn.pixabay.com/photo/2015/01/08/18/24/programming-593312_1280.jpg
 ---
 
 该文件用来测试和展示书写README的各种markdown语法。GitHub的markdown语法在标准的markdown语法基础上做了扩充，称之为`GitHub Flavored Markdown`。简称`GFM`，GFM在GitHub上有广泛应用，除了README文件外，issues和wiki均支持markdown语法。

@@ -7,6 +7,7 @@ keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【资源】
 tags : [ruby, gem, mac]
 postid: 3
+headimage: https://cdn.pixabay.com/photo/2017/04/23/19/30/earth-2254769_1280.jpg
 ---
 
 rubygems.org is slowly to visite in China, Use Taobao source to speen gem install.

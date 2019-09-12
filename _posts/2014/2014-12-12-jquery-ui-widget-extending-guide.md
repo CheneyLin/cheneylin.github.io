@@ -2,11 +2,12 @@
 layout: post
 title: jQuery UI 插件扩展
 category : web
-description: 【教程】jQuery UI 插件扩展
+description: 开发一个插件还是有成就感
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇
 tagline: 【教程】
 tags: [jQuery, javascript]
 postid: 11
+headimage: https://cdn.pixabay.com/photo/2017/08/10/08/47/code-2620118_1280.jpg
 ---
 jQuery UI's widget factory makes it easy to build widgets that extend the functionality of existing widgets. Doing so allows you to build powerful widgets on top of an existing base, as well as make small tweaks to an existing widget's functionality.
 

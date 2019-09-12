@@ -355,9 +355,11 @@
           border: 1px solid #aaa;
           background-position: center;
           background-size: cover;
-          animation-duration: 1.5s;
+          transition-duration: 0.5s;
+          opacity: 0.8;
 
           &:hover {
+          opacity: 1;
             box-shadow: 0 0 5px #666;
           }
         }
@@ -440,22 +442,22 @@
   }
 }
 
-  a.link-button {
-    display: block;
-    float:left;
-    margin:5px;
-    width: 100px;
-    padding: 0 20px 0 20px;
-    height: 32px;
-    line-height: 32px;
-    border: 1px solid $brand-color;
-    border-radius: 16px;
-    text-align: center;
-    color: $brand-color;
+a.link-button {
+  display: block;
+  float: left;
+  margin: 5px;
+  width: 100px;
+  padding: 0 20px;
+  height: 32px;
+  line-height: 32px;
+  border: 1px solid $brand-color;
+  border-radius: 16px;
+  text-align: center;
+  color: $brand-color;
 
-    &:hover {
-      background: $brand-color;
-      color: #fff;
-      text-decoration: none;
-    }
+  &:hover {
+    background: $brand-color;
+    color: #fff;
+    text-decoration: none;
   }
+}
