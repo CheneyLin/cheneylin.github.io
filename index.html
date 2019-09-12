@@ -6,7 +6,7 @@ layout: default
 
   <ul class="post-list">
     {% for post in site.posts %}
-      {% if post.headimage %}
+      {% if post.postid>12 %}
     <li>
         <div class="post-show-image">
           <a class="post-show-image-link" href="{{ post.url | prepend: site.baseurl }}" style="background-image: url('{{ post.headimage }}');">
