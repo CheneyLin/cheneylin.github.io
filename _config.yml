@@ -7,14 +7,14 @@
 
 
 title: 雨花老林
-me: 雨花老林
+me: 雨花亭老林
 email: cio@gpwzw.com
 description: > # this means to ignore newlines until "baseurl:"
   独立手机应用游戏开发者
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://www.linchangyu.com" # the base hostname & protocol for your site
 twitter_username: cheneylin
-github_username:  cheneylin
+github_username: cheneylin
 beian: 沪ICP备09021215号
 
 # Build settings

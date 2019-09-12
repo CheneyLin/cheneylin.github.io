@@ -2,10 +2,12 @@
 layout: post
 category : web
 title: 2018年更新Jekyll遇到的问题
-description: 【教程】更新Jekyll
+description: 用GEM更新Jekyll居然出错了
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,Jekyll,Gem
 tagline: 【教程】
 tags : [Jekyll, Gem]
+postid: 20
+headimage : /images/2018/update-1672363_1280.jpg
 ---
 
 # 问题

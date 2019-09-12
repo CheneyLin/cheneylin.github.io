@@ -6,6 +6,8 @@ description: 【日志】在阿里云购买免费SSL证书，并安装到windows
 keyword: 麒麟工作室,林长宇,HTTPS,WINDOWS,SSL,ALIYUN
 tagline: 【日志】
 tags : [Web, Https,Aliyun,Windows,IIS]
+postid: 22
+headimage : /images/2019/safety-2659095_1280.jpg
 ---
 
 # 问题

@@ -1,14 +1,14 @@
 ---
 layout: post
-category : chrome
+category : google
 title: 使用Google Web Font
-description: 【资源】在贵国如何使用Google Web Font
+description: 在贵国如何使用Google Web Font
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,谷歌浏览器,Google Web Font,googleapis
 tagline: 【资源】
 tags : [chrome, googleapis, cdnjs]
-postid: 16
+postid: 17
+headimage: /images/2016/search-engine-76519_1280.png
 ---
-
 开发上需要用到一些个性化的数字字体，很自然地想到Google Web Font，但是....
 
 #使用

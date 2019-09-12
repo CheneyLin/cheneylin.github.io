@@ -2,10 +2,12 @@
 layout: post
 category : iOS
 title: 苹果AppStore上架相关问题
-description: 【教程】苹果AppStore上架
+description: 先来看看上架苹果应用商店前要准备的图片及格式
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,iOS,AppStore
 tagline: 【教程】
 tags : [iOS, AppStore]
+postid: 19
+headimage : /images/2018/internet-3113279_1280.jpg
 ---
 
 # 屏幕快照规范

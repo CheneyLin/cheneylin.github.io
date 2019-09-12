@@ -8,7 +8,9 @@ dl, dd, ol, ul, figure {
     padding: 0;
 }
 
-
+ul,p {
+  clear:both;
+}
 
 /**
  * Basic styling
@@ -221,4 +223,15 @@ th,td{
 }
 th{
     font-weight: bold;
+}
+
+
+/**
+ * More
+ */
+.none {
+  display: none;
+}
+.hide,.hidden {
+  visibility: hidden;
 }

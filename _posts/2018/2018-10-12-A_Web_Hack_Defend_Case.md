@@ -6,6 +6,8 @@ description: 【日志】如何使用微信、极验等技术手段防止低成�
 keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,Jekyll,Gem
 tagline: 【日志】
 tags : [Web, Api, Attack, Hack, Fake IP, geetest]
+postid: 21
+headimage : /images/2018/ransomware-2321110_1280.jpg
 ---
 
 # 问题

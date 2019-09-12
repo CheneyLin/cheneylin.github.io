@@ -1,4 +1,4 @@
-63---
+---
 layout: post
 category : iOS
 title: 苹果iOS系统下检查第三方APP是否安装及跳转启动
