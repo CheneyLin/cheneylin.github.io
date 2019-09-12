@@ -7,7 +7,7 @@ keyword: 疯狂填字,芒果轻应用,麒麟工作室,林长宇,谷歌浏览器,
 tagline: 【资源】
 tags : [chrome, googleapis, cdnjs]
 postid: 17
-headimage: /images/2016/search-engine-76519_1280.png
+headimage: https://cdn.pixabay.com/photo/2016/03/02/07/36/abstract-1231889_1280.jpg
 ---
 开发上需要用到一些个性化的数字字体，很自然地想到Google Web Font，但是....
 
