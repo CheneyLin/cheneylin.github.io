@@ -2,29 +2,34 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">{{ site.me }}</h2>
+    <h2 class="footer-heading">{{ site.me }}<span style="font-size:14px;color:#aaa;margin-left:5px;">{{ site.description }}</span></h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
-          <li>{{ site.description }}</li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          <li></li>
+          <ul class="social-media-list">
+            <li>电子邮件：<a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            {% if site.github_username %}
+            <li>
+              GITHUB：{% include icon-github.html username=site.github_username %}
+            </li>
+            {% endif %}
+          </ul>
         </ul>
       </div>
 
       <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          {% if site.github_username %}
-          <li>
-            {% include icon-github.html username=site.github_username %}
-          </li>
-          {% endif %}
-        </ul>
+        <p>博客系统：<a href="https://jekyllrb.com" target="_blank">Jekyll</a><br>
+          图片支持：<a href="https://pixabay.com/zh/" target="_blank">Pixabay</a><br>
+          代码托管：<a href="https://Github.com" target="_blank">Github</a><br>
+          网络服务：<a href="https://promotion.aliyun.com/ntms/act/ambassador/sharetouser.html?userCode=smatfm0j&utm_source=smatfm0j" target="_blank">阿里云</a><br>
+          国外访问：<a href="https://shop.cloudss.org/aff.php?aff=4602">Cloudss</a></p>
       </div>
 
       <div class="footer-col footer-col-3">
-          <p><a href="http://beian.miit.gov.cn" target="_blank">{{ site.beian }}</a></p>
-          <p>Power by <a href="https://jekyllrb.com" target="_blank">Jekyll</a></p>
+        <p>备案号：<a href="http://beian.miit.gov.cn" target="_blank">{{ site.beian }}</a></p>
+
       </div>
     </div>
 
