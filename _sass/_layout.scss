@@ -283,6 +283,16 @@
   }
 }
 
+.post-category-3c {
+  background-color: #E36;
+
+  &::after {
+    content: "3C";
+    font-size: 18px;
+    font-weight: bolder;
+  }
+}
+
 .post-list {
   > li {
     .post-link {

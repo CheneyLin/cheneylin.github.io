@@ -8,6 +8,8 @@ hi，我是老林
 
 我的人生哲学是知行合一，很惭愧，在这个社会，无法百分百做到。
 
+
+
 <style>
   .page-content:before {
     background-image: url('{{ page.headimage }}');

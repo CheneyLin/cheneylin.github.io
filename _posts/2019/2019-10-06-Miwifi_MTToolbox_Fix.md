@@ -1,11 +1,11 @@
 ---
 layout: post
-category : device
+category : 3c
 title: 小米路由器MT工具箱修复
 description: Misstar Tools还蛮有用的
 keyword: 麒麟工作室,林长宇
 tagline: 【日志】
-tags : [device]
+tags : [3C]
 postid: 23
 headimage : https://cdn.pixabay.com/photo/2017/05/10/12/41/hacker-2300772_960_720.jpg
 ---

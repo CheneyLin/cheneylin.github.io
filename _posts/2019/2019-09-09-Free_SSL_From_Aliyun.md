@@ -5,7 +5,7 @@ title: 给你的网站增加免费HTTPS证书（WINDOWS）
 description: 阿里云居然有免费的SSL证书
 keyword: 麒麟工作室,林长宇,HTTPS,WINDOWS,SSL,ALIYUN
 tagline: 【日志】
-tags : [Web, Https,Aliyun,Windows,IIS]
+tags : [Web]
 postid: 22
 headimage : /images/2019/safety-2659095_1280.jpg
 ---
