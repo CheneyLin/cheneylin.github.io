@@ -25,52 +25,52 @@ headimage : https://cdn.pixabay.com/photo/2016/04/17/10/02/human-1334446_960_720
 
 # 最爱欢迎的BT种子站点
 
-1. [YTS.am](http://yts.am/)
+1) [YTS.am](http://yts.am/)
 YTS，最著名的电影破解团队YTS（YIFY）的分享站点，制作精良，粉丝无数。
 
  > Alexa Rank: 205 / Last year #5
 
-2. [1337x](https://1337x.to/)
+2) [1337x](https://1337x.to/)
 老牌站点1337x继续以稳定的表现夺得亚军。以内容更新迅速打动用户，在有些国家限制访问的情况下仍然不断增长。
 
  > Alexa Rank: 248 / Last year #3
 
-3. [The Pirate Bay](https://thepiratebay.org/)
+3) [The Pirate Bay](https://thepiratebay.org/)
 元老级BT下载站海盗港（The Pirate Bay），近期服务的不稳定，扛把子的地位不保，人怕出名猪怕壮，感谢15年来的陪伴，希望早日走出困境，重回巅峰。
 
  > Alexa Rank: 288/ Last year #1
 
-4. [RARBG](https://rarbg.to/)
+4) [RARBG](https://rarbg.to/)
 RARBG has dropped two places compared to last year. The site operates several domain names, but only the one with the most traffic counts for this list. RARBG was founded in 2008 and specializes in high-quality video releases.
 
  > Alexa Rank: 325 / Last year #2
 
-5. [Torrentz2](https://torrentz2.eu/)
+5) [Torrentz2](https://torrentz2.eu/)
 Torrentz2 launched as a stand-in for the original Torrentz.eu site, which voluntarily closed its doors in 2016. Despite some issues with disappearing torrent links early last year, it’s still going strong.
 
  > Alexa Rank: 498 / Last year #4
 
-6. [NYAA.si](https://nyaa.si/)
+6) [NYAA.si](https://nyaa.si/)
 NYAA.si is a popular resurrection of the anime torrent site NYAA. The site was suspended by Cloudflare last year but found a suitable alternative soon after.
 
  > Alexa Rank: 549 / Last year #8
 
-7. [LimeTorrents](https://www.limetorrents.info/)
+7) [LimeTorrents](https://www.limetorrents.info/)
 LimeTorrents has been around for more than half a decade. A few month ago the site’s operator changed LimeTorrents’ domain name and updated its homepage in response to various blocking efforts.
 
  > Alexa Rank: 962 / Last year #7
 
-8. [Zooqle](https://zooqle.com/)
+8) [Zooqle](https://zooqle.com/)
 Zooqle, which boasts more than 3.8 million verified torrents, kept its spot in the top 10. The site was openly advertised as an alternative to Bitsnoop, which shut down in 2017.
 
  > Alexa Rank: 1,753 / Last year #10
 
-9. [EZTV.ag](https://eztv.ag/)
+9) [EZTV.ag](https://eztv.ag/)
 The original TV-torrent distribution group EZTV shut down after a hostile takeover in 2015, with new owners claiming ownership of the brand. The group remains active, albeit not without controversy. Just a few month ago ETTV accused the group of ‘stealing’ its releases.
 
  > Alexa Rank: 1.950 / Last year #6
 
-10. [TorrentDownloads](https://torrentdownloads.me/)
+10) [TorrentDownloads](https://torrentdownloads.me/)
 TorrentDownloads has been around for several years. The torrent site regained a spot in the top 10 this year after a year of absence. It’s a no-nonsense index that provides torrents to millions of users each month.
 
  > Alexa Rank: 2,018 / Last year #NA
