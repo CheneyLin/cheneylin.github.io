@@ -10,6 +10,36 @@ postid: 20
 headimage : /images/2018/update-1672363_1280.jpg
 ---
 
+# 问题 new
+
+2019年又升级Mac了，Jekyll 又无法启动了。
+
+```
+$ jekyll s
+-bash: /usr/local/bin/jekyll: /System/Library/Frameworks/Ruby.framework/Versions/2.3/usr/bin/ruby: bad interpreter: No such file or directory
+```
+
+# 解决
+
+判断是升级了RUBY版本，Jekyll找不到了
+
+顺便就重新升级了一下Jekyll到4.0.0
+
+先查询ruby版本，然后重新设置ruby的PATH
+
+```
+$ ruby -v
+ruby 2.6.3p62 (2019-04-16 revision 67580) [universal.x86_64-darwin19]
+```
+查询版本为2.6.x
+```
+export PATH=$HOME/.gem/ruby/X.X.0/bin:$PATH
+```
+X.X填入2.6
+```
+$ export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
+```
+
 # 问题
 
 升级Mac后，Jekyll 无法启动了。
