@@ -330,7 +330,8 @@
         transition-duration: 0.2s;
         opacity: 0.8;
 
-        &:hover,&.hover {
+        &.hover,
+        &:hover {
           opacity: 1;
           box-shadow: 0 0 5px #666;
         }
@@ -480,18 +481,26 @@ a.link-button {
     text-decoration: none;
   }
 }
-
 // user images resize specializes
 @media screen and (min-width: 1080px) {
-  img[alt="ins"]{
+  img[alt="ins"] {
+    width: 33%;
+    margin-bottom: 4px;
+  }
+
+  img[alt="insrev"] {
     width: 33%;
     margin-bottom: 4px;
   }
 }
-
 @media screen and (max-width: 1080px) {
-  img[alt="ins"]{
-    width:100%;
-    transform: rotate(90);
+  img[alt="ins"] {
+    width: 100%;
+  }
+
+  img[alt="insrev"] {
+    width: 100%;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
   }
 }
