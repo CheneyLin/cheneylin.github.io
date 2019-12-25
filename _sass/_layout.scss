@@ -480,3 +480,18 @@ a.link-button {
     text-decoration: none;
   }
 }
+
+// user images resize specializes
+@media screen and (min-width: 1080px) {
+  img[alt="ins"]{
+    width: 33%;
+    margin-bottom: 4px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  img[alt="ins"]{
+    width:100%;
+    transform: rotate(90);
+  }
+}
