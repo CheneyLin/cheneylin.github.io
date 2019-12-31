@@ -250,7 +250,7 @@
 }
 
 .post-category-web {
-  background-color: #a30;
+  background-color: #36F;
 
   &::after {
     content: "Web";
@@ -283,8 +283,18 @@
   }
 }
 
+.post-category-ux {
+  background-color: #ea4c89;
+
+  &::after {
+    content: "UX";
+    font-size: 18px;
+    font-weight: bolder;
+  }
+}
+
 .post-category-3c {
-  background-color: #E36;
+  background-color: #AAA;
 
   &::after {
     content: "3C";
