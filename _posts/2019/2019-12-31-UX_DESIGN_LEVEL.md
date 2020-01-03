@@ -14,8 +14,11 @@ headimage : https://cdn.pixabay.com/photo/2014/12/15/17/18/home-office-569359_96
 ![ins](/images/2019/20191231/page2.png)
 ![ins](/images/2019/20191231/page3.png)
 
-欢迎关注 Instagram :trollface:
-
-@lincheney
 
 翻译自 @uxgoodies
+
+
+ ### 欢迎关注
+
+Instagram：@lincheney
+绿洲（微博）：@风雨雷电堂
