@@ -14,6 +14,7 @@ headimage : https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_960_720.
  安装Sublime text 3 方便处理大文本文件，找来的注册码注册成功；
 
  但是再次启动就提示过期，抓了包分析了一下：
+
  ## Register License
 
 ```
@@ -31,7 +32,7 @@ DD9AF44B 99C49590 D2DBDEE1 75860FD2
 
 ```
 
-## HOST
+ ## HOST
 
 ```
 127.0.0.1 license.sublimehq.com
