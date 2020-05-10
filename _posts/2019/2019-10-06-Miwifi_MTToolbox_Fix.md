@@ -29,7 +29,7 @@ If the extension was recently installed, try removing the /tmp/luci-indexcache f
 ```
 SSH root@192.168.31.1
 ```
-输入口令，需要路由器安装开发版ROM，启用终端功能
+输入口令，需要路由器安装开发版ROM，启用终端功能，ROMCODE：e90326ca
 
 * 编辑路由文件
 ```
