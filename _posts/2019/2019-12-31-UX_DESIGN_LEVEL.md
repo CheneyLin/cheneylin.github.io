@@ -6,7 +6,7 @@ description: 设计理论还是很有必要了解一下的
 keyword: 麒麟工作室,林长宇
 tagline: 【日志】
 tags : [UX]
-postid: 24
+postid: 27
 headimage : https://cdn.pixabay.com/photo/2014/12/15/17/18/home-office-569359_960_720.jpg
 ---
 
