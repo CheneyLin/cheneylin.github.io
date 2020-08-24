@@ -249,6 +249,15 @@
   }
 }
 
+.post-category-code {
+  background-color: #666;
+
+  &::after {
+    content: "Code";
+    font-size: 7px;
+  }
+}
+
 .post-category-web {
   background-color: #36F;
 
@@ -265,7 +274,7 @@
   }
 }
 
-.post-category-app {
+.post-category-app, .post-category-software {
   background-color: #0aa;
 
   &::after {
