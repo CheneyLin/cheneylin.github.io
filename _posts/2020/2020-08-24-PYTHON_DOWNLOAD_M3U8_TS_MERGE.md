@@ -27,12 +27,12 @@ headimage : https://cdn.pixabay.com/photo/2015/01/08/18/24/children-593313_960_7
 
 ### 取得CURL脚本
 右键点击TS文件请求项，选择菜单中的 Copy as cURL
-![screen](/images/2020/20200824/curl.png)
+![screen](http://www.linchangyu.com/images/2020/20200824/curl.png)
 
 ### 转换CURL代码
 
 进入 https://curl.trillworks.com/，将复制的CURL脚本粘贴在左边
-![screen](/images/2020/20200824/curlcode.png)
+![screen](http://www.linchangyu.com/images/2020/20200824/curlcode.png)
 
 ### Python核心代码
 
