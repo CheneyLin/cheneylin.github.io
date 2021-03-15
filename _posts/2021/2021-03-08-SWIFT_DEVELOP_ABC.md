@@ -48,7 +48,7 @@ var myName : String! = "Cheney Lin"
 
 * 正常使用：在变量后面加一个?，需要进一步处理或函数调用
 * 强制使用：在变量后面加一个!，一般用于明确之前代码已经赋值的情况下使用
-* 默认值使用：在变量后面加个??，用于给出默认值
+* 默认值使用：在变量后面加个 **??** (nil合并运算符)，用于给出默认值
 * 引用使用：新建一个变量，引用要处理的变量，用IF语句来做控制逻辑
 
 ~~~
@@ -79,6 +79,12 @@ if let newName = myName?
 ~~~
 let memo:String = """Hello World,\n
 I am Cheney Lin."""
+~~~
+
+ * Swift 用字符串插值（string interpolation）的方式把常量名或者变量名当做占位符加入到长字符串中，Swift 会用当前常量或变量的值替换这些占位符。将常量或变量名放入圆括号中，并在开括号前使用反斜杠将其转义：
+
+~~~
+print("myName的值为:\(myName)") // myName的值为:Cheney Lin
 ~~~
 
 
