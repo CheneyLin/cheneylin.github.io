@@ -7,7 +7,7 @@ keyword: 麒麟工作室,林长宇
 tagline: 【日志】
 tags : [CODE]
 postid: 34
-headimage : https://cdn.pixabay.com/photo/2016/11/19/15/32/business-1839876_960_720.jpg
+headimage : https://cdn.pixabay.com/photo/2020/01/03/11/44/freedom-4737919_960_720.jpg
 ---
 
 # Extension
