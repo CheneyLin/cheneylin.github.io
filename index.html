@@ -5,8 +5,7 @@ layout: default
 <div class="home">
 
   <ul class="post-list">
-    {% for post in site.posts %}
-      {% if post.postid>20 %}
+    {% for post in site.posts limit:10 %}
     <li>
         <div class="post-show-image">
           <a class="post-show-image-link" href="{{ post.url | prepend: site.baseurl }}" style="background-image: url('{{ post.headimage }}');">
@@ -18,7 +17,6 @@ layout: default
         <span class="post-meta">{{ post.date | date: "%Y年%m月%d日" }}</span>
       </div>
     </li>
-  {% endif %}
     {% endfor %}
   </ul>
 
