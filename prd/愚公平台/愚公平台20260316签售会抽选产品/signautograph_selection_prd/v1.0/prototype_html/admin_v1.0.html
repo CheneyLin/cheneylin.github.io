@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>签售会抽选产品 - 后台管理原型</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #48bb78;
+            --warning-color: #ed8936;
+            --danger-color: #f56565;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            z-index: 1000;
+            transition: transform 0.3s;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .sidebar-menu i {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        /* 顶部导航 */
+        .top-navbar {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 卡片样式 */
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* 按钮样式 */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 表格样式 */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* 状态标签 */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-preparing { background: #e3f2fd; color: #1976d2; }
+        .badge-progress { background: #fff3e0; color: #f57c00; }
+        .badge-completed { background: #e8f5e9; color: #388e3c; }
+        .badge-published { background: #fce4ec; color: #c2185b; }
+
+        /* 原型模块高亮 */
+        .prototype-module {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .prototype-module[data-prototype] {
+            scroll-margin-top: 100px;
+        }
+
+        .feature-highlight {
+            outline: 3px solid #ff4444 !important;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.5) !important;
+            animation: highlightPulse 2s infinite;
+            z-index: 9999;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 68, 68, 0.8);
+            }
+        }
+
+        /* Focus 模式提示 */
+        .focus-mode-indicator {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: #ffc107;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 9999;
+            display: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* 页面切换控制 */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Focus 模式指示器 -->
+    <div class="focus-mode-indicator" id="focusIndicator">
+        <i class="bi bi-eye"></i> Focus 模式：<span id="focusFeatureName"></span>
+    </div>
+
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-stars"></i> 签售会抽选产品
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="#" class="active" data-page="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>工作台</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="activity-list">
+                    <i class="bi bi-calendar-event"></i>
+                    <span>活动管理</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="package-import">
+                    <i class="bi bi-upload"></i>
+                    <span>用户包导入</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="rule-config">
+                    <i class="bi bi-sliders"></i>
+                    <span>规则配置</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="selection-exec">
+                    <i class="bi bi-dice-5"></i>
+                    <span>抽选执行</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="result-mgmt">
+                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                    <span>结果管理</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航 -->
+        <div class="top-navbar">
+            <div>
+                <button class="btn btn-link d-md-none" id="sidebarToggle">
+                    <i class="bi bi-list fs-3"></i>
+                </button>
+                <span class="ms-2 fw-semibold" id="pageTitle">工作台</span>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="btn btn-link text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> 运营管理员
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面内容区域 -->
+        <div id="pageContent">
+            <!-- Dashboard 页面 -->
+            <section class="page-section active" id="page-dashboard" data-prototype="dashboard">
+                <div class="card prototype-module" data-prototype="activity_create">
+                    <div class="card-header">
+                        <i class="bi bi-plus-circle"></i> 快速创建活动
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">活动名称 *</label>
+                                    <input type="text" class="form-control" placeholder="例：2026-03-16 上海站签售会">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">活动时间 *</label>
+                                    <input type="datetime-local" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">抽选名额 *</label>
+                                    <input type="number" class="form-control" placeholder="100">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">活动地点 *</label>
+                                    <input type="text" class="form-control" placeholder="详细地址">
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-lg"></i> 创建活动
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card prototype-module" data-prototype="activity_list">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-list-task"></i> 最近活动</span>
+                        <button class="btn btn-sm btn-outline-primary">查看全部</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>活动名称</th>
+                                    <th>时间</th>
+                                    <th>地点</th>
+                                    <th>名额</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2026-03-16 上海站签售会</td>
+                                    <td>2026-03-16 14:00</td>
+                                    <td>上海市黄浦区人民广场</td>
+                                    <td>100</td>
+                                    <td><span class="badge-status badge-preparing">筹备中</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link">编辑</button>
+                                        <button class="btn btn-sm btn-link">删除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2026-03-20 北京站签售会</td>
+                                    <td>2026-03-20 15:00</td>
+                                    <td>北京市朝阳区三里屯</td>
+                                    <td>150</td>
+                                    <td><span class="badge-status badge-progress">进行中</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link">查看</button>
+                                        <button class="btn btn-sm btn-link">抽选</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 活动列表页面 -->
+            <section class="page-section" id="page-activity-list" data-prototype="activity_list">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-calendar3"></i> 活动列表</span>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus-lg"></i> 创建活动
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!-- 筛选区 -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="搜索活动名称...">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option>全部状态</option>
+                                    <option>筹备中</option>
+                                    <option>进行中</option>
+                                    <option>已完成</option>
+                                    <option>已公布</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" class="form-control" placeholder="开始日期">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary w-100">
+                                    <i class="bi bi-search"></i> 搜索
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 活动列表 -->
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>活动名称</th>
+                                    <th>活动时间</th>
+                                    <th>地点</th>
+                                    <th>抽选名额</th>
+                                    <th>用户包</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1001</td>
+                                    <td>2026-03-16 上海站签售会</td>
+                                    <td>2026-03-16 14:00</td>
+                                    <td>上海市黄浦区人民广场</td>
+                                    <td>100</td>
+                                    <td><span class="text-success"><i class="bi bi-check-circle"></i> 已导入</span></td>
+                                    <td><span class="badge-status badge-preparing">筹备中</span></td>
+                                    <td>2026-04-01 10:00</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">详情</button>
+                                        <button class="btn btn-sm btn-outline-secondary">编辑</button>
+                                        <button class="btn btn-sm btn-outline-danger">删除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 用户包导入页面 -->
+            <section class="page-section" id="page-package-import" data-prototype="package_upload">
+                <div class="card prototype-module" data-prototype="package_upload">
+                    <div class="card-header">
+                        <i class="bi bi-upload"></i> 上传 CSV 文件
+                    </div>
+                    <div class="card-body text-center py-5">
+                        <div class="upload-area" style="border: 2px dashed #dee2e6; border-radius: 8px; padding: 60px 20px;">
+                            <i class="bi bi-cloud-upload" style="font-size: 64px; color: #667eea;"></i>
+                            <h5 class="mt-3">拖拽文件到此处，或点击选择文件</h5>
+                            <p class="text-muted">支持 CSV 格式，最大 50MB</p>
+                            <button class="btn btn-primary mt-2">
+                                <i class="bi bi-folder2-open"></i> 选择文件
+                            </button>
+                            <div class="text-start mt-3">
+                                <small class="text-muted">
+                                    <strong>文件格式示例：</strong><br>
+                                    序号，用户 UUID, 用户昵称，手机号码，身份证号码，身份证姓名，实收，件数，时间，邮箱信息，TO 签内容
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card prototype-module" data-prototype="package_preview">
+                    <div class="card-header">
+                        <i class="bi bi-table"></i> 数据预览（前 100 行）
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>数据统计：</strong>总行数 1000 | 有效行数 998 | 无效行数 2 | 去重后用户数 995
+                        </div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>用户 UUID</th>
+                                    <th>用户昵称</th>
+                                    <th>手机号码</th>
+                                    <th>身份证姓名</th>
+                                    <th>实收</th>
+                                    <th>件数</th>
+                                    <th>时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>db98973...</td>
+                                    <td>Peach</td>
+                                    <td>137****9999</td>
+                                    <td>陶缘</td>
+                                    <td>1999</td>
+                                    <td>1</td>
+                                    <td>2026-01-02 12:00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                            <button class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-repeat"></i> 重新上传
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="bi bi-check-all"></i> 确认导入
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 规则配置页面 -->
+            <section class="page-section" id="page-rule-config" data-prototype="rule_quota">
+                <div class="card prototype-module" data-prototype="rule_quota">
+                    <div class="card-header">
+                        <i class="bi bi-sliders"></i> 抽选规则配置
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-people"></i> 抽选人数 *
+                                </label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control" value="100" min="1" max="99999">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-text">当前可用用户数：1000 人</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-toggle-on"></i> 是否允许重复中签
+                                </label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="allowRepeat">
+                                    <label class="form-check-label" for="allowRepeat">
+                                        允许同一用户多次中签（默认不允许）
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-secondary me-2">
+                                    <i class="bi bi-x-lg"></i> 取消
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save"></i> 保存规则
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card prototype-module" data-prototype="rule_filter">
+                    <div class="card-header">
+                        <i class="bi bi-funnel"></i> 筛选条件（可选）
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i> 
+                            未设置筛选条件，所有导入的用户都将参与抽选
+                        </div>
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-plus-lg"></i> 添加筛选条件
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 抽选执行页面 -->
+            <section class="page-section" id="page-selection-exec" data-prototype="selection_fullscreen">
+                <div class="card prototype-module" data-prototype="selection_control">
+                    <div class="card-header bg-dark text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-dice-5"></i> 全屏抽选模式</span>
+                            <button class="btn btn-outline-light btn-sm">
+                                <i class="bi bi-arrows-fullscreen"></i> 退出全屏
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body bg-dark text-white" style="min-height: 500px;">
+                        <!-- 活动信息 -->
+                        <div class="text-center mb-4">
+                            <h3>2026-03-16 上海站签售会</h3>
+                            <p class="text-muted">抽选规则：抽取 100 人 | 不允许重复中签</p>
+                        </div>
+
+                        <!-- 滚动展示区 -->
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-md-8">
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 40px; text-align: center;">
+                                    <div style="font-size: 32px; font-weight: bold;" id="rollingUser">
+                                        正在抽选中...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 控制按钮 -->
+                        <div class="text-center mb-4">
+                            <button class="btn btn-success btn-lg me-2" id="startBtn">
+                                <i class="bi bi-play-fill"></i> 开始抽选
+                            </button>
+                            <button class="btn btn-warning btn-lg me-2" id="pauseBtn" disabled>
+                                <i class="bi bi-pause-fill"></i> 暂停
+                            </button>
+                            <button class="btn btn-danger btn-lg" id="stopBtn" disabled>
+                                <i class="bi bi-stop-fill"></i> 停止
+                            </button>
+                        </div>
+
+                        <!-- 进度展示 -->
+                        <div class="text-center">
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" style="width: 0%;">
+                                    0 / 100
+                                </div>
+                            </div>
+                            <p class="mt-2">已抽选：<strong id="selectedCount">0</strong> 人</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card prototype-module" data-prototype="selection_result_live">
+                    <div class="card-header">
+                        <i class="bi bi-trophy"></i> 中签结果实时展示
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3" id="resultList">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-person-circle" style="font-size: 48px; color: #667eea;"></i>
+                                        <h5 class="mt-2">Peach</h5>
+                                        <p class="text-muted mb-0">购买 1 件 | ¥1999</p>
+                                        <small class="text-success">12:05:30 中签</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 结果管理页面 -->
+            <section class="page-section" id="page-result-mgmt" data-prototype="result_view">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-file-earmark-spreadsheet"></i> 中签名单</span>
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm me-2">
+                                <i class="bi bi-download"></i> 导出 Excel
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="bi bi-share"></i> 设置为已公布
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- 统计信息 -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h3>100</h3>
+                                        <p class="mb-0">总中签人数</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h3>¥199,900</h3>
+                                        <p class="mb-0">总购买金额</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h3>150</h3>
+                                        <p class="mb-0">总购买件数</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 名单列表 -->
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>用户 UUID</th>
+                                    <th>用户昵称</th>
+                                    <th>手机号码</th>
+                                    <th>身份证姓名</th>
+                                    <th>购买件数</th>
+                                    <th>实收金额</th>
+                                    <th>中签时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>db98973...</td>
+                                    <td>Peach</td>
+                                    <td>137****9999</td>
+                                    <td>陶缘</td>
+                                    <td>1</td>
+                                    <td>¥1999</td>
+                                    <td>2026-04-01 12:05:30</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card prototype-module" data-prototype="result_export">
+                    <div class="card-header">
+                        <i class="bi bi-download"></i> 导出设置
+                    </div>
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3">选择导出字段：</h6>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked id="field1">
+                                    <label class="form-check-label" for="field1">序号</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked id="field2">
+                                    <label class="form-check-label" for="field2">用户 UUID</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked id="field3">
+                                    <label class="form-check-label" for="field3">用户昵称</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked id="field4">
+                                    <label class="form-check-label" for="field4">手机号码（脱敏）</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="bi bi-download"></i> 确认导出
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card prototype-module" data-prototype="result_publish">
+                    <div class="card-header bg-danger text-white">
+                        <i class="bi bi-megaphone"></i> 公布设置
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i> 
+                            <strong>重要提示：</strong>公布后抽选结果将无法修改，请确认结果无误后再操作！
+                        </div>
+                        <p class="mb-3">公布后将执行以下操作：</p>
+                        <ul>
+                            <li>生成榜单访问链接</li>
+                            <li>生成二维码用于分享</li>
+                            <li>同步至榜单组件</li>
+                        </ul>
+                        <button class="btn btn-danger">
+                            <i class="bi bi-check-lg"></i> 确认公布
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 页面切换逻辑
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.dataset.page;
+                
+                // 更新激活状态
+                document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 切换页面
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById('page-' + pageId).classList.add('active');
+                
+                // 更新标题
+                document.getElementById('pageTitle').textContent = this.querySelector('span').textContent;
+            });
+        });
+
+        // Focus 模式支持
+        const urlParams = new URLSearchParams(window.location.search);
+        const focusMode = urlParams.get('focus');
+        
+        if (focusMode) {
+            const targetModule = document.querySelector(`[data-prototype="${focusMode}"]`);
+            if (targetModule) {
+                targetModule.classList.add('feature-highlight');
+                targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // 显示 Focus 模式指示器
+                document.getElementById('focusIndicator').style.display = 'block';
+                document.getElementById('focusFeatureName').textContent = focusMode;
+            }
+        }
+
+        // 接收主控文档联动消息
+        window.addEventListener('message', function(e) {
+            if (e.origin !== window.location.origin) return;
+            
+            const message = e.data;
+            if (message.action === 'highlight' && message.featureId) {
+                // 移除所有高亮
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+                
+                // 高亮目标模块
+                const targetModule = document.querySelector(`[data-prototype="${message.featureId}"]`);
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // 显示 Focus 模式指示器
+                    document.getElementById('focusIndicator').style.display = 'block';
+                    document.getElementById('focusFeatureName').textContent = message.featureId;
+                }
+            }
+        });
+
+        // 移动端侧边栏切换
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+
+        // 抽选控制模拟
+        let isRolling = false;
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const rollingUser = document.getElementById('rollingUser');
+        
+        if (startBtn) {
+            startBtn.addEventListener('click', function() {
+                isRolling = true;
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+                stopBtn.disabled = false;
+                
+                // 模拟滚动
+                const names = ['Peach', 'Alice', 'Bob', 'Charlie', 'Diana'];
+                setInterval(() => {
+                    if (isRolling) {
+                        const randomName = names[Math.floor(Math.random() * names.length)];
+                        rollingUser.textContent = randomName;
+                    }
+                }, 100);
+            });
+        }
+        
+        if (pauseBtn) {
+            pauseBtn.addEventListener('click', function() {
+                isRolling = !isRolling;
+                this.textContent = isRolling ? '暂停' : '继续';
+            });
+        }
+        
+        if (stopBtn) {
+            stopBtn.addEventListener('click', function() {
+                isRolling = false;
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                stopBtn.disabled = true;
+                rollingUser.textContent = '🎉 Peach 中签！';
+            });
+        }
+    </script>
+</body>
+</html>

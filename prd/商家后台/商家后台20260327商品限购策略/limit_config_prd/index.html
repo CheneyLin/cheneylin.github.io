@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>商品限购策略 PRD - 主控文档</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/geist-sans');
+    
+    :root { 
+      --geist-black: #171717;
+      --geist-white: #ffffff;
+      --geist-gray-900: #171717;
+      --geist-gray-600: #4d4d4d;
+      --geist-gray-500: #666666;
+      --link-blue: #0072f5;
+      --focus-blue: hsla(212, 100%, 48%, 1);
+      --border-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --primary: #171717;
+      --secondary: #764ba2; 
+    }
+    
+    html, body { 
+      height: 100%; 
+      margin: 0;
+      font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--geist-gray-900);
+      background: var(--geist-white);
+      letter-spacing: normal;
+    }
+    
+    .header { 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+      padding: 16px 32px; 
+      border-bottom: var(--border-shadow);
+      background: var(--geist-white);
+      position: sticky; 
+      top: 0; 
+      z-index: 10; 
+    }
+    
+    .header-title { 
+      font-size: 20px; 
+      font-weight: 600; 
+      color: var(--geist-gray-900);
+      letter-spacing: -0.64px;
+    }
+    
+    .version-badge { 
+      background: var(--geist-gray-900);
+      color: var(--geist-white);
+      padding: 4px 12px; 
+      border-radius: 9999px; 
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .main { 
+      display: flex; 
+      height: calc(100% - 64px); 
+    }
+    
+    .left { 
+      width: 50%; 
+      height: 100%; 
+      border-right: var(--border-shadow);
+      box-sizing: border-box; 
+      background: var(--geist-white); 
+    }
+    
+    .right { 
+      width: 50%; 
+      height: 100%; 
+      box-sizing: border-box; 
+      background: #fafafa; 
+    }
+    
+    .frame { 
+      width: 100%; 
+      height: 100%; 
+      border: 0; 
+    }
+    
+    .split { 
+      width: 8px; 
+      cursor: col-resize; 
+      background: linear-gradient(to right, transparent, #e0e0e0, transparent); 
+      transition: background 0.2s; 
+    }
+    
+    .split:hover { 
+      background: linear-gradient(to right, transparent, var(--link-blue), transparent); 
+    }
+    
+    .controls { 
+      margin-left: auto; 
+      display: flex; 
+      align-items: center; 
+      gap: 20px; 
+    }
+    
+    .controls label { 
+      color: var(--geist-gray-600);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .controls select { 
+      background: var(--geist-white);
+      color: var(--geist-gray-900);
+      border: rgb(235, 235, 235) 0px 0px 0px 1px;
+      padding: 6px 12px; 
+      border-radius: 6px; 
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    
+    .controls select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--focus-blue);
+    }
+    
+    .product-btns { 
+      display: flex; 
+      gap: 8px; 
+    }
+    
+    .product-btn { 
+      background: var(--geist-white);
+      color: var(--geist-gray-900);
+      border: rgb(235, 235, 235) 0px 0px 0px 1px;
+      padding: 6px 16px; 
+      border-radius: 6px; 
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer; 
+      transition: all 0.2s;
+    }
+    
+    .product-btn:hover { 
+      background: #f5f5f5;
+    }
+    
+    .product-btn.active { 
+      background: var(--geist-gray-900);
+      color: var(--geist-white);
+      border-color: var(--geist-gray-900);
+    }
+    
+    .width-control { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      color: var(--geist-gray-600);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .width-control input[type="range"] { 
+      width: 100px; 
+      cursor: pointer; 
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-title">商品限购策略 PRD</span>
+    <span class="version-badge">v1.3</span>
+    <div class="controls">
+      <div class="product-btns">
+        <button class="product-btn active" data-product="admin" onclick="switchProduct('admin')">后台管理</button>
+        <button class="product-btn" data-product="app" onclick="switchProduct('app')">APP 端</button>
+      </div>
+      <div class="width-control">
+        <span>右侧宽度</span>
+        <input id="rightWidth" type="range" min="30" max="70" value="50">
+        <span id="rightWidthLabel">50%</span>
+      </div>
+      <div class="width-control">
+        <label for="versionSelect">PRD 版本</label>
+        <select id="versionSelect" onchange="switchVersion(this.value)">
+          <option value="1.0">v1.0</option>
+          <option value="1.1">v1.1</option>
+          <option value="1.2">v1.2</option>
+          <option value="1.3" selected>v1.3</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="left">
+      <iframe id="prdFrame" class="frame" src="./v1.3/prd_html/prd_v1.3.html"></iframe>
+    </div>
+    <div class="split" id="splitter" title="拖动调整左右宽度"></div>
+    <div class="right">
+      <iframe id="protoFrame" class="frame" src="./v1.3/prototype_html/admin_v1.3.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const prdFrame = document.getElementById('prdFrame');
+    const protoFrame = document.getElementById('protoFrame');
+    const rightWidthRange = document.getElementById('rightWidth');
+    const rightWidthLabel = document.getElementById('rightWidthLabel');
+    const versionSelect = document.getElementById('versionSelect');
+    const leftPane = document.querySelector('.left');
+    const rightPane = document.querySelector('.right');
+    const splitter = document.getElementById('splitter');
+    let currentProduct = 'admin';
+    let currentVersion = '1.3';
+    let pendingHighlightId = null;
+
+    // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
+    protoFrame.addEventListener('load', () => {
+      if (!pendingHighlightId) return;
+      protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+      pendingHighlightId = null;
+    });
+
+    function switchVersion(version) {
+      currentVersion = version;
+      // 切换 PRD 文档
+      prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
+      // 切换原型文件
+      if (currentProduct === 'admin') {
+        protoFrame.src = `./v${version}/prototype_html/admin_v${version}.html`;
+      } else {
+        protoFrame.src = `./v${version}/prototype_html/app_v${version}.html`;
+      }
+    }
+
+    function switchProduct(product) {
+      currentProduct = product;
+      document.querySelectorAll('.product-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.product === product) btn.classList.add('active');
+      });
+      if (product === 'admin') {
+        protoFrame.src = `./v${currentVersion}/prototype_html/admin_v${currentVersion}.html`;
+      } else {
+        protoFrame.src = `./v${currentVersion}/prototype_html/app_v${currentVersion}.html`;
+      }
+    }
+
+    function setRightWidth(percent) {
+      percent = Math.max(30, Math.min(70, percent));
+      rightWidthLabel.textContent = percent + '%';
+      rightPane.style.width = percent + '%';
+      leftPane.style.width = (100 - percent) + '%';
+      // 保存到 localStorage
+      localStorage.setItem('prdRightWidth', percent);
+    }
+    rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
+    
+    // 从 localStorage 恢复布局状态
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedWidth = localStorage.getItem('prdRightWidth');
+      if (savedWidth) {
+        const width = parseInt(savedWidth, 10);
+        if (width >= 30 && width <= 70) {
+          setRightWidth(width);
+          rightWidthRange.value = width;
+        }
+      }
+    });
+
+    let dragging = false;
+    splitter.addEventListener('mousedown', () => { 
+      dragging = true; 
+      splitter.style.background = 'linear-gradient(to right, transparent, var(--primary), transparent)';
+    });
+    window.addEventListener('mouseup', () => { 
+      dragging = false; 
+      splitter.style.background = 'linear-gradient(to right, transparent, #f0f0f0, transparent)';
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const rect = document.querySelector('.main').getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentRight = Math.round(((rect.width - x) / rect.width) * 100);
+      setRightWidth(percentRight);
+      rightWidthRange.value = percentRight;
+    });
+
+    // 监听来自 PRD 的消息，联动原型高亮
+    window.addEventListener('message', (e) => {
+      const data = e.data || {};
+      if (data.action === 'highlight' && data.featureId) {
+        console.log('Received highlight request:', data.featureId);
+        
+        // 根据 featureId 判断是否需要切换产品形态
+        const targetProduct = data.featureId.includes('app') ? 'app' : 'admin';
+        
+        // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
+        if (targetProduct !== currentProduct) {
+          pendingHighlightId = data.featureId;
+          switchProduct(targetProduct);
+          return;
+        }
+        
+        // 发送高亮指令到原型 iframe
+        protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: data.featureId }, '*');
+      }
+    });
+  </script>
+</body>
+</html>

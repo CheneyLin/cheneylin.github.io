@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>签售会抽选产品 - PRD 文档中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #f5f7fa;
+        }
+
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .project-name {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .version-selector {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .version-selector:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .version-selector option {
+            background: #667eea;
+            color: white;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .product-type-btn {
+            padding: 8px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-type-btn.active {
+            background: rgba(255,255,255,0.2);
+            border-color: white;
+        }
+
+        .product-type-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* 主体区域 */
+        .main-container {
+            display: flex;
+            margin-top: 60px;
+            height: calc(100vh - 60px);
+        }
+
+        .left-panel, .right-panel {
+            width: 50%;
+            height: 100%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .left-panel {
+            background: white;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .right-panel {
+            background: #f8f9fa;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 分隔线 */
+        .resizer {
+            width: 8px;
+            background: #e0e0e0;
+            cursor: col-resize;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .resizer:hover {
+            background: #667eea;
+        }
+
+        /* 版本警告横幅 */
+        .version-warning {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: #fff3cd;
+            border-bottom: 2px solid #ffc107;
+            padding: 12px 30px;
+            text-align: center;
+            color: #856404;
+            font-size: 14px;
+            z-index: 999;
+            display: none;
+        }
+
+        .version-warning a {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .project-name {
+                font-size: 16px;
+            }
+
+            .version-selector, .product-type-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="project-name">签售会抽选产品 - PRD 文档中心</div>
+            <select class="version-selector" id="versionSelector" onchange="switchVersion()">
+                <option value="v1.0">v1.0</option>
+            </select>
+        </div>
+        <div class="navbar-right">
+            <button class="product-type-btn active" data-type="admin" onclick="switchProductType('admin')">后台管理</button>
+            <button class="product-type-btn" data-type="app" onclick="switchProductType('app')">移动端</button>
+        </div>
+    </nav>
+
+    <!-- 版本警告横幅 -->
+    <div class="version-warning" id="versionWarning">
+        您正在查看历史版本 <span id="oldVersion"></span>，<a onclick="switchToLatest()">点击此处前往最新版 <span id="latestVersion"></span></a>
+    </div>
+
+    <!-- 主体区域 -->
+    <div class="main-container">
+        <div class="left-panel" id="leftPanel">
+            <iframe id="prdFrame" src=""></iframe>
+        </div>
+        <div class="resizer" id="resizer"></div>
+        <div class="right-panel" id="rightPanel">
+            <iframe id="prototypeFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // 当前版本和产品类型
+        let currentVersion = 'v1.0';
+        let currentProductType = 'admin';
+        const latestVersion = 'v1.0';
+
+        // 版本文件映射
+        const versionFiles = {
+            'v1.0': {
+                prd: './v1.0/prd_html/prd_v1.0.html',
+                admin: './v1.0/prototype_html/admin_v1.0.html',
+                app: './v1.0/prototype_html/app_v1.0.html'
+            }
+        };
+
+        // 初始化
+        window.onload = function() {
+            loadContent(currentVersion, currentProductType);
+            loadSavedLayout();
+        };
+
+        // 切换版本
+        function switchVersion() {
+            const selector = document.getElementById('versionSelector');
+            currentVersion = selector.value;
+            loadContent(currentVersion, currentProductType);
+            checkVersionWarning();
+        }
+
+        // 切换产品类型
+        function switchProductType(type) {
+            currentProductType = type;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.product-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+
+            loadContent(currentVersion, currentProductType);
+        }
+
+        // 加载内容
+        function loadContent(version, productType) {
+            const prdFrame = document.getElementById('prdFrame');
+            const prototypeFrame = document.getElementById('prototypeFrame');
+
+            if (versionFiles[version]) {
+                prdFrame.src = versionFiles[version].prd;
+                prototypeFrame.src = versionFiles[version][productType];
+            }
+        }
+
+        // 检查版本警告
+        function checkVersionWarning() {
+            const warning = document.getElementById('versionWarning');
+            if (currentVersion !== latestVersion) {
+                document.getElementById('oldVersion').textContent = currentVersion;
+                document.getElementById('latestVersion').textContent = latestVersion;
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+
+        // 分隔线拖拽功能
+        const resizer = document.getElementById('resizer');
+        const leftPanel = document.getElementById('leftPanel');
+        const rightPanel = document.getElementById('rightPanel');
+
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.body.style.cursor = 'col-resize';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+
+            const containerWidth = document.querySelector('.main-container').offsetWidth;
+            const newLeftWidth = ((e.clientX - leftPanel.getBoundingClientRect().left) / containerWidth) * 100;
+
+            if (newLeftWidth >= 30 && newLeftWidth <= 70) {
+                leftPanel.style.width = newLeftWidth + '%';
+                rightPanel.style.width = (100 - newLeftWidth) + '%';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = '';
+                saveLayout(leftPanel.style.width);
+            }
+        });
+
+        // 保存布局
+        function saveLayout(leftWidth) {
+            localStorage.setItem('prdLayout', leftWidth);
+        }
+
+        // 加载保存的布局
+        function loadSavedLayout() {
+            const savedWidth = localStorage.getItem('prdLayout');
+            if (savedWidth) {
+                leftPanel.style.width = savedWidth;
+                rightPanel.style.width = (100 - savedWidth) + '%';
+            }
+        }
+
+        // 监听 PRD 滚动事件实现联动
+        const prdIframe = document.getElementById('prdFrame');
+        prdIframe.addEventListener('load', function() {
+            try {
+                this.contentWindow.addEventListener('scroll', function() {
+                    const visibleFeatures = getVisibleFeatures(this);
+                    if (visibleFeatures.length > 0) {
+                        highlightPrototype(visibleFeatures[0]);
+                    }
+                });
+            } catch (e) {
+                console.log('PRD linkage setup failed:', e);
+            }
+        });
+
+        // 获取可视区域的功能标识
+        function getVisibleFeatures(iframe) {
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            const features = Array.from(doc.querySelectorAll('[data-feature]'));
+            const rect = iframe.getBoundingClientRect();
+
+            return features.filter(feature => {
+                const featureRect = feature.getBoundingClientRect();
+                return featureRect.top >= rect.top && featureRect.bottom <= rect.bottom;
+            }).map(f => f.dataset.feature);
+        }
+
+        // 高亮原型模块
+        function highlightPrototype(featureId) {
+            const prototypeFrame = document.getElementById('prototypeFrame');
+            try {
+                prototypeFrame.contentWindow.postMessage({
+                    action: 'highlight',
+                    featureId: featureId
+                }, '*');
+            } catch (e) {
+                console.log('Prototype highlight failed:', e);
+            }
+        }
+    </script>
+</body>
+</html>

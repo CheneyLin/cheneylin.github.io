@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>签售会抽选产品 - PRD 文档 v1.0</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --text-color: #2d3748;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: white;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: var(--secondary-color);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 18px;
+            color: var(--text-color);
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #f0f4ff;
+        }
+
+        .feature-section {
+            background: white;
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .feature-section:hover {
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+        }
+
+        .view-prototype-btn {
+            display: inline-block;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-prototype-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        /* 目录导航 */
+        .toc {
+            position: sticky;
+            top: 20px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary-color);
+        }
+
+        @media print {
+            .view-prototype-btn {
+                display: none;
+            }
+            
+            body {
+                max-width: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 目录导航 -->
+    <div class="toc">
+        <h3>📑 目录导航</h3>
+        <ul>
+            <li><a href="#section1">一、需求背景</a></li>
+            <li><a href="#section2">二、需求目标</a></li>
+            <li><a href="#section3">三、用户与使用场景</a></li>
+            <li><a href="#section4">四、需求功能清单</a></li>
+            <li><a href="#section5">五、详细方案</a></li>
+            <li><a href="#section6">六、业务流程图</a></li>
+            <li><a href="#section7">七、异常与边界处理</a></li>
+            <li><a href="#section8">八、数据追踪与埋点</a></li>
+            <li><a href="#section9">九、未来演进规划</a></li>
+            <li><a href="#section10">十、附件</a></li>
+        </ul>
+    </div>
+
+    <h1 id="top">签售会抽选产品 - 产品需求文档</h1>
+
+    <table>
+        <tr>
+            <th>项目名称</th>
+            <td>签售会抽选产品</td>
+        </tr>
+        <tr>
+            <th>文档版本</th>
+            <td>v1.0</td>
+        </tr>
+        <tr>
+            <th>产品负责人</th>
+            <td>[待填写]</td>
+        </tr>
+        <tr>
+            <th>创建时间</th>
+            <td>2026-04-01</td>
+        </tr>
+        <tr>
+            <th>最后更新</th>
+            <td>2026-04-01</td>
+        </tr>
+        <tr>
+            <th>开发状态</th>
+            <td>需求评审中</td>
+        </tr>
+    </table>
+
+    <h2 id="section1">一、需求背景</h2>
+    
+    <h3>1.1 现状问题</h3>
+    <p>明星线下专辑签售会需要对购买专辑的用户进行抽选，并生成名单公布。目前该流程缺乏系统化产品支持，运营人员需要手工处理数据导出、抽选和名单公布，效率较低且容易出错。</p>
+
+    <h3>1.2 痛点分析</h3>
+    <ol>
+        <li><strong>数据处理繁琐</strong>：运营人员需要手动导出 CSV 数据，手工筛选和处理</li>
+        <li><strong>抽选过程不透明</strong>：缺乏可视化的抽选展示，难以保证公平性</li>
+        <li><strong>结果公布效率低</strong>：名单整理和发布耗时长，易出错</li>
+        <li><strong>无法追溯审计</strong>：缺少操作记录，难以追溯抽选过程</li>
+    </ol>
+
+    <h3>1.3 必要性说明</h3>
+    <p>通过产品化实现抽选流程的标准化、自动化和可视化，提高运营效率，确保抽选过程的公平性和透明度。</p>
+
+    <h2 id="section2">二、需求目标</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>目标类型</th>
+                <th>描述</th>
+                <th>衡量指标</th>
+                <th>目标值</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>效率提升</strong></td>
+                <td>缩短抽选活动准备时间</td>
+                <td>从数据准备到结果公布的总耗时</td>
+                <td>≤30 分钟</td>
+            </tr>
+            <tr>
+                <td><strong>准确性</strong></td>
+                <td>确保抽选结果准确无误</td>
+                <td>数据导入准确率、抽选结果准确率</td>
+                <td>≥99.9%</td>
+            </tr>
+            <tr>
+                <td><strong>用户体验</strong></td>
+                <td>简化运营人员操作流程</td>
+                <td>操作步骤数、学习成本</td>
+                <td>≤5 步核心操作</td>
+            </tr>
+            <tr>
+                <td><strong>透明度</strong></td>
+                <td>提升抽选过程可视化程度</td>
+                <td>支持全屏展示、过程可追溯</td>
+                <td>100% 支持</td>
+            </tr>
+            <tr>
+                <td><strong>灵活性</strong></td>
+                <td>支持多次调整重选</td>
+                <td>支持重新导入用户包、调整规则</td>
+                <td>无限次重选</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="section3">三、用户与使用场景</h2>
+
+    <h3>3.1 目标用户画像</h3>
+    <div class="info-box">
+        <strong>核心用户：运营人员</strong><br>
+        • 基本特征：负责明星签售会活动的组织和执行<br>
+        • 技能水平：熟悉基本的后台操作和 Excel 使用<br>
+        • 使用频率：按活动周期使用（不定期，每次活动使用 1 次）<br>
+        • 核心诉求：快速完成抽选、确保结果准确、流程可追溯
+    </div>
+
+    <h3>3.2 典型使用场景</h3>
+    <p><strong>场景 1：新活动抽选配置</strong></p>
+    <ul>
+        <li>触发条件：收到新的签售会活动规则和通知</li>
+        <li>用户目标：完成活动场次配置，导入用户数据，设置抽选规则</li>
+        <li>使用环境：办公室，PC 端后台系统</li>
+    </ul>
+
+    <p><strong>场景 2：执行抽选操作</strong></p>
+    <ul>
+        <li>触发条件：到达预定抽选时间，所有准备工作完成</li>
+        <li>用户目标：执行抽选，查看抽选结果，必要时调整规则重选</li>
+        <li>使用环境：会议室或办公室，可能需要投屏展示</li>
+    </ul>
+
+    <p><strong>场景 3：结果导出与公布</strong></p>
+    <ul>
+        <li>触发条件：抽选完成，确认最终结果</li>
+        <li>用户目标：导出中签名单，设置为对外公布状态</li>
+        <li>使用环境：办公室，完成后续发布流程</li>
+    </ul>
+
+    <h3>3.3 用户旅程图</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>阶段</th>
+                <th>用户触点</th>
+                <th>用户行为</th>
+                <th>痛点/情绪</th>
+                <th>产品机会点</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>准备阶段</strong></td>
+                <td>收到活动规则邮件</td>
+                <td>理解活动要求，准备导出数据</td>
+                <td>担心遗漏关键信息</td>
+                <td>提供规则配置模板</td>
+            </tr>
+            <tr>
+                <td><strong>数据导入</strong></td>
+                <td>登录周公后台导出数据</td>
+                <td>手动导出 CSV 文件，上传至本系统</td>
+                <td>担心格式错误、数据遗漏</td>
+                <td>自动校验数据格式，提示错误</td>
+            </tr>
+            <tr>
+                <td><strong>规则配置</strong></td>
+                <td>进入规则配置页面</td>
+                <td>设置抽选人数、筛选条件等</td>
+                <td>担心规则设置错误影响公平性</td>
+                <td>提供规则预览和验证</td>
+            </tr>
+            <tr>
+                <td><strong>执行抽选</strong></td>
+                <td>点击开始抽选按钮</td>
+                <td>观看抽选过程，等待结果产生</td>
+                <td>紧张、期待过程流畅</td>
+                <td>炫酷的抽选动画，实时展示进度</td>
+            </tr>
+            <tr>
+                <td><strong>结果确认</strong></td>
+                <td>查看抽选结果列表</td>
+                <td>核对中签用户信息，决定是否重选</td>
+                <td>谨慎、需要反复确认</td>
+                <td>清晰的结果展示，支持对比查看</td>
+            </tr>
+            <tr>
+                <td><strong>导出发布</strong></td>
+                <td>导出结果，设置公布状态</td>
+                <td>下载 Excel 文件，点击"公布"按钮</td>
+                <td>如释重负、希望一键完成</td>
+                <td>简化导出流程，自动化发布</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="section4">四、需求功能清单</h2>
+
+    <h3>4.1 功能架构总览</h3>
+    
+    <div class="info-box">
+        <strong>4.1.1 愚公平台 - 后台</strong><br>
+        <pre style="background: #f8f9fa; padding: 15px; border-radius: 6px; overflow-x: auto;">运营工具箱
+├── 签售会抽选
+│   ├── 创建
+│   └── 列表管理
+│       ├── 编辑
+│       ├── 用户包
+│       ├── 规则
+│       ├── 抽选
+│       └── 通知
+
+活动创作
+├── 活动列表
+│   └── 创作</pre>
+    </div>
+
+    <div class="info-box">
+        <strong>4.1.2 愚公平台 - H5</strong><br>
+        <pre style="background: #f8f9fa; padding: 15px; border-radius: 6px; overflow-x: auto;">H5
+├── 头图（占位）
+├── 名单（榜单组件）
+│   ├── 表头
+│   └── 用户列表
+│       ├── 昵称
+│       ├── 手机号码
+│       └── 邮件</pre>
+    </div>
+
+    <h3>4.2 详细功能清单</h3>
+    
+    <h4>4.2.1 愚公平台 - 后台管理端</h4>
+    
+    <p><strong>运营工具箱 → 签售会抽选</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>主模块</th>
+                <th>子模块</th>
+                <th>功能点</th>
+                <th>功能标识</th>
+                <th>优先级</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>创建</strong></td>
+                <td>-</td>
+                <td>创建活动场次</td>
+                <td><code>activity_create</code></td>
+                <td>P0</td>
+                <td>从运营工具箱入口进入</td>
+            </tr>
+            <tr>
+                <td rowspan="7"><strong>列表管理</strong></td>
+                <td>编辑</td>
+                <td>编辑活动信息</td>
+                <td><code>activity_edit</code></td>
+                <td>P0</td>
+                <td>仅筹备中状态可编辑</td>
+            </tr>
+            <tr>
+                <td>用户包</td>
+                <td>用户包列表</td>
+                <td><code>package_list</code></td>
+                <td>P0</td>
+                <td>二级页面，名称、人数、状态</td>
+            </tr>
+            <tr>
+                <td>用户包</td>
+                <td>新增用户包</td>
+                <td><code>package_create</code></td>
+                <td>P0</td>
+                <td>名称、上传 EXCEL/CSV 格式</td>
+            </tr>
+            <tr>
+                <td>规则</td>
+                <td>配置抽选规则、逻辑、轮次</td>
+                <td><code>rule_config</code></td>
+                <td>P0</td>
+                <td>默认 1 轮，可多轮</td>
+            </tr>
+            <tr>
+                <td>抽选</td>
+                <td>抽选列表</td>
+                <td><code>selection_list</code></td>
+                <td>P0</td>
+                <td>二级页面，操作：导出、回放、设为公开</td>
+            </tr>
+            <tr>
+                <td>抽选</td>
+                <td>全屏抽选</td>
+                <td><code>selection_show</code></td>
+                <td>P0</td>
+                <td>沉浸式抽选界面</td>
+            </tr>
+            <tr>
+                <td>通知</td>
+                <td>通知列表</td>
+                <td><code>message_list</code></td>
+                <td>P0</td>
+                <td>配置短信、PUSH、站内信</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>活动创作</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>主模块</th>
+                <th>子模块</th>
+                <th>功能点</th>
+                <th>功能标识</th>
+                <th>优先级</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>活动列表</strong></td>
+                <td>-</td>
+                <td>项目列表</td>
+                <td><code>activity_list</code></td>
+                <td>P0</td>
+                <td>展示所有 H5 页面项目</td>
+            </tr>
+            <tr>
+                <td><strong>活动列表</strong></td>
+                <td>创作</td>
+                <td>榜单组件配置属性</td>
+                <td><code>activity_rank_config</code></td>
+                <td>P0</td>
+                <td>右边侧边栏，配置属性</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>4.2.2 愚公平台 - H5 移动端（榜单公布）</h4>
+    
+    <p><strong>H5 榜单页面</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>主模块</th>
+                <th>子模块</th>
+                <th>功能点</th>
+                <th>功能标识</th>
+                <th>优先级</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>头图</strong></td>
+                <td>-</td>
+                <td>头图占位区域</td>
+                <td><code>h5_header_image</code></td>
+                <td>P1</td>
+                <td>活动宣传图或品牌展示</td>
+            </tr>
+            <tr>
+                <td rowspan="3"><strong>名单（榜单组件）</strong></td>
+                <td>表头</td>
+                <td>活动标题展示</td>
+                <td><code>h5_activity_title</code></td>
+                <td>P0</td>
+                <td>显示活动名称</td>
+            </tr>
+            <tr>
+                <td>表头</td>
+                <td>公布时间展示</td>
+                <td><code>h5_publish_time</code></td>
+                <td>P1</td>
+                <td>显示结果公布时间</td>
+            </tr>
+            <tr>
+                <td rowspan="4">用户列表</td>
+                <td>用户昵称展示</td>
+                <td><code>h5_user_nickname</code></td>
+                <td>P0</td>
+                <td>显示中签用户昵称</td>
+            </tr>
+            <tr>
+                <td>手机号码脱敏展示</td>
+                <td><code>h5_user_phone_masked</code></td>
+                <td>P0</td>
+                <td>137****9999 格式</td>
+            </tr>
+            <tr>
+                <td>邮箱信息展示</td>
+                <td><code>h5_user_email</code></td>
+                <td>P1</td>
+                <td>部分显示或脱敏</td>
+            </tr>
+            <tr>
+                <td>按中签时间排序</td>
+                <td><code>h5_sort_by_time</code></td>
+                <td>P0</td>
+                <td>默认倒序排列</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="section5">五、详细方案</h2>
+
+    <h3>5.1 愚公平台 - 后台管理端</h3>
+
+    <h4>5.1.1 运营工具箱 → 签售会抽选</h4>
+
+    <div data-feature="activity_create" class="feature-section">
+        <h3>5.1.1.1 创建活动场次 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'activity_create'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：从运营工具箱入口进入，创建新的签售会抽选活动</p>
+        <p><strong>前置条件</strong>：用户已登录后台管理系统，具有运营工具箱访问权限</p>
+        <p><strong>业务规则</strong>：</p>
+        <ol>
+            <li>活动名称必须唯一，不可重复</li>
+            <li>活动时间必须在当前时间之后</li>
+            <li>抽选名额必须为正整数（范围 1-99999）</li>
+            <li>活动状态默认为"筹备中"</li>
+            <li>创建成功后自动进入活动编辑页面</li>
+        </ol>
+        <p><strong>输入字段</strong>：</p>
+        <ul>
+            <li>活动名称（必填，文本，最多 50 字符）</li>
+            <li>活动时间（必填，日期时间选择器）</li>
+            <li>活动地点（必填，文本，最多 100 字符）</li>
+            <li>抽选名额（必填，数字，范围 1-99999）</li>
+            <li>活动备注（选填，文本，最多 500 字符）</li>
+        </ul>
+        <p><strong>交互流程</strong>：</p>
+        <ol>
+            <li>点击运营工具箱中的"签售会抽选"入口</li>
+            <li>点击"创建活动"按钮</li>
+            <li>弹出活动创建表单</li>
+            <li>填写必填信息</li>
+            <li>系统校验数据合法性</li>
+            <li>提交成功，跳转至活动详情页（列表管理 - 编辑）</li>
+        </ol>
+        <p><strong>异常处理</strong>：</p>
+        <ul>
+            <li>活动名称重复：提示"该活动名称已存在，请使用其他名称"</li>
+            <li>时间在过去：提示"活动时间必须晚于当前时间"</li>
+            <li>名额超出范围：提示"抽选名额必须在 1-99999 之间"</li>
+        </ul>
+    </div>
+
+    <div data-feature="activity_list" class="feature-section">
+        <h3>5.1.1.2 活动列表管理 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'activity_list'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：展示所有抽选活动列表，支持筛选和快捷操作</p>
+        <p><strong>页面元素</strong>：</p>
+        <ul>
+            <li><strong>搜索区</strong>：搜索框、状态筛选、时间筛选</li>
+            <li><strong>列表字段</strong>：活动名称、时间、地点、名额、状态、创建时间、操作</li>
+        </ul>
+        <p><strong>操作按钮</strong>：</p>
+        <ul>
+            <li>查看详情（所有状态可用）</li>
+            <li>编辑活动（仅筹备中状态可用）</li>
+            <li>删除活动（仅筹备中状态可用，需二次确认）</li>
+            <li>进入抽选（仅已导入用户包的活动可用）</li>
+        </ul>
+    </div>
+
+    <div data-feature="activity_edit" class="feature-section">
+        <h3>5.1.1.3 编辑活动信息 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'activity_edit'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：修改已创建活动的详细信息</p>
+        <p><strong>前置条件</strong>：活动处于"筹备中"状态</p>
+        <p><strong>业务规则</strong>：</p>
+        <ol>
+            <li>仅筹备中状态的活动可以编辑</li>
+            <li>修改后自动保存（或手动点击保存）</li>
+            <li>活动名称修改后仍需保持唯一性</li>
+            <li>已开始的活动不允许修改</li>
+        </ol>
+        <p><strong>可编辑字段</strong>：活动名称、活动时间、活动地点、抽选名额、活动备注</p>
+    </div>
+
+    <div data-feature="package_list" class="feature-section">
+        <h3>5.1.1.4 用户包列表管理 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'package_list'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：二级页面，展示当前活动的所有用户包列表</p>
+        <p><strong>页面元素</strong>：页面标题、返回列表按钮、新增按钮、列表字段（名称、来源、数量、时间、状态、操作）</p>
+        <p><strong>业务规则</strong>：</p>
+        <ol>
+            <li>一个活动可以有多个用户包</li>
+            <li>同一时间只能有一个用户包处于"已启用"状态</li>
+            <li>启用新用户包时，自动停用旧用户包</li>
+            <li>已有抽选结果的用户包不允许删除</li>
+        </ol>
+    </div>
+
+    <div data-feature="package_create" class="feature-section">
+        <h3>5.1.1.5 新增用户包 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'package_create'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：上传 Excel/CSV 格式的用户数据文件</p>
+        <p><strong>数据格式要求</strong>：</p>
+        <pre>序号，用户 UUID, 用户昵称，手机号码，身份证号码，身份证姓名，实收，件数，时间，邮箱信息，TO 签内容
+1,db98973...,Peach,13706589999,330402200001011200，陶缘，1999,1,2026-01-02 12:00:00,-,-</pre>
+        <p><strong>必填字段</strong>：用户 UUID、手机号码、身份证姓名</p>
+        <p><strong>文件大小限制</strong>：≤50MB</p>
+        <p><strong>数据校验</strong>：文件格式、必填字段、数据格式、文件过大、重复数据</p>
+    </div>
+
+    <div data-feature="rule_config" class="feature-section">
+        <h3>5.1.1.6 配置抽选规则 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'rule_config'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：配置抽选规则、逻辑、轮次，支持多轮抽选</p>
+        <p><strong>前置条件</strong>：已导入用户包且用户包处于已启用状态</p>
+        <p><strong>业务规则</strong>：</p>
+        <ol>
+            <li>默认 1 轮抽选</li>
+            <li>支持配置多轮抽选（如第一轮 50 人，第二轮 30 人）</li>
+            <li>每轮可独立配置：名称、人数、使用的用户包、白名单</li>
+            <li>可设置是否允许重复中签（默认不允许）</li>
+        </ol>
+        <p><strong>抽选逻辑</strong>：</p>
+        <ul>
+            <li>A1-A3：按用户随机（各抽各的/剔除上轮/末轮剔除）</li>
+            <li>B1-B3：按金额取前（各抽各的/剔除上轮/末轮剔除）</li>
+            <li>C1-C3：按件数权重随机（各抽各的/剔除上轮/末轮剔除）</li>
+        </ul>
+    </div>
+
+    <div data-feature="selection_list" class="feature-section">
+        <h3>5.1.1.7 抽选列表管理 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'selection_list'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：二级页面，展示所有抽选记录，支持新增抽选、导出、回放、设为公开</p>
+        <p><strong>页面元素</strong>：页面标题、返回列表按钮、新增抽选按钮、列表字段（轮次、时间、人数、状态、操作）</p>
+        <p><strong>操作按钮</strong>：</p>
+        <ul>
+            <li><strong>新增抽选</strong>：点击进入全屏抽选模式</li>
+            <li><strong>导出</strong>：导出该轮抽选结果为 Excel 文件</li>
+            <li><strong>回放</strong>：重新播放该轮抽选的动画过程</li>
+            <li><strong>设为公开</strong>：将该轮结果设置为对外公布状态（需二次确认）</li>
+        </ul>
+    </div>
+
+    <div data-feature="selection_show" class="feature-section">
+        <h3>5.1.1.8 全屏抽选展示 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'selection_show'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：进入沉浸式全屏抽选界面，展示抽选过程</p>
+        <p><strong>界面布局</strong>：</p>
+        <ul>
+            <li><strong>顶部区域</strong>：活动名称、抽选轮次、规则摘要、退出按钮</li>
+            <li><strong>中央展示区</strong>：用户信息滚动展示、炫酷动画效果</li>
+            <li><strong>底部控制区</strong>：开始/暂停/停止按钮组、进度显示、结果缩略图</li>
+        </ul>
+        <p><strong>视觉效果</strong>：深色背景（#1a1a2e）、渐变紫色主题、卡片式展示、平滑动画、庆祝特效</p>
+        <p><strong>业务规则</strong>：</p>
+        <ol>
+            <li>点击"开始"时，后端立即计算完整抽选结果</li>
+            <li>前端动画仅为展示效果，不影响结果</li>
+            <li>确保结果已定，过程可控</li>
+            <li>支持中途暂停（视觉暂停，非结果暂停）</li>
+            <li>点击"停止"后结果不可更改</li>
+        </ol>
+    </div>
+
+    <div data-feature="message_list" class="feature-section">
+        <h3>5.1.1.9 通知列表管理 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'message_list'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：配置通知任务，向指定人群发送短信、PUSH、站内信等</p>
+        <p><strong>前置条件</strong>：已有中签用户</p>
+        <p><strong>配置项</strong>：</p>
+        <ul>
+            <li><strong>基础配置</strong>：任务名称、通知类型、目标人群</li>
+            <li><strong>文案配置</strong>：短信文案（500 字符）、PUSH 文案、站内信文案</li>
+            <li><strong>发送配置</strong>：发送时间、发送频率、签名配置</li>
+        </ul>
+        <p><strong>示例文案</strong>：</p>
+        <pre>【小芒 APP】亲爱的{用户昵称}，恭喜您在{活动名称}中获得中签资格！
+请于{截止时间}前前往{活动地点}参加签售会。</pre>
+    </div>
+
+    <h4>5.1.2 活动创作模块</h4>
+
+    <div data-feature="activity_rank_config" class="feature-section">
+        <h3>5.1.2.1 榜单组件配置属性 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'activity_rank_config'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：在 H5 项目列表中，通过右侧边栏配置榜单组件属性</p>
+        <p><strong>配置项分类</strong>：</p>
+        <ul>
+            <li><strong>基础配置</strong>：组件标题、描述、榜单类型、数据源</li>
+            <li><strong>样式配置</strong>：头图、配色、列表风格</li>
+            <li><strong>数据配置</strong>：显示字段、排序规则、分页设置</li>
+            <li><strong>高级配置</strong>：访问权限、分享设置、SEO 设置</li>
+        </ul>
+    </div>
+
+    <h3>5.2 愚公平台 - H5 移动端（榜单公布）</h3>
+
+    <h4>5.2.1 H5 榜单页面</h4>
+
+    <div data-feature="h5_header" class="feature-section">
+        <h3>5.2.1.1 页面头部 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'h5_header'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：展示活动基本信息和头图</p>
+        <p><strong>包含内容</strong>：</p>
+        <ul>
+            <li><strong>头图区域</strong>（可选）：JPG/PNG/GIF，≤2MB，建议 750x400px</li>
+            <li><strong>活动标题</strong>：来自后台配置，最多 50 字符，20px，加粗</li>
+            <li><strong>公布时间</strong>：YYYY-MM-DD HH:mm:ss，浅灰色，12px</li>
+        </ul>
+        <p><strong>样式规范</strong>：居中对齐，间距 12-16px，响应式适配</p>
+    </div>
+
+    <div data-feature="h5_user_list" class="feature-section">
+        <h3>5.2.1.2 用户列表展示 
+            <a href="#" class="view-prototype-btn" onclick="window.parent.postMessage({action:'highlight', featureId:'h5_user_list'}, '*'); return false;">
+                👁️ 查看原型
+            </a>
+        </h3>
+        <p><strong>功能描述</strong>：以卡片列表形式展示中签用户信息</p>
+        <p><strong>列表字段</strong>：</p>
+        <ul>
+            <li><strong>用户昵称</strong>（必填）：完整显示，>20 字符中间省略，16px</li>
+            <li><strong>手机号码</strong>（必填，脱敏）：`137****9999` 格式，14px，带📱图标</li>
+            <li><strong>邮箱信息</strong>（可选）：默认不显示，长地址中间省略，13px，带✉️图标</li>
+        </ul>
+        <p><strong>列表布局</strong>：</p>
+        <pre>┌─────────────────────────────┐
+│ 👤 Peach🍑                  │
+│ 📱 137****9999              │
+│ ✉️ peach@xm.com (可选)     │
+└─────────────────────────────┘</pre>
+        <p><strong>业务规则</strong>：</p>
+        <ul>
+            <li>卡片式布局，圆角 8px，轻微阴影</li>
+            <li>卡片间距：12px</li>
+            <li>支持长按复制邮箱地址</li>
+            <li>隐私保护：支持匿名化处理</li>
+        </ul>
+    </div>
+
+    <h2 id="section6">六、业务流程图</h2>
+
+    <h3>6.1 核心业务流程</h3>
+    <pre style="background: #f8f9fa; padding: 20px; border-radius: 8px; overflow-x: auto;">
+```mermaid
+flowchart TD
+    A[开始] --> B[创建活动场次]
+    B --> C[导入用户包 CSV]
+    C --> D{数据校验}
+    D -->|失败 | E[重新上传]
+    D -->|成功 | F[配置抽选规则]
+    F --> G[进入全屏抽选模式]
+    G --> H[开始抽选]
+    H --> I{是否需要调整}
+    I -->|是，调整用户包 | C
+    I -->|是，调整规则 | F
+    I -->|否，确认结果 | J[查看中签名单]
+    J --> K[导出结果 Excel]
+    K --> L[设置为已公布状态]
+    L --> M[结束]
+    
+    style A fill:#e1f5ff
+    style M fill:#e8f5e9
+    style I fill:#fff3e0
+    style L fill:#fce4ec
+```
+    </pre>
+
+    <h2 id="section7">七、异常与边界处理</h2>
+
+    <h3>7.1 数据异常</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>异常场景</th>
+                <th>处理方式</th>
+                <th>提示信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CSV 文件格式错误</td>
+                <td>拒绝导入，提示格式要求</td>
+                <td>"请上传 CSV 格式文件，支持 UTF-8 编码"</td>
+            </tr>
+            <tr>
+                <td>必填字段缺失</td>
+                <td>高亮显示缺失行，阻止导入</td>
+                <td>"第 X 行缺少必填字段：[字段名]"</td>
+            </tr>
+            <tr>
+                <td>数据重复</td>
+                <td>自动去重，提示去重结果</td>
+                <td>"检测到 X 条重复数据，已自动去重"</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="section8">八、数据追踪与埋点（可选）</h2>
+
+    <h3>8.1 关键行为埋点</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>事件名称</th>
+                <th>触发时机</th>
+                <th>埋点参数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>activity_created</code></td>
+                <td>创建活动成功</td>
+                <td>activityId, activityName, quota</td>
+            </tr>
+            <tr>
+                <td><code>package_imported</code></td>
+                <td>用户包导入成功</td>
+                <td>activityId, userCount, fileSize</td>
+            </tr>
+            <tr>
+                <td><code>selection_completed</code></td>
+                <td>抽选完成</td>
+                <td>activityId, selectedCount, duration</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="section9">九、未来演进规划 (Roadmap)</h2>
+
+    <div class="info-box">
+        <strong>v1.0（当前版本）</strong><br>
+        ✅ 基础活动管理<br>
+        ✅ CSV 数据导入<br>
+        ✅ 规则配置与抽选<br>
+        ✅ 结果导出与公布
+    </div>
+
+    <div class="info-box">
+        <strong>v1.1（规划中）</strong><br>
+        🔲 支持多种抽选算法（加权随机、分层抽样）<br>
+        🔲 短信/邮件通知中签用户<br>
+        🔲 榜单自定义模板
+    </div>
+
+    <h2 id="section10">十、附件</h2>
+
+    <h3>10.1 数据字典</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>字段名</th>
+                <th>类型</th>
+                <th>必填</th>
+                <th>说明</th>
+                <th>示例</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>序号</td>
+                <td>Integer</td>
+                <td>是</td>
+                <td>行号</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>用户 UUID</td>
+                <td>String</td>
+                <td>是</td>
+                <td>用户唯一标识</td>
+                <td>db9897306b6040a8bb0d492457b500e3</td>
+            </tr>
+            <tr>
+                <td>用户昵称</td>
+                <td>String</td>
+                <td>是</td>
+                <td>用户显示昵称</td>
+                <td>Peach</td>
+            </tr>
+            <tr>
+                <td>手机号码</td>
+                <td>String</td>
+                <td>是</td>
+                <td>手机号</td>
+                <td>13706589999</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr style="margin-top: 60px; border-top: 2px solid var(--border-color);">
+    
+    <h2>版本记录</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>版本</th>
+                <th>日期</th>
+                <th>修订人</th>
+                <th>修订内容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>v1.0</td>
+                <td>2026-04-01</td>
+                <td>AI 助手</td>
+                <td>初始版本创建</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Smooth scrolling for TOC
+        document.querySelectorAll('.toc a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

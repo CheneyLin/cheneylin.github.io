@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明星群聊室 - 移动端原型</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* 固定控制按钮 */
+        .fixed-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .control-btn.active {
+            background: linear-gradient(135deg, #00b894, #00a884);
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+        }
+        
+        /* 手机原型统一尺寸 */
+        :root {
+            --phone-width: 375px;
+            --phone-height: 812px;
+        }
+
+        /* 平铺容器 */
+        .prototype-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(var(--phone-width), 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+        
+        /* 全局视图模式 */
+        .prototype-container.global-view {
+            grid-template-columns: repeat(auto-fill, minmax(var(--phone-width), 1fr));
+            gap: 2rem;
+            max-width: none;
+            padding: 2rem;
+        }
+        
+        .prototype-container.global-view .page-section {
+            display: block !important;
+            opacity: 1;
+            transform: none;
+        }
+        
+        /* 手机框架 */
+        .phone-frame {
+            width: var(--phone-width);
+            height: var(--phone-height);
+            background: #f0f2f5;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 12px solid #1a1a1a;
+        }
+        
+        .phone-frame.highlighted {
+            border-color: #667eea;
+            box-shadow: 0 0 50px rgba(102, 126, 234, 0.6);
+            transform: scale(1.02);
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #1a1a1a;
+            border-radius: 0 0 20px 20px;
+            z-index: 50;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background: #fff;
+            position: relative;
+            padding: 0 16px;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .page-content {
+            height: calc(var(--phone-height) - 44px);
+            overflow-y: auto;
+            position: relative;
+            padding: 16px;
+            padding-top: 60px;
+            padding-bottom: 100px;
+        }
+        
+        .page-content::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+        
+        /* 标签页 */
+        .tabs {
+            position: sticky;
+            top: 0;
+            background: #1a1a1a;
+            padding: 1rem 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+        }
+        
+        .tabs.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-100%);
+        }
+        
+        .tab-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: #667eea;
+            transform: scale(1.05);
+        }
+        
+        /* 页面显示控制 */
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 高亮模块 */
+        .feature-highlight {
+            border: 2px solid #ff4d4f !important;
+            box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .prototype-module {
+            transition: all 0.3s;
+        }
+        
+        /* 通用组件样式 */
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        
+        /* 输入框定位样式 - 支持智能切换 */
+        .input-container {
+            transition: all 0.3s ease;
+        }
+        
+        /* 全局视图模式：相对定位 */
+        .prototype-container.global-view .input-container {
+            position: relative;
+            margin-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        /* 单页视图模式：固定吸底 */
+        .prototype-container:not(.global-view) .input-container {
+            position: fixed;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+            margin-top: 0;
+            border-top: none;
+            border-radius: 24px;
+            padding: 12px 16px;
+            background: white;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+            z-index: 100;
+        }
+        
+        .submit-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定控制按钮 -->
+    <div class="fixed-controls">
+        <button class="control-btn active" id="globalViewBtn" onclick="toggleGlobalView()">
+            <i class="fas fa-th-large"></i>
+            <span>全局视图</span>
+        </button>
+        <button class="control-btn" onclick="resetToDefault()">
+            <i class="fas fa-redo"></i>
+            <span>重置</span>
+        </button>
+    </div>
+    
+    <!-- 标签页切换 -->
+    <div class="tabs" id="tabsContainer">
+        <button class="tab-btn active" onclick="showPage('vip_purchase')">
+            <i class="fas fa-crown mr-2"></i>VIP 购买
+        </button>
+        <button class="tab-btn" onclick="showPage('group_chat')">
+            <i class="fas fa-users mr-2"></i>群聊室
+        </button>
+        <button class="tab-btn" onclick="showPage('private_chat')">
+            <i class="fas fa-comments mr-2"></i>私信聊天
+        </button>
+        <button class="tab-btn" onclick="showPage('artist_center')">
+            <i class="fas fa-star mr-2"></i>艺人中心
+        </button>
+        <button class="tab-btn" onclick="showPage('artist_message')">
+            <i class="fas fa-inbox mr-2"></i>消息中心
+        </button>
+    </div>
+
+    <!-- 页面容器 -->
+    <div class="prototype-container global-view" id="prototypeContainer">
+        
+        <!-- VIP 购买页面 -->
+        <div id="vip_purchase" class="phone-frame page-section active">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="section prototype-module" data-prototype="vip_purchase_01">
+                    <div class="section-title">VIP 产品购买</div>
+                    
+                    <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 mb-4">
+                        <div class="text-center mb-6">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23667eea'/%3E%3Ctext x='50' y='60' text-anchor='middle' fill='white' font-size='40'%3E⭐%3C/text%3E%3C/svg%3E" alt="艺人头像" class="w-24 h-24 rounded-full mx-auto border-4 border-purple-500">
+                            <h2 class="text-xl font-bold mt-3">张艺人</h2>
+                            <p class="text-gray-500 text-sm mt-1">粉丝量 50 万+</p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="border-2 border-purple-500 rounded-2xl p-4 bg-purple-50 cursor-pointer" onclick="selectPackage(this, 'monthly')">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-bold text-gray-900">单月套餐</div>
+                                        <div class="text-sm text-gray-500 mt-1">有效期 30 天</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl font-bold text-purple-600">¥28</div>
+                                        <div class="text-xs text-gray-400 line-through">原价¥35</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border-2 border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-purple-300" onclick="selectPackage(this, 'continuous')">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-bold text-gray-900">连续订阅</div>
+                                        <div class="text-sm text-gray-500 mt-1">每月自动续费，可随时取消</div>
+                                        <div class="mt-2 inline-block bg-green-100 text-green-600 text-xs px-2 py-1 rounded">省 28%</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl font-bold text-purple-600">¥20<span class="text-sm text-gray-500">/月</span></div>
+                                        <div class="text-xs text-gray-400">首月优惠</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-blue-50 rounded-2xl p-4">
+                            <div class="text-sm font-bold text-blue-900 mb-2">VIP 专属权益</div>
+                            <ul class="text-xs text-blue-700 space-y-1">
+                                <li>✅ 加入艺人专属群聊室</li>
+                                <li>✅ 一对一私信聊天</li>
+                                <li>✅ 查看艺人独家动态</li>
+                                <li>✅ 优先回复特权</li>
+                            </ul>
+                        </div>
+                        
+                        <button class="submit-btn w-full" style="position: static; margin-top: 20px;" onclick="confirmPurchase()">
+                            立即订阅
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 群聊室页面 -->
+        <div id="group_chat" class="phone-frame page-section">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content" style="padding-bottom: 140px;">
+                <div class="section prototype-module" data-prototype="group_chat_01">
+                    <div class="section-title">专属群聊室</div>
+                    
+                    <div class="bg-white rounded-3xl p-4 shadow-sm mb-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23667eea'/%3E%3C/svg%3E" alt="艺人头像" class="w-12 h-12 rounded-full">
+                                <div>
+                                    <div class="font-bold">张艺人群聊室</div>
+                                    <div class="text-xs text-gray-500">群成员 1,234 人</div>
+                                </div>
+                            </div>
+                            <div class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">官方大群</div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-xl p-3 mb-3">
+                            <div class="text-xs text-gray-500 mb-1">群公告</div>
+                            <div class="text-sm text-gray-700">欢迎大家！每周五晚 8 点会在群里和大家互动哦~💕</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 消息列表 -->
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23667eea'/%3E%3C/svg%3E" alt="艺人" class="w-10 h-10 rounded-full flex-shrink-0">
+                            <div class="bg-white rounded-2xl rounded-tl-none p-3 shadow-sm max-w-xs">
+                                <div class="text-sm font-bold mb-1">张艺人</div>
+                                <div class="text-sm text-gray-700">大家好呀！今天刚结束录音，来和大家打个招呼~👋</div>
+                                <div class="text-xs text-gray-400 mt-2">刚刚</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3 flex-row-reverse">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='60' text-anchor='middle' fill='%23999' font-size='40'%3E👤%3C/text%3E%3C/svg%3E" alt="我" class="w-10 h-10 rounded-full flex-shrink-0">
+                            <div class="bg-purple-500 text-white rounded-2xl rounded-tr-none p-3 shadow-sm max-w-xs">
+                                <div class="text-sm">哇！终于等到艺人翻牌了！爱你爱你❤️</div>
+                                <div class="text-xs text-purple-100 mt-2 text-right">10:30</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <div class="bg-gray-100 rounded-xl px-4 py-2 text-xs text-gray-500">
+                                用户 B 加入了群聊
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 输入框（智能定位：单页视图吸底，全局视图相对） -->
+                    <div class="input-container">
+                        <div class="flex items-center gap-2">
+                            <input type="text" placeholder="发消息..." class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <button class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 私信聊天页面 -->
+        <div id="private_chat" class="phone-frame page-section">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content" style="padding-bottom: 140px;">
+                <div class="section prototype-module" data-prototype="private_chat_01">
+                    <div class="section-title">一对一私信</div>
+                    
+                    <!-- 会话列表 -->
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-2xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="openChat('张艺人')">
+                            <div class="flex items-center gap-3">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23667eea'/%3E%3C/svg%3E" alt="张艺人" class="w-12 h-12 rounded-full">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <div class="font-bold">张艺人</div>
+                                        <div class="text-xs text-gray-400">10:30</div>
+                                    </div>
+                                    <div class="text-sm text-gray-600 truncate">你好呀！感谢支持~😊</div>
+                                </div>
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-opacity opacity-60">
+                            <div class="flex items-center gap-3">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ccc'/%3E%3C/svg%3E" alt="李艺人" class="w-12 h-12 rounded-full grayscale">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <div class="font-bold text-gray-400">李艺人</div>
+                                        <div class="text-xs text-gray-400">昨天</div>
+                                    </div>
+                                    <div class="text-sm text-gray-400">VIP 已到期，请续费后继续互动</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 智能分类提示 -->
+                    <div class="mt-4 bg-blue-50 rounded-xl p-3">
+                        <div class="text-xs text-blue-700">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            系统智能分类：高优先级消息将优先展示给艺人
+                        </div>
+                    </div>
+                    
+                    <!-- 输入框（智能定位：单页视图吸底，全局视图相对） -->
+                    <div class="input-container">
+                        <div class="flex items-center gap-2">
+                            <input type="text" placeholder="给艺人发消息..." class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <button class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 艺人中心页面 -->
+        <div id="artist_center" class="phone-frame page-section">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="text-center mb-6">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23667eea'/%3E%3C/svg%3E" alt="艺人头像" class="w-20 h-20 rounded-full mx-auto border-4 border-purple-500">
+                    <h2 class="text-xl font-bold mt-3">张艺人</h2>
+                    <p class="text-gray-500 text-sm">平台签约歌手 | 粉丝 50 万+</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-4 text-white">
+                        <div class="text-3xl font-bold">1,234</div>
+                        <div class="text-sm opacity-90 mt-1">付费粉丝</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl p-4 text-white">
+                        <div class="text-3xl font-bold">¥56,780</div>
+                        <div class="text-sm opacity-90 mt-1">本月收入</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="bg-white rounded-2xl p-4 shadow-sm cursor-pointer" onclick="showPage('artist_message')">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                                    <i class="fas fa-inbox"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold">消息中心</div>
+                                    <div class="text-xs text-gray-500">处理粉丝消息</div>
+                                </div>
+                            </div>
+                            <div class="text-purple-600">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-4 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold">数据中心</div>
+                                    <div class="text-xs text-gray-500">查看收入统计</div>
+                                </div>
+                            </div>
+                            <div class="text-blue-600">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-4 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold">设置</div>
+                                    <div class="text-xs text-gray-500">个人资料、通知设置</div>
+                                </div>
+                            </div>
+                            <div class="text-green-600">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 艺人消息中心页面 -->
+        <div id="artist_message" class="phone-frame page-section">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="section prototype-module" data-prototype="artist_message_center_01">
+                    <div class="section-title">消息中心</div>
+                    
+                    <!-- 分类 Tab -->
+                    <div class="flex gap-2 mb-4">
+                        <button class="flex-1 bg-purple-500 text-white rounded-full py-2 text-sm font-bold">全部</button>
+                        <button class="flex-1 bg-white border-2 border-purple-200 text-purple-600 rounded-full py-2 text-sm font-bold">高优先级 (12)</button>
+                        <button class="flex-1 bg-white border-2 border-purple-200 text-purple-600 rounded-full py-2 text-sm font-bold">AI 推荐 (5)</button>
+                    </div>
+                    
+                    <!-- 消息列表 -->
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-red-500">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="用户" class="w-8 h-8 rounded-full">
+                                    <div>
+                                        <div class="font-bold text-sm">小雅（年费会员）</div>
+                                        <div class="text-xs text-gray-400">刚刚</div>
+                                    </div>
+                                </div>
+                                <div class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">🔥 高优先级</div>
+                            </div>
+                            <div class="text-sm text-gray-700 mb-3">艺人哥哥好！我今天是你的生日，可以跟我说声生日快乐吗？🎂</div>
+                            
+                            <div class="flex gap-2">
+                                <button class="flex-1 bg-purple-100 text-purple-600 rounded-full py-2 text-xs font-bold" onclick="quickReply('生日快乐呀！祝你天天开心~🎉')">
+                                    <i class="fas fa-bolt mr-1"></i>快捷回复
+                                </button>
+                                <button class="flex-1 bg-blue-100 text-blue-600 rounded-full py-2 text-xs font-bold">
+                                    <i class="fas fa-robot mr-1"></i>AI 建议
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 shadow-sm">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="用户" class="w-8 h-8 rounded-full">
+                                    <div>
+                                        <div class="font-bold text-sm">用户 B</div>
+                                        <div class="text-xs text-gray-400">5 分钟前</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-700 mb-3">什么时候有新歌呀？超级期待的！🎵</div>
+                            
+                            <div class="flex gap-2">
+                                <button class="flex-1 bg-purple-100 text-purple-600 rounded-full py-2 text-xs font-bold" onclick="quickReply('新歌正在制作中，很快就能和大家见面啦~')">
+                                    <i class="fas fa-bolt mr-1"></i>快捷回复
+                                </button>
+                                <button class="flex-1 bg-blue-100 text-blue-600 rounded-full py-2 text-xs font-bold">
+                                    <i class="fas fa-robot mr-1"></i>AI 建议
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 预设模板 -->
+                    <div class="mt-6 bg-gray-50 rounded-2xl p-4">
+                        <div class="text-sm font-bold mb-3">常用语模板</div>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs" onclick="quickReply('谢谢支持~')">谢谢支持~</button>
+                            <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs" onclick="quickReply('晚安，好梦💤')">晚安，好梦💤</button>
+                            <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs" onclick="quickReply('爱你哦❤️')">爱你哦❤️</button>
+                            <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs" onclick="quickReply('一起加油！')">一起加油！</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let isGlobalView = true;
+        
+        function toggleGlobalView() {
+            const container = document.getElementById('prototypeContainer');
+            const tabs = document.getElementById('tabsContainer');
+            const btn = document.getElementById('globalViewBtn');
+            
+            isGlobalView = !isGlobalView;
+            
+            if (isGlobalView) {
+                container.classList.add('global-view');
+                tabs.classList.add('hidden');
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fas fa-th-large"></i><span>全局视图</span>';
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.style.display = 'block';
+                });
+                document.querySelectorAll('.phone-frame').forEach(frame => {
+                    frame.classList.remove('highlighted');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            } else {
+                container.classList.remove('global-view');
+                tabs.classList.remove('hidden');
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fas fa-th-large"></i><span>单页视图</span>';
+                showPage('vip_purchase');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function resetToDefault() {
+            isGlobalView = true;
+            document.getElementById('prototypeContainer').classList.add('global-view');
+            document.getElementById('tabsContainer').classList.add('hidden');
+            document.getElementById('globalViewBtn').classList.add('active');
+            document.getElementById('globalViewBtn').innerHTML = '<i class="fas fa-th-large"></i><span>全局视图</span>';
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.style.display = 'block';
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.phone-frame').forEach(frame => {
+                frame.classList.remove('highlighted');
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showPage(pageId) {
+            if (isGlobalView) {
+                toggleGlobalView();
+                setTimeout(() => {
+                    performShowPage(pageId);
+                }, 300);
+            } else {
+                performShowPage(pageId);
+            }
+        }
+        
+        function performShowPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(pageId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                
+                document.querySelectorAll('.phone-frame').forEach(frame => {
+                    frame.classList.remove('highlighted');
+                });
+                targetSection.classList.add('highlighted');
+                
+                const tabIds = ['vip_purchase', 'group_chat', 'private_chat', 'artist_center', 'artist_message'];
+                const tabIndex = tabIds.indexOf(pageId);
+                if (tabIndex !== -1) {
+                    document.querySelectorAll('.tab-btn')[tabIndex].classList.add('active');
+                }
+                
+                window.location.hash = pageId;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function selectPackage(element, type) {
+            document.querySelectorAll('#vip_purchase .border-2').forEach(el => {
+                el.classList.remove('border-purple-500', 'bg-purple-50');
+                el.classList.add('border-gray-200');
+            });
+            element.classList.remove('border-gray-200');
+            element.classList.add('border-purple-500', 'bg-purple-50');
+        }
+        
+        function confirmPurchase() {
+            alert('跳转到支付页面...');
+        }
+        
+        function quickReply(text) {
+            alert('已发送：' + text);
+        }
+        
+        function openChat(artistName) {
+            alert('打开与 ' + artistName + ' 的聊天窗口');
+        }
+        
+        // 接收联动指令
+        window.addEventListener('message', function(e) {
+            if (e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+                
+                const aliasMap = {
+                    'vip_purchase_01': 'vip_purchase_01',
+                    'group_chat_01': 'group_chat_01',
+                    'private_chat_01': 'private_chat_01',
+                    'artist_message_center_01': 'artist_message_center_01'
+                };
+                
+                const fid = String(e.data.featureId);
+                const selector = `.prototype-module[data-prototype="${aliasMap[fid] || fid}"]`;
+                const targetModule = document.querySelector(selector);
+                
+                if (targetModule) {
+                    const pageSection = targetModule.closest('.page-section');
+                    if (pageSection && !isGlobalView) {
+                        const pageId = pageSection.id;
+                        performShowPage(pageId);
+                    }
+                    
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            if (e.data.action === 'navigate' && e.data.pageId) {
+                showPage(e.data.pageId);
+            }
+        });
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            const validPages = ['vip_purchase', 'group_chat', 'private_chat', 'artist_center', 'artist_message'];
+            
+            if (hash && validPages.includes(hash)) {
+                if (isGlobalView) {
+                    toggleGlobalView();
+                    setTimeout(() => {
+                        performShowPage(hash);
+                    }, 300);
+                } else {
+                    performShowPage(hash);
+                }
+            }
+        });
+        
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            const validPages = ['vip_purchase', 'group_chat', 'private_chat', 'artist_center', 'artist_message'];
+            
+            if (hash && validPages.includes(hash)) {
+                if (isGlobalView) {
+                    toggleGlobalView();
+                    setTimeout(() => {
+                        performShowPage(hash);
+                    }, 300);
+                } else {
+                    performShowPage(hash);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

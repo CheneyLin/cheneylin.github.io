@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>快闪店预售商品回填单 - PRD 与原型主控</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root { --border:#e4e7ed; --bg:#fff; --fg:#1f2329; --primary:#667eea; --secondary:#764ba2; }
+    html, body { height: 100%; }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:#f5f7fa; }
+    .header { 
+      display:flex; align-items:center; gap:12px; padding:12px 24px; 
+      border-bottom:1px solid var(--border); background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      position:sticky; top:0; z-index:10; 
+    }
+    .header-title { font-size:18px; font-weight:600; color:#fff; }
+    .version-badge { 
+      background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);
+      padding:4px 12px; border-radius:4px; font-size:13px; 
+    }
+    .main { display:flex; height: calc(100% - 56px); }
+    .left { width:50%; height:100%; border-right:1px solid var(--border); box-sizing:border-box; background:#fff; }
+    .right { width:50%; height:100%; box-sizing:border-box; background:#f5f7fa; }
+    .frame { width:100%; height:100%; border:0; }
+    .split { width:8px; cursor:col-resize; background:linear-gradient(to right, transparent, #f0f0f0, transparent); transition:background 0.2s; }
+    .split:hover { background:linear-gradient(to right, transparent, var(--primary), transparent); }
+    .controls { margin-left:auto; display:flex; align-items:center; gap:16px; }
+    .controls label { color:#fff; font-size:14px; }
+    .controls select { 
+      background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);
+      padding:6px 12px; border-radius:4px; font-size:13px; cursor:pointer; 
+    }
+    .controls option { background:#fff; color:#333; }
+    .product-btns { display:flex; gap:8px; }
+    .product-btn { 
+      background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);
+      padding:6px 16px; border-radius:4px; font-size:13px; cursor:pointer; transition:all 0.2s;
+    }
+    .product-btn:hover { background:rgba(255,255,255,0.3); }
+    .product-btn.active { background:#fff; color:var(--primary); }
+    .width-control { display:flex; align-items:center; gap:8px; color:#fff; font-size:13px; }
+    .width-control input[type="range"] { width:100px; cursor:pointer; }
+    .card { padding:24px; background:#fff; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+    .card h2 { margin:0 0 12px; font-size:18px; font-weight:600; }
+    .card .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; }
+    .card .card-link { display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px; border:1px solid var(--border); border-radius:4px; transition:background 0.2s; }
+    .card .card-link:hover { background:rgba(0,0,0,0.05); }
+    .card .card-link .icon { font-size:24px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-title">快闪店预售商品回填单</span>
+    <span class="version-badge">v1.1</span>
+    <div class="controls">
+      <div class="product-btns">
+        <button class="product-btn active" data-product="h5" onclick="switchProduct('h5')">H5 回填单</button>
+        <button class="product-btn" data-product="admin" onclick="switchProduct('admin')">运营后台</button>
+      </div>
+      <div class="width-control">
+        <span>右侧宽度</span>
+        <input id="rightWidth" type="range" min="30" max="70" value="50">
+        <span id="rightWidthLabel">50%</span>
+      </div>
+      <div class="width-control">
+        <label for="versionSelect">PRD 版本</label>
+        <select id="versionSelect" onchange="switchVersion(this.value)">
+          <option value="1.0">v1.0</option>
+          <option value="1.1" selected>v1.1</option>
+        </select>
+      </div>
+      <a href="./history/changelog.md" target="_blank" class="product-btn" style="text-decoration:none;" title="查看更新日志">
+        <i class="fas fa-history"></i> 更新日志
+      </a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="left">
+      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
+    </div>
+    <div class="split" id="splitter" title="拖动调整左右宽度"></div>
+    <div class="right">
+      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/h5_v1.1.html#combined"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const prdFrame = document.getElementById('prdFrame');
+    const protoFrame = document.getElementById('protoFrame');
+    const rightWidthRange = document.getElementById('rightWidth');
+    const rightWidthLabel = document.getElementById('rightWidthLabel');
+    const versionSelect = document.getElementById('versionSelect');
+    const leftPane = document.querySelector('.left');
+    const rightPane = document.querySelector('.right');
+    const splitter = document.getElementById('splitter');
+    let currentProduct = 'h5';
+    let currentVersion = '1.1';
+    let pendingHighlightId = null;
+
+    // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
+    protoFrame.addEventListener('load', () => {
+      if (!pendingHighlightId) return;
+      protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+      pendingHighlightId = null;
+    });
+
+    function switchVersion(version) {
+      currentVersion = version;
+      // 切换 PRD 文档
+      prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
+      // 切换原型文件
+      if (currentProduct === 'h5') {
+        protoFrame.src = `./v${version}/prototype_html/h5_v${version}.html#combined`;
+      } else {
+        protoFrame.src = `./v${version}/prototype_html/admin_v${version}.html`;
+      }
+    }
+
+    function switchProduct(product) {
+      currentProduct = product;
+      document.querySelectorAll('.product-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.product === product) btn.classList.add('active');
+      });
+      if (product === 'h5') {
+        protoFrame.src = `./v${currentVersion}/prototype_html/h5_v${currentVersion}.html#combined`;
+      } else {
+        protoFrame.src = `./v${currentVersion}/prototype_html/admin_v${currentVersion}.html`;
+      }
+    }
+
+    function setRightWidth(percent) {
+      percent = Math.max(30, Math.min(70, percent));
+      rightWidthLabel.textContent = percent + '%';
+      rightPane.style.width = percent + '%';
+      leftPane.style.width = (100 - percent) + '%';
+    }
+    rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
+    setRightWidth(parseInt(rightWidthRange.value, 10));
+
+    let dragging = false;
+    splitter.addEventListener('mousedown', () => { dragging = true; });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const rect = document.querySelector('.main').getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentRight = Math.round(((rect.width - x) / rect.width) * 100);
+      setRightWidth(percentRight);
+      rightWidthRange.value = percentRight;
+    });
+
+    // 监听来自 PRD 的消息，联动原型高亮
+    window.addEventListener('message', (e) => {
+      const data = e.data || {};
+      if (data.type === 'prd-focus' && data.id) {
+        const targetProduct = String(data.id).includes('admin') ? 'admin' : 'h5';
+        // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
+        if (targetProduct !== currentProduct) {
+          pendingHighlightId = data.id;
+          switchProduct(targetProduct);
+          return;
+        }
+        protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: data.id }, '*');
+      }
+    });
+  </script>
+</body>
+</html>

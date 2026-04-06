@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>签售会抽选产品 - 移动端原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #f3f4f6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+            border: 12px solid #1a1a1a;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 83px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 8px;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9ca3af;
+            font-size: 10px;
+            gap: 4px;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+        }
+        
+        .prototype-module {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-highlight {
+            outline: 3px solid #ff4444 !important;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.5) !important;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">移动端原型展示</h1>
+        <p class="text-gray-600">榜单公布页面 - 中签名单查看</p>
+    </div>
+    
+    <!-- Phone Frame 1: 榜单列表页 -->
+    <div class="phone-frame" data-prototype="result_view">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <span>📶</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="h-full overflow-y-auto pb-20">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6 pt-12">
+                <h2 class="text-xl font-bold">中签名单公布</h2>
+                <p class="text-sm opacity-90 mt-1">2026-03-16 上海站签售会</p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-4 p-4">
+                <div class="bg-white rounded-lg shadow p-3 text-center">
+                    <div class="text-2xl font-bold text-purple-600">100</div>
+                    <div class="text-xs text-gray-500 mt-1">中签人数</div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-3 text-center">
+                    <div class="text-2xl font-bold text-green-600">¥20W</div>
+                    <div class="text-xs text-gray-500 mt-1">总金额</div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-3 text-center">
+                    <div class="text-2xl font-bold text-blue-600">150</div>
+                    <div class="text-xs text-gray-500 mt-1">总件数</div>
+                </div>
+            </div>
+            
+            <!-- List -->
+            <div class="px-4">
+                <h3 class="font-semibold text-gray-800 mb-3">中签用户</h3>
+                <div class="space-y-2">
+                    <!-- Item 1 -->
+                    <div class="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold">
+                                P
+                            </div>
+                            <div>
+                                <div class="font-medium">Peach</div>
+                                <div class="text-xs text-gray-500">137****9999</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-purple-600">1 件</div>
+                            <div class="text-xs text-gray-500">¥1999</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold">
+                                A
+                            </div>
+                            <div>
+                                <div class="font-medium">Alice</div>
+                                <div class="text-xs text-gray-500">138****8888</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-purple-600">2 件</div>
+                            <div class="text-xs text-gray-500">¥3998</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 3 -->
+                    <div class="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center text-white font-bold">
+                                B
+                            </div>
+                            <div>
+                                <div class="font-medium">Bob</div>
+                                <div class="text-xs text-gray-500">139****7777</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-purple-600">1 件</div>
+                            <div class="text-xs text-gray-500">¥1999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div>首页</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">📋</div>
+                <div>榜单</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">👤</div>
+                <div>我的</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Focus mode support
+        const urlParams = new URLSearchParams(window.location.search);
+        const focusMode = urlParams.get('focus');
+        
+        if (focusMode) {
+            const targetModule = document.querySelector(`[data-prototype="${focusMode}"]`);
+            if (targetModule) {
+                targetModule.classList.add('feature-highlight');
+                targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // Receive messages from parent frame
+        window.addEventListener('message', function(e) {
+            if (e.origin !== window.location.origin) return;
+            
+            const message = e.data;
+            if (message.action === 'highlight' && message.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+                
+                const targetModule = document.querySelector(`[data-prototype="${message.featureId}"]`);
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

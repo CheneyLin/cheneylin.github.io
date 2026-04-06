@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>商品限购策略 PRD v1.3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --geist-black: #171717;
+      --geist-white: #ffffff;
+      --geist-gray-900: #171717;
+      --geist-gray-600: #4d4d4d;
+      --geist-gray-500: #666666;
+      --geist-gray-400: #808080;
+      --geist-gray-100: #ebebeb;
+      --geist-gray-50: #fafafa;
+      --link-blue: #0072f5;
+      --focus-blue: hsla(212, 100%, 48%, 1);
+      --border-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --card-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --primary: #171717;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      margin: 0; 
+      font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--geist-gray-900); 
+      background: var(--geist-white); 
+      line-height: 1.6;
+      letter-spacing: normal;
+    }
+    
+    .page { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 80px 40px; 
+    }
+    
+    h1 { 
+      font-size: 48px; 
+      font-weight: 600; 
+      margin: 0 0 16px; 
+      line-height: 1.00;
+      letter-spacing: -2.4px;
+      color: var(--geist-gray-900);
+    }
+    
+    h2 { 
+      font-size: 32px; 
+      font-weight: 600; 
+      margin: 80px 0 24px; 
+      line-height: 1.25;
+      letter-spacing: -1.28px;
+      color: var(--geist-gray-900);
+      padding-left: 0;
+      border-left: none;
+    }
+    
+    h3 { 
+      font-size: 24px; 
+      font-weight: 600; 
+      margin: 40px 0 16px; 
+      line-height: 1.33;
+      letter-spacing: -0.96px;
+      color: var(--geist-gray-900);
+    }
+    
+    p { 
+      margin: 12px 0; 
+      color: var(--geist-gray-600);
+      font-size: 16px;
+      line-height: 1.50;
+    }
+    
+    .card { 
+      border-radius: 8px; 
+      padding: 32px; 
+      margin: 24px 0; 
+      background: var(--geist-white);
+      box-shadow: var(--card-shadow);
+    }
+    
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin: 16px 0; 
+    }
+    
+    th, td { 
+      border-bottom: 1px solid var(--geist-gray-100);
+      padding: 12px 16px; 
+      text-align: left; 
+      vertical-align: top;
+      font-size: 14px;
+    }
+    
+    th { 
+      background: transparent;
+      font-weight: 600;
+      color: var(--geist-gray-900);
+      letter-spacing: -0.32px;
+    }
+    
+    td {
+      color: var(--geist-gray-600);
+    }
+    
+    .list { 
+      margin: 12px 0; 
+      padding-left: 24px; 
+      color: var(--geist-gray-600);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    
+    .list li {
+      margin: 8px 0;
+    }
+    
+    .btn { 
+      display: inline-block; 
+      padding: 8px 16px; 
+      border: none;
+      color: var(--geist-white); 
+      background: var(--geist-black);
+      border-radius: 6px; 
+      font-size: 14px; 
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    
+    .btn:hover { 
+      opacity: 0.9;
+    }
+    
+    .btn-secondary {
+      background: var(--geist-white);
+      color: var(--geist-gray-900);
+      box-shadow: rgb(235, 235, 235) 0px 0px 0px 1px;
+    }
+    
+    .meta { 
+      color: var(--geist-gray-500); 
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    
+    .field-group { 
+      background: var(--geist-gray-50); 
+      border-radius: 8px; 
+      padding: 24px; 
+      margin: 20px 0; 
+      box-shadow: var(--border-shadow);
+    }
+    
+    .field-label { 
+      font-weight: 600; 
+      margin-bottom: 12px; 
+      color: var(--geist-gray-900);
+      font-size: 16px;
+      letter-spacing: -0.32px;
+    }
+    
+    .field-hint { 
+      color: var(--geist-gray-500); 
+      font-size: 13px; 
+      margin-top: 6px;
+    }
+    
+    .feature-id { 
+      display: inline-block; 
+      background: var(--link-blue); 
+      color: var(--geist-white); 
+      padding: 4px 10px; 
+      border-radius: 9999px; 
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: 12px;
+    }
+    
+    .feature-module { 
+      border-radius: 8px; 
+      padding: 24px; 
+      margin: 20px 0;
+      box-shadow: var(--border-shadow);
+      transition: box-shadow 0.2s;
+    }
+    
+    .feature-module:hover { 
+      box-shadow: var(--card-shadow);
+    }
+    
+    .mermaid { 
+      background: var(--geist-white); 
+      text-align: center; 
+      margin: 24px 0; 
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: var(--border-shadow);
+    }
+    
+    .highlight-btn { 
+      background: var(--link-blue); 
+      color: var(--geist-white); 
+      border: none; 
+      padding: 6px 12px; 
+      border-radius: 6px; 
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer; 
+      margin-left: 16px;
+      transition: opacity 0.2s;
+    }
+    
+    .highlight-btn:hover {
+      opacity: 0.9;
+    }
+    
+    a {
+      color: var(--link-blue);
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>商品限购策略 PRD v1.3</h1>
+    <p class="meta">版本：v1.3 | 状态：已确认 | 负责人：林长宇 | 创建时间：2026-03-27</p>
+
+    <div class="card">
+      <h2>1. 项目信息与版本记录</h2>
+      <p><strong>产品名称：</strong>商家后台商品限购策略</p>
+      <p><strong>版本：</strong>v1.3</p>
+      <p><strong>负责人：</strong>林长宇</p>
+      <p><strong>创建时间：</strong>2026-03-27</p>
+
+      <table>
+        <thead><tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr></thead>
+        <tbody>
+          <tr><td>v1.0</td><td>2026-03-27</td><td>初版需求确认与策略模型定义</td><td>林长宇</td></tr>
+          <tr><td>v1.1</td><td>2026-04-01</td><td>模板样式统一与 Bootstrap 5 重构，UI/UX全面优化</td><td>林长宇</td></tr>
+          <tr><td>v1.2</td><td>2026-04-01</td><td>补充评审修改意见与需求细化</td><td>林长宇</td></tr>
+          <tr><td>v1.3</td><td>2026-04-06</td><td>应用 Vercel 模板样式</td><td>林长宇</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 背景与痛点</h3>
+      <p>商家活动期出现以下问题：</p>
+      <ul class="list">
+        <li>限量商品（独特门票礼包/SPU）会被超级用户多次抢购导致普通用户无法购买；</li>
+        <li>现有系统未提供可配置的人群包限购策略，无法做到个性化限购；</li>
+        <li>规则管理零散（促销/商品模块无法覆盖限购冲突与精细化控制），导致支持成本高。</li>
+      </ul>
+
+      <h3>2.2 业务目标</h3>
+      <table style="margin-top:16px;">
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td>业务稳定</td><td>限购规则零误判</td><td>限购相关拦截错误≤0</td><td>0</td></tr>
+        <tr><td>体验风险</td><td>用户下单失败提示明确</td><td>相关提示正确率≥99%</td><td>99%</td></tr>
+        <tr><td>活动控制</td><td>避免超卖/抛单</td><td>有效库存一致性≥99.9%</td><td>99.9%</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>商家运营后台人员（策略配置者）</strong>：负责创建和配置限购策略</li>
+        <li><strong>商品管理后台管理员</strong>：负责管理和维护策略</li>
+      </ul>
+
+      <h3>3.2 典型场景</h3>
+      <ol class="list" style="padding-left:24px;">
+        <li>运营在商品管理中创建"人群包策略"和"限购策略"</li>
+        <li>指定单个 SPU 或 SKU（可多选）进行限购</li>
+        <li>选择单一人群包（会员等级/标签等），配置限购数量及有效期（到秒）</li>
+        <li>客户端下单阶段，系统校验当前策略；若规则不满足则拒单并返回策略配置提示</li>
+      </ol>
+
+      <h3>3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会点</th></tr>
+        <tr><td>策略配置</td><td>商品管理 - 限购策略</td><td>复制、配置商品、选择人群包</td><td>期望易用，避免错配</td><td>提供模板、智能校验</td></tr>
+        <tr><td>策略生效</td><td>下单校验</td><td>触达限购提示、被拒单</td><td>"不清楚为什么失败"</td><td>提供策略命中详情</td></tr>
+        <tr><td>持续优化</td><td>策略管理</td><td>查看历史、调整策略</td><td>冲突策略难判定</td><td>冲突分析/最小值执行展示</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>4. 需求功能清单</h2>
+      
+      <h3>4.1 商家后台模块 1：人群包策略管理</h3>
+      <ul class="list">
+        <li>人群包加入条件：支付完成、签收完成、订单完成任选；动态人群</li>
+        <li>指定商品：支持指定 SPU/SKU，支持多个，一行一个输入</li>
+        <li>初始化：过去 365 天历史购买用户；退款剔除由其他系统实现，本产品提供开关</li>
+      </ul>
+
+      <h3>4.2 商家后台模块 2：限购策略管理</h3>
+      <ul class="list">
+        <li>单策略仅支持单一人群包（多策略可覆盖不同人群）</li>
+        <li>仅支持指定 SPU/SKU（多选）</li>
+        <li>冲突规则：若多条策略同时命中，取最小限购值；任意一个策略不满足即拒单（严格执行）</li>
+        <li>有效期选项：1 年/永久/自定义（到秒）</li>
+        <li>下单环节校验，提示来自策略配置字段</li>
+      </ul>
+
+      <h3>4.3 APP 商品详情页面</h3>
+      <ul class="list">
+        <li>校验点：下单环节（最接近交易核心）</li>
+        <li>若限购策略命中，校验条件：当前用户与商品是否满足策略的 SPU/SKU 与人群包；购买数量≤策略限购；在生效期内</li>
+        <li>失败处理：返回"策略提示文案"，阻断流程；并记录拦截日志（含策略 ID、人群包、商品、时间）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>5. 详细方案</h2>
+      
+      <h3>5.1 商家后台模块 1：人群包策略管理</h3>
+      <p><strong>模块名称：</strong>人群包策略</p>
+      
+      <div class="field-group">
+        <div class="field-label">列表展示字段</div>
+        <ul class="list">
+          <li>策略 ID</li>
+          <li>人群包</li>
+          <li>商品范围（SPU/SKU）</li>
+          <li>加入条件</li>
+          <li>上线状态</li>
+        </ul>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">顶部操作按钮</div>
+        <ul class="list">
+          <li>新建人群包策略</li>
+        </ul>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">列表操作按钮</div>
+        <ul class="list">
+          <li><strong>编辑</strong>：编辑当前策略配置</li>
+          <li><strong>回溯</strong>：回溯 365 天内符合条件的用户</li>
+          <li><strong>上线/下线</strong>：快速上线/下线当前策略</li>
+          <li><strong>复制</strong>：复制当前策略</li>
+        </ul>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">新增/编辑页面字段</div>
+        <ul class="list">
+          <li><strong>人群包名称</strong>：为必填项</li>
+          <li><strong>绑定商品</strong>：指定 SPU/指定 SKU，默认选中指定 SPU，为必填项</li>
+          <li><strong>批量 ID</strong>：多个 SPU ID/多个 SKU ID</li>
+          <li><strong>加入条件</strong>：支付完成、签收完成、订单完成单选</li>
+          <li><strong>状态</strong>：启用/禁用</li>
+        </ul>
+      </div>
+
+      <h3 style="margin-top:24px;">5.2 商家后台模块 2：限购策略管理</h3>
+      <p><strong>模块名称：</strong>限购策略</p>
+      
+      <div class="field-group">
+        <div class="field-label">列表展示字段</div>
+        <ul class="list">
+          <li>策略 ID</li>
+          <li>名称</li>
+          <li>商品范围（SPU/SKU）</li>
+          <li>限购数量</li>
+          <li>有效期（自定义显示起止时间）</li>
+          <li>状态</li>
+        </ul>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">顶部操作按钮</div>
+        <ul class="list">
+          <li>新建限购策略</li>
+        </ul>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">列表操作按钮</div>
+        <ul class="list">
+          <li><strong>编辑</strong>：编辑当前策略配置</li>
+          <li><strong>上线/下线</strong>：快速上线/下线当前策略</li>
+          <li><strong>复制</strong>：复制当前策略</li>
+        </ul>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">新增/编辑页面字段</div>
+        <ul class="list">
+          <li><strong>选择类别</strong>：SPU 限购/SKU 限购</li>
+          <li><strong>指定商品 ID</strong>：单个商品 ID</li>
+          <li><strong>SKU 列表勾选</strong>：如果类别为 SKU 限购，展示 SKU 列表勾选界面，支持多个 SKU ID</li>
+          <li><strong>限购数量</strong>：正整数</li>
+          <li><strong>有效期</strong>：1 年/永久/自定义（到秒）</li>
+          <li><strong>冲突策略</strong>：自动说明"与当前策略同时命中时将取最小值"</li>
+          <li><strong>提示文案</strong>：可设置单条自定义文案</li>
+          <li><strong>选择人群包</strong>：精确单选，默认不指定</li>
+        </ul>
+      </div>
+
+      <h3 style="margin-top:24px;">5.3 APP 商品详情页面</h3>
+      <div class="field-group">
+        <div class="field-label">下单流程</div>
+        <ol class="list" style="padding-left:24px;">
+          <li>校验购买数量是否超限；若超限则返回自定义的错误提示</li>
+          <li>过滤策略：商品命中策略集、人群包匹配、生效期内</li>
+          <li>策略冲突：必须符合全部有效策略</li>
+          <li>策略示例：
+            <ul>
+              <li>唯一有效无指定人群包策略，购买数量超限即拒绝</li>
+              <li>多条有效无指定人群包策略，取最小限购值（任一条数量策略超限即拒绝）</li>
+              <li>多条有效有指定人群包策略，取最小限购值、最小人群包匹配（任一条数量策略超限、任一个人群包匹配策略不匹配即拒绝）</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. 业务流程图</h2>
+      
+      <h3>6.1 用户下单校验流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[用户在客户端提交订单] --> B[系统接收下单请求]
+    B --> C[获取用户人群包信息<br/>会员等级/标签等]
+    C --> D[获取购物车商品信息<br/>SPU/SKU 列表]
+    D --> E[查询匹配的限购策略<br/>商品 + 人群 + 时间范围]
+    E --> F{找到匹配策略？}
+    F -->|否 | G[继续正常下单流程]
+    F -->|是 | H[计算策略冲突<br/>取最小限购值]
+    H --> I[检查用户历史购买量<br/>已完成 + 待支付订单]
+    I --> J[计算本次购买总量]
+    J --> K{购买量 ≤ 限购值？}
+    K -->|是 | L[校验通过<br/>继续下单流程]
+    K -->|否 | M[校验失败<br/>返回限购提示文案]
+    M --> N[客户端显示失败提示<br/>用户无法继续下单]
+    N --> O[记录拦截日志<br/>策略 ID+ 用户 + 商品 + 时间]
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. 异常与边界处理</h2>
+      <ul class="list">
+        <li>非法时间范围（开始>=结束）禁止保存策略</li>
+        <li>单策略限购数<=0 或超阈值（9999）校验</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>8. 数据追踪与埋点</h2>
+      <p>无</p>
+    </div>
+
+    <div class="card">
+      <h2>9. 未来演进规划</h2>
+      <p>无</p>
+    </div>
+
+    <div class="card">
+      <h2>10. 附件</h2>
+      <p>无</p>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+    
+    // PRD 与原型联动功能
+    function highlightFeature(featureId) {
+      console.log('Sending highlight message for feature:', featureId);
+      
+      // 向父窗口发送高亮消息 - 修复 file://协议下的 postMessage 问题
+      if (window.parent && window.parent !== window) {
+        try {
+          // 使用 '*' 作为目标源，适配本地文件访问场景
+          window.parent.postMessage({
+            action: 'highlight',
+            featureId: featureId
+          }, '*');
+          console.log('Highlight message sent successfully:', featureId);
+        } catch (error) {
+          console.error('Failed to send highlight message:', error);
+          // 降级处理：显示提示信息
+          alert('请在主控文档（index.html）中打开以查看原型联动效果\n功能点：' + featureId);
+        }
+      } else {
+        // 如果不在 iframe 中，直接显示提示
+        alert('请在主控文档中打开以查看原型联动效果\n功能点：' + featureId);
+      }
+    }
+  </script>
+</body>
+</html>

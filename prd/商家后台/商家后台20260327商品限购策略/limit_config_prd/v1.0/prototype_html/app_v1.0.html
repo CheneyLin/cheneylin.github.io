@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品限购策略 - APP原型 v1.0</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rounded Mplus 1c', 'Hiragino Maru Gothic ProN', sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        /* 固定控制按钮 */
+        .fixed-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #6c5ce7, #5b4cc4);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(135deg, #00b894, #00a884);
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+        }
+
+        /* 手机框架 */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 4px solid transparent;
+            margin: 2rem auto;
+        }
+
+        .phone-frame.highlighted {
+            border-color: #6c5ce7;
+            box-shadow: 0 0 50px rgba(108, 92, 231, 0.6);
+            transform: scale(1.02);
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #000;
+            position: relative;
+            padding: 0 20px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-bar .time {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-bar .icons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .status-bar .icon {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* 页面内容容器 */
+        .page-content {
+            height: calc(100% - 44px - 80px);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* 隐藏滚动条但保留功能 (Chrome/Safari) */
+        .page-content::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+
+        /* 商品详情页样式 */
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+
+        .product-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .buy-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.8);
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-message {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 390px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 0.5rem 0 1.5rem;
+            z-index: 40;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-item.active {
+            color: #6c5ce7;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定控制按钮 -->
+    <div class="fixed-controls">
+        <button class="control-btn active" id="globalViewBtn">
+            <i class="fas fa-mobile-alt"></i>
+            全局视图
+        </button>
+    </div>
+
+    <!-- 手机框架 -->
+    <div class="phone-frame" id="phoneFrame">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="icons">
+                <div class="icon"></div>
+                <div class="icon"></div>
+                <div class="icon"></div>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <!-- 商品详情页 -->
+            <div class="product-detail-page">
+                <!-- 商品图片 -->
+                <div class="product-image">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+
+                <!-- 商品信息 -->
+                <div class="product-info">
+                    <h1 class="product-title">限量版明星演唱会门票</h1>
+                    <div class="product-price">¥ 299.00</div>
+                    <div class="product-desc">
+                        这是一张珍贵的限量版明星演唱会门票，仅限购1件。
+                        演出时间：2026年4月15日 20:00
+                        演出地点：国家体育场
+                        座位区域：VIP区
+                        包含：门票+纪念品+接送服务
+                    </div>
+
+                    <!-- 购买按钮 -->
+                    <button class="buy-btn" id="buyBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        立即购买
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-search"></i>
+                <span>搜索</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-shopping-bag"></i>
+                <span>商品</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 限购提示弹窗 -->
+    <div class="modal-overlay" id="limitModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="modal-title">购买失败</div>
+            <div class="modal-message">本商品仅限购1件，您已达到购买上限。</div>
+            <button class="modal-btn" onclick="closeModal()">知道了</button>
+        </div>
+    </div>
+
+    <script>
+        // 购买按钮点击事件
+        document.getElementById('buyBtn').addEventListener('click', function() {
+            showModal();
+        });
+
+        // 显示弹窗
+        function showModal() {
+            document.getElementById('limitModal').classList.add('show');
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('limitModal').classList.remove('show');
+        }
+
+        // 点击遮罩关闭弹窗
+        document.getElementById('limitModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // 全局视图切换
+        document.getElementById('globalViewBtn').addEventListener('click', function() {
+            const phoneFrame = document.getElementById('phoneFrame');
+            phoneFrame.classList.toggle('highlighted');
+            this.classList.toggle('active');
+        });
+
+        // 接收主控文档的联动消息
+        window.addEventListener('message', function(e) {
+            if (e.origin !== window.location.origin) return;
+            const msg = e.data;
+            if (msg.action === 'highlight' && msg.featureId) {
+                // 高亮对应功能模块
+                const phoneFrame = document.getElementById('phoneFrame');
+                phoneFrame.classList.add('highlighted');
+                
+                // 根据featureId执行特定操作
+                if (msg.featureId === 'limit-checkout-fail') {
+                    // 触发限购失败弹窗
+                    setTimeout(() => {
+                        showModal();
+                    }, 500);
+                }
+                
+                setTimeout(() => {
+                    phoneFrame.classList.remove('highlighted');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
