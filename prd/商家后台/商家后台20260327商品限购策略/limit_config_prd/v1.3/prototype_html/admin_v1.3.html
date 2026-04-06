@@ -514,7 +514,7 @@
             </button>
         </div>
         
-        <div class="card prototype-module" data-prototype="crowd-pack-module">
+        <div class="card prototype-module" data-prototype="admin_crowd-pack-module">
             <div class="card-body">
                 <div class="filter-bar">
                     <input type="text" placeholder="搜索人群包名称/ID">
@@ -724,7 +724,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="prototype-module" data-prototype="limit-strategy-module">
+                        <tr class="prototype-module" data-prototype="admin_limit-strategy-module">
                             <td>S0001</td>
                             <td>限购 -SPU-年度 1 件</td>
                             <td>SPU 限购</td>
@@ -939,23 +939,38 @@
                     module.classList.remove('feature-highlight');
                 });
                 
-                // 高亮对应模块
-                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                // 高亮对应模块（支持带前缀和不带前缀的ID）
+                let targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                
+                // 如果没找到，尝试去掉前缀后查找（向后兼容）
+                if (!targetModule) {
+                    const featureIdWithoutPrefix = e.data.featureId.replace(/^(admin_|app_)/, '');
+                    targetModule = document.querySelector(`.prototype-module[data-prototype="${featureIdWithoutPrefix}"]`);
+                }
+                
                 if (targetModule) {
                     // 先切换到包含该模块的页面
-                    const pageId = e.data.featureId === 'crowd-pack-module' ? 'crowd/list' : 'strategy/list';
-                    showPage(pageId);
+                    let pageId;
+                    if (e.data.featureId.includes('crowd-pack')) {
+                        pageId = 'crowd/list';
+                    } else if (e.data.featureId.includes('limit-strategy')) {
+                        pageId = 'strategy/list';
+                    }
                     
-                    // 延迟执行高亮，确保页面切换完成
-                    setTimeout(() => {
-                        targetModule.classList.add('feature-highlight');
-                        targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (pageId) {
+                        showPage(pageId);
                         
-                        // 3 秒后移除高亮
+                        // 延迟执行高亮，确保页面切换完成
                         setTimeout(() => {
-                            targetModule.classList.remove('feature-highlight');
-                        }, 3000);
-                    }, 100);
+                            targetModule.classList.add('feature-highlight');
+                            targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // 3 秒后移除高亮
+                            setTimeout(() => {
+                                targetModule.classList.remove('feature-highlight');
+                            }, 3000);
+                        }, 100);
+                    }
                 }
             }
         });

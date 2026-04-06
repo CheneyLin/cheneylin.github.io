@@ -358,15 +358,19 @@
 
         // 接收主控文档的联动消息
         window.addEventListener('message', function(e) {
-            if (e.origin !== window.location.origin) return;
+            // 移除跨域检查以支持 file:// 协议和本地开发环境
             const msg = e.data;
             if (msg.action === 'highlight' && msg.featureId) {
+                console.log('Received highlight request:', msg.featureId);
+                
                 // 高亮对应功能模块
                 const phoneFrame = document.getElementById('phoneFrame');
                 phoneFrame.classList.add('highlighted');
                 
-                // 根据featureId执行特定操作
-                if (msg.featureId === 'limit-checkout-fail') {
+                // 根据featureId执行特定操作（支持带前缀和不带前缀的ID）
+                const featureIdWithoutPrefix = msg.featureId.replace(/^(admin_|app_)/, '');
+                
+                if (featureIdWithoutPrefix === 'limit-checkout-fail') {
                     // 触发限购失败弹窗
                     setTimeout(() => {
                         showModal();

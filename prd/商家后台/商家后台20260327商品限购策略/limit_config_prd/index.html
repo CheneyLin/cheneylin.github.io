@@ -292,8 +292,14 @@
       if (data.action === 'highlight' && data.featureId) {
         console.log('Received highlight request:', data.featureId);
         
-        // 根据 featureId 判断是否需要切换产品形态
-        const targetProduct = data.featureId.includes('app') ? 'app' : 'admin';
+        // 根据 featureId 前缀判断是否需要切换产品形态
+        let targetProduct = currentProduct; // 默认保持当前产品
+        
+        if (data.featureId.startsWith('admin_')) {
+          targetProduct = 'admin';
+        } else if (data.featureId.startsWith('app_')) {
+          targetProduct = 'app';
+        }
         
         // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
         if (targetProduct !== currentProduct) {

@@ -332,108 +332,129 @@
     <div class="card">
       <h2>5. 详细方案</h2>
       
+      <!-- 人群包策略模块 -->
       <h3>5.1 商家后台模块 1：人群包策略管理</h3>
-      <p><strong>模块名称：</strong>人群包策略</p>
       
-      <div class="field-group">
-        <div class="field-label">列表展示字段</div>
-        <ul class="list">
-          <li>策略 ID</li>
-          <li>人群包</li>
-          <li>商品范围（SPU/SKU）</li>
-          <li>加入条件</li>
-          <li>上线状态</li>
-        </ul>
-      </div>
+      <div class="feature-module" id="admin_crowd-pack-module">
+        <p style="margin-bottom: 16px;">
+          <strong>模块名称：</strong>人群包策略
+          <button class="highlight-btn" onclick="highlightFeature('admin_crowd-pack-module')">查看原型</button>
+        </p>
+        
+        <div class="field-group">
+          <div class="field-label">列表展示字段</div>
+          <ul class="list">
+            <li>策略 ID</li>
+            <li>人群包</li>
+            <li>商品范围（SPU/SKU）</li>
+            <li>加入条件</li>
+            <li>上线状态</li>
+          </ul>
+        </div>
 
-      <div class="field-group">
-        <div class="field-label">顶部操作按钮</div>
-        <ul class="list">
-          <li>新建人群包策略</li>
-        </ul>
-      </div>
+        <div class="field-group">
+          <div class="field-label">顶部操作按钮</div>
+          <ul class="list">
+            <li>新建人群包策略</li>
+          </ul>
+        </div>
 
-      <div class="field-group">
-        <div class="field-label">列表操作按钮</div>
-        <ul class="list">
-          <li><strong>编辑</strong>：编辑当前策略配置</li>
-          <li><strong>回溯</strong>：回溯 365 天内符合条件的用户</li>
-          <li><strong>上线/下线</strong>：快速上线/下线当前策略</li>
-          <li><strong>复制</strong>：复制当前策略</li>
-        </ul>
-      </div>
+        <div class="field-group">
+          <div class="field-label">列表操作按钮</div>
+          <ul class="list">
+            <li><strong>编辑</strong>：编辑当前策略配置</li>
+            <li><strong>回溯</strong>：回溯 365 天内符合条件的用户</li>
+            <li><strong>上线/下线</strong>：快速上线/下线当前策略</li>
+            <li><strong>复制</strong>：复制当前策略</li>
+          </ul>
+        </div>
 
-      <div class="field-group">
-        <div class="field-label">新增/编辑页面字段</div>
-        <ul class="list">
-          <li><strong>人群包名称</strong>：为必填项</li>
-          <li><strong>绑定商品</strong>：指定 SPU/指定 SKU，默认选中指定 SPU，为必填项</li>
-          <li><strong>批量 ID</strong>：多个 SPU ID/多个 SKU ID</li>
-          <li><strong>加入条件</strong>：支付完成、签收完成、订单完成单选</li>
-          <li><strong>状态</strong>：启用/禁用</li>
-        </ul>
+        <div class="field-group">
+          <div class="field-label">新增/编辑页面字段</div>
+          <ul class="list">
+            <li><strong>人群包名称</strong>：为必填项</li>
+            <li><strong>绑定商品</strong>：指定 SPU/指定 SKU，默认选中指定 SPU，为必填项</li>
+            <li><strong>批量 ID</strong>：多个 SPU ID/多个 SKU ID</li>
+            <li><strong>加入条件</strong>：支付完成、签收完成、订单完成单选</li>
+            <li><strong>状态</strong>：启用/禁用</li>
+          </ul>
+        </div>
       </div>
 
       <h3 style="margin-top:24px;">5.2 商家后台模块 2：限购策略管理</h3>
-      <p><strong>模块名称：</strong>限购策略</p>
       
-      <div class="field-group">
-        <div class="field-label">列表展示字段</div>
-        <ul class="list">
-          <li>策略 ID</li>
-          <li>名称</li>
-          <li>商品范围（SPU/SKU）</li>
-          <li>限购数量</li>
-          <li>有效期（自定义显示起止时间）</li>
-          <li>状态</li>
-        </ul>
-      </div>
+      <div class="feature-module" id="admin_limit-strategy-module">
+        <p style="margin-bottom: 16px;">
+          <strong>模块名称：</strong>限购策略
+          <button class="highlight-btn" onclick="highlightFeature('admin_limit-strategy-module')">查看原型</button>
+        </p>
+        
+        <div class="field-group">
+          <div class="field-label">列表展示字段</div>
+          <ul class="list">
+            <li>策略 ID</li>
+            <li>名称</li>
+            <li>商品范围（SPU/SKU）</li>
+            <li>限购数量</li>
+            <li>有效期（自定义显示起止时间）</li>
+            <li>状态</li>
+          </ul>
+        </div>
 
-      <div class="field-group">
-        <div class="field-label">顶部操作按钮</div>
-        <ul class="list">
-          <li>新建限购策略</li>
-        </ul>
-      </div>
+        <div class="field-group">
+          <div class="field-label">顶部操作按钮</div>
+          <ul class="list">
+            <li>新建限购策略</li>
+          </ul>
+        </div>
 
-      <div class="field-group">
-        <div class="field-label">列表操作按钮</div>
-        <ul class="list">
-          <li><strong>编辑</strong>：编辑当前策略配置</li>
-          <li><strong>上线/下线</strong>：快速上线/下线当前策略</li>
-          <li><strong>复制</strong>：复制当前策略</li>
-        </ul>
-      </div>
+        <div class="field-group">
+          <div class="field-label">列表操作按钮</div>
+          <ul class="list">
+            <li><strong>编辑</strong>：编辑当前策略配置</li>
+            <li><strong>上线/下线</strong>：快速上线/下线当前策略</li>
+            <li><strong>复制</strong>：复制当前策略</li>
+          </ul>
+        </div>
 
-      <div class="field-group">
-        <div class="field-label">新增/编辑页面字段</div>
-        <ul class="list">
-          <li><strong>选择类别</strong>：SPU 限购/SKU 限购</li>
-          <li><strong>指定商品 ID</strong>：单个商品 ID</li>
-          <li><strong>SKU 列表勾选</strong>：如果类别为 SKU 限购，展示 SKU 列表勾选界面，支持多个 SKU ID</li>
-          <li><strong>限购数量</strong>：正整数</li>
-          <li><strong>有效期</strong>：1 年/永久/自定义（到秒）</li>
-          <li><strong>冲突策略</strong>：自动说明"与当前策略同时命中时将取最小值"</li>
-          <li><strong>提示文案</strong>：可设置单条自定义文案</li>
-          <li><strong>选择人群包</strong>：精确单选，默认不指定</li>
-        </ul>
+        <div class="field-group">
+          <div class="field-label">新增/编辑页面字段</div>
+          <ul class="list">
+            <li><strong>选择类别</strong>：SPU 限购/SKU 限购</li>
+            <li><strong>指定商品 ID</strong>：单个商品 ID</li>
+            <li><strong>SKU 列表勾选</strong>：如果类别为 SKU 限购，展示 SKU 列表勾选界面，支持多个 SKU ID</li>
+            <li><strong>限购数量</strong>：正整数</li>
+            <li><strong>有效期</strong>：1 年/永久/自定义（到秒）</li>
+            <li><strong>冲突策略</strong>：自动说明"与当前策略同时命中时将取最小值"</li>
+            <li><strong>提示文案</strong>：可设置单条自定义文案</li>
+            <li><strong>选择人群包</strong>：精确单选，默认不指定</li>
+          </ul>
+        </div>
       </div>
 
       <h3 style="margin-top:24px;">5.3 APP 商品详情页面</h3>
-      <div class="field-group">
-        <div class="field-label">下单流程</div>
-        <ol class="list" style="padding-left:24px;">
-          <li>校验购买数量是否超限；若超限则返回自定义的错误提示</li>
-          <li>过滤策略：商品命中策略集、人群包匹配、生效期内</li>
-          <li>策略冲突：必须符合全部有效策略</li>
-          <li>策略示例：
-            <ul>
-              <li>唯一有效无指定人群包策略，购买数量超限即拒绝</li>
-              <li>多条有效无指定人群包策略，取最小限购值（任一条数量策略超限即拒绝）</li>
-              <li>多条有效有指定人群包策略，取最小限购值、最小人群包匹配（任一条数量策略超限、任一个人群包匹配策略不匹配即拒绝）</li>
-            </ul>
-          </li>
-        </ol>
+      
+      <div class="feature-module" id="app_limit-checkout-fail">
+        <p style="margin-bottom: 16px;">
+          <strong>功能说明：</strong>下单校验与限购提示
+          <button class="highlight-btn" onclick="highlightFeature('app_limit-checkout-fail')">查看原型</button>
+        </p>
+        
+        <div class="field-group">
+          <div class="field-label">下单流程</div>
+          <ol class="list" style="padding-left:24px;">
+            <li>校验购买数量是否超限；若超限则返回自定义的错误提示</li>
+            <li>过滤策略：商品命中策略集、人群包匹配、生效期内</li>
+            <li>策略冲突：必须符合全部有效策略</li>
+            <li>策略示例：
+              <ul>
+                <li>唯一有效无指定人群包策略，购买数量超限即拒绝</li>
+                <li>多条有效无指定人群包策略，取最小限购值（任一条数量策略超限即拒绝）</li>
+                <li>多条有效有指定人群包策略，取最小限购值、最小人群包匹配（任一条数量策略超限、任一个人群包匹配策略不匹配即拒绝）</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
 
