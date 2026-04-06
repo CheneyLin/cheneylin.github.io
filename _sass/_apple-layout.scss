@@ -1,0 +1,439 @@
+// ============================================
+// Apple Design System - Layout Components
+// Navigation, sections, grids, and page structure
+// ============================================
+
+// Site Header with Glass Morphism Effect
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: $nav-height;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  .wrapper {
+    max-width: $content-width;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 $apple-spacing-xl;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    @include media-query($on-tablet-small) {
+      padding: 0 $apple-spacing-lg;
+    }
+  }
+}
+
+.site-title {
+  font-family: $apple-font-text;
+  font-size: $apple-micro-size;
+  font-weight: 400;
+  color: $apple-white;
+  line-height: $nav-height;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.12px;
+  
+  img {
+    width: 17px;
+    height: auto;
+    margin-right: $apple-spacing-sm;
+    border-radius: $apple-radius-circle;
+  }
+  
+  &:hover {
+    opacity: 0.8;
+    text-decoration: none;
+  }
+}
+
+.site-nav {
+  .trigger {
+    display: flex;
+    align-items: center;
+    gap: $apple-spacing-xl;
+  }
+  
+  .page-link {
+    font-family: $apple-font-text;
+    font-size: $apple-micro-size;
+    font-weight: 400;
+    color: $apple-white;
+    line-height: $nav-height;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    letter-spacing: -0.12px;
+    
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none;
+    }
+  }
+  
+  .menu-icon {
+    display: none;
+    cursor: pointer;
+    
+    svg {
+      width: 18px;
+      height: 15px;
+      
+      path {
+        fill: $apple-white;
+      }
+    }
+  }
+}
+
+// Page Content
+.page-content {
+  padding: 0;
+}
+
+.wrapper {
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: 0 $apple-spacing-xl;
+  
+  @include media-query($on-tablet-small) {
+    padding: 0 $apple-spacing-lg;
+  }
+}
+
+// Section Styling - Alternating Backgrounds (Dark Mode)
+.section {
+  width: 100%;
+  padding: $apple-spacing-5xl 0;
+  
+  &.dark-section {
+    background-color: $apple-black;
+    color: $apple-near-black;
+    
+    h1, h2, h3, h4 {
+      color: $apple-near-black;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+  
+  &.light-section {
+    background-color: $apple-light-gray;  // Now dark gray in dark mode
+    color: $apple-near-black;
+    
+    h1, h2, h3, h4 {
+      color: $apple-near-black;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+// Hero Section
+.hero-section {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $apple-spacing-5xl $apple-spacing-xl;
+  
+  // Background image with overlay for better text readability
+  background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.7)
+    ),
+    url('/images/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll; // Background scrolls with the section
+  
+  .hero-title {
+    font-size: $apple-display-hero-size;
+    font-weight: 600;
+    line-height: $apple-line-height-display-hero;
+    letter-spacing: $apple-letter-spacing-display;
+    margin-bottom: $apple-spacing-lg;
+    // Ensure text is readable on background
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    
+    @include media-query($on-tablet-small) {
+      font-size: 40px;
+    }
+    
+    @include media-query($on-mobile) {
+      font-size: 32px;
+    }
+  }
+  
+  .hero-subtitle {
+    font-size: $apple-card-title-size;
+    font-weight: 400;
+    line-height: $apple-line-height-card;
+    letter-spacing: $apple-letter-spacing-card;
+    margin-bottom: $apple-spacing-2xl;
+    opacity: 0.9; // Slightly higher opacity for better readability
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+    
+    @include media-query($on-tablet-small) {
+      font-size: 19px;
+    }
+  }
+  
+  .hero-credit {
+    font-size: $apple-body-size;
+    font-weight: 400;
+    line-height: $apple-line-height-body;
+    letter-spacing: $apple-letter-spacing-body;
+    opacity: 0.6;
+    margin-bottom: $apple-spacing-2xl;
+    color: rgba(255, 255, 255, 0.6);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Content Grid System
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $apple-spacing-xl;
+  margin-top: $apple-spacing-3xl;
+  
+  @include media-query($on-tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @include media-query($on-mobile-large) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Post List Container
+.post-list-container {
+  padding: $apple-spacing-5xl 0;
+}
+
+.post-list {
+  display: grid;
+  // Improved grid layout with better responsive behavior
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $apple-spacing-xl;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  
+  // Tablet: 2 columns
+  @include media-query($on-tablet) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $apple-spacing-lg;
+  }
+  
+  // Mobile: 1 column
+  @include media-query($on-mobile-large) {
+    grid-template-columns: 1fr;
+    gap: $apple-spacing-lg;
+  }
+  
+  > li {
+    background-color: $apple-dark-surface-1;
+    border-radius: $apple-radius-standard;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    // Ensure equal height for all items
+    display: flex;
+    flex-direction: column;
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $apple-card-shadow;
+    }
+  }
+}
+
+.post-list-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.post-list-show-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: $apple-dark-surface-2;
+}
+
+.post-list-show-image-image {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+  opacity: 0;
+  
+  .post-list-link:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.post-list-title {
+  padding: $apple-spacing-lg;
+  font-family: $apple-font-display;
+  font-size: $apple-card-title-size;
+  font-weight: 600;
+  line-height: $apple-line-height-card;
+  letter-spacing: $apple-letter-spacing-card;
+  color: $apple-near-black;
+  // Allow title to grow if needed
+  flex-shrink: 0;
+}
+
+.post-list-description {
+  padding: 0 $apple-spacing-lg $apple-spacing-lg;
+  font-size: $apple-caption-size;
+  line-height: $apple-line-height-caption;
+  letter-spacing: $apple-letter-spacing-link;
+  color: $apple-black-80;
+  // Allow description to grow and fill space
+  flex-grow: 1;
+}
+
+.post-list-info {
+  padding: 0 $apple-spacing-lg $apple-spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $apple-spacing-md;
+  // Keep info at bottom
+  flex-shrink: 0;
+}
+
+.post-meta {
+  font-size: $apple-micro-size;
+  color: $apple-black-48;
+  letter-spacing: $apple-letter-spacing-micro;
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $apple-spacing-md;
+  padding: $apple-spacing-3xl 0;
+  
+  a, span, em {
+    font-family: $apple-font-text;
+    font-size: $apple-body-size;
+    padding: $apple-spacing-md $apple-spacing-lg;
+    border-radius: $apple-radius-pill;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  a {
+    color: $apple-link-blue;
+    background-color: transparent;
+    border: 1px solid $apple-link-blue;
+    
+    &:hover {
+      background-color: $apple-link-blue;
+      color: $apple-white;
+      text-decoration: none;
+    }
+  }
+  
+  em {
+    color: $apple-black;
+    background-color: $apple-blue;
+    font-style: normal;
+  }
+  
+  span {
+    color: $apple-black-48;
+    cursor: not-allowed;
+  }
+}
+
+// Footer
+.site-footer {
+  background-color: $apple-light-gray;  // Now dark gray
+  padding: $apple-spacing-3xl 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);  // Changed to light border
+  
+  .wrapper {
+    text-align: center;
+  }
+  
+  p {
+    font-size: $apple-caption-size;
+    color: $apple-black-48;
+    line-height: $apple-line-height-caption;
+    letter-spacing: $apple-letter-spacing-link;
+  }
+  
+  a {
+    color: $apple-link-blue;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive Navigation for Mobile
+@include media-query($on-tablet-small) {
+  .site-nav {
+    .trigger {
+      display: none;
+      position: absolute;
+      top: $nav-height;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.95);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      flex-direction: column;
+      padding: $apple-spacing-lg $apple-spacing-xl;
+      gap: 0;
+      
+      &.active {
+        display: flex;
+      }
+    }
+    
+    .page-link {
+      width: 100%;
+      padding: $apple-spacing-md 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    .menu-icon {
+      display: block;
+    }
+  }
+}

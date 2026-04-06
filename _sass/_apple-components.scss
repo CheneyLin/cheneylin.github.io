@@ -1,0 +1,298 @@
+// ============================================
+// Apple Design System - UI Components
+// Buttons, cards, app lists, and interactive elements
+// ============================================
+
+// Primary Button (Apple Blue CTA)
+.button-primary {
+  display: inline-block;
+  background-color: $apple-blue;
+  color: $apple-white;
+  font-family: $apple-font-text;
+  font-size: $apple-body-size;
+  font-weight: 400;
+  padding: $apple-spacing-md $apple-spacing-lg;
+  border-radius: $apple-radius-standard;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: lighten($apple-blue, 5%);
+    text-decoration: none;
+  }
+  
+  &:active {
+    background-color: $apple-button-active;
+    color: $apple-near-black;
+  }
+  
+  &:focus {
+    outline: 2px solid $apple-blue;
+    outline-offset: 2px;
+  }
+}
+
+// Dark Button
+.button-dark {
+  display: inline-block;
+  background-color: $apple-near-black;
+  color: $apple-white;
+  font-family: $apple-font-text;
+  font-size: $apple-body-size;
+  font-weight: 400;
+  padding: $apple-spacing-md $apple-spacing-lg;
+  border-radius: $apple-radius-standard;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: lighten($apple-near-black, 10%);
+    text-decoration: none;
+  }
+}
+
+// Pill Link Button (Learn More / Shop)
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $apple-spacing-sm;
+  background-color: transparent;
+  color: $apple-link-blue;
+  font-family: $apple-font-text;
+  font-size: $apple-caption-size;
+  font-weight: 400;
+  padding: $apple-spacing-md $apple-spacing-lg;
+  border-radius: $apple-radius-pill;
+  border: 1px solid $apple-link-blue;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: $apple-link-blue;
+    color: $apple-black;  // Changed to black for better contrast on dark mode
+    text-decoration: none;
+  }
+  
+  &::after {
+    content: '›';
+    font-size: 18px;
+    line-height: 1;
+  }
+}
+
+.dark-section .pill-link {
+  color: $apple-bright-blue;
+  border-color: $apple-bright-blue;
+  
+  &:hover {
+    background-color: $apple-bright-blue;
+    color: $apple-black;  // Changed to black for better contrast
+  }
+}
+
+// Button Group
+.button-group {
+  display: flex;
+  gap: $apple-spacing-md;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: $apple-spacing-xl;
+}
+
+// App List Container
+.app-list-container {
+  padding: $apple-spacing-3xl 0;
+  background-color: $apple-light-gray;  // Now dark gray
+}
+
+.app-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: $apple-spacing-xl;
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: 0 $apple-spacing-xl;
+  
+  @include media-query($on-tablet-small) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: 0 $apple-spacing-lg;
+  }
+  
+  @include media-query($on-mobile) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $apple-spacing-lg;
+  }
+}
+
+.app-list-item {
+  list-style: none;
+}
+
+.app-list-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  padding: $apple-spacing-xl;
+  background-color: $apple-dark-surface-1;  // Changed to dark surface
+  border-radius: $apple-radius-large;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $apple-card-shadow;
+    text-decoration: none;
+  }
+}
+
+.app-list-show-image {
+  width: 80px;
+  height: 80px;
+  margin-bottom: $apple-spacing-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: $apple-radius-large;
+  }
+}
+
+.app-list-title {
+  font-family: $apple-font-display;
+  font-size: $apple-body-size;
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: $apple-letter-spacing-body;
+  color: $apple-near-black;
+  text-align: center;
+}
+
+// Home Page Titles
+.home-title-1 {
+  font-family: $apple-font-display;
+  font-size: $apple-display-hero-size;
+  font-weight: 600;
+  line-height: $apple-line-height-display-hero;
+  letter-spacing: $apple-letter-spacing-display;
+  text-align: center;
+  margin: $apple-spacing-5xl 0 $apple-spacing-lg;
+  color: $apple-near-black;
+  
+  @include media-query($on-tablet-small) {
+    font-size: 40px;
+  }
+  
+  @include media-query($on-mobile) {
+    font-size: 32px;
+  }
+}
+
+.home-title-2 {
+  font-family: $apple-font-display;
+  font-size: $apple-section-heading-size;
+  font-weight: 400;
+  line-height: $apple-line-height-section;
+  text-align: center;
+  margin-bottom: $apple-spacing-md;
+  color: $apple-near-black;
+  opacity: 0.8;
+  
+  @include media-query($on-tablet-small) {
+    font-size: 32px;
+  }
+}
+
+.home-title-3 {
+  font-family: $apple-font-text;
+  font-size: $apple-body-size;
+  font-weight: 400;
+  line-height: $apple-line-height-body;
+  letter-spacing: $apple-letter-spacing-body;
+  text-align: center;
+  margin-bottom: $apple-spacing-3xl;
+  color: $apple-black-80;
+}
+
+// Card Component
+.card {
+  background-color: $apple-dark-surface-1;  // Changed to dark surface
+  border-radius: $apple-radius-standard;
+  padding: $apple-spacing-xl;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: $apple-card-shadow;
+  }
+  
+  &.dark-card {
+    background-color: $apple-dark-surface-2;
+    color: $apple-near-black;
+  }
+}
+
+.card-title {
+  font-family: $apple-font-display;
+  font-size: $apple-card-title-size;
+  font-weight: 700;
+  line-height: $apple-line-height-card;
+  letter-spacing: $apple-letter-spacing-card;
+  margin-bottom: $apple-spacing-md;
+}
+
+.card-description {
+  font-size: $apple-caption-size;
+  line-height: $apple-line-height-caption;
+  letter-spacing: $apple-letter-spacing-link;
+  color: $apple-black-80;
+}
+
+.dark-card .card-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+// Filter/Search Button
+.filter-button {
+  background-color: $apple-button-default-light;
+  color: $apple-near-black;
+  padding: 0 $apple-spacing-md;
+  border-radius: $apple-radius-comfortable;
+  border: 3px solid rgba(255, 255, 255, 0.08);  // Changed to light border
+  font-family: $apple-font-text;
+  font-size: $apple-body-size;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    outline: 2px solid $apple-blue;
+  }
+}
+
+// Media Control Button
+.media-control {
+  background-color: $apple-overlay;
+  color: $apple-black-80;
+  border-radius: $apple-radius-circle;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  
+  &:active {
+    transform: scale(0.9);
+  }
+  
+  &:focus {
+    outline: 2px solid $apple-blue;
+    background-color: $apple-white;
+    color: $apple-near-black;
+  }
+}

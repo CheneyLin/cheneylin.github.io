@@ -1,0 +1,113 @@
+// ============================================
+// Apple Design System - Variables
+// Based on Apple.com Design Guidelines
+// ============================================
+
+// Font Families
+$apple-font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$apple-font-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+// Color Palette - Primary (Dark Mode Optimized)
+$apple-black: #000000;
+$apple-light-gray: #1c1c1e;  // Dark background surface
+$apple-near-black: #f5f5f7;  // Light text color
+$apple-white: #1d1d1f;       // Dark surface
+
+// Color Palette - Interactive (Brighter for dark mode)
+$apple-blue: #0a84ff;
+$apple-link-blue: #0a84ff;
+$apple-bright-blue: #409cff;
+
+// Color Palette - Text (Inverted for dark mode)
+$apple-black-80: rgba(255, 255, 255, 0.8);
+$apple-black-48: rgba(255, 255, 255, 0.48);
+
+// Color Palette - Dark Surfaces (Adjusted for consistency)
+$apple-dark-surface-1: #2c2c2e;
+$apple-dark-surface-2: #3a3a3c;
+$apple-dark-surface-3: #48484a;
+$apple-dark-surface-4: #636366;
+$apple-dark-surface-5: #1c1c1e;
+
+// Color Palette - Button States
+$apple-button-active: #48484a;
+$apple-button-default-light: #2c2c2e;
+$apple-overlay: rgba(44, 44, 46, 0.8);
+$apple-white-32: rgba(255, 255, 255, 0.32);
+
+// Shadows (Adjusted for dark mode)
+$apple-card-shadow: rgba(0, 0, 0, 0.5) 0px 8px 32px 0px;
+
+// Typography Scale - Sizes
+$apple-display-hero-size: 56px;
+$apple-section-heading-size: 40px;
+$apple-tile-heading-size: 28px;
+$apple-card-title-size: 21px;
+$apple-nav-heading-size: 34px;
+$apple-sub-nav-size: 24px;
+$apple-body-size: 17px;
+$apple-button-large-size: 18px;
+$apple-caption-size: 14px;
+$apple-micro-size: 12px;
+$apple-nano-size: 10px;
+
+// Typography Scale - Line Heights
+$apple-line-height-display-hero: 1.07;
+$apple-line-height-section: 1.10;
+$apple-line-height-tile: 1.14;
+$apple-line-height-card: 1.19;
+$apple-line-height-nav: 1.47;
+$apple-line-height-sub-nav: 1.50;
+$apple-line-height-body: 1.47;
+$apple-line-height-button: 2.41;
+$apple-line-height-link: 1.43;
+$apple-line-height-caption: 1.29;
+$apple-line-height-micro: 1.33;
+
+// Typography Scale - Letter Spacing
+$apple-letter-spacing-display: -0.28px;
+$apple-letter-spacing-body: -0.374px;
+$apple-letter-spacing-tile: 0.196px;
+$apple-letter-spacing-card: 0.231px;
+$apple-letter-spacing-link: -0.224px;
+$apple-letter-spacing-micro: -0.12px;
+$apple-letter-spacing-nano: -0.08px;
+
+// Spacing System (8px base)
+$apple-spacing-xs: 2px;
+$apple-spacing-sm: 4px;
+$apple-spacing-md: 8px;
+$apple-spacing-lg: 16px;
+$apple-spacing-xl: 24px;
+$apple-spacing-2xl: 32px;
+$apple-spacing-3xl: 48px;
+$apple-spacing-4xl: 64px;
+$apple-spacing-5xl: 80px;
+
+// Border Radius Scale
+$apple-radius-micro: 5px;
+$apple-radius-standard: 8px;
+$apple-radius-comfortable: 11px;
+$apple-radius-large: 12px;
+$apple-radius-pill: 980px;
+$apple-radius-circle: 50%;
+
+// Layout
+$content-width: 980px;
+$nav-height: 48px;
+
+// Breakpoints
+$on-small-mobile: 360px;
+$on-mobile: 480px;
+$on-mobile-large: 640px;
+$on-tablet-small: 834px;
+$on-tablet: 1024px;
+$on-desktop-small: 1070px;
+$on-desktop: 1440px;
+
+// Media Query Mixin
+@mixin media-query($device) {
+  @media screen and (max-width: $device) {
+    @content;
+  }
+}

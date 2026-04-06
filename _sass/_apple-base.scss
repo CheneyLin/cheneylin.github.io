@@ -1,0 +1,187 @@
+// ============================================
+// Apple Design System - Base Styles (Dark Mode)
+// Reset and foundational styles
+// ============================================
+
+// CSS Reset
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: $apple-font-text;
+  font-size: $apple-body-size;
+  font-weight: 400;
+  line-height: $apple-line-height-body;
+  letter-spacing: $apple-letter-spacing-body;
+  color: $apple-near-black;
+  background-color: $apple-black;  // Changed to black for dark mode
+}
+
+// Typography - Headings (SF Pro Display)
+h1, h2, h3, h4, h5, h6 {
+  font-family: $apple-font-display;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: $apple-spacing-md;
+}
+
+h1 {
+  font-size: $apple-display-hero-size;
+  line-height: $apple-line-height-display-hero;
+  letter-spacing: $apple-letter-spacing-display;
+  
+  @include media-query($on-tablet-small) {
+    font-size: 40px;
+  }
+  
+  @include media-query($on-mobile) {
+    font-size: 32px;
+  }
+}
+
+h2 {
+  font-size: $apple-section-heading-size;
+  line-height: $apple-line-height-section;
+  
+  @include media-query($on-tablet-small) {
+    font-size: 32px;
+  }
+}
+
+h3 {
+  font-size: $apple-tile-heading-size;
+  line-height: $apple-line-height-tile;
+  letter-spacing: $apple-letter-spacing-tile;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: $apple-card-title-size;
+  line-height: $apple-line-height-card;
+  letter-spacing: $apple-letter-spacing-card;
+  font-weight: 700;
+}
+
+// Links
+a {
+  color: $apple-link-blue;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+  
+  &:visited {
+    color: $apple-link-blue;
+  }
+  
+  &:focus {
+    outline: 2px solid $apple-blue;
+    outline-offset: 2px;
+  }
+}
+
+// Dark section links (now light sections in dark mode)
+.light-section a {
+  color: $apple-bright-blue;
+  
+  &:visited {
+    color: $apple-bright-blue;
+  }
+}
+
+// Images
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Lists
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Blockquotes
+blockquote {
+  color: $apple-black-80;
+  border-left: 4px solid $apple-black-48;
+  padding-left: $apple-spacing-lg;
+  font-size: $apple-caption-size;
+  letter-spacing: $apple-letter-spacing-link;
+  margin: $apple-spacing-xl 0;
+}
+
+// Code blocks
+code, pre {
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, monospace;
+  font-size: 15px;
+  background-color: $apple-dark-surface-1;  // Changed to dark surface
+  border-radius: $apple-radius-standard;
+}
+
+code {
+  padding: $apple-spacing-xs $apple-spacing-sm;
+}
+
+pre {
+  padding: $apple-spacing-md $apple-spacing-lg;
+  overflow-x: auto;
+  
+  code {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+// Tables
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: $apple-spacing-lg;
+  
+  th, td {
+    padding: $apple-spacing-sm $apple-spacing-md;
+    border: 1px solid $apple-dark-surface-3;  // Changed to dark border
+    text-align: left;
+  }
+  
+  th {
+    font-weight: 600;
+    background-color: $apple-dark-surface-2;  // Changed to dark background
+  }
+  
+  tr:nth-child(even) {
+    background-color: $apple-dark-surface-1;  // Changed to dark background
+  }
+}
+
+// Utility Classes
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}

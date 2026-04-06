@@ -1,0 +1,120 @@
+---
+layout: default
+title: locklive livewallpaper
+---
+
+<!-- Hero Section -->
+<section class="hero-section dark-section">
+  <div class="wrapper">
+    <h1 class="hero-title">Wallpaper Tools</h1>
+    <p class="hero-subtitle">Tools for wallpaper creator</p>
+    <p class="hero-credit">Power by LockLive Team</p>
+    <div class="button-group">
+      <a href="#apps" class="pill-link">Explore Apps</a>
+      <a href="#posts" class="pill-link">View Articles</a>
+    </div>
+  </div>
+</section>
+
+<!-- Apps Section -->
+<section id="apps" class="section light-section">
+  <div class="wrapper">
+    <h2 style="text-align: center; margin-bottom: 48px;">Web Applications</h2>
+    
+    {% assign webAppList = site.pages | sort: 'orderid' %}
+    <div class="app-list-container" style="padding: 0; background: transparent;">
+      <ul class="app-list">
+        {% for page in webAppList %}
+          {% if page.layout == "web-app" %}
+            <li class="app-list-item"> 
+              <a href="{{ page.url | remove: "index.html" }}" class="app-list-link">
+                <div class="app-list-show-image">
+                  <img src="/images/icon/{{ page.icon }}.webp" alt="{{ page.title }}">
+                </div>
+                <div class="app-list-title">{{ page.title }}</div>
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Posts Section -->
+<section id="posts" class="section dark-section">
+  <div class="wrapper">
+    <h2 style="text-align: center; margin-bottom: 48px;">Latest Articles</h2>
+    
+    <div class="post-list-container" style="padding: 0;">
+      <ul class="post-list">
+        {% for post in paginator.posts %}
+          <li>
+            <a class="post-list-link" href="{{ post.url | prepend: site.baseurl }}">
+              <div class="post-list-show-image">
+                <div class="post-list-show-image-image" data-bg="{{ post.date | date: "/images/%Y/%m/%Y%m%d.jpg" }}"></div>
+              </div>
+              <div class="post-list-title">{{ post.title }}</div>
+              <div class="post-list-description">{{ post.description }}</div>
+              <div class="post-list-info">
+                <span class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</span>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Pagination -->
+    {% if paginator.total_pages > 1 %}
+      <div class="pagination">
+        {% if paginator.previous_page %}
+          <a href="{{ paginator.previous_page_path | relative_url }}">Previous</a>
+        {% else %}
+          <span>Previous</span>
+        {% endif %}
+
+        {% for page in (1..paginator.total_pages) %}
+          {% if page == paginator.page %}
+            <em>{{ page }}</em>
+          {% elsif page == 1 %}
+            <a href="{{ site.paginate_path | relative_url | replace: 'page-:num/', '' }}">{{ page }}</a>
+          {% else %}
+            <a href="{{ site.paginate_path | relative_url | replace: ':num', page }}">{{ page }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if paginator.next_page %}
+          <a href="{{ paginator.next_page_path | relative_url }}">Next</a>
+        {% else %}
+          <span>Next</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  // Lazy load images with fade-in effect
+  const imgList = document.querySelectorAll('.post-list-show-image-image');
+  var i = 0;
+  
+  imgList.forEach(img => {
+    let src = img.getAttribute('data-bg');
+    img.style.backgroundImage = "url('" + src + "')";
+    setTimeout(function(){
+      img.style.opacity = 1;
+    }, 300 + 300 * i);
+    i++;
+  });
+
+  // Mobile menu toggle
+  const menuIcon = document.querySelector('.menu-icon');
+  const trigger = document.querySelector('.trigger');
+  
+  if (menuIcon && trigger) {
+    menuIcon.addEventListener('click', function() {
+      trigger.classList.toggle('active');
+    });
+  }
+</script>
