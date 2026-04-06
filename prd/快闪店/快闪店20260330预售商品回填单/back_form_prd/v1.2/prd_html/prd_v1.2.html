@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>快闪店预售商品回填单 PRD v1.2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <style>
+    :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { max-width:1000px; margin:0 auto; padding:24px; }
+    h1 { font-size:28px; margin:0 0 12px; border-bottom:3px solid var(--primary); padding-bottom:12px; }
+    h2 { font-size:20px; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+    h3 { font-size:16px; margin:20px 0 10px; font-weight:600; }
+    p { margin:8px 0; color:var(--muted); }
+    .card { border:1px solid var(--border); border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#f9fafb; font-weight:600; }
+    .list { margin:0; padding-left:18px; }
+    .btn { display:inline-block; padding:6px 12px; border:1px solid var(--primary); color:#fff; background:var(--primary); border-radius:4px; text-decoration:none; font-size:13px; cursor:pointer; }
+    .btn:hover { opacity:0.9; }
+    .meta { color:#909399; font-size:13px; }
+    .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
+    .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
+    .field-hint { color:var(--muted); font-size:12px; margin-top:4px; }
+    .feature-id { display:inline-block; background:var(--primary); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--primary); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; }
+    .highlight-btn { background:var(--primary); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>快闪店预售商品回填单 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.2｜状态：已发布｜创建时间：2026-04-06｜产品经理：林长宇</p>
+
+    <div class="card">
+      <h2>1. 项目信息与版本记录</h2>
+      <table>
+        <tr><th style="width:120px;">产品名称</th><td>快闪店预售商品回填单</td></tr>
+        <tr><th>版本</th><td>v1.2</td></tr>
+        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th>创建时间</th><td>2026-03-30</td></tr>
+        <tr><th>产品范围</th><td>快闪店H5回填单 + 运营后台 + App订单列表</td></tr>
+        <tr><th>受众角色</th><td>线下消费者、运营人员</td></tr>
+      </table>
+      
+      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <table>
+        <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
+        <tr><td>v1.0</td><td>2026-03-30</td><td>初版需求确认，H5 回填单 + 运营后台功能定义</td><td>产品经理</td></tr>
+        <tr><td>v1.1</td><td>2026-03-30</td><td>增加用户注册登录逻辑，优化产品细节</td><td>林长宇</td></tr>
+        <tr><td>v1.2</td><td>2026-04-06</td><td>新增 App 端快闪店订单列表展示页</td><td>林长宇</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 现状问题与痛点</h3>
+      <p>解决线下快闪店销售预售商品时，收集用户收货地址的完整可靠解决方案，方便后续发货。</p>
+      
+      <h3 style="margin-top:16px;">2.2 需求提出的必要性</h3>
+      <ul class="list">
+        <li>之前通过第三方合作方提供类似数据，导入分销系统</li>
+        <li>之后要使用自研线下收银系统，需要自行研发</li>
+        <li>现有流程无法满足快速收集用户信息并生成正式订单的需求</li>
+      </ul>
+      
+      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td>业务稳定</td><td>用户完成回填单填写，运营审核后生成正式订单</td><td>回填单提交成功率</td><td>≥95%</td></tr>
+        <tr><td>体验风险</td><td>简化用户填写流程，快速完成信息收集</td><td>平均填写时长</td><td>≤3分钟</td></tr>
+        <tr><td>运营效率</td><td>运营快速审核，减少人工干预</td><td>审核平均时长</td><td>≤5分钟/单</td></tr>
+        <tr><td>数据准确性</td><td>确保收货地址和小票信息准确</td><td>订单地址错误率</td><td>≤1%</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>线下消费者</strong>：在快闪店购买预售商品的用户，付款后扫码填写回填单</li>
+        <li><strong>运营人员</strong>：负责线下场次配置和订单审核</li>
+      </ul>
+      
+      <h3 style="margin-top:16px;">3.2 典型场景</h3>
+      <ul class="list">
+        <li>用户在快闪店购买预售商品，付款后扫码进入回填单页面</li>
+        <li>用户填写商品信息、收货地址、小票信息并提交</li>
+        <li>运营人员在后台查看回填单列表，进行审核</li>
+        <li>审核通过后生成正式订单，用户在 App 中查看订单状态</li>
+      </ul>
+      
+      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
+        <tr><td>到达</td><td>扫码入口</td><td>扫描线下场次二维码进入回填单页面</td><td>不确定要填什么</td><td>清晰展示填写指引</td></tr>
+        <tr><td>选择商品</td><td>商品列表</td><td>浏览并选择预售商品，设定数量</td><td>商品信息不清晰</td><td>展示商品图、名称、规格、价格</td></tr>
+        <tr><td>填写地址</td><td>地址选择</td><td>从地址本选择收货地址或新建地址</td><td>地址输入繁琐</td><td>复用已有地址本功能</td></tr>
+        <tr><td>小票信息</td><td>小票录入</td><td>输入小票号码，上传小票照片</td><td>照片上传麻烦</td><td>支持多张照片上传</td></tr>
+        <tr><td>提交</td><td>提交按钮</td><td>确认信息并提交</td><td>担心提交失败</td><td>明确成功反馈</td></tr>
+        <tr><td>审核</td><td>后台审核</td><td>运营审核回填单，生成订单</td><td>等待时间长</td><td>快速审核机制</td></tr>
+        <tr><td>查看订单</td><td>App 订单列表</td><td>用户在 App 查看快闪店订单</td><td>找不到订单入口</td><td>独立订单列表入口</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>4. 需求功能清单</h2>
+      <h3>4.1 H5 回填单端</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>回填单填写</td><td>填写回填单（商品选择、收货地址、小票信息）</td><td>P0</td><td>h5_back_form_edit</td></tr>
+        <tr><td>回填单成功弹层</td><td>提交成功，展示完整回填单信息，请提供保存到相册功能</td><td>P0</td><td>h5_back_form_success</td></tr>
+      </table>
+      <h3 style="margin-top:20px;">4.2 运营后台端</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>快闪店-线下场次管理</td><td>线下场次新增、编辑、配置</td><td>P0</td><td>admin_activity_admin</td></tr>
+        <tr><td>快闪店-回填单管理</td><td>回填单列表、审核</td><td>P0</td><td>admin_back_form_admin</td></tr>
+      </table>
+      <h3 style="margin-top:20px;">4.3 App 端（新增）</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>快闪店订单列表</td><td>展示快闪店订单列表，包含商品列表和物流信息</td><td>P0</td><td>app_order_list</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>5. 详细方案</h2>
+      
+      <!-- H5 回填单模块 -->
+      <h3>5.1 H5回填单端</h3>
+      
+      <div class="feature-module" id="h5_back_form_edit">
+        <h3>5.1.1 回填单填写 <button class="highlight-btn" onclick="highlightFeature('h5_back_form_edit')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户进入回填单填写界面后，完成商品选择、收货地址、小票信息的填写，并提交回填单。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>用户扫码进入回填单填写页面，支持 APP 扫码、微信扫码，未登录时，需先登录</li>
+            <li>页面加载后，基于线下场次 ID 拉取可售预售商品池</li>
+            <li>商品以一行两个卡片展示，卡片包含：商品图、名称、SKU 规格、价格、数量选择器</li>
+            <li>数量选择器采用 - / + 方式，默认数量为 0，至少选择 1 件商品才可提交</li>
+            <li>收货地址支持从地址本选择和新建地址</li>
+            <li>小票号码、小票照片均为必填</li>
+            <li>表单一次性展示：商品选择 → 收货地址 → 小票信息，支持页面内上下滚动</li>
+            <li>点击提交后执行校验，校验通过后调用提交接口</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>商品卡片圆角展示，选中后显示数量状态</li>
+            <li>价格信息高亮，数量操作区可点击面积偏大</li>
+            <li>提交按钮固定底部，提交中展示 loading 状态</li>
+            <li>校验失败时给出明确提示，并引导回到对应输入区</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+前端加载页面 → 获取商品池数据 → 用户填写表单
+→ 前端校验 → API提交回填单 → 返回提交结果</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="h5_back_form_success">
+        <h3>5.1.2 回填单成功弹层 <button class="highlight-btn" onclick="highlightFeature('h5_back_form_success')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：回填单提交成功后，展示成功态弹层，反馈完整回填单信息，并提供保存到相册能力。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>提交成功后展示成功弹层</li>
+            <li>弹层展示完整信息：回填单编号、商品列表、收货地址、小票号码</li>
+            <li>支持"保存到相册"操作，便于用户留存凭证</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>成功态图标与标题突出，强化反馈确认感</li>
+            <li>信息区分组展示，避免内容堆叠</li>
+            <li>"保存到相册"按钮主操作样式明确，点击反馈清晰</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户提交回填单 → API返回成功 → 展示成功弹层
+→ 用户保存到相册/继续后续操作</pre>
+        </div>
+      </div>
+
+      <!-- 运营后台模块 -->
+      <h3 style="margin-top:32px;">5.2 运营后台端</h3>
+      
+      <div class="feature-module" id="admin_activity_admin">
+        <h3>5.2.1 快闪店 - 线下场次管理 <button class="highlight-btn" onclick="highlightFeature('admin_activity_admin')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：运营在后台完成线下场次的新增、编辑与配置，生成可用于用户填写回填单的入口。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>场次列表：展示全部线下场次，支持按状态、时间、关键词筛选</li>
+            <li>新增场次：配置场次名称、说明、时间区间、关联商品池、订单渠道</li>
+            <li>编辑场次：支持修改基础信息与状态（启用/禁用）</li>
+            <li>场次配置完成后生成对应回填单二维码/链接</li>
+            <li>禁用场次后，用户端不可继续提交新回填单</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>列表区与配置区分栏布局，减少运营切换成本</li>
+            <li>关键字段（场次名称、时间、商品池）提供必填校验</li>
+            <li>状态操作（启用/禁用）二次确认，避免误操作</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+运营配置场次信息 → 后台保存场次配置
+→ 生成回填单入口（二维码/链接）→ 用户端使用</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="admin_back_form_admin">
+        <h3>5.2.2 快闪店-回填单管理 <button class="highlight-btn" onclick="highlightFeature('admin_back_form_admin')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：运营对用户提交的回填单进行列表管理与审核处理。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>回填单列表展示：回填单编号、场次、用户信息、提交时间、审核状态</li>
+            <li>支持筛选与搜索：场次、手机号、小票号、状态、日期区间</li>
+            <li>审核详情页：展示商品信息、收货地址、小票信息、提交记录</li>
+            <li>审核操作：通过进入后续履约流程；驳回必须填写驳回原因并回写状态</li>
+            <li>支持导出列表用于线下对账</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>列表支持快捷筛选与批量导出</li>
+            <li>审核按钮与状态标签区分明显（待审核/已通过/已驳回）</li>
+            <li>驳回时强制填写原因，保证可追溯性</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户提交回填单 → 后台列表入库
+→ 运营审核（通过/驳回）→ 更新回填单状态</pre>
+        </div>
+      </div>
+
+      <!-- App 端模块（新增） -->
+      <h3 style="margin-top:32px;">5.3 App 端（新增）</h3>
+      
+      <div class="feature-module" id="app_order_list">
+        <h3>5.3.1 快闪店订单列表 <button class="highlight-btn" onclick="highlightFeature('app_order_list')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：在 App"我的订单"页面提供快闪店订单列表展示，用户可以查看所有通过快闪店回填单生成的订单。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>用户进入 App "我的订单" → 点击"快闪店"子 Tab</li>
+            <li>页面加载后，基于用户 ID 拉取该用户的所有快闪店订单</li>
+            <li>订单按下单时间倒序排列</li>
+            <li>支持按订单状态筛选：全部、待支付、待发货、待收货、待评价</li>
+            <li>支持业务分类 Tab 切换：全部、快闪店、商城、其他</li>
+            <li>订单卡片展示完整商品列表、物流信息（已发货状态）</li>
+            <li>提供"售后服务"按钮</li>
+            <li>分页加载：默认加载 10 条，上拉加载更多</li>
+            <li>下拉刷新：支持刷新订单列表</li>
+            <li>空状态：无订单时展示"暂无快闪店订单"</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>顶部固定导航栏，包含返回按钮和标题</li>
+            <li>订单状态 Tab 横向滚动，选中态高亮</li>
+            <li>业务分类 Tab 第二行展示，支持快速切换</li>
+            <li>订单卡片白色圆角设计，有阴影效果</li>
+            <li>操作按钮固定底部，点击反馈明确</li>
+            <li>物流信息展开/收起动画流畅</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户进入快闪店订单页面 → 拉取用户订单列表
+→ 按状态筛选/分页加载 → 展示订单卡片
+→ 点击售后服务 → 跳转售后流程</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. 业务流程图</h2>
+      
+      <h3>6.1 用户端流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[用户扫码进入] --> B[选择商品]
+    B --> C[选择收货地址]
+    C --> D[填写小票信息]
+    D --> E{校验通过?}
+    E -->|否| F[提示补充]
+    E -->|是| G[提交回填单]
+    G --> H{提交成功?}
+    H -->|否| I[显示错误提示]
+    I --> D
+    H -->|是| J[展示成功提示]
+      </div>
+      
+      <h3 style="margin-top:24px;">6.2 运营端流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[运营查看回填单列表] --> B[选择待审核回填单]
+    B --> C[查看详情]
+    C --> D{审核操作}
+    D -->|通过| E[生成正式订单]
+    D -->|驳回| F[填写驳回原因]
+    E --> G[完成]
+    F --> H[通知用户重新提交]
+      </div>
+      
+      <h3 style="margin-top:24px;">6.3 App 订单查看流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[用户打开 App] --> B[进入我的订单]
+    B --> C[点击快闪店 Tab]
+    C --> D[加载订单列表]
+    D --> E{是否有订单?}
+    E -->|否| F[展示空状态]
+    E -->|是| G[展示订单卡片]
+    G --> H[点击售后服务]
+    H --> I[跳转售后流程]
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. 异常与边界处理</h2>
+      <ul class="list">
+        <li><strong>网络异常</strong>：用户提交时网络中断，提示"网络不稳定，请检查网络后重试"，保留用户已填写内容</li>
+        <li><strong>重复提交</strong>：系统校验小票号唯一性，已存在则提示"该小票号已提交，请勿重复提交"</li>
+        <li><strong>商品下架</strong>：线下场次期间商品下架，已选择商品不可删除，但标记为"已下架"，提交时提示"包含已下架商品"</li>
+        <li><strong>线下场次过期</strong>：用户访问已过期线下场次，展示"线下场次已结束"提示，不可提交</li>
+        <li><strong>图片上传失败</strong>：提示上传失败原因，支持重试上传</li>
+        <li><strong>订单列表加载失败</strong>：展示错误提示，提供"重新加载"按钮</li>
+        <li><strong>上拉加载更多失败</strong>：提示"加载失败，点击重试"，不中断当前列表展示</li>
+        <li><strong>下拉刷新超时</strong>：提示"刷新失败，请检查网络"，恢复原始状态</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>8. 数据追踪与埋点</h2>
+      <table>
+        <tr><th>事件</th><th>描述</th><th>参数</th></tr>
+        <tr><td>page_view</td><td>页面浏览</td><td>线下场次 ID、来源</td></tr>
+        <tr><td>product_select</td><td>商品选择</td><td>商品 ID、数量</td></tr>
+        <tr><td>address_select</td><td>地址选择</td><td>地址 ID</td></tr>
+        <tr><td>receipt_input</td><td>小票信息填写</td><td>小票号、照片数</td></tr>
+        <tr><td>form_submit</td><td>表单提交</td><td>状态（成功/失败）</td></tr>
+        <tr><td>review_pass</td><td>审核通过</td><td>回填单 ID</td></tr>
+        <tr><td>review_reject</td><td>审核驳回</td><td>回填单 ID、原因</td></tr>
+        <tr><td>app_order_view</td><td>App 订单列表浏览</td><td>用户 ID、订单状态</td></tr>
+        <tr><td>app_after_sale_click</td><td>点击售后服务</td><td>订单ID、订单状态</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>9. 未来演进规划</h2>
+      <table>
+        <tr><th>阶段</th><th>功能</th><th>描述</th></tr>
+        <tr><td>v1.3</td><td>订单详情页</td><td>新增订单详情展示，包含完整商品列表、物流信息、售后流程</td></tr>
+        <tr><td>v1.4</td><td>批量导入</td><td>支持运营后台批量导入回填单数据</td></tr>
+        <tr><td>v1.5</td><td>数据统计</td><td>新增回填单数据统计与可视化报表</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>10. 附件</h2>
+      <ul class="list">
+        <li>参考回填单样式：form.png（需用户提供）</li>
+        <li>愚公互动活动平台接口文档（待补充）</li>
+        <li>App 订单列表参考图：IMG_3648.jpg</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+    
+    function highlightFeature(featureId) {
+      // 发送消息给父窗口，触发原型高亮
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'prd-focus', id: featureId }, '*');
+      }
+    }
+  </script>
+</body>
+</html>

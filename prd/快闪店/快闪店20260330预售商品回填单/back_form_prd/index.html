@@ -5,82 +5,281 @@
   <title>快闪店预售商品回填单 - PRD 与原型主控</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    :root { --border:#e4e7ed; --bg:#fff; --fg:#1f2329; --primary:#667eea; --secondary:#764ba2; }
-    html, body { height: 100%; }
-    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:#f5f7fa; }
+    :root {
+      --bg: #ffffff;
+      --fg: #171717;
+      --muted: #4d4d4d;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-light: rgb(235, 235, 235);
+      --primary: #171717;
+      --primary-text: #ffffff;
+      --accent: #0070f3;
+      --focus: hsla(212, 100%, 48%, 1);
+      --card-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, rgba(0, 0, 0, 0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --card-radius: 8px;
+      --btn-radius: 6px;
+      --pill-radius: 9999px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body { 
+      height: 100%; 
+      font-feature-settings: "liga" 1;
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
+      color: var(--fg); 
+      background: var(--bg); 
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+    
     .header { 
-      display:flex; align-items:center; gap:12px; padding:12px 24px; 
-      border-bottom:1px solid var(--border); background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      position:sticky; top:0; z-index:10; 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+      padding: 16px 24px; 
+      box-shadow: 0px 0px 0px 1px var(--border);
+      background: var(--bg);
+      position: sticky; 
+      top: 0; 
+      z-index: 10; 
     }
-    .header-title { font-size:18px; font-weight:600; color:#fff; }
+    
+    .header-title { 
+      font-size: 16px; 
+      font-weight: 600; 
+      color: var(--fg);
+      letter-spacing: -0.32px;
+    }
+    
     .version-badge { 
-      background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);
-      padding:4px 12px; border-radius:4px; font-size:13px; 
+      background: #f5f5f5; 
+      color: var(--muted); 
+      box-shadow: 0px 0px 0px 1px var(--border-light);
+      padding: 4px 10px; 
+      border-radius: var(--pill-radius); 
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
     }
-    .main { display:flex; height: calc(100% - 56px); }
-    .left { width:50%; height:100%; border-right:1px solid var(--border); box-sizing:border-box; background:#fff; }
-    .right { width:50%; height:100%; box-sizing:border-box; background:#f5f7fa; }
-    .frame { width:100%; height:100%; border:0; }
-    .split { width:8px; cursor:col-resize; background:linear-gradient(to right, transparent, #f0f0f0, transparent); transition:background 0.2s; }
-    .split:hover { background:linear-gradient(to right, transparent, var(--primary), transparent); }
-    .controls { margin-left:auto; display:flex; align-items:center; gap:16px; }
-    .controls label { color:#fff; font-size:14px; }
+    
+    .main { 
+      display: flex; 
+      height: calc(100% - 60px); 
+      background: var(--bg);
+    }
+    
+    .left { 
+      width: 50%; 
+      height: 100%; 
+      box-sizing: border-box; 
+      background: var(--bg);
+    }
+    
+    .right { 
+      width: 50%; 
+      height: 100%; 
+      box-sizing: border-box; 
+      background: #fafafa;
+    }
+    
+    .frame { 
+      width: 100%; 
+      height: 100%; 
+      border: 0; 
+    }
+    
+    .split { 
+      width: 1px; 
+      cursor: col-resize; 
+      background: var(--border-light);
+      position: relative;
+    }
+    
+    .split::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -3px;
+      width: 7px;
+      height: 100%;
+    }
+    
+    .split:hover { 
+      background: var(--accent);
+    }
+    
+    .controls { 
+      margin-left: auto; 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+    }
+    
+    .controls label { 
+      color: var(--muted); 
+      font-size: 14px; 
+      font-weight: 500;
+    }
+    
     .controls select { 
-      background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);
-      padding:6px 12px; border-radius:4px; font-size:13px; cursor:pointer; 
+      background: var(--bg); 
+      color: var(--fg); 
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 12px; 
+      border-radius: var(--btn-radius); 
+      font-size: 14px; 
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s;
     }
-    .controls option { background:#fff; color:#333; }
-    .product-btns { display:flex; gap:8px; }
+    
+    .controls select:hover {
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+    
+    .controls select:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+    
+    .controls option { 
+      background: var(--bg); 
+      color: var(--fg); 
+    }
+    
+    .product-btns { 
+      display: flex; 
+      gap: 8px; 
+    }
+    
     .product-btn { 
-      background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);
-      padding:6px 16px; border-radius:4px; font-size:13px; cursor:pointer; transition:all 0.2s;
+      background: var(--bg); 
+      color: var(--fg); 
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 14px; 
+      border-radius: var(--btn-radius); 
+      font-size: 14px; 
+      font-weight: 500;
+      cursor: pointer; 
+      transition: all 0.15s;
+      outline: none;
     }
-    .product-btn:hover { background:rgba(255,255,255,0.3); }
-    .product-btn.active { background:#fff; color:var(--primary); }
-    .width-control { display:flex; align-items:center; gap:8px; color:#fff; font-size:13px; }
-    .width-control input[type="range"] { width:100px; cursor:pointer; }
-    .card { padding:24px; background:#fff; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
-    .card h2 { margin:0 0 12px; font-size:18px; font-weight:600; }
-    .card .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; }
-    .card .card-link { display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px; border:1px solid var(--border); border-radius:4px; transition:background 0.2s; }
-    .card .card-link:hover { background:rgba(0,0,0,0.05); }
-    .card .card-link .icon { font-size:24px; }
+    
+    .product-btn:hover { 
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+    
+    .product-btn:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+    
+    .product-btn.active { 
+      background: var(--primary); 
+      color: var(--primary-text); 
+      box-shadow: 0px 0px 0px 1px var(--primary);
+    }
+    
+    .product-btn.active:hover {
+      opacity: 0.9;
+    }
+    
+    .width-control { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      color: var(--muted); 
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .width-control input[type="range"] { 
+      width: 100px; 
+      cursor: pointer;
+      accent-color: var(--fg);
+    }
+    
+    .width-control span {
+      min-width: 36px;
+    }
+    
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-light);
+    }
+    
+    .log-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: var(--btn-radius);
+      transition: all 0.15s;
+    }
+    
+    .log-link:hover {
+      color: var(--fg);
+      box-shadow: 0px 0px 0px 1px var(--border);
+    }
+    
+    .log-link:focus {
+      outline: none;
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
   </style>
 </head>
 <body>
   <div class="header">
     <span class="header-title">快闪店预售商品回填单</span>
-    <span class="version-badge">v1.1</span>
+    <span class="version-badge">v1.2</span>
+    <div class="divider"></div>
     <div class="controls">
       <div class="product-btns">
         <button class="product-btn active" data-product="h5" onclick="switchProduct('h5')">H5 回填单</button>
         <button class="product-btn" data-product="admin" onclick="switchProduct('admin')">运营后台</button>
+        <button class="product-btn" data-product="app" onclick="switchProduct('app')">App 订单</button>
       </div>
+      <div class="divider"></div>
       <div class="width-control">
         <span>右侧宽度</span>
         <input id="rightWidth" type="range" min="30" max="70" value="50">
         <span id="rightWidthLabel">50%</span>
       </div>
+      <div class="divider"></div>
       <div class="width-control">
-        <label for="versionSelect">PRD 版本</label>
+        <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
           <option value="1.0">v1.0</option>
-          <option value="1.1" selected>v1.1</option>
+          <option value="1.1">v1.1</option>
+          <option value="1.2" selected>v1.2</option>
         </select>
       </div>
-      <a href="./history/changelog.md" target="_blank" class="product-btn" style="text-decoration:none;" title="查看更新日志">
-        <i class="fas fa-history"></i> 更新日志
+      <div class="divider"></div>
+      <a href="./history/changelog.md" target="_blank" class="log-link" title="查看更新日志">
+        <span>更新日志</span>
+        <span>↗</span>
       </a>
     </div>
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v1.2/prd_html/prd_v1.2.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/h5_v1.1.html#combined"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v1.2/prototype_html/h5_v1.2.html"></iframe>
     </div>
   </div>
 
@@ -94,7 +293,7 @@
     const rightPane = document.querySelector('.right');
     const splitter = document.getElementById('splitter');
     let currentProduct = 'h5';
-    let currentVersion = '1.1';
+    let currentVersion = '1.2';
     let pendingHighlightId = null;
 
     // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
@@ -110,9 +309,11 @@
       prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
       // 切换原型文件
       if (currentProduct === 'h5') {
-        protoFrame.src = `./v${version}/prototype_html/h5_v${version}.html#combined`;
-      } else {
+        protoFrame.src = `./v${version}/prototype_html/h5_v${version}.html`;
+      } else if (currentProduct === 'admin') {
         protoFrame.src = `./v${version}/prototype_html/admin_v${version}.html`;
+      } else {
+        protoFrame.src = `./v${version}/prototype_html/app_v${version}.html`;
       }
     }
 
@@ -123,9 +324,11 @@
         if (btn.dataset.product === product) btn.classList.add('active');
       });
       if (product === 'h5') {
-        protoFrame.src = `./v${currentVersion}/prototype_html/h5_v${currentVersion}.html#combined`;
-      } else {
+        protoFrame.src = `./v${currentVersion}/prototype_html/h5_v${currentVersion}.html`;
+      } else if (product === 'admin') {
         protoFrame.src = `./v${currentVersion}/prototype_html/admin_v${currentVersion}.html`;
+      } else {
+        protoFrame.src = `./v${currentVersion}/prototype_html/app_v${currentVersion}.html`;
       }
     }
 
@@ -154,7 +357,18 @@
     window.addEventListener('message', (e) => {
       const data = e.data || {};
       if (data.type === 'prd-focus' && data.id) {
-        const targetProduct = String(data.id).includes('admin') ? 'admin' : 'h5';
+        const fid = String(data.id);
+        let targetProduct = 'h5';
+        
+        // 根据功能标识前缀判断目标产品形态
+        if (fid.startsWith('admin_')) {
+          targetProduct = 'admin';
+        } else if (fid.startsWith('app_')) {
+          targetProduct = 'app';
+        } else if (fid.startsWith('h5_')) {
+          targetProduct = 'h5';
+        }
+        
         // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
         if (targetProduct !== currentProduct) {
           pendingHighlightId = data.id;

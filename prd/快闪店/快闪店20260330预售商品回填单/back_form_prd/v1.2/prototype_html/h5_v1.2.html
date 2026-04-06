@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快闪店预售商品回填单 - H5 完整原型 v1.2</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* 固定控制按钮 */
+        .fixed-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .control-btn.active {
+            background: linear-gradient(135deg, #00b894, #00a884);
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+        }
+        
+        .control-btn i {
+            font-size: 1rem;
+        }
+        
+        /* 头部标题 */
+        .header-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .header-title h1 {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-title p {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+        
+        /* 手机原型统一尺寸（H5/App 同比例） */
+        :root {
+            --phone-width: 375px;
+            --phone-height: 812px;
+        }
+
+        /* 平铺容器 */
+        .prototype-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(var(--phone-width), 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+        
+        /* 平铺容器 - 全局视图模式 */
+        .prototype-container.global-view {
+            grid-template-columns: repeat(auto-fill, minmax(var(--phone-width), 1fr));
+            gap: 2rem;
+            max-width: none;
+            padding: 2rem;
+        }
+        
+        /* 全局视图 - 显示所有页面 */
+        .prototype-container.global-view .page-section {
+            display: block !important;
+            opacity: 1;
+            transform: none;
+        }
+        
+        /* 手机框架 */
+        .phone-frame {
+            width: var(--phone-width);
+            height: var(--phone-height);
+            background: #f0f2f5;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 12px solid #1a1a1a;
+        }
+        
+        .phone-frame.highlighted {
+            border-color: #667eea;
+            box-shadow: 0 0 50px rgba(102, 126, 234, 0.6);
+            transform: scale(1.02);
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #1a1a1a;
+            border-radius: 0 0 20px 20px;
+            z-index: 50;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background: #fff;
+            position: relative;
+            padding: 0 16px;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        /* 页面内容容器 */
+        .page-content {
+            height: calc(var(--phone-height) - 44px);
+            overflow-y: auto;
+            position: relative;
+            padding: 16px;
+            padding-top: 60px;
+            padding-bottom: 100px;
+        }
+
+        /* 首屏布局模拟：保证关键内容在第一屏完成信息传达 */
+        .first-screen-hero {
+            background: linear-gradient(135deg, #ffffff 0%, #f7f8ff 100%);
+            border: 1px solid #e9ecff;
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+
+        .first-screen-hero .title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d2f33;
+        }
+
+        .first-screen-hero .desc {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .first-screen-actions {
+            position: sticky;
+            bottom: 8px;
+            background: linear-gradient(to top, rgba(240,242,245,0.96) 65%, rgba(240,242,245,0));
+            padding-top: 10px;
+        }
+        
+        /* 隐藏滚动条但保留功能 */
+        .page-content::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+        
+        /* 通用样式 */
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        
+        .submit-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        /* 成功弹窗 */
+        .success-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        .success-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            width: 280px;
+        }
+        
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: #52c41a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            color: white;
+        }
+        
+        .success-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .success-orderno {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* 标签页 */
+        .tabs {
+            position: sticky;
+            top: 0;
+            background: #1a1a1a;
+            padding: 1rem 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+        }
+        
+        /* 全局视图时隐藏标签页 */
+        .tabs.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-100%);
+        }
+        
+        .tab-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: #667eea;
+            transform: scale(1.05);
+        }
+        
+        .tab-btn:hover {
+            background: #5b6fd9;
+        }
+        
+        /* 页面显示控制 */
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        /* 全局视图时移除高亮效果 */
+        .prototype-container.global-view .phone-frame.highlighted {
+            border-color: #1a1a1a;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            transform: none;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5b6fd9;
+        }
+        
+        /* 高亮模块 */
+        .feature-highlight {
+            border: 2px solid #ff4d4f !important;
+            box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .prototype-module {
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定控制按钮 -->
+    <div class="fixed-controls">
+        <button class="control-btn active" id="globalViewBtn" onclick="toggleGlobalView()">
+            <i class="fas fa-th-large"></i>
+            <span>全局视图</span>
+        </button>
+        <button class="control-btn" onclick="resetToDefault()">
+            <i class="fas fa-redo"></i>
+            <span>重置</span>
+        </button>
+    </div>
+    
+    <!-- 头部标题 -->
+    <div class="header-title">
+        <h1><i class="fas fa-mobile-alt mr-3"></i>快闪店预售商品回填单 - H5 原型</h1>
+        <p>点击选项卡切换不同页面，或访问 #combined、#success 直接定位</p>
+    </div>
+    
+    <!-- 标签页切换 -->
+    <div class="tabs" id="tabsContainer">
+        <button class="tab-btn active" onclick="showPage('combined')">
+            <i class="fas fa-file-alt mr-2"></i>回填单
+        </button>
+        <button class="tab-btn" onclick="showPage('success')">
+            <i class="fas fa-check mr-2"></i>提交成功
+        </button>
+    </div>
+
+    <!-- 页面容器 -->
+    <div class="prototype-container global-view" id="prototypeContainer">
+        <!-- 商品选择页（对应 PRD：feature_01） -->
+        <div id="combined" class="phone-frame page-section active">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="first-screen-hero">
+                    <div class="title">快闪店预售回填单</div>
+                    <div class="desc">请在本页一次性完成商品、地址和小票信息填写（首屏已展示核心入口）。</div>
+                </div>
+                <div class="section prototype-module" data-prototype="h5_back_form_edit">
+                    <div class="section-title">
+                        <span class="inline-block w-1 h-4 bg-purple-600 rounded mr-2"></span>
+                        回填单（商品选择 + 收货地址 + 小票信息）
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- 商品选择 -->
+                        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100">
+                            <div class="text-xs text-gray-500 mb-3">商品选择（一行两个商品卡片，至少选择 1 件）</div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="rounded-2xl border border-gray-100 p-3 bg-white">
+                                    <div class="w-full h-20 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="mt-2 font-semibold text-sm text-gray-900">芒果 TV 会员月卡</div>
+                                    <div class="text-xs text-gray-500 mt-1">VIP-001 · 30天</div>
+                                    <div class="text-sm font-semibold text-purple-700 mt-1">¥19.9</div>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button class="control-btn" style="padding:0.35rem 0.65rem;border-radius:10px;" onclick="adjustQty('qty_p1', -1)">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            <span id="qty_p1">1</span>
+                                        </div>
+                                        <button class="control-btn active" style="padding:0.35rem 0.65rem;border-radius:10px;" onclick="adjustQty('qty_p1', 1)">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="rounded-2xl border border-gray-100 p-3 bg-white">
+                                    <div class="w-full h-20 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="mt-2 font-semibold text-sm text-gray-900">芒果 TV 会员季卡</div>
+                                    <div class="text-xs text-gray-500 mt-1">VIP-003 · 90天</div>
+                                    <div class="text-sm font-semibold text-purple-700 mt-1">¥59.0</div>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button class="control-btn" style="padding:0.35rem 0.65rem;border-radius:10px;" onclick="adjustQty('qty_p2', -1)">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            <span id="qty_p2">0</span>
+                                        </div>
+                                        <button class="control-btn active" style="padding:0.35rem 0.65rem;border-radius:10px;" onclick="adjustQty('qty_p2', 1)">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 收货地址 -->
+                        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100">
+                            <div class="text-xs text-gray-500 mb-3">收货地址（必填）</div>
+                            <div class="font-semibold text-gray-900">张三（150****8888）</div>
+                            <div class="text-sm text-gray-600 mt-1">浙江省杭州市西湖区文一西路 100 号</div>
+                            <div class="mt-4 flex gap-2">
+                                <button class="submit-btn" style="position: static; width: 100%; background:#fff; color:#667eea; border:2px solid #667eea;" onclick="selectAddress('addressbook')">
+                                    选择其他地址
+                                </button>
+                                <button class="submit-btn" style="position: static; width: 100%;" onclick="selectAddress('new')">
+                                    新建地址
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 小票信息 -->
+                        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100">
+                            <div class="text-xs text-gray-500 mb-3">小票信息（必填）</div>
+                            <div class="text-sm text-gray-500">小票号码</div>
+                            <input id="receiptNo" type="text" placeholder="请输入小票号码" class="mt-2 w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-600">
+
+                            <div class="mt-4 text-sm text-gray-500">小票照片（最多10张）</div>
+                            <input id="receiptPhotos" type="file" accept="image/*" multiple class="mt-2 w-full rounded-2xl border border-gray-200 px-3 py-2 text-sm">
+                            <div class="mt-3 text-xs text-gray-500">原型说明：此处仅模拟上传校验（选择文件后即可通过）。</div>
+                        </div>
+
+                        <!-- 提交流程（对应 PRD：feature_02） -->
+                        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 prototype-module" data-prototype="feature_02">
+                            <div class="text-xs text-gray-500 mb-2">提交流程</div>
+                            <div class="text-sm text-gray-600">点击“提交”后进行校验：至少 1 件商品、地址已选择、小票号码已填写、小票照片已上传。</div>
+                            <div class="w-full mt-4 first-screen-actions">
+                                <button class="submit-btn" style="width: 100%;" onclick="submitOrder()">
+                                    提交回填单
+                                </button>
+                            </div>
+                            <div class="w-full mt-3">
+                                <button class="submit-btn" style="position: static; width: 100%; background:white; color:#fa8c16; border:2px solid #fa8c16;" onclick="simulateFail()">
+                                    模拟失败（查看反馈）
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- （已按 PRD 5.1.1 合并为单页回填单：#combined） -->
+
+        <!-- 提交反馈页（对应 PRD：feature_04） -->
+        <div id="feedback" class="phone-frame page-section">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="section prototype-module" data-prototype="feature_04">
+                    <div class="section-title">
+                        <span class="inline-block w-1 h-4 bg-purple-600 rounded mr-2"></span>
+                        提交反馈
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
+                                <i class="fas fa-exclamation-circle text-2xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-lg font-semibold text-gray-900">提交失败</div>
+                                <div class="text-sm text-gray-600 mt-1">请检查小票号码和照片后重试。</div>
+                            </div>
+                        </div>
+
+                        <div class="w-full mt-6 space-y-3">
+                            <button class="submit-btn" style="position: static; width: 100%;" onclick="nextPage('combined')">
+                                重试
+                            </button>
+                            <button class="submit-btn" style="position: static; width: 100%; background:#fff; color:#667eea; border:2px solid #667eea;" onclick="nextPage('combined')">
+                                返回并修改
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提交成功页 -->
+        <div id="success" class="phone-frame page-section">
+            <div class="phone-notch"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+            
+            <div class="page-content">
+                <!-- 成功模块 -->
+                <div class="section prototype-module" data-prototype="h5_back_form_success">
+                    <div class="flex flex-col items-center justify-center pt-20">
+                        <div class="success-icon" style="width: 100px; height: 100px; font-size: 48px;">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="success-title" style="font-size: 24px; margin-top: 16px;">提交成功</div>
+                        <div class="success-orderno" style="font-size: 16px; margin-top: 8px;">
+                            回填单号：<span class="font-bold text-purple-600">HT202603300001</span>
+                        </div>
+                        
+                        <!-- 商品信息 -->
+                        <div class="w-full max-w-xs mt-8 bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm font-bold text-gray-700 mb-2">商品列表</div>
+                            <div class="space-y-2 text-xs text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>预售商品 A</span>
+                                    <span>x2</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>预售商品 B</span>
+                                    <span>x1</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 收货地址 -->
+                        <div class="w-full max-w-xs mt-4 bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm font-bold text-gray-700 mb-2">收货地址</div>
+                            <div class="text-xs text-gray-600">
+                                北京市朝阳区 XX 街道 XX 小区 1-1-101
+                            </div>
+                        </div>
+                        
+                        <!-- 小票号码 -->
+                        <div class="w-full max-w-xs mt-4 bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm font-bold text-gray-700 mb-2">小票号码</div>
+                            <div class="text-xs text-gray-600 font-mono">
+                                1234567890
+                            </div>
+                        </div>
+                        
+                        <!-- 保存到相册按钮 -->
+                        <div class="w-full max-w-xs mt-8">
+                            <button class="submit-btn" style="position: static; width: 100%; background: linear-gradient(135deg, #00b894, #00a884);" onclick="saveToAlbum()">
+                                <i class="fas fa-camera mr-2"></i>保存到相册
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提交成功弹窗（隐藏，默认不显示） -->
+        <div id="successModal" class="success-modal" style="display: none;">
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="success-title">提交成功</div>
+                <div class="success-orderno">
+                    回填单号：<span class="font-bold text-purple-600">HT202603300001</span>
+                </div>
+                
+                <!-- 商品信息 -->
+                <div class="w-full max-w-xs mt-8 bg-gray-50 rounded-lg p-4">
+                    <div class="text-sm font-bold text-gray-700 mb-2">商品列表</div>
+                    <div class="space-y-2 text-xs text-gray-600">
+                        <div class="flex justify-between">
+                            <span>预售商品 A</span>
+                            <span>x2</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>预售商品 B</span>
+                            <span>x1</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 收货地址 -->
+                <div class="w-full max-w-xs mt-4 bg-gray-50 rounded-lg p-4">
+                    <div class="text-sm font-bold text-gray-700 mb-2">收货地址</div>
+                    <div class="text-xs text-gray-600">
+                        北京市朝阳区 XX 街道 XX 小区 1-1-101
+                    </div>
+                </div>
+                
+                <!-- 小票号码 -->
+                <div class="w-full max-w-xs mt-4 bg-gray-50 rounded-lg p-4">
+                    <div class="text-sm font-bold text-gray-700 mb-2">小票号码</div>
+                    <div class="text-xs text-gray-600 font-mono">
+                        1234567890
+                    </div>
+                </div>
+                
+                <!-- 保存到相册按钮 -->
+                <div class="w-full max-w-xs mt-8">
+                    <button class="submit-btn" style="position: static; width: 100%; background: linear-gradient(135deg, #00b894, #00a884);" onclick="saveToAlbum()">
+                        <i class="fas fa-camera mr-2"></i>保存到相册
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 全局视图状态
+        let isGlobalView = true;
+        
+        // 切换全局视图
+        function toggleGlobalView() {
+            const container = document.getElementById('prototypeContainer');
+            const tabs = document.getElementById('tabsContainer');
+            const btn = document.getElementById('globalViewBtn');
+            
+            isGlobalView = !isGlobalView;
+            
+            if (isGlobalView) {
+                // 切换到全局视图 - 响应式网格布局
+                container.classList.add('global-view');
+                tabs.classList.add('hidden');
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fas fa-th-large"></i><span>全局视图</span>';
+                
+                // 显示所有页面
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.style.display = 'block';
+                });
+                
+                // 移除高亮
+                document.querySelectorAll('.phone-frame').forEach(frame => {
+                    frame.classList.remove('highlighted');
+                });
+                
+                // 重置标签激活状态
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            } else {
+                // 切换到单页视图
+                container.classList.remove('global-view');
+                tabs.classList.remove('hidden');
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fas fa-th-large"></i><span>单页视图</span>';
+                
+                // 隐藏所有页面，只显示当前选中的
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // 显示第一个页面（combined）
+                showPage('combined');
+            }
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 重置到默认状态
+        function resetToDefault() {
+            const container = document.getElementById('prototypeContainer');
+            const tabs = document.getElementById('tabsContainer');
+            const btn = document.getElementById('globalViewBtn');
+            
+            // 恢复到全局视图
+            isGlobalView = true;
+            container.classList.add('global-view');
+            tabs.classList.add('hidden');
+            btn.classList.add('active');
+            btn.innerHTML = '<i class="fas fa-th-large"></i><span>全局视图</span>';
+            
+            // 显示所有页面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.style.display = 'block';
+            });
+            
+            // 移除高亮
+            document.querySelectorAll('.phone-frame').forEach(frame => {
+                frame.classList.remove('highlighted');
+            });
+            
+            // 重置 URL 锚点
+            history.pushState('', document.title, window.location.pathname + window.location.search);
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 显示指定页面
+        function showPage(pageId) {
+            // 如果在全局视图模式，先切换到单页视图
+            if (isGlobalView) {
+                toggleGlobalView();
+                // 等待切换完成后显示指定页面
+                setTimeout(() => {
+                    performShowPage(pageId);
+                }, 300);
+            } else {
+                performShowPage(pageId);
+            }
+        }
+        
+        // 执行页面显示
+        function performShowPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+            });
+            
+            // 更新标签按钮状态
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            const targetSection = document.getElementById(pageId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                
+                // 高亮显示的页面
+                document.querySelectorAll('.phone-frame').forEach(frame => {
+                    frame.classList.remove('highlighted');
+                });
+                targetSection.classList.add('highlighted');
+                
+                // 更新对应标签按钮
+                const tabIds = ['combined', 'success'];
+                const tabIndex = tabIds.indexOf(pageId);
+                if (tabIndex !== -1) document.querySelectorAll('.tab-btn')[tabIndex].classList.add('active');
+                
+                // 更新 URL 锚点
+                window.location.hash = pageId;
+                
+                // 滚动到页面顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        // 页面跳转
+        function nextPage(pageId) {
+            showPage(pageId);
+        }
+        
+        function previousPage(pageId) {
+            showPage(pageId);
+        }
+
+        // 原型交互：数量调整/地址选择/失败模拟
+        function adjustQty(qtyId, delta) {
+            const el = document.getElementById(qtyId);
+            if (!el) return;
+            const current = parseInt(el.textContent || '0', 10);
+            const next = Math.max(0, current + delta);
+            el.textContent = String(next);
+        }
+
+        function selectAddress(source) {
+            // 原型占位：这里仅用于展示“选择地址”的触发行为
+            // 真实项目中可替换为地址选择/回填接口
+            console.log('selectAddress:', source);
+        }
+
+        function simulateFail() {
+            alert('提交失败，请检查信息后重试');
+            showPage('combined');
+        }
+        
+        // 提交订单
+        function submitOrder() {
+            const receiptNo = document.getElementById('receiptNo').value;
+            const photosInput = document.getElementById('receiptPhotos');
+            const photosCount = photosInput && photosInput.files ? photosInput.files.length : 0;
+            if (!receiptNo) {
+                alert('请输入小票号码');
+                showPage('combined');
+                return;
+            }
+            
+            if (!photosCount) {
+                alert('请先上传小票照片');
+                showPage('combined');
+                return;
+            }
+
+            // 显示成功弹窗，并跳转到提交结果页
+            showSuccessModal();
+            showPage('success');
+        }
+        
+        // 显示成功弹窗
+        function showSuccessModal() {
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+        
+        // 关闭成功弹窗
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // 查看订单
+        function viewOrder() {
+            alert('跳转到订单详情页');
+        }
+        
+        // 保存到相册
+        function saveToAlbum() {
+            // 原型演示：模拟保存到相册操作
+            const successContent = document.querySelector('.success-content') || document.querySelector('.success-module .flex');
+            if (successContent) {
+                // 创建提示消息
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 1rem 2rem;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    z-index: 9999;
+                    text-align: center;
+                `;
+                toast.innerHTML = '<i class="fas fa-check-circle mr-2"></i>已保存到相册';
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 2000);
+            }
+        }
+        
+        // 接收主控文档联动指令
+        window.addEventListener('message', function(e) {
+            if (e.data.action === 'highlight' && e.data.featureId) {
+                // 移除所有高亮
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+                // 高亮对应模块（支持新旧 featureId 兼容）
+                const aliasMap = {
+                    'h5_back_form_edit': 'back_form_edit',
+                    'h5_back_form_success': 'back_form_success',
+                    'back_form_edit': 'h5_back_form_edit',
+                    'back_form_success': 'h5_back_form_success'
+                };
+                const fid = String(e.data.featureId);
+                const candidates = [fid, aliasMap[fid]].filter(Boolean);
+                const selector = candidates.map(id => `.prototype-module[data-prototype="${id}"]`).join(',');
+                const targetModule = document.querySelector(selector);
+                if (targetModule) {
+                    // 如果在单页视图，确保对应页面可见
+                    const pageSection = targetModule.closest('.page-section');
+                    if (pageSection && !isGlobalView) {
+                        const pageId = pageSection.id;
+                        performShowPage(pageId);
+                    }
+
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            // 接收页面切换指令
+            if (e.data.action === 'navigate' && e.data.pageId) {
+                showPage(e.data.pageId);
+            }
+        });
+        
+        // 页面加载时检查 URL 锚点
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            const validPages = ['combined', 'success'];
+
+            // Focus Mode：通过 URL 参数直接进入并联动高亮
+            const params = new URLSearchParams(window.location.search);
+            const focusId = params.get('focus');
+
+            // featureId -> 对应 pageId（用于 Focus 模式自动切页）
+            const featureIdToPageId = (id) => {
+                if (id === 'back_form_edit') return 'combined';
+                if (id === 'feature_01') return 'combined';
+                if (id === 'feature_02') return 'combined';
+                if (id === 'back_form_success') return 'success';
+                if (id === 'feature_03') return 'success';
+                if (id === 'feature_04') return 'combined';
+                return null;
+            };
+
+            if (focusId) {
+                const targetPageId = featureIdToPageId(focusId);
+                if (targetPageId && validPages.includes(targetPageId)) {
+                    isGlobalView = false;
+                    document.getElementById('prototypeContainer').classList.remove('global-view');
+                    document.getElementById('tabsContainer').classList.remove('hidden');
+                    document.getElementById('globalViewBtn').classList.remove('active');
+                    document.getElementById('globalViewBtn').innerHTML = '<i class="fas fa-th-large"></i><span>单页视图</span>';
+
+                    // 隐藏所有页面，只显示目标页
+                    document.querySelectorAll('.page-section').forEach(section => {
+                        section.style.display = 'none';
+                        section.classList.remove('active');
+                    });
+
+                    setTimeout(() => {
+                        performShowPage(targetPageId);
+
+                        // 同步高亮对应功能模块
+                        document.querySelectorAll('.prototype-module').forEach(module => {
+                            module.classList.remove('feature-highlight');
+                        });
+                        const aliasMap = {
+                            'h5_back_form_edit': 'back_form_edit',
+                            'h5_back_form_success': 'back_form_success',
+                            'back_form_edit': 'h5_back_form_edit',
+                            'back_form_success': 'h5_back_form_success'
+                        };
+                        const fid = String(focusId);
+                        const candidates = [fid, aliasMap[fid]].filter(Boolean);
+                        const selector = candidates.map(id => `.prototype-module[data-prototype="${id}"]`).join(',');
+                        const targetModule = document.querySelector(selector);
+                        if (targetModule) {
+                            targetModule.classList.add('feature-highlight');
+                            targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 0);
+                    return;
+                }
+            }
+            
+            // 默认显示全局视图
+            if (hash && validPages.includes(hash)) {
+                // 如果有特定锚点，切换到单页视图并显示该页面
+                isGlobalView = false;
+                document.getElementById('prototypeContainer').classList.remove('global-view');
+                document.getElementById('tabsContainer').classList.remove('hidden');
+                document.getElementById('globalViewBtn').classList.remove('active');
+                document.getElementById('globalViewBtn').innerHTML = '<i class="fas fa-th-large"></i><span>单页视图</span>';
+                
+                // 隐藏所有页面
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.style.display = 'none';
+                    section.classList.remove('active');
+                });
+                
+                // 显示目标页面
+                setTimeout(() => {
+                    performShowPage(hash);
+                }, 100);
+            } else {
+                // 否则保持全局视图
+                isGlobalView = true;
+                document.getElementById('prototypeContainer').classList.add('global-view');
+                document.getElementById('tabsContainer').classList.add('hidden');
+                
+                // 显示所有页面
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.style.display = 'block';
+                    section.classList.add('active');
+                });
+            }
+        });
+        
+        // 监听 hash 变化
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            const validPages = ['combined', 'success'];
+            
+            if (hash && validPages.includes(hash)) {
+                // 如果当前是全局视图，切换到单页视图
+                if (isGlobalView) {
+                    toggleGlobalView();
+                    setTimeout(() => {
+                        performShowPage(hash);
+                    }, 300);
+                } else {
+                    performShowPage(hash);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

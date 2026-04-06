@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快闪店预售商品回填单 - 运营后台原型 v1.2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 220px;
+            background: #1a1a2e;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+        }
+        .sidebar-logo {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-menu {
+            padding: 16px 0;
+        }
+        .menu-group-title {
+            padding: 12px 24px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .menu-subitem {
+            margin-left: 12px;
+            padding-left: 36px !important;
+        }
+        .menu-item {
+            padding: 12px 24px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .menu-item i { font-size: 18px; }
+        .main-content {
+            margin-left: 220px;
+            padding: 24px;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        .card-body { padding: 20px; }
+        .table { margin-bottom: 0; }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .table td { vertical-align: middle; }
+        .badge-pending { background: #fff3cd; color: #856404; }
+        .badge-passed { background: #d4edda; color: #155724; }
+        .badge-rejected { background: #f8d7da; color: #721c24; }
+        .btn-action {
+            padding: 4px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-bar select, .filter-bar input {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .filter-bar input { width: 200px; }
+        .detail-section {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .detail-section:last-child { border-bottom: none; }
+        .detail-label {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 6px;
+        }
+        .detail-value {
+            font-size: 14px;
+            color: #333;
+        }
+        .product-thumb {
+            width: 60px;
+            height: 60px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        .product-info { display: flex; align-items: center; }
+        .modal-content { border-radius: 12px; }
+        .feature-highlight {
+            border: 2px solid #ff4d4f !important;
+            box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.2);
+            transition: all 0.3s;
+        }
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        .activity-card { border: 2px dashed #e8e8e8; border-radius: 12px; padding: 20px; margin: 12px 0; transition: all 0.2s; }
+        .activity-card:hover { border-color: #667eea; }
+        .qr-code { width: 120px; height: 120px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .product-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; display: flex; gap: 16px; margin-bottom: 12px; }
+        .product-img { width: 80px; height: 80px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-dot.active { background: #52c41a; }
+        .status-dot.inactive { background: #d9d9d9; }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+        .tag-blue { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+        .tag-green { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+        .tag-orange { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="bi bi-shop"></i>
+            <span style="margin-left: 8px;">快闪店管理</span>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-group-title">
+                <i class="bi bi-shop-window"></i>
+                <span style="margin-left: 8px;">快闪店</span>
+            </div>
+
+            <div class="menu-item menu-subitem active" id="menu-activity" onclick="showPage('activity')">
+                <i class="bi bi-calendar-event"></i>
+                <span>线下场次管理</span>
+            </div>
+
+            <div class="menu-item menu-subitem" id="menu-review" onclick="showPage('review')">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>回填单管理</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 活动管理页面 -->
+    <div class="main-content page-section active" id="page-activity">
+        <div class="page-header">
+            <div class="page-title">活动管理</div>
+            <button class="btn btn-primary" onclick="showModal('activityModal')">
+                <i class="bi bi-plus-lg"></i> 新增活动
+            </button>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="filter-bar">
+                    <select class="form-select" style="width: 150px;">
+                        <option value="">全部状态</option>
+                        <option value="1" selected>启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                    <input type="text" placeholder="搜索活动名称">
+                    <button class="btn btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">活动列表</div>
+            <div class="card-body" style="padding: 0;">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>活动 ID</th>
+                            <th>活动名称</th>
+                            <th>订单渠道</th>
+                            <th>商品池</th>
+                            <th>活动时间</th>
+                            <th>状态</th>
+                            <th>回填单数</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="prototype-module" data-prototype="admin_activity_admin">
+                            <td>ACT001</td>
+                            <td>快闪店预售活动</td>
+                            <td>线下渠道 A</td>
+                            <td>会员商品池</td>
+                            <td>2026-03-30 ~ 2026-04-30</td>
+                            <td><span class="badge badge-passed">启用</span></td>
+                            <td>156</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('activityModal')">编辑</button>
+                                <button class="btn btn-outline-secondary btn-action" onclick="showModal('qrModal')">二维码</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ACT002</td>
+                            <td>五一促销专场</td>
+                            <td>线下渠道 B</td>
+                            <td>电器商品池</td>
+                            <td>2026-05-01 ~ 2026-05-07</td>
+                            <td><span class="badge badge-pending">待启用</span></td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('activityModal')">编辑</button>
+                                <button class="btn btn-outline-secondary btn-action" onclick="showModal('qrModal')">二维码</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 回填单审核页面 -->
+    <div class="main-content page-section" id="page-review">
+        <div class="page-header">
+            <div class="page-title">回填单审核</div>
+            <button class="btn btn-primary">
+                <i class="bi bi-download"></i> 导出
+            </button>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="filter-bar">
+                    <select class="form-select" style="width: 150px;">
+                        <option value="">全部状态</option>
+                        <option value="0" selected>待审核</option>
+                        <option value="1">已通过</option>
+                        <option value="2">已驳回</option>
+                    </select>
+                    <select class="form-select" style="width: 150px;">
+                        <option value="">全部活动</option>
+                        <option value="1">快闪店预售活动</option>
+                    </select>
+                    <input type="text" placeholder="搜索回填单号/手机号/小票号">
+                    <button class="btn btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">回填单列表</div>
+            <div class="card-body" style="padding: 0;">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>回填单号</th>
+                            <th>活动</th>
+                            <th>用户</th>
+                            <th>商品信息</th>
+                            <th>小票号</th>
+                            <th>状态</th>
+                            <th>提交时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="prototype-module" data-prototype="admin_back_form_admin">
+                            <td>HT202603300001</td>
+                            <td>快闪店预售活动</td>
+                            <td>138****8888</td>
+                            <td>芒果 TV 会员月卡 x2</td>
+                            <td>PJ20260330001</td>
+                            <td><span class="badge badge-pending">待审核</span></td>
+                            <td>2026-03-30 10:30</td>
+                            <td>
+                                <button class="btn btn-primary btn-action" onclick="showModal('detailModal')">审核</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>HT202603300002</td>
+                            <td>快闪店预售活动</td>
+                            <td>139****9999</td>
+                            <td>芒果 TV 会员年卡 x1</td>
+                            <td>PJ20260330002</td>
+                            <td><span class="badge badge-passed">已通过</span></td>
+                            <td>2026-03-30 10:25</td>
+                            <td>
+                                <button class="btn btn-outline-secondary btn-action" onclick="showModal('detailModal')">查看</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>HT202603300003</td>
+                            <td>快闪店预售活动</td>
+                            <td>137****7777</td>
+                            <td>芒果 TV+ 京东 PLUS x1</td>
+                            <td>PJ20260330003</td>
+                            <td><span class="badge badge-rejected">已驳回</span></td>
+                            <td>2026-03-30 10:20</td>
+                            <td>
+                                <button class="btn btn-outline-secondary btn-action" onclick="showModal('detailModal')">查看</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- 订单管理页面 -->
+    <div class="main-content page-section" id="page-order">
+        <div class="page-header">
+            <div class="page-title">订单管理</div>
+            <button class="btn btn-primary">
+                <i class="bi bi-download"></i> 导出订单
+            </button>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="filter-bar">
+                    <select class="form-select" style="width: 150px;">
+                        <option value="">全部状态</option>
+                        <option value="0">待发货</option>
+                        <option value="1">已发货</option>
+                        <option value="2">已完成</option>
+                        <option value="3">已取消</option>
+                    </select>
+                    <select class="form-select" style="width: 150px;">
+                        <option value="">全部活动</option>
+                        <option value="1">快闪店预售活动</option>
+                    </select>
+                    <input type="text" placeholder="搜索订单号/手机号">
+                    <button class="btn btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">订单列表</div>
+            <div class="card-body" style="padding: 0;">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>回填单号</th>
+                            <th>活动</th>
+                            <th>用户</th>
+                            <th>商品信息</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>下单时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="prototype-module" data-prototype="admin_03">
+                            <td>ORD202603300001</td>
+                            <td>HT202603300002</td>
+                            <td>快闪店预售活动</td>
+                            <td>139****9999</td>
+                            <td>芒果 TV 会员年卡 x1</td>
+                            <td>¥199.00</td>
+                            <td><span class="badge badge-passed">已完成</span></td>
+                            <td>2026-03-30 10:25</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD202603300002</td>
+                            <td>HT202603300004</td>
+                            <td>快闪店预售活动</td>
+                            <td>136****6666</td>
+                            <td>芒果 TV 会员季卡 x1</td>
+                            <td>¥59.00</td>
+                            <td><span class="badge badge-pending">待发货</span></td>
+                            <td>2026-03-30 11:00</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                                <button class="btn btn-outline-success btn-action">发货</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD202603300003</td>
+                            <td>HT202603300005</td>
+                            <td>快闪店预售活动</td>
+                            <td>135****5555</td>
+                            <td>芒果 TV+ 京东 PLUS x1</td>
+                            <td>¥168.00</td>
+                            <td><span class="tag tag-blue">已发货</span></td>
+                            <td>2026-03-30 11:15</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- 商品池管理页面 -->
+    <div class="main-content page-section" id="page-product">
+        <div class="page-header">
+            <div class="page-title">商品池管理</div>
+            <button class="btn btn-primary" onclick="showModal('productPoolModal')">
+                <i class="bi bi-plus-lg"></i> 新建商品池
+            </button>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="filter-bar">
+                    <input type="text" placeholder="搜索商品池名称">
+                    <button class="btn btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">商品池列表</div>
+            <div class="card-body">
+                <div class="prototype-module" data-prototype="admin_04">
+                    <div class="activity-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 style="margin-bottom: 8px;">会员商品池</h6>
+                                <div style="color: #999; font-size: 13px;">
+                                    <span class="status-dot active"></span>启用中
+                                    <span style="margin-left: 16px;">商品数：24</span>
+                                    <span style="margin-left: 16px;">关联活动：2</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="tag tag-blue">虚拟商品</span>
+                                    <span class="tag tag-green">会员权益</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('productPoolModal')">编辑</button>
+                                <button class="btn btn-outline-secondary btn-action" onclick="showModal('productListModal')">商品列表</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 style="margin-bottom: 8px;">电器商品池</h6>
+                                <div style="color: #999; font-size: 13px;">
+                                    <span class="status-dot inactive"></span>已禁用
+                                    <span style="margin-left: 16px;">商品数：156</span>
+                                    <span style="margin-left: 16px;">关联活动：1</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="tag tag-orange">实物商品</span>
+                                    <span class="tag tag-blue">家电数码</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary btn-action" onclick="showModal('productPoolModal')">编辑</button>
+                                <button class="btn btn-outline-secondary btn-action" onclick="showModal('productListModal')">商品列表</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核详情弹窗 -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">回填单详情 - HT202603300001</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('detailModal')"></button>
+                </div>
+                <div class="modal-body" style="padding: 0;">
+                    <div class="detail-section">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-label">活动</div>
+                                <div class="detail-value">快闪店预售活动</div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-label">提交时间</div>
+                                <div class="detail-value">2026-03-30 10:30:25</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">用户信息</div>
+                        <div class="detail-value">手机号：138****8888</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">商品信息</div>
+                        <div class="product-info">
+                            <div class="product-thumb">图片</div>
+                            <div>
+                                <div style="font-weight: 500;">芒果 TV 会员月卡</div>
+                                <div style="color: #999; font-size: 13px;">SKU：VIP-001 | 单价：¥19.9</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 8px;">数量：2 | 小计：¥39.8</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">收货地址</div>
+                        <div class="detail-value">
+                            张三 138****8888<br>
+                            湖南省 长沙市 岳麓区 麓谷大道 100 号创新大厦 10 楼
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">小票信息</div>
+                        <div class="detail-value">小票号：PJ20260330001</div>
+                        <div style="margin-top: 12px;">
+                            <div class="detail-label">小票照片</div>
+                            <div style="display: flex; gap: 12px; margin-top: 8px;">
+                                <div style="width: 100px; height: 100px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">照片 1</div>
+                                <div style="width: 100px; height: 100px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">照片 2</div>
+                                <div style="width: 100px; height: 100px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">照片 3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="reject()">驳回</button>
+                    <button type="button" class="btn btn-success" onclick="pass()">通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增/编辑活动弹窗 -->
+    <div class="modal fade" id="activityModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增活动</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('activityModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">活动名称</label>
+                            <input type="text" class="form-control" placeholder="请输入活动名称">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">订单渠道</label>
+                            <select class="form-select">
+                                <option>线下渠道 A</option>
+                                <option>线下渠道 B</option>
+                                <option>线上渠道</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">商品池</label>
+                            <select class="form-select">
+                                <option>会员商品池</option>
+                                <option>电器商品池</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">开始时间</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">结束时间</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">活动状态</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" checked>
+                                    <label class="form-check-label">启用</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status">
+                                    <label class="form-check-label">禁用</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('activityModal')">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="closeModal('activityModal')">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二维码弹窗 -->
+    <div class="modal fade" id="qrModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">活动二维码</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('qrModal')"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="qr-code" style="width: 200px; height: 200px; margin: 0 auto 16px;">
+                        <i class="bi bi-qr-code" style="font-size: 120px; color: #333;"></i>
+                    </div>
+                    <p style="color: #999; font-size: 13px;">快闪店预售活动</p>
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-download"></i> 下载二维码
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 订单详情弹窗 -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">订单详情 - ORD202603300001</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('orderDetailModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-section">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-label">订单号</div>
+                                <div class="detail-value">ORD202603300001</div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-label">回填单号</div>
+                                <div class="detail-value">HT202603300002</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">订单状态</div>
+                        <div class="detail-value"><span class="badge badge-passed">已完成</span></div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">商品信息</div>
+                        <div class="product-card">
+                            <div class="product-img">图片</div>
+                            <div>
+                                <div style="font-weight: 500;">芒果 TV 会员年卡</div>
+                                <div style="color: #999; font-size: 13px;">SKU：VIP-YEAR-001</div>
+                                <div style="margin-top: 4px;">数量：x1 | 单价：¥199.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">收货信息</div>
+                        <div class="detail-value">
+                            李四 139****9999<br>
+                            湖南省 长沙市 天心区 芙蓉中路 200 号
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">订单金额</div>
+                        <div class="detail-value" style="font-size: 18px; color: #ff4d4f;">¥199.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品池弹窗 -->
+    <div class="modal fade" id="productPoolModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新建商品池</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('productPoolModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">商品池名称</label>
+                            <input type="text" class="form-control" placeholder="请输入商品池名称">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">商品类型</label>
+                            <select class="form-select">
+                                <option>虚拟商品</option>
+                                <option>实物商品</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">商品池状态</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="poolStatus" checked>
+                                    <label class="form-check-label">启用</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="poolStatus">
+                                    <label class="form-check-label">禁用</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('productPoolModal')">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="closeModal('productPoolModal')">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品列表弹窗 -->
+    <div class="modal fade" id="productListModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">商品列表 - 会员商品池</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('productListModal')"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="filter-bar">
+                        <input type="text" placeholder="搜索商品名称">
+                        <button class="btn btn-primary">添加商品</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品名称</th>
+                                <th>SKU</th>
+                                <th>类型</th>
+                                <th>价格</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>芒果 TV 会员月卡</td>
+                                <td>VIP-001</td>
+                                <td><span class="tag tag-blue">虚拟</span></td>
+                                <td>¥19.9</td>
+                                <td><span class="badge badge-passed">上架</span></td>
+                            </tr>
+                            <tr>
+                                <td>芒果 TV 会员季卡</td>
+                                <td>VIP-003</td>
+                                <td><span class="tag tag-blue">虚拟</span></td>
+                                <td>¥59.0</td>
+                                <td><span class="badge badge-passed">上架</span></td>
+                            </tr>
+                            <tr>
+                                <td>芒果 TV 会员年卡</td>
+                                <td>VIP-YEAR-001</td>
+                                <td><span class="tag tag-blue">虚拟</span></td>
+                                <td>¥199.0</td>
+                                <td><span class="badge badge-passed">上架</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 页面切换函数
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // 移除所有菜单激活状态
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            const pageEl = document.getElementById('page-' + pageId);
+            if (pageEl) pageEl.classList.add('active');
+            // 激活对应菜单
+            const menuEl = document.getElementById('menu-' + pageId);
+            if (menuEl) menuEl.classList.add('active');
+            
+            // 发送联动消息
+            window.parent.postMessage({
+                action: 'pageChange',
+                pageId: pageId
+            }, '*');
+        }
+        
+        // 显示弹窗
+        function showModal(modalId) {
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+        }
+        
+        // 关闭弹窗
+        function closeModal(modalId) {
+            const modalEl = document.getElementById(modalId);
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+            }
+        }
+        
+        // 审核通过
+        function pass() {
+            alert('审核通过，已生成正式订单');
+            closeModal('detailModal');
+        }
+        
+        // 审核驳回
+        function reject() {
+            const reason = prompt('请输入驳回原因：');
+            if (reason) {
+                alert('已驳回，原因：' + reason);
+                closeModal('detailModal');
+            }
+        }
+        
+        // 接收主控文档联动指令
+        window.addEventListener('message', function(e) {
+            if (e.data.action === 'highlight' && e.data.featureId) {
+                // 移除所有高亮
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+                // 高亮对应模块（支持新旧 featureId 兼容）
+                const aliasMap = {
+                    'admin_activity_admin': 'activity_admin',
+                    'admin_back_form_admin': 'back_form_admin',
+                    'activity_admin': 'admin_activity_admin',
+                    'back_form_admin': 'admin_back_form_admin'
+                };
+                const fid = String(e.data.featureId);
+                const candidates = [fid, aliasMap[fid]].filter(Boolean);
+                const selector = candidates.map(id => `.prototype-module[data-prototype="${id}"]`).join(',');
+                const targetModule = document.querySelector(selector);
+                if (targetModule) {
+                    // 先切换到包含该模块的页面，避免高亮元素在隐藏页中看不到
+                    const pageSection = targetModule.closest('.page-section');
+                    if (pageSection && pageSection.id && pageSection.id.startsWith('page-')) {
+                        showPage(pageSection.id.replace('page-', ''));
+                    }
+
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            // 接收页面切换指令
+            if (e.data.action === 'navigate' && e.data.pageId) {
+                showPage(e.data.pageId);
+            }
+        });
+    </script>
+</body>
+</html>
