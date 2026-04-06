@@ -6,9 +6,9 @@ title: locklive livewallpaper
 <!-- Hero Section -->
 <section class="hero-section dark-section">
   <div class="wrapper">
-    <h1 class="hero-title">Wallpaper Tools</h1>
-    <p class="hero-subtitle">Tools for wallpaper creator</p>
-    <p class="hero-credit">Power by LockLive Team</p>
+    <h1 class="hero-title">A Full Stack Developer</h1>
+    <p class="hero-subtitle">Developer of LockLive App.</p>
+    <p class="hero-credit">Product Manager, Developer, Designer</p>
     <div class="button-group">
       <a href="#apps" class="pill-link">Explore Apps</a>
       <a href="#posts" class="pill-link">View Articles</a>
@@ -17,6 +17,30 @@ title: locklive livewallpaper
 </section>
 
 <!-- Apps Section -->
+<section id="apps" class="section light-section">
+  <div class="wrapper">
+    <h2 style="text-align: center; margin-bottom: 48px;">Apps I Developed</h2>
+    
+    {% assign appPosts = site.posts | where: "category", "app" | sort: 'orderid' %}
+    <div class="app-list-container" style="padding: 0; background: transparent;">
+      <ul class="app-list">
+        {% for post in appPosts %}
+          <li class="app-list-item"> 
+            <a href="{{ post.url | remove: "index.html" }}" class="app-list-link">
+              <div class="app-list-show-image">
+                <img src="{{ post.date | date: "/images/%Y/%m/%Y%m%d.png" }}" alt="{{ post.title }}">
+              </div>
+              <div class="app-list-title">{{ post.title }}</div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Apps Section -->
+<!--
 <section id="apps" class="section light-section">
   <div class="wrapper">
     <h2 style="text-align: center; margin-bottom: 48px;">Web Applications</h2>
@@ -40,15 +64,16 @@ title: locklive livewallpaper
     </div>
   </div>
 </section>
-
+-->
 <!-- Posts Section -->
+    {% assign blogPosts = site.posts | where: "category", "blog" | sort: 'orderid' %}
 <section id="posts" class="section dark-section">
   <div class="wrapper">
     <h2 style="text-align: center; margin-bottom: 48px;">Latest Articles</h2>
     
     <div class="post-list-container" style="padding: 0;">
       <ul class="post-list">
-        {% for post in paginator.posts %}
+        {% for post in blogPosts %}
           <li>
             <a class="post-list-link" href="{{ post.url | prepend: site.baseurl }}">
               <div class="post-list-show-image">

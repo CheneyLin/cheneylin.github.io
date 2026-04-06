@@ -68,7 +68,7 @@
 
     >li {
       margin-bottom: $spacing-unit;
-      width: 50%;
+      // width: 50%;
       float: left;
 
       .app-list-link {
@@ -96,7 +96,7 @@
 
     >li {
       margin-bottom: $spacing-unit;
-      width: 25%;
+      // width: 25%;
       float: left;
 
       .app-list-link {
@@ -106,18 +106,17 @@
         margin-right: calc($spacing-unit / 2);
       }
 
-      a.app-list-link:hover {}
+      a.app-list-link:hover {
+        // 
+      }
 
       div.app-list-show-image {
-        position: relative;
         display: block;
         width: 100%;
         height:160px;
         img {
-          position: relative;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -130px);
         }
 
       }

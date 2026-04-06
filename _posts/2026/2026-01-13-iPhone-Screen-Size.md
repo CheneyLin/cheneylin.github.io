@@ -1,11 +1,11 @@
 ---
 layout: post
-category: Guide
+category: blog
 title: Apple iPhone Screen Size 2026
 description: All iPhone screen size collection sheet
 keyword: lock screen, live photo, screensavers, live wallpaper
 tags: [Tutorial]
-ogimage: https://xlivewallpaper.70apps.com/images/ogimage.png
+ogimage: https://www.linchangyu.com/images/og.jpg
 ---
 # iPhone Screen Size Reference
 

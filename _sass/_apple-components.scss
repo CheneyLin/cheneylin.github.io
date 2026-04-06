@@ -111,14 +111,14 @@
 
 .app-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: $apple-spacing-xl;
   max-width: $content-width;
   margin: 0 auto;
   padding: 0 $apple-spacing-xl;
   
   @include media-query($on-tablet-small) {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     padding: 0 $apple-spacing-lg;
   }
   
@@ -158,8 +158,9 @@
   justify-content: center;
   
   img {
-    width: 100%;
+    // width: 100%;
     height: 100%;
+    margin: 0 auto;
     object-fit: contain;
     border-radius: $apple-radius-large;
   }
