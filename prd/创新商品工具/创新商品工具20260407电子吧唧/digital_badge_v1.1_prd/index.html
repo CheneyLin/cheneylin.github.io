@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子吧唧 PRD 控制台</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* 顶部导航 */
+        .navbar {
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        .nav-left { display: flex; align-items: center; gap: 15px; }
+        .project-name { font-size: 18px; font-weight: 700; color: #333; }
+        select { padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; background: #f8f9fa; }
+        
+        /* 主体分栏 */
+        .main-container { flex: 1; display: flex; overflow: hidden; position: relative; }
+        .pane { height: 100%; overflow: hidden; background: #f4f4f4; }
+        .left-pane { width: 50%; border-right: 1px solid #ddd; }
+        .right-pane { width: 50%; background: #2d3436; display: flex; justify-content: center; align-items: center; }
+        
+        iframe { width: 100%; height: 100%; border: none; background: #fff; }
+        
+        /* 拖拽条 */
+        .resizer {
+            width: 6px;
+            background: #e0e0e0;
+            cursor: col-resize;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            z-index: 20;
+            transform: translateX(-50%);
+        }
+        .resizer:hover { background: #6c5ce7; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-left">
+            <span class="project-name">电子吧唧 PRD</span>
+            <select id="version-select" onchange="switchVersion()">
+                <option value="v1.1">v1.1 (相册导入功能)</option>
+            </select>
+        </div>
+        <div class="nav-right">
+            <span style="font-size: 12px; color: #666;">PRD 控制台</span>
+        </div>
+    </div>
+
+    <div class="main-container" id="main-container">
+        <div class="pane left-pane" id="left-pane">
+            <iframe id="prd-frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
+        </div>
+        <div class="resizer" id="resizer"></div>
+        <div class="pane right-pane" id="right-pane">
+            <iframe id="proto-frame" src="./v1.1/prototype_html/app_v1.1.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const resizer = document.getElementById('resizer');
+        const leftPane = document.getElementById('left-pane');
+        const rightPane = document.getElementById('right-pane');
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            const containerWidth = document.getElementById('main-container').offsetWidth;
+            let newLeftWidth = (e.clientX / containerWidth) * 100;
+            newLeftWidth = Math.max(30, Math.min(70, newLeftWidth));
+            leftPane.style.width = newLeftWidth + '%';
+            rightPane.style.width = (100 - newLeftWidth) + '%';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        });
+
+        function switchVersion() {
+            const version = document.getElementById('version-select').value;
+            document.getElementById('prd-frame').src = `./${version}/prd_html/prd_${version}.html`;
+            // 更新为完整的 App 原型文件（支持全局视图和单页视图）
+            document.getElementById('proto-frame').src = `./${version}/prototype_html/app_v1.1.html`;
+        }
+
+        // 接收 PRD 的联动请求并转发给原型
+        window.addEventListener('message', function(e) {
+            if (e.data.action === 'highlight') {
+                const protoFrame = document.getElementById('proto-frame');
+                protoFrame.contentWindow.postMessage(e.data, '*');
+            }
+        });
+    </script>
+</body>
+</html>
