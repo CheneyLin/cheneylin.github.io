@@ -1,116 +1,272 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电子吧唧 PRD 控制台</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* 顶部导航 */
-        .navbar {
-            height: 60px;
-            background: #fff;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            z-index: 10;
-        }
-        .nav-left { display: flex; align-items: center; gap: 15px; }
-        .project-name { font-size: 18px; font-weight: 700; color: #333; }
-        select { padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; background: #f8f9fa; }
-        
-        /* 主体分栏 */
-        .main-container { flex: 1; display: flex; overflow: hidden; position: relative; }
-        .pane { height: 100%; overflow: hidden; background: #f4f4f4; }
-        .left-pane { width: 50%; border-right: 1px solid #ddd; }
-        .right-pane { width: 50%; background: #2d3436; display: flex; justify-content: center; align-items: center; }
-        
-        iframe { width: 100%; height: 100%; border: none; background: #fff; }
-        
-        /* 拖拽条 */
-        .resizer {
-            width: 6px;
-            background: #e0e0e0;
-            cursor: col-resize;
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            z-index: 20;
-            transform: translateX(-50%);
-        }
-        .resizer:hover { background: #6c5ce7; }
-    </style>
+  <meta charset="UTF-8">
+  <title>电子吧唧 - PRD 与原型主控</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #171717;
+      --muted: #4d4d4d;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-light: rgb(235, 235, 235);
+      --primary: #171717;
+      --primary-text: #ffffff;
+      --accent: #6c5ce7;
+      --focus: hsla(263, 100%, 65%, 1);
+      --card-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, rgba(0, 0, 0, 0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --card-radius: 8px;
+      --btn-radius: 6px;
+      --pill-radius: 9999px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body { 
+      height: 100%; 
+      font-feature-settings: "liga" 1;
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
+      color: var(--fg); 
+      background: var(--bg); 
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+    
+    .header { 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+      padding: 16px 24px; 
+      box-shadow: 0px 0px 0px 1px var(--border);
+      background: var(--bg);
+      position: sticky; 
+      top: 0; 
+      z-index: 10; 
+    }
+    
+    .header-title { 
+      font-size: 16px; 
+      font-weight: 600; 
+      color: var(--fg);
+      letter-spacing: -0.32px;
+    }
+    
+    .version-badge { 
+      background: #f5f5f5; 
+      color: var(--muted); 
+      box-shadow: 0px 0px 0px 1px var(--border-light);
+      padding: 4px 10px; 
+      border-radius: var(--pill-radius); 
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+    
+    .main { 
+      display: flex; 
+      height: calc(100% - 60px); 
+      background: var(--bg);
+    }
+    
+    .left { 
+      width: 50%; 
+      height: 100%; 
+      box-sizing: border-box; 
+      background: var(--bg);
+    }
+    
+    .right { 
+      width: 50%; 
+      height: 100%; 
+      box-sizing: border-box; 
+      background: #fafafa;
+    }
+    
+    .frame { 
+      width: 100%; 
+      height: 100%; 
+      border: 0; 
+    }
+    
+    .split { 
+      width: 1px; 
+      cursor: col-resize; 
+      background: var(--border-light);
+      position: relative;
+      transition: background 0.15s;
+    }
+    
+    .split::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -3px;
+      width: 7px;
+      height: 100%;
+    }
+    
+    .split:hover { 
+      background: var(--accent);
+    }
+    
+    .controls { 
+      margin-left: auto; 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+    }
+    
+    .controls label { 
+      color: var(--muted); 
+      font-size: 14px; 
+      font-weight: 500;
+    }
+    
+    .controls select { 
+      background: var(--bg); 
+      color: var(--fg); 
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 12px; 
+      border-radius: var(--btn-radius); 
+      font-size: 14px; 
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s;
+    }
+    
+    .controls select:hover {
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+    
+    .controls select:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+    
+    .controls option { 
+      background: var(--bg); 
+      color: var(--fg); 
+    }
+    
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-light);
+    }
+    
+    .width-control { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      color: var(--muted); 
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .width-control input[type="range"] { 
+      width: 100px; 
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+    
+    .width-control span {
+      min-width: 36px;
+    }
+  </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="nav-left">
-            <span class="project-name">电子吧唧 PRD</span>
-            <select id="version-select" onchange="switchVersion()">
-                <option value="v1.1">v1.1 (相册导入功能)</option>
-            </select>
-        </div>
-        <div class="nav-right">
-            <span style="font-size: 12px; color: #666;">PRD 控制台</span>
-        </div>
+  <div class="header">
+    <span class="header-title">电子吧唧</span>
+    <span class="version-badge">v1.1</span>
+    <div class="divider"></div>
+    <div class="controls">
+      <div class="width-control">
+        <span>右侧宽度</span>
+        <input id="rightWidth" type="range" min="30" max="70" value="50">
+        <span id="rightWidthLabel">50%</span>
+      </div>
+      <div class="divider"></div>
+      <div class="width-control">
+        <label for="versionSelect">版本</label>
+        <select id="versionSelect" onchange="switchVersion(this.value)">
+          <option value="1.1" selected>v1.1</option>
+        </select>
+      </div>
     </div>
-
-    <div class="main-container" id="main-container">
-        <div class="pane left-pane" id="left-pane">
-            <iframe id="prd-frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
-        </div>
-        <div class="resizer" id="resizer"></div>
-        <div class="pane right-pane" id="right-pane">
-            <iframe id="proto-frame" src="./v1.1/prototype_html/app_v1.1.html"></iframe>
-        </div>
+  </div>
+  <div class="main">
+    <div class="left">
+      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
     </div>
+    <div class="split" id="splitter" title="拖动调整左右宽度"></div>
+    <div class="right">
+      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/app_v1.1.html"></iframe>
+    </div>
+  </div>
 
-    <script>
-        const resizer = document.getElementById('resizer');
-        const leftPane = document.getElementById('left-pane');
-        const rightPane = document.getElementById('right-pane');
-        let isResizing = false;
+  <script>
+    const prdFrame = document.getElementById('prdFrame');
+    const protoFrame = document.getElementById('protoFrame');
+    const rightWidthRange = document.getElementById('rightWidth');
+    const rightWidthLabel = document.getElementById('rightWidthLabel');
+    const versionSelect = document.getElementById('versionSelect');
+    const leftPane = document.querySelector('.left');
+    const rightPane = document.querySelector('.right');
+    const splitter = document.getElementById('splitter');
+    let currentVersion = '1.1';
+    let pendingHighlightId = null;
 
-        resizer.addEventListener('mousedown', (e) => {
-            isResizing = true;
-            document.body.style.cursor = 'col-resize';
-            document.body.style.userSelect = 'none';
-        });
+    // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
+    protoFrame.addEventListener('load', () => {
+      if (!pendingHighlightId) return;
+      protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+      pendingHighlightId = null;
+    });
 
-        document.addEventListener('mousemove', (e) => {
-            if (!isResizing) return;
-            const containerWidth = document.getElementById('main-container').offsetWidth;
-            let newLeftWidth = (e.clientX / containerWidth) * 100;
-            newLeftWidth = Math.max(30, Math.min(70, newLeftWidth));
-            leftPane.style.width = newLeftWidth + '%';
-            rightPane.style.width = (100 - newLeftWidth) + '%';
-        });
+    function switchVersion(version) {
+      currentVersion = version;
+      // 切换 PRD 文档
+      prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
+      // 切换原型文件
+      protoFrame.src = `./v${version}/prototype_html/app_v${version}.html`;
+    }
 
-        document.addEventListener('mouseup', () => {
-            isResizing = false;
-            document.body.style.cursor = '';
-            document.body.style.userSelect = '';
-        });
+    function setRightWidth(percent) {
+      percent = Math.max(30, Math.min(70, percent));
+      rightWidthLabel.textContent = percent + '%';
+      rightPane.style.width = percent + '%';
+      leftPane.style.width = (100 - percent) + '%';
+    }
+    rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
+    setRightWidth(parseInt(rightWidthRange.value, 10));
 
-        function switchVersion() {
-            const version = document.getElementById('version-select').value;
-            document.getElementById('prd-frame').src = `./${version}/prd_html/prd_${version}.html`;
-            // 更新为完整的 App 原型文件（支持全局视图和单页视图）
-            document.getElementById('proto-frame').src = `./${version}/prototype_html/app_v1.1.html`;
-        }
+    let dragging = false;
+    splitter.addEventListener('mousedown', () => { dragging = true; });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const rect = document.querySelector('.main').getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentRight = Math.round(((rect.width - x) / rect.width) * 100);
+      setRightWidth(percentRight);
+      rightWidthRange.value = percentRight;
+    });
 
-        // 接收 PRD 的联动请求并转发给原型
-        window.addEventListener('message', function(e) {
-            if (e.data.action === 'highlight') {
-                const protoFrame = document.getElementById('proto-frame');
-                protoFrame.contentWindow.postMessage(e.data, '*');
-            }
-        });
-    </script>
+    // 监听来自 PRD 的消息，联动原型高亮
+    window.addEventListener('message', (e) => {
+      const data = e.data || {};
+      if (data.action === 'highlight' && data.featureId) {
+        protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: data.featureId }, '*');
+      }
+    });
+  </script>
 </body>
 </html>
