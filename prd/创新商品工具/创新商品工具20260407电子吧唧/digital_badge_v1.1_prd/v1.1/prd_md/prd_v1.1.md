@@ -146,22 +146,15 @@ flowchart TD
 
 ## 八、 数据追踪与埋点
 
-| 事件 | 描述 | 参数 |
+| 页面标识/page_name | 功能标识/mod_type | 备注 |
 | :--- | :--- | :--- |
-| **import_button_click** | 导入按钮点击 | 设备连接状态、是否首次使用 |
-| **protocol_agree** | 安全协议签署 | 用户 ID、时间戳 |
-| **image_select** | 图片选择 | 图片格式、图片大小 |
-| **crop_confirm** | 裁剪确认 | 裁剪尺寸 |
-| **transfer_start** | 开始传输 | 图片大小、压缩后大小 |
-| **transfer_success** | 传输成功 | 传输耗时 |
-| **transfer_fail** | 传输失败 | 失败原因 |
+| e_badge_storage | button_import_badge | "导入图片"按钮	dev 类型 |
 
 ---
 
 ## 九、 未来演进规划 (Roadmap)
 
-*   **v1.2**：支持批量导入（一次选 9 张）。
-*   **v1.3**：支持导入后在设备端直接设为显示背景。
+*  无
 
 ---
 
