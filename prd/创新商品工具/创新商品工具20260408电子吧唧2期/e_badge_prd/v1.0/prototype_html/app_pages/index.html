@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子吧唧 2 期 - APP 端原型导航</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .page-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .page-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .page-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .page-icon i {
+            font-size: 28px;
+            color: white;
+        }
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .page-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+        }
+        .badge-primary {
+            background: #e0e7ff;
+            color: #667eea;
+        }
+        .badge-success {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .resources-section {
+            margin-top: 3rem;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .resources-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .resource-list {
+            list-style: none;
+            padding: 0;
+        }
+        .resource-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+        .resource-link {
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1><i class="fas fa-mobile-alt mr-2"></i>电子吧唧 2 期</h1>
+            <p>APP 端交互原型 - 独立页面导航</p>
+        </div>
+
+        <!-- 页面列表 -->
+        <div class="page-grid">
+            <a href="ip_list.html" class="page-card">
+                <div class="page-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="page-title">IP 主题包列表</div>
+                <div class="page-desc">展示所有可抽选的 IP 包，支持排序和筛选功能</div>
+                <span class="badge badge-primary">入口页</span>
+            </a>
+
+            <a href="ip_detail.html" class="page-card">
+                <div class="page-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="page-title">IP 包详情页</div>
+                <div class="page-desc">展示 IP 包信息、概率公示和购买选项</div>
+                <span class="badge badge-primary">核心页</span>
+            </a>
+
+            <a href="single_draw.html" class="page-card">
+                <div class="page-icon">
+                    <i class="fas fa-dice-one"></i>
+                </div>
+                <div class="page-title">单抽功能</div>
+                <div class="page-desc">单次抽选界面，带动效展示和结果弹窗</div>
+                <span class="badge badge-success">P0 功能</span>
+            </a>
+
+            <a href="ten_draw.html" class="page-card">
+                <div class="page-icon">
+                    <i class="fas fa-th-large"></i>
+                </div>
+                <div class="page-title">10 连抽功能</div>
+                <div class="page-desc">批量抽选界面，必中 SR 及以上等级</div>
+                <span class="badge badge-success">P0 功能</span>
+            </a>
+
+            <a href="badge_gallery.html" class="page-card">
+                <div class="page-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <div class="page-title">我的吧唧图库</div>
+                <div class="page-desc">展示已拥有和待解锁的图片，支持合并升级</div>
+                <span class="badge badge-success">P0 功能</span>
+            </a>
+
+            <a href="badge_delivery.html" class="page-card">
+                <div class="page-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="page-title">申请邮寄</div>
+                <div class="page-desc">填写收货地址，申请稀有吧唧实体配送</div>
+                <span class="badge badge-success">P0 功能</span>
+            </a>
+        </div>
+
+        <!-- 资源文件 -->
+        <div class="resources-section">
+            <div class="resources-title">
+                <i class="fas fa-folder-open mr-2"></i>共享资源文件
+            </div>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <a href="../assets/app_styles.css" class="resource-link" target="_blank">
+                        <i class="fab fa-css3-alt"></i>
+                        app_styles.css - 共享样式表
+                    </a>
+                </li>
+                <li class="resource-item">
+                    <a href="../assets/app_scripts.js" class="resource-link" target="_blank">
+                        <i class="fab fa-js"></i>
+                        app_scripts.js - 共享脚本（页面切换、弹窗控制等）
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 说明 -->
+        <div class="mt-8 text-center text-white">
+            <p class="text-sm opacity-80">
+                <i class="fas fa-info-circle mr-1"></i>
+                每个页面都是独立的 HTML 文件，可以直接在浏览器中打开查看
+            </p>
+            <p class="text-sm opacity-80 mt-2">
+                技术栈：Tailwind CSS + Font Awesome | 手机框架：375px × 812px
+            </p>
+        </div>
+    </div>
+</body>
+</html>

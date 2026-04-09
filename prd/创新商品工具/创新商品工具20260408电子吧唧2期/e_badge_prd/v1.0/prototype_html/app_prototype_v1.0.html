@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子吧唧 2 期 - APP 端原型</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ============================================
+           Vercel Design System - Geist-inspired
+           ============================================ */
+        
+        :root {
+            /* Colors */
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+            
+            /* Accent Colors */
+            --ship-red: #ff5b4f;
+            --preview-pink: #de1d8d;
+            --develop-blue: #0a72ef;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            
+            /* Shadows (Vercel's signature shadow-as-border) */
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+            --shadow-focus: 0 0 0 2px var(--focus-blue);
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--geist-white);
+            color: var(--geist-black);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Typography - Geist-inspired with negative letter-spacing */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        
+        .display-hero {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -2.4px;
+            line-height: 1.0;
+        }
+        
+        .section-heading {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: -2.4px;
+            line-height: 1.2;
+        }
+        
+        .sub-heading {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -1.28px;
+            line-height: 1.25;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.96px;
+            line-height: 1.33;
+        }
+        
+        .body-large {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: var(--geist-gray-600);
+        }
+        
+        .body {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.56;
+            color: var(--geist-gray-600);
+        }
+        
+        .body-small {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--geist-gray-600);
+        }
+        
+        .caption {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.33;
+            color: var(--geist-gray-500);
+        }
+        
+        /* Layout */
+        #prototypeContainer {
+            width: 100%;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        /* Global View - Grid Layout */
+        .global-view {
+            padding: 60px 40px;
+            max-width: 1800px;
+            margin: 0 auto;
+            background: var(--geist-white);
+        }
+        
+        .global-view-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .global-view-header h1 {
+            color: var(--geist-black);
+            margin-bottom: 12px;
+        }
+        
+        .global-view-header p {
+            color: var(--geist-gray-600);
+        }
+        
+        .global-view-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(399px, 1fr));
+            gap: 48px;
+            justify-content: center;
+            align-items: start;
+        }
+        
+        /* Phone Frame in Global View - Fixed Size, No Transform */
+        .global-view .phone-frame-container {
+            width: 399px !important;
+            height: 836px !important;
+            margin: 0 auto;
+        }
+        
+        /* Add page label for each frame in global view */
+        .global-view .phone-frame-container::after {
+            content: attr(data-page-label);
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            letter-spacing: -0.28px;
+        }
+        
+        /* Single View */
+        .single-view {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+            background: var(--geist-white);
+        }
+        
+        /* Phone Frame Container - Fixed Size, No Scaling */
+        .phone-frame-container {
+            position: relative;
+            width: 399px; /* 375px + 12px * 2 padding */
+            height: 836px; /* 812px + 12px * 2 padding */
+            background: var(--geist-black);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: var(--shadow-card);
+            transition: box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .phone-frame-container:hover {
+            box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px, rgba(0,0,0,0.06) 0px 12px 12px -6px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--geist-black);
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+        
+        .phone-screen {
+            width: 375px;
+            height: 812px;
+            background: var(--geist-white);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .phone-screen iframe {
+            width: 375px;
+            height: 812px;
+            border: none;
+            display: block;
+        }
+        
+        /* Controls Bar - Top Right */
+        .controls-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            background: var(--geist-white);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+        }
+        
+        .control-btn {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-border);
+        }
+        
+        .control-btn:hover {
+            background: var(--geist-gray-50);
+            transform: translateY(-1px);
+        }
+        
+        .control-btn.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+        
+        .control-btn:focus {
+            outline: 2px solid var(--focus-blue);
+            outline-offset: 2px;
+        }
+        
+        /* Page Selector Bar - Top Center (Single View Only) */
+        .page-selector-bar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--geist-white);
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: var(--shadow-card);
+            z-index: 1000;
+            display: flex;
+            gap: 6px;
+            max-width: 90vw;
+            overflow-x: auto;
+        }
+        
+        .page-selector-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .page-selector-bar::-webkit-scrollbar-thumb {
+            background: var(--geist-gray-100);
+            border-radius: 2px;
+        }
+        
+        .page-item-bar {
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            box-shadow: var(--shadow-border);
+        }
+        
+        .page-item-bar:hover {
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+        }
+        
+        .page-item-bar.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+        
+        .page-item-bar i {
+            font-size: 14px;
+            width: 14px;
+        }
+        
+        /* Dropdown Menu for Mobile/Tablet */
+        .page-dropdown {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .dropdown-toggle {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s;
+        }
+        
+        .dropdown-toggle:hover {
+            background: var(--geist-gray-50);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: var(--geist-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+            padding: 8px;
+            min-width: 200px;
+            display: none;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+        }
+        
+        .dropdown-item.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+        
+        .dropdown-item i {
+            font-size: 14px;
+            width: 14px;
+        }
+        
+        /* Info Panel - Bottom Center */
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--geist-white);
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+            text-align: center;
+            z-index: 1000;
+            min-width: 300px;
+        }
+        
+        .info-panel h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 4px;
+            letter-spacing: -0.32px;
+        }
+        
+        .info-panel p {
+            font-size: 13px;
+            color: var(--geist-gray-500);
+        }
+        
+        /* Pill Badge */
+        .pill-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #ebf5ff;
+            color: #0068d6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            /* Hide horizontal bar on tablet/mobile, show dropdown */
+            .page-selector-bar {
+                display: none !important;
+            }
+            
+            .page-dropdown {
+                display: block;
+            }
+            
+            .global-view {
+                padding: 40px 20px;
+            }
+            
+            .global-view-grid {
+                grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .global-view {
+                padding: 30px 16px;
+            }
+            
+            .global-view-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .controls-bar {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .page-dropdown {
+                top: 10px;
+                left: 10px;
+            }
+        }
+        
+        /* Hide elements based on view mode */
+        .global-view .single-only {
+            display: none !important;
+        }
+        
+        .single-view .global-only {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Center Page Selector Bar (Single View Only) - Desktop -->
+    <div class="page-selector-bar single-only">
+        <div class="page-item-bar active" data-page="ip_list.html" onclick="loadPage('ip_list.html', this)">
+            <i class="fas fa-home"></i>
+            <span>IP列表</span>
+        </div>
+        <div class="page-item-bar" data-page="ip_detail.html" onclick="loadPage('ip_detail.html', this)">
+            <i class="fas fa-info-circle"></i>
+            <span>IP详情</span>
+        </div>
+        <div class="page-item-bar" data-page="single_draw.html" onclick="loadPage('single_draw.html', this)">
+            <i class="fas fa-dice-one"></i>
+            <span>单抽</span>
+        </div>
+        <div class="page-item-bar" data-page="ten_draw.html" onclick="loadPage('ten_draw.html', this)">
+            <i class="fas fa-th-large"></i>
+            <span>10连抽</span>
+        </div>
+        <div class="page-item-bar" data-page="badge_gallery.html" onclick="loadPage('badge_gallery.html', this)">
+            <i class="fas fa-images"></i>
+            <span>图库</span>
+        </div>
+        <div class="page-item-bar" data-page="badge_delivery.html" onclick="loadPage('badge_delivery.html', this)">
+            <i class="fas fa-truck"></i>
+            <span>邮寄</span>
+        </div>
+    </div>
+
+    <!-- Top Center Page Dropdown (Single View Only) - Mobile -->
+    <div class="page-dropdown single-only">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            <i class="fas fa-bars"></i>
+            <span id="currentPageLabel">IP列表</span>
+            <i class="fas fa-chevron-down" style="margin-left: 4px;"></i>
+        </button>
+        <div class="dropdown-menu" id="pageDropdownMenu">
+            <div class="dropdown-item active" data-page="ip_list.html" onclick="loadPage('ip_list.html', this)">
+                <i class="fas fa-home"></i>
+                <span>IP 主题包列表</span>
+            </div>
+            <div class="dropdown-item" data-page="ip_detail.html" onclick="loadPage('ip_detail.html', this)">
+                <i class="fas fa-info-circle"></i>
+                <span>IP 包详情页</span>
+            </div>
+            <div class="dropdown-item" data-page="single_draw.html" onclick="loadPage('single_draw.html', this)">
+                <i class="fas fa-dice-one"></i>
+                <span>单抽功能</span>
+            </div>
+            <div class="dropdown-item" data-page="ten_draw.html" onclick="loadPage('ten_draw.html', this)">
+                <i class="fas fa-th-large"></i>
+                <span>10 连抽功能</span>
+            </div>
+            <div class="dropdown-item" data-page="badge_gallery.html" onclick="loadPage('badge_gallery.html', this)">
+                <i class="fas fa-images"></i>
+                <span>我的吧唧图库</span>
+            </div>
+            <div class="dropdown-item" data-page="badge_delivery.html" onclick="loadPage('badge_delivery.html', this)">
+                <i class="fas fa-truck"></i>
+                <span>申请邮寄</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Right Controls Bar -->
+    <div class="controls-bar">
+        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+            <i class="fas fa-mobile-alt"></i>
+            <span>单独界面</span>
+        </button>
+        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+            <i class="fas fa-th-large"></i>
+            <span>全局视图</span>
+        </button>
+    </div>
+
+    <!-- Main Prototype Container -->
+    <div id="prototypeContainer" class="single-view">
+        <!-- Single View: One Phone Frame -->
+        <div class="phone-frame-container single-only">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <iframe id="prototypeFrame" src="app_pages/ip_list.html" frameborder="0"></iframe>
+            </div>
+        </div>
+        
+        <!-- Global View: All Phone Frames -->
+        <div class="global-view global-only" style="display: none;">
+            <div class="global-view-header">
+                <h1 class="display-hero mb-4">电子吧唧 2 期</h1>
+                <p class="body-large">APP 端原型 - 全部页面预览</p>
+            </div>
+            <div class="global-view-grid">
+                <div class="phone-frame-container" data-page-label="IP 主题包列表">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/ip_list.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="IP 包详情页">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/ip_detail.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="单抽功能">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/single_draw.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="10 连抽功能">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/ten_draw.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="我的吧唧图库">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/badge_gallery.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="申请邮寄">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/badge_delivery.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentView = 'single';
+        let currentPage = 'ip_list.html';
+        let dropdownOpen = false;
+        
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (dropdownOpen) {
+                menu.classList.add('show');
+            } else {
+                menu.classList.remove('show');
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.page-dropdown');
+            if (dropdown && !dropdown.contains(event.target)) {
+                dropdownOpen = false;
+                const menu = document.getElementById('pageDropdownMenu');
+                if (menu) {
+                    menu.classList.remove('show');
+                }
+            }
+        });
+        
+        // Switch between single and global view
+        function switchView(mode) {
+            currentView = mode;
+            const container = document.getElementById('prototypeContainer');
+            const btnSingle = document.getElementById('btnSingleView');
+            const btnGlobal = document.getElementById('btnGlobalView');
+            
+            if (mode === 'single') {
+                container.className = 'single-view';
+                btnSingle.classList.add('active');
+                btnGlobal.classList.remove('active');
+                
+                // Show single-only elements, hide global-only elements
+                document.querySelectorAll('.single-only').forEach(el => {
+                    el.style.display = '';
+                });
+                document.querySelectorAll('.global-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+            } else {
+                container.className = 'global-view';
+                btnGlobal.classList.add('active');
+                btnSingle.classList.remove('active');
+                
+                // Hide single-only elements, show global-only elements
+                document.querySelectorAll('.single-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.global-only').forEach(el => {
+                    el.style.display = '';
+                });
+            }
+            
+            // Update URL hash for bookmarking
+            window.location.hash = mode;
+        }
+        
+        // Load specific page in single view
+        function loadPage(pageUrl, element) {
+            currentPage = pageUrl;
+            const frame = document.getElementById('prototypeFrame');
+            frame.src = `app_pages/${pageUrl}`;
+            
+            // Update active state for both bar and dropdown
+            document.querySelectorAll('.page-item-bar').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+                // Also activate corresponding item in the other selector
+                const pageName = element.getAttribute('data-page');
+                const otherItem = document.querySelector(`[data-page="${pageName}"]:not(.${element.className.split(' ')[0]})`);
+                if (otherItem) {
+                    otherItem.classList.add('active');
+                }
+            }
+            
+            // Update dropdown label
+            updateDropdownLabel();
+            
+            // Close dropdown after selection
+            dropdownOpen = false;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (menu) {
+                menu.classList.remove('show');
+            }
+            
+            // Update URL hash
+            window.location.hash = `single-${pageUrl}`;
+        }
+        
+        // Update dropdown button label based on current page
+        function updateDropdownLabel() {
+            const pageNames = {
+                'ip_list.html': 'IP列表',
+                'ip_detail.html': 'IP详情',
+                'single_draw.html': '单抽',
+                'ten_draw.html': '10连抽',
+                'badge_gallery.html': '图库',
+                'badge_delivery.html': '邮寄'
+            };
+            const label = document.getElementById('currentPageLabel');
+            if (label) {
+                label.textContent = pageNames[currentPage] || '页面';
+            }
+        }
+        
+        // Handle URL hash changes
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            handleHashChange(hash);
+        });
+        
+        // Handle hash on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                handleHashChange(hash);
+            }
+            // Initialize dropdown label
+            updateDropdownLabel();
+        });
+        
+        function handleHashChange(hash) {
+            if (hash === 'global') {
+                switchView('global');
+            } else if (hash === 'single') {
+                switchView('single');
+            } else if (hash.startsWith('single-')) {
+                const pageUrl = hash.substring(7);
+                switchView('single');
+                const pageItem = document.querySelector(`[data-page="${pageUrl}"]`);
+                if (pageItem) {
+                    loadPage(pageUrl, pageItem);
+                }
+            }
+        }
+        
+        // Listen for messages from iframes
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'PAGE_NAVIGATION') {
+                const targetPage = event.data.page;
+                if (currentView === 'single') {
+                    const pageItem = document.querySelector(`[data-page="${targetPage}"]`);
+                    if (pageItem) {
+                        loadPage(targetPage, pageItem);
+                    }
+                }
+            }
+            
+            // Listen for highlight messages from parent window (index.html)
+            if (event.data && event.data.action === 'highlight' && event.data.featureId) {
+                const featureId = event.data.featureId;
+                
+                // 映射 featureId 到页面
+                let targetPage = null;
+                if (featureId.startsWith('app_ip_list')) targetPage = 'ip_list.html';
+                else if (featureId.startsWith('app_ip_detail')) targetPage = 'ip_detail.html';
+                else if (featureId.startsWith('app_single_draw')) targetPage = 'single_draw.html';
+                else if (featureId.startsWith('app_ten_draw')) targetPage = 'ten_draw.html';
+                else if (featureId.startsWith('app_pack_purchase') || featureId.startsWith('app_draw_result')) targetPage = 'ten_draw.html';
+                else if (featureId.startsWith('app_badge_gallery') || featureId.startsWith('app_merge_upgrade')) targetPage = 'badge_gallery.html';
+                else if (featureId.startsWith('app_badge_delivery') || featureId.startsWith('app_logistics_track')) targetPage = 'badge_delivery.html';
+                
+                if (targetPage) {
+                    // 如果当前是全局视图，先切换到单独视图
+                    if (currentView !== 'single') {
+                        switchView('single');
+                    }
+                    
+                    // 延迟一下确保视图切换完成，然后加载对应页面
+                    setTimeout(() => {
+                        const pageItem = document.querySelector(`[data-page="${targetPage}"]`);
+                        if (pageItem) {
+                            loadPage(targetPage, pageItem);
+                            
+                            // 添加视觉反馈：高亮手机框架
+                            const phoneFrame = document.querySelector('.phone-frame-container.single-only');
+                            if (phoneFrame) {
+                                const originalBoxShadow = phoneFrame.style.boxShadow;
+                                phoneFrame.style.boxShadow = '0 0 0 3px #0070f3, rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px';
+                                setTimeout(() => {
+                                    phoneFrame.style.boxShadow = originalBoxShadow;
+                                }, 2000);
+                            }
+                        }
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

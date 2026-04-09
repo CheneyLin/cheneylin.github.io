@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单抽 - 电子吧唧 2 期</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_single_draw" class="phone-frame" style="width: 100%; height: 100vh; border: none; border-radius: 0;">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-back" onclick="navigateToPage('ip_detail.html')"><i class="fas fa-chevron-left"></i></div>
+                <div class="nav-title">单抽</div>
+                <div class="nav-action">跳过</div>
+            </div>
+            <div class="p-4">
+                <div class="draw-animation">
+                    <div class="draw-result-image">
+                        <i class="fas fa-question"></i>
+                    </div>
+                </div>
+                <div class="mt-6 text-center">
+                    <h3 class="text-xl font-bold text-gray-800">正在抽选中...</h3>
+                    <p class="text-sm text-gray-500 mt-2">消耗 1 次免费次数</p>
+                </div>
+                <div class="mt-8">
+                    <button class="btn-primary" onclick="showDrawResult('single')">立即抽选</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 弹窗: 抽选结算 -->
+    <div id="draw_result_modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">恭喜获得！</h3>
+                <p class="text-sm text-gray-500 mt-1">已获得新吧唧图片</p>
+            </div>
+            <div class="flex justify-center mb-4">
+                <div class="w-32 h-32 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-dragon text-5xl text-white"></i>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <span class="badge-ssr">SSR</span>
+                <h4 class="font-bold text-lg mt-2">鸣人</h4>
+                <p class="text-sm text-gray-500 mt-1">火影忍者系列</p>
+            </div>
+            <div class="space-y-2">
+                <button class="btn-primary" onclick="closeModal(); navigateToPage('badge_gallery.html')">去查看</button>
+                <button class="btn-secondary" onclick="closeModal()">继续抽选</button>
+            </div>
+            <div class="mt-4 text-center">
+                <p class="text-xs text-gray-500">
+                    <i class="fas fa-truck mr-1"></i>
+                    稀有吧唧支持实体配送，<a href="#" onclick="closeModal(); navigateToPage('badge_delivery.html')" class="text-purple-600 underline">去填写地址</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/app_scripts.js"></script>
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+    </script>
+</body>
+</html>

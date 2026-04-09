@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 连抽 - 电子吧唧 2 期</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_ten_draw" class="phone-frame" style="width: 100%; height: 100vh; border: none; border-radius: 0;">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-back" onclick="navigateToPage('ip_detail.html')"><i class="fas fa-chevron-left"></i></div>
+                <div class="nav-title">10 连抽</div>
+                <div class="nav-action"></div>
+            </div>
+            <div class="p-4">
+                <div class="text-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">恭喜获得 10 张图片</h3>
+                    <p class="text-sm text-gray-500 mt-1">必中 1 张 SR 及以上</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center">
+                            <i class="fas fa-star text-4xl text-white"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-ssr">SSR</span></div>
+                        <div class="absolute bottom-2 left-2 px-2 py-1 bg-red-500 text-white text-xs rounded">保底</div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                            <i class="fas fa-star text-4xl text-white"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-sr">SR</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button class="btn-primary" onclick="showDrawResult('ten')">查看结果详情</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 弹窗: 抽选结算 -->
+    <div id="draw_result_modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">恭喜获得！</h3>
+                <p class="text-sm text-gray-500 mt-1">已获得新吧唧图片</p>
+            </div>
+            <div class="flex justify-center mb-4">
+                <div class="w-32 h-32 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-dragon text-5xl text-white"></i>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <span class="badge-ssr">SSR</span>
+                <h4 class="font-bold text-lg mt-2">鸣人</h4>
+                <p class="text-sm text-gray-500 mt-1">火影忍者系列</p>
+            </div>
+            <div class="space-y-2">
+                <button class="btn-primary" onclick="closeModal(); navigateToPage('badge_gallery.html')">去查看</button>
+                <button class="btn-secondary" onclick="closeModal()">继续抽选</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/app_scripts.js"></script>
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+    </script>
+</body>
+</html>

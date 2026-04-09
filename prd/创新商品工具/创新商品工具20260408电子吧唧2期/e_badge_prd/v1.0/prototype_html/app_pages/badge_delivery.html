@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请邮寄 - 电子吧唧 2 期</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_badge_delivery" class="phone-frame" style="width: 100%; height: 100vh; border: none; border-radius: 0;">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-back" onclick="navigateToPage('badge_gallery.html')"><i class="fas fa-chevron-left"></i></div>
+                <div class="nav-title">申请邮寄</div>
+                <div class="nav-action"></div>
+            </div>
+                <div class="p-4">
+                    <div class="card mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-16 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-dragon text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">鸣人 SSR</h3>
+                                <p class="text-sm text-gray-500 mt-1">火影忍者系列</p>
+                                <span class="badge-ssr mt-2 inline-block">SSR</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">收货人姓名</label>
+                        <input type="text" class="form-input" placeholder="请输入收货人姓名">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">手机号码</label>
+                        <input type="tel" class="form-input" placeholder="请输入手机号码">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">所在地区</label>
+                        <input type="text" class="form-input" placeholder="省 / 市 / 区">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">详细地址</label>
+                        <textarea class="form-input" rows="3" placeholder="街道、楼牌号等详细信息"></textarea>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="btn-primary" onclick="submitDelivery()">提交申请</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast 提示 -->
+    <div id="toast" class="toast"></div>
+
+    <script src="../assets/app_scripts.js"></script>
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+    </script>
+</body>
+</html>

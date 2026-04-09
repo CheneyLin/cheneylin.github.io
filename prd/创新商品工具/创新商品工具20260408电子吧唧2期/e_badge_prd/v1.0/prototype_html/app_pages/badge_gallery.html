@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的吧唧图库 - 电子吧唧 2 期</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_badge_gallery" class="phone-frame" style="width: 100%; height: 100vh; border: none; border-radius: 0;">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-title">我的吧唧图库</div>
+                <div class="nav-action"><i class="fas fa-filter"></i></div>
+            </div>
+            <div class="flex gap-2 px-4 py-3 bg-white border-b border-gray-200">
+                <button class="px-4 py-1.5 bg-purple-500 text-white rounded-full text-sm font-medium">已拥有 (12)</button>
+                <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">待解锁 (8)</button>
+            </div>
+            <div class="p-4 pb-20">
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-600">收集进度</span>
+                        <span class="text-purple-600 font-bold">12/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="image-grid">
+                    <div class="image-card relative" onclick="showMergeUpgrade()">
+                        <div class="w-full h-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center">
+                            <i class="fas fa-dragon text-4xl text-white"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-ssr">SSR</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                            <i class="fas fa-fire text-4xl text-white"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-sr">SR</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative">
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button class="btn-primary" onclick="navigateToPage('ip_list.html')">继续购买</button>
+                </div>
+            </div>
+            <div class="tab-bar">
+                <div class="tab-item" onclick="navigateToPage('ip_list.html')">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </div>
+                <div class="tab-item active">
+                    <i class="fas fa-images"></i>
+                    <span>我的图库</span>
+                </div>
+                <div class="tab-item">
+                    <i class="fas fa-user"></i>
+                    <span>我的</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 弹窗: 合并升级 -->
+    <div id="merge_upgrade_modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">合并升级</h3>
+                <p class="text-sm text-gray-500 mt-1">消耗材料升级为高等级</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm text-gray-600 mb-2">消耗材料：</p>
+                <div class="flex gap-2 justify-center">
+                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-image text-2xl text-gray-400"></i>
+                    </div>
+                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-image text-2xl text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <i class="fas fa-arrow-down text-2xl text-purple-500 mb-2"></i>
+                <p class="text-sm text-gray-600">可能获得：</p>
+                <div class="w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-lg flex items-center justify-center mx-auto mt-2">
+                    <i class="fas fa-star text-3xl text-white"></i>
+                </div>
+                <span class="badge-sr mt-2 inline-block">SR</span>
+            </div>
+            <div class="space-y-2">
+                <button class="btn-primary" onclick="closeModal()">确认升级</button>
+                <button class="btn-secondary" onclick="closeModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/app_scripts.js"></script>
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+    </script>
+</body>
+</html>
