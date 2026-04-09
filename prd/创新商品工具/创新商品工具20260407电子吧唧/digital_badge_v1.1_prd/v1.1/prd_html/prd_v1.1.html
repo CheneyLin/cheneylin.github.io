@@ -39,12 +39,12 @@
     <div class="card">
       <h2>1. 项目信息与版本记录</h2>
       <table>
-        <tr><th style="width:120px;">产品名称</th><td>电子吧唧 1.1 迭代 - 相册图片导入功能</td></tr>
-        <tr><th>版本</th><td>v1.1</td></tr>
-        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th style="width:120px;">项目名称</th><td>电子吧唧 1.1 迭代 - 相册图片导入功能</td></tr>
+        <tr><th>文档版本</th><td>v1.1</td></tr>
         <tr><th>创建时间</th><td>2026-04-07</td></tr>
-        <tr><th>产品范围</th><td>电子吧唧 App 端 - 相册图片导入功能</td></tr>
-        <tr><th>受众角色</th><td>已购买并绑定电子吧唧设备的用户</td></tr>
+        <tr><th>产品负责人</th><td>林长宇</td></tr>
+        <tr><th>设计稿</th><td><a href="https://mastergo.com/goto/RYXVrMaZ?page_id=124:3852&file=187108587564049" target="_blank">https://mastergo.com/goto/RYXVrMaZ?page_id=124:3852&file=187108587564049</a></td></tr>
+        <tr><th>PMP</th><td><a href="https://pmp.imgo.tv/#/demand/230673/1/4?tab=task" target="_blank">https://pmp.imgo.tv/#/demand/230673/1/4?tab=task</a></td></tr>
       </table>
       
       <h3 style="margin-top:20px;">版本迭代记录</h3>
@@ -88,43 +88,43 @@
         <li>用户在"吧唧背包"页面，希望将自己手机里刚拍的自推照片或宠物照片导入到设备中作为收藏或显示</li>
       </ul>
       
-      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <h3 style="margin-top:16px;">3.3 用户旅程图 (User Journey Map)</h3>
       <table>
-        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
-        <tr><td>触发</td><td>吧唧背包页面</td><td>点击顶部的"导入图片"按钮</td><td>好奇，期待</td><td>入口需显眼且符合直觉</td></tr>
-        <tr><td>确认</td><td>安全协议弹窗</td><td>首次使用时阅读并勾选"信息安全约定"</td><td>略微繁琐，但可接受</td><td>仅首次触发，后续免打扰</td></tr>
-        <tr><td>选择</td><td>相册选择器</td><td>从系统相册选择一张图片</td><td>担心选错</td><td>调用系统原生选择器</td></tr>
-        <tr><td>编辑</td><td>裁剪界面</td><td>调整正方形裁剪框</td><td>希望简单快捷</td><td>复用现有正方形裁剪组件</td></tr>
-        <tr><td>传输</td><td>进度提示</td><td>等待传输完成</td><td>焦虑，担心断连</td><td>清晰的进度反馈，失败可重试</td></tr>
-        <tr><td>完成</td><td>成功提示</td><td>看到传输成功</td><td>满足，期待</td><td>Toast 提示后自动返回背包</td></tr>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会点</th></tr>
+        <tr><td><strong>触发</strong></td><td>吧唧背包页面</td><td>点击顶部导航条右侧的"导入图片"按钮</td><td>好奇，期待</td><td>入口需显眼且符合直觉</td></tr>
+        <tr><td><strong>确认</strong></td><td>用户须知弹层</td><td>首次使用时阅读并勾选"信息安全约定"</td><td>略微繁琐，但可接受</td><td>仅首次勾选，后续不用勾选</td></tr>
+        <tr><td><strong>选择</strong></td><td>相册选择器</td><td>从系统相册选择一张图片</td><td>担心选错</td><td>调用系统原生选择器</td></tr>
+        <tr><td><strong>编辑</strong></td><td>裁剪界面</td><td>调整正方形裁剪框</td><td>希望简单快捷</td><td>复用现有正方形裁剪组件</td></tr>
+        <tr><td><strong>传输</strong></td><td>进度提示</td><td>等待传输完成</td><td>焦虑，担心断连</td><td>清晰的进度反馈，失败可重试</td></tr>
+        <tr><td><strong>完成</strong></td><td>成功提示</td><td>看到传输成功</td><td>满足，期待</td><td>Toast 提示后自动返回背包</td></tr>
       </table>
     </div>
 
     <div class="card">
       <h2>4. 需求功能清单</h2>
       <table>
-        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
-        <tr><td>导入入口</td><td>在背包页顶部设备信息旁增加"导入图片"按钮</td><td>P0</td><td>feature_import_entry</td></tr>
-        <tr><td>安全协议</td><td>首次点击时弹窗，需勾选协议后方可继续</td><td>P0</td><td>feature_security_agreement</td></tr>
-        <tr><td>图片处理</td><td>调用系统相册，支持正方形裁剪，自动压缩</td><td>P0</td><td>feature_image_crop</td></tr>
-        <tr><td>传输控制</td><td>蓝牙/Wi-Fi 直连传输，传输即完成</td><td>P0</td><td>feature_transfer_logic</td></tr>
-        <tr><td>异常处理</td><td>传输失败 Toast 提示，2s 后自动返回</td><td>P1</td><td>feature_error_handling</td></tr>
+        <tr><th>功能模块</th><th>功能标识</th><th>优先级</th><th>功能描述</th><th>备注</th></tr>
+        <tr><td><strong>导入入口</strong></td><td><code>app_import_entry</code></td><td>P0</td><td>在背包页顶部导航条右侧增加"导入图片"按钮</td><td>文案"导入图片"</td></tr>
+        <tr><td><strong>用户须知</strong></td><td><code>app_security_agreement</code></td><td>P0</td><td>首次需勾选协议后方可继续</td><td>状态本地持久化存储</td></tr>
+        <tr><td><strong>图片处理</strong></td><td><code>app_image_crop</code></td><td>P0</td><td>调用系统相册，支持正方形裁剪，自动压缩</td><td>复用现有逻辑</td></tr>
+        <tr><td><strong>传输控制</strong></td><td><code>app_transfer_logic</code></td><td>P0</td><td>蓝牙/Wi-Fi 直连传输，传输即完成</td><td>复用现有逻辑</td></tr>
+        <tr><td><strong>异常处理</strong></td><td><code>app_error_handling</code></td><td>P1</td><td>传输失败 Toast 提示，2s 后自动返回</td><td>复用现有逻辑</td></tr>
       </table>
     </div>
 
     <div class="card">
       <h2>5. 详细方案</h2>
       
-      <div class="feature-module" id="feature_import_entry">
-        <h3>5.1 导入入口 <span class="feature-id">feature_import_entry</span> <button class="highlight-btn" onclick="highlightFeature('feature_import_entry')">查看原型</button></h3>
+      <div class="feature-module" id="app_import_entry">
+        <h3>5.1 导入入口 <button class="highlight-btn" onclick="highlightFeature('app_import_entry')">查看原型</button></h3>
         <p class="meta"><strong>功能描述</strong>：在"吧唧背包"页面顶部增加"导入图片"按钮，用户点击后进入图片导入流程。</p>
         <div class="field-group">
           <div class="field-label">详细逻辑</div>
           <ul class="list">
-            <li>位置："吧唧背包"页面顶部，设备名称/昵称区域的右侧</li>
-            <li>文字："导入图片"</li>
-            <li>交互：点击按钮唤起系统相册选择器</li>
-            <li>前置条件：设备处于"已连接"状态。若未连接，按钮置灰，点击提示"请先连接设备"</li>
+            <li><strong>位置</strong>："吧唧背包"页面顶部右侧</li>
+            <li><strong>文字</strong>："导入图片"</li>
+            <li><strong>交互</strong>：点击按钮唤起用户须知弹层</li>
+            <li><strong>前置条件</strong>：设备处于"已连接"状态。若未连接，点击提示"请先连接设备"（原有逻辑）</li>
           </ul>
         </div>
         <div class="field-group" style="margin-top:12px;">
@@ -135,165 +135,73 @@
         </div>
       </div>
 
-      <div class="feature-module" id="feature_security_agreement">
-        <h3>5.2 安全协议弹窗 <span class="feature-id">feature_security_agreement</span> <button class="highlight-btn" onclick="highlightFeature('feature_security_agreement')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：首次使用时弹出安全协议弹窗，用户需勾选同意后方可继续。</p>
+      <div class="feature-module" id="app_security_agreement">
+        <h3>5.2 用户须知弹层 <button class="highlight-btn" onclick="highlightFeature('app_security_agreement')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：首次点击时弹出用户须知弹层，用户需阅读并勾选同意后方可继续。</p>
         <div class="field-group">
           <div class="field-label">详细逻辑</div>
           <ul class="list">
+            <li><strong>位置</strong>：下部弹层</li>
+            <li><strong>标题</strong>："用户须知"</li>
+            <li><strong>正文内容</strong>：调用展示 H5 页面（https://d.tazai.com/zK-5）</li>
+            <li><strong>勾选文案</strong>：请认真阅读上述用户须知，并勾选同意后继续操作</li>
+            <li><strong>按钮配置</strong>：主按钮"导入图片"，副按钮"暂不导入"</li>
             <li>触发逻辑：检测本地存储标志位 `has_agreed_security`</li>
             <li>若为 `false`，点击入口时弹出模态对话框</li>
-            <li>用户勾选"我已阅读并同意《信息安全约定》"复选框后，"确认导入"按钮高亮可点</li>
+            <li>用户勾选复选框后，"导入图片"按钮高亮可点</li>
             <li>确认后保存标志位为 `true`，后续不再弹窗</li>
-            <li>协议文案："我承诺上传的图片不包含任何违规、侵权及不良信息，仅作为个人使用。"</li>
+            <li>主按钮"导入图片"点击时，关闭弹层，拉起相册选择器进行下一步操作</li>
+            <li>副按钮"暂不导入"点击时，关闭弹层</li>
           </ul>
         </div>
         <div class="field-group" style="margin-top:12px;">
           <div class="field-label">交互设计</div>
           <ul class="list">
-            <li>模态框居中显示，背景半透明遮罩</li>
-            <li>协议内容清晰可读，勾选框明显</li>
-            <li>未勾选时"确认导入"按钮置灰，不可点击</li>
+            <li>弹层从底部滑出，背景半透明遮罩</li>
+            <li>H5 内容区域可滚动浏览</li>
+            <li>未勾选时"导入图片"按钮置灰，不可点击</li>
+            <li>勾选后"导入图片"按钮高亮显示</li>
           </ul>
         </div>
       </div>
 
-      <div class="feature-module" id="feature_image_crop">
-        <h3>5.3 图片选择与裁剪 <span class="feature-id">feature_image_crop</span> <button class="highlight-btn" onclick="highlightFeature('feature_image_crop')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：用户从系统相册选择图片后，进入裁剪界面，支持正方形裁剪。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>选择器：支持单选模式</li>
-            <li>裁剪逻辑：进入裁剪页，默认显示正方形裁剪框</li>
-            <li>不支持旋转、滤镜等其他操作</li>
-            <li>点击"确认"后，系统在本地进行压缩处理（沿用现有压缩算法）</li>
-          </ul>
-        </div>
-        <div class="field-group" style="margin-top:12px;">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>裁剪框固定正方形比例，角标可拖动调整</li>
-            <li>背景图片可缩放、移动</li>
-            <li>底部显示"返回"和"确认导入"按钮</li>
-          </ul>
-        </div>
+      <div class="feature-module" id="app_image_crop">
+        <h3>5.3 图片选择与裁剪（已有功能）</h3>
+        <p class="meta" style="color:#909399;font-style:italic;">略</p>
       </div>
 
-      <div class="feature-module" id="feature_transfer_logic">
-        <h3>5.4 传输逻辑 <span class="feature-id">feature_transfer_logic</span> <button class="highlight-btn" onclick="highlightFeature('feature_transfer_logic')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：图片裁剪确认后，自动开始传输到设备，传输完成即视为功能结束。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>裁剪确认后，自动开始传输</li>
-            <li>显示"正在导入..."的 Loading 状态</li>
-            <li>传输成功后，Toast 提示"导入成功"，2 秒后自动关闭弹窗/页面，返回背包主页</li>
-            <li><strong>注意</strong>：导入的图片不显示在"已拥有"列表中，仅作为设备素材存在</li>
-          </ul>
-        </div>
-        <div class="field-group" style="margin-top:12px;">
-          <div class="field-label">数据流向</div>
-          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
-用户确认裁剪 → 本地压缩图片
-→ 蓝牙/Wi-Fi 传输到设备 → 设备接收完成
-→ Toast 提示成功 → 2 秒后返回背包主页</pre>
-        </div>
+      <div class="feature-module" id="app_transfer_logic">
+        <h3>5.4 传输逻辑（已有功能）</h3>
       </div>
 
-      <div class="feature-module" id="feature_error_handling">
-        <h3>5.5 异常处理 <span class="feature-id">feature_error_handling</span> <button class="highlight-btn" onclick="highlightFeature('feature_error_handling')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：处理传输过程中可能出现的各种异常情况。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>断连/失败：若传输过程中设备断开或数据校验失败，立即停止传输</li>
-            <li>Toast 提示文案："传输失败，请重试"</li>
-            <li><strong>自动恢复</strong>：Toast 显示 2 秒后，自动关闭当前操作流，返回"吧唧背包"主界面，避免用户停留在不可操作的中间态</li>
-          </ul>
-        </div>
-        <div class="field-group" style="margin-top:12px;">
-          <div class="field-label">其他异常场景</div>
-          <ul class="list">
-            <li><strong>权限拒绝</strong>：若用户拒绝相册权限，引导用户前往系统设置开启</li>
-            <li><strong>图片格式不支持</strong>：仅支持 JPG/PNG 格式，若选择其他格式（如 HEIC, GIF），提示"不支持的图片格式"</li>
-            <li><strong>存储空间不足</strong>：若设备存储空间已满，提示"设备空间不足，请清理后再试"</li>
-          </ul>
-        </div>
+      <div class="feature-module" id="app_error_handling">
+        <h3>5.5 异常处理（已有功能）</h3>
       </div>
     </div>
 
     <div class="card">
       <h2>6. 业务流程图</h2>
-      <div class="mermaid">
-flowchart TD
-    Start([用户点击导入图片]) --> CheckConnection{设备是否已连接?}
-    CheckConnection -->|否| Toast1[Toast: 请先连接设备]
-    Toast1 --> End1([结束])
-    
-    CheckConnection -->|是| CheckProtocol{是否首次使用?}
-    CheckProtocol -->|是| ShowProtocol[显示安全协议弹窗]
-    ShowProtocol --> UserAgree{用户是否勾选同意?}
-    UserAgree -->|否| End2([取消导入])
-    UserAgree -->|是| SaveProtocol[保存协议状态到本地]
-    SaveProtocol --> SelectImage
-    
-    CheckProtocol -->|否| SelectImage[选择手机相册图片]
-    
-    SelectImage --> CropImage[进入裁剪页]
-    CropImage --> ConfirmCrop{用户是否确认裁剪?}
-    ConfirmCrop -->|否| End3([返回背包页])
-    ConfirmCrop -->|是| CompressImage[本地压缩图片]
-    
-    CompressImage --> StartTransfer[开始传输到设备]
-    StartTransfer --> TransferResult{传输是否成功?}
-    
-    TransferResult -->|成功| ToastSuccess[Toast: 导入成功]
-    ToastSuccess --> Wait2s[等待 2 秒]
-    Wait2s --> End4([自动返回背包主页])
-    
-    TransferResult -->|失败| ToastFail[Toast: 传输失败，请重试]
-    ToastFail --> Wait2sFail[等待 2 秒]
-    Wait2sFail --> End5([自动返回背包主页])
-      </div>
+      <p class="meta" style="color:#909399;font-style:italic;">（流程图详见原型文档）</p>
     </div>
 
     <div class="card">
       <h2>7. 异常与边界处理</h2>
       <ul class="list">
         <li><strong>权限拒绝</strong>：若用户拒绝相册权限，引导用户前往系统设置开启</li>
-        <li><strong>图片格式不支持</strong>：仅支持 JPG/PNG 格式，若选择其他格式（如 HEIC, GIF），提示"不支持的图片格式"</li>
+        <li><strong>图片格式不支持</strong>：图片导入处理失败的，提示"图片导入失败，请更换图片格式"</li>
         <li><strong>存储空间不足</strong>：若设备存储空间已满，提示"设备空间不足，请清理后再试"</li>
-        <li><strong>网络异常</strong>：传输过程中网络中断，提示"网络不稳定，请检查网络后重试"</li>
-        <li><strong>设备断开</strong>：传输过程中设备断开连接，立即停止传输并提示"设备已断开，请重新连接"</li>
       </ul>
     </div>
 
     <div class="card">
       <h2>8. 数据追踪与埋点</h2>
       <table>
-        <tr><th>页面标识</th><th>功能标识</th><th>功能描述</th><th>备注</th></tr>
-        <tr><td>e_badge_storage</td><td>button_import_badge</td><td>在背包主页顶部设备信息旁增加"导入图片"按钮</td><td>dev 类型</td></tr>
+        <tr><th>页面标识/page_name</th><th>功能标识/mod_type</th><th>备注</th></tr>
+        <tr><td>吧唧背包首页/e_badge_storage</td><td>导入图片按钮/button_import_badge</td><td>dev 类型，可不报曝光</td></tr>
       </table>
     </div>
 
-    <div class="card">
-      <h2>9. 未来演进规划</h2>
-      <table>
-        <tr><th>阶段</th><th>功能</th><th>描述</th></tr>
-        <tr><td>v1.2</td><td>批量导入</td><td>支持一次选择多张图片（最多 9 张）进行批量导入</td></tr>
-        <tr><td>v1.3</td><td>设备端设置</td><td>支持导入后在设备端直接设为显示背景</td></tr>
-        <tr><td>v1.4</td><td>图片编辑增强</td><td>支持旋转、滤镜、贴纸等更多编辑功能</td></tr>
-      </table>
-    </div>
 
-    <div class="card">
-      <h2>10. 附件</h2>
-      <ul class="list">
-        <li>产品需求表单 (PRF)：<a href="../../../../document/prf.md" target="_blank">document/prf.md</a></li>
-        <li>现有产品原型截图参考（见 PRF 附件）</li>
-      </ul>
-    </div>
   </div>
 
   <script>
