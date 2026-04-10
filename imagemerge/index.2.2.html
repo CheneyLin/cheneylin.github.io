@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Merge v2.2 - 图片切割拼接工具</title>
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class', // Add this line
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#6b7280',
+            accent: '#10b981',
+            danger: '#ef4444',
+            light: '#f3f4f6',
+            dark: '#1f2937',
+            拼接: '#8b5cf6', // 拼接模式主题色
+            'dark-bg': '#121212',
+            'dark-card': '#1e1e1e',
+            'dark-text': '#e0e0e0',
+            'dark-secondary': '#a0a0a0'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .transition-all-300 {
+        transition: all 300ms ease-in-out;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .gradient-border {
+        position: relative;
+        border-radius: 0.5rem;
+        z-index: 0;
+      }
+      .gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        z-index: -1;
+        border-radius: 0.6rem;
+        background: linear-gradient(45deg, #3b82f6, #10b981, #8b5cf6);
+        background-size: 200% 200%;
+        animation: gradientBorder 3s ease infinite;
+      }
+      @keyframes gradientBorder {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .slider-thumb-split::-webkit-slider-thumb {
+        @apply appearance-none w-6 h-6 rounded-full bg-拼接 border-2 border-white cursor-pointer shadow-md;
+      }
+      .slider-thumb-split::-moz-range-thumb {
+        @apply appearance-none w-6 h-6 rounded-full bg-拼接 border-2 border-white cursor-pointer shadow-md;
+      }
+      .drag-line-split-horizontal {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: #8b5cf6;
+        cursor: ns-resize;
+        z-index: 10;
+      }
+      .drag-line-split-horizontal::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 20px;
+        background-color: #8b5cf6;
+        border-radius: 10px;
+      }
+      .drag-line-split-vertical {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: #8b5cf6;
+        cursor: ew-resize;
+        z-index: 10;
+      }
+      .drag-line-split-vertical::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 40px;
+        background-color: #8b5cf6;
+        border-radius: 10px;
+      }
+      .upload-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .upload-container:hover .upload-overlay {
+        opacity: 1;
+      }
+      .split-preview-mask {
+        position: absolute;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px dashed #8b5cf6;
+        z-index: 5;
+      }
+      .custom-select {
+        @apply appearance-none bg-white border border-gray-300 rounded-lg py-2 px-3 pr-8 focus:outline-none focus:ring-2 focus:ring-拼接/50 focus:border-拼接 transition-all-300 cursor-pointer;
+      }
+
+  /* Card backgrounds */
+  .bg-white {
+    @apply dark:bg-dark-card;
+  }
+  
+  /* Text colors */
+  .text-gray-800 {
+    @apply dark:text-dark-text;
+  }
+  .text-gray-600 {
+    @apply dark:text-dark-secondary;
+  }
+  
+  /* Glass effect for dark mode */
+  .glass-effect {
+    @apply dark:bg-dark-card/70;
+  }
+  
+  /* Shadow adjustments */
+  .shadow-custom {
+    @apply dark:shadow-none;
+  }
+  
+  /* Image containers */
+  #image1Container, #image2Container {
+    @apply dark:bg-gray-800;
+  }
+  
+  /* Form elements */
+  .custom-select {
+    @apply dark:bg-gray-700 dark:border-gray-600 dark:text-dark-text;
+  }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br min-h-screen dark:bg-dark-bg dark:text-dark-text">
+
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- 页面标题 -->
+    <header class="text-center mb-8">
+      <button id="themeToggle" class="fixed top-4 right-4 z-50 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+  <i class="fa fa-moon text-lg"></i>
+</button>
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">
+        <i class="fa fa-scissors text-拼接 mr-2"></i>Image Merge v2.2
+      </h1>
+      <p class="text-gray-600 text-lg">图片切割拼接工具 - 支持四种拼接方向的精准拼接</p>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- 左侧：图片上传区域 -->
+      <div class="space-y-6">
+        <!-- 图片上传说明 -->
+        <div class="bg-white rounded-xl shadow-custom p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            <i class="fa fa-upload text-primary mr-2"></i>上传图片
+          </h2>
+          <p class="text-gray-600">
+            请上传两张图片进行切割拼接。支持JPG、PNG、GIF格式。建议使用相同尺寸图片以获得最佳拼接效果。
+          </p>
+        </div>
+
+        <!-- 第一张图片上传 -->
+        <div class="upload-container relative bg-white rounded-xl shadow-custom overflow-hidden">
+          <div id="image1Container" class="aspect-video bg-gray-100 flex items-center justify-center">
+            <div id="image1Placeholder" class="text-center p-6">
+              <i class="fa fa-image text-gray-400 text-4xl mb-2"></i>
+              <p id="image1PlaceholderText" class="text-gray-500">点击或拖拽上传图片A（上/左）</p>
+            </div>
+            <img id="image1Preview" class="hidden max-w-full max-h-full object-contain" alt="图片A预览">
+            <div id="image1SplitMask" class="split-preview-mask hidden"></div>
+          </div>
+          <div class="upload-overlay">
+            <button id="changeImage1" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all-300">
+              更换图片
+            </button>
+          </div>
+          <input type="file" id="image1Input" accept="image/*" class="hidden">
+        </div>
+
+        <!-- 第二张图片上传 -->
+        <div class="upload-container relative bg-white rounded-xl shadow-custom overflow-hidden">
+          <div id="image2Container" class="aspect-video bg-gray-100 flex items-center justify-center">
+            <div id="image2Placeholder" class="text-center p-6">
+              <i class="fa fa-image text-gray-400 text-4xl mb-2"></i>
+              <p id="image2PlaceholderText" class="text-gray-500">点击或拖拽上传图片B（下/右）</p>
+            </div>
+            <img id="image2Preview" class="hidden max-w-full max-h-full object-contain" alt="图片B预览">
+            <div id="image2SplitMask" class="split-preview-mask hidden"></div>
+          </div>
+          <div class="upload-overlay">
+            <button id="changeImage2" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all-300">
+              更换图片
+            </button>
+          </div>
+          <input type="file" id="image2Input" accept="image/*" class="hidden">
+        </div>
+
+        <!-- 图片信息和提示 -->
+        <div id="imageInfo" class="bg-white rounded-xl shadow-custom p-6 hidden">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">图片信息</h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p id="image1Label" class="font-medium">图片A:</p>
+              <p id="image1Info" class="text-gray-600">-</p>
+            </div>
+            <div>
+              <p id="image2Label" class="font-medium">图片B:</p>
+              <p id="image2Info" class="text-gray-600">-</p>
+            </div>
+          </div>
+          <div id="sizeWarning" class="mt-4 p-3 bg-yellow-50 text-yellow-700 rounded-lg hidden">
+            <i class="fa fa-exclamation-triangle mr-1"></i>
+            <span>图片尺寸不匹配，拼接效果可能受影响。建议使用相同尺寸图片。</span>
+          </div>
+          <div id="directionInfo" class="mt-4 p-3 bg-purple-50 text-purple-700 rounded-lg">
+            <i class="fa fa-info-circle text-拼接 mr-1"></i>
+            <span id="directionInfoText">当前拼接方向：上下（图片A在上，图片B在下）</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：预览和控制区域 -->
+      <div class="space-y-6">
+        <!-- 预览区域 -->
+        <div class="bg-white rounded-xl shadow-custom p-6">
+          <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+            <h2 class="text-xl font-semibold text-gray-800">
+              <i class="fa fa-eye text-拼接 mr-2"></i>拼接预览
+            </h2>
+
+            <!-- 拼接方向控制（改为下拉选择框） -->
+            <div class="flex items-center space-x-2">
+              <span class="text-sm text-gray-600">拼接方向:</span>
+              <div class="relative">
+                <select id="joinDirectionSelect" class="custom-select text-sm">
+                  <option value="horizontal-updown">上下（A上B下）</option>
+                  <option value="horizontal-downup">下上（B上A下）</option>
+                  <option value="vertical-leftright">左右（A左B右）</option>
+                  <option value="vertical-rightleft">右左（B左A右）</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <i class="fa fa-chevron-down text-xs"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="previewContainer" class="relative aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
+            <canvas id="previewCanvas" class="w-full h-full"></canvas>
+            <div id="splitDragLine" class="drag-line-split-horizontal hidden" style="top: 50%;"></div>
+            <div id="previewPlaceholder" class="absolute inset-0 flex items-center justify-center">
+              <p class="text-gray-500">请上传两张图片以查看拼接预览</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 控制面板 -->
+        <div id="controlPanel" class="bg-white rounded-xl shadow-custom p-6 hidden">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            <i class="fa fa-sliders text-拼接 mr-2"></i>调整切割位置
+          </h3>
+
+          <!-- 切割拼接控制 -->
+          <div class="mb-6">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">切割位置 (0%-100%)</label>
+              <input
+                type="range"
+                id="splitSlider"
+                min="0"
+                max="100"
+                value="50"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb-split"
+              >
+              <div class="flex justify-between text-xs text-gray-500 mt-1">
+                <span id="splitSliderLeftText">仅显示第一张图</span>
+                <span>中间位置</span>
+                <span id="splitSliderRightText">仅显示第二张图</span>
+              </div>
+            </div>
+
+            <div class="bg-purple-50 p-3 rounded-lg text-sm text-gray-700">
+              <i class="fa fa-info-circle text-拼接 mr-1"></i>
+              <span id="splitHintText">拖动滑块或分隔线调整切割位置，紫色线左侧/上侧显示第一张图，右侧/下侧显示第二张图</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <button id="resetButton" class="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all-300">
+              <i class="fa fa-refresh mr-1"></i> 重置位置
+            </button>
+            <button id="downloadButton" class="flex-1 flex items-center justify-center px-4 py-2 bg-拼接 text-white rounded-lg hover:bg-purple-700 transition-all-300">
+              <i class="fa fa-download mr-1"></i> 下载拼接图片
+            </button>
+          </div>
+        </div>
+
+        <!-- 操作提示 -->
+        <div class="bg-white rounded-xl shadow-custom p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">
+            <i class="fa fa-lightbulb-o text-拼接 mr-2"></i>使用指南
+          </h3>
+          <ol class="list-decimal list-inside text-gray-600 space-y-2">
+            <li>上传两张需要拼接的图片（图片A和图片B）</li>
+            <li>从下拉框选择拼接方向（上下、下上、左右、右左）</li>
+            <li>通过滑块或拖动紫色分隔线调整切割位置</li>
+            <li>预览区实时显示拼接效果，满意后点击下载</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+      <p>&copy; 2025 Image Merge v2.2. 支持四种拼接方向的精准图片切割拼接工具。</p>
+    </footer>
+  </div>
+
+  <!-- 通知提示组件 -->
+  <div id="notification" class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center z-50">
+    <i id="notificationIcon" class="fa mr-2"></i>
+    <span id="notificationMessage"></span>
+  </div>
+
+  <script>
+    // 全局变量
+    let image1 = null; // 图片A
+    let image2 = null; // 图片B
+    let canvas = document.getElementById('previewCanvas');
+    let ctx = canvas.getContext('2d');
+    let splitPosition = 0.5; // 切割拼接位置 (0-1)
+    let joinDirection = 'horizontal-updown'; // 拼接方向: horizontal-updown(上下), horizontal-downup(下上), vertical-leftright(左右), vertical-rightleft(右左)
+    let isDragging = false;
+
+    // DOM 元素
+    const image1Input = document.getElementById('image1Input');
+    const image2Input = document.getElementById('image2Input');
+    const image1Preview = document.getElementById('image1Preview');
+    const image2Preview = document.getElementById('image2Preview');
+    const image1Placeholder = document.getElementById('image1Placeholder');
+    const image2Placeholder = document.getElementById('image2Placeholder');
+    const image1PlaceholderText = document.getElementById('image1PlaceholderText');
+    const image2PlaceholderText = document.getElementById('image2PlaceholderText');
+    const image1SplitMask = document.getElementById('image1SplitMask');
+    const image2SplitMask = document.getElementById('image2SplitMask');
+    const imageInfo = document.getElementById('imageInfo');
+    const image1Info = document.getElementById('image1Info');
+    const image2Info = document.getElementById('image2Info');
+    const sizeWarning = document.getElementById('sizeWarning');
+    const directionInfo = document.getElementById('directionInfo');
+    const directionInfoText = document.getElementById('directionInfoText');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+    const splitDragLine = document.getElementById('splitDragLine');
+    const controlPanel = document.getElementById('controlPanel');
+    const splitSlider = document.getElementById('splitSlider');
+    const resetButton = document.getElementById('resetButton');
+    const downloadButton = document.getElementById('downloadButton');
+    const changeImage1 = document.getElementById('changeImage1');
+    const changeImage2 = document.getElementById('changeImage2');
+    const notification = document.getElementById('notification');
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationMessage = document.getElementById('notificationMessage');
+    const splitSliderLeftText = document.getElementById('splitSliderLeftText');
+    const splitSliderRightText = document.getElementById('splitSliderRightText');
+    const splitHintText = document.getElementById('splitHintText');
+
+    // 拼接方向选择元素
+    const joinDirectionSelect = document.getElementById('joinDirectionSelect');
+
+    // 拼接方向配置
+    const directionConfig = {
+      'horizontal-updown': {
+        type: 'horizontal',
+        mainImage: 'image1', // 主要显示的图片（上/左）
+        secondaryImage: 'image2', // 次要显示的图片（下/右）
+        placeholder1: '点击或拖拽上传图片A（上）',
+        placeholder2: '点击或拖拽上传图片B（下）',
+        directionText: '上下（图片A在上，图片B在下）',
+        sliderLeftText: '仅显示图片A（上）',
+        sliderRightText: '仅显示图片B（下）',
+        splitHint: '拖动滑块或分隔线调整切割位置，紫色线上方显示图片A，下方显示图片B'
+      },
+      'horizontal-downup': {
+        type: 'horizontal',
+        mainImage: 'image2', // 主要显示的图片（上）
+        secondaryImage: 'image1', // 次要显示的图片（下）
+        placeholder1: '点击或拖拽上传图片A（下）',
+        placeholder2: '点击或拖拽上传图片B（上）',
+        directionText: '下上（图片B在上，图片A在下）',
+        sliderLeftText: '仅显示图片B（上）',
+        sliderRightText: '仅显示图片A（下）',
+        splitHint: '拖动滑块或分隔线调整切割位置，紫色线上方显示图片B，下方显示图片A'
+      },
+      'vertical-leftright': {
+        type: 'vertical',
+        mainImage: 'image1', // 主要显示的图片（左）
+        secondaryImage: 'image2', // 次要显示的图片（右）
+        placeholder1: '点击或拖拽上传图片A（左）',
+        placeholder2: '点击或拖拽上传图片B（右）',
+        directionText: '左右（图片A在左，图片B在右）',
+        sliderLeftText: '仅显示图片A（左）',
+        sliderRightText: '仅显示图片B（右）',
+        splitHint: '拖动滑块或分隔线调整切割位置，紫色线左侧显示图片A，右侧显示图片B'
+      },
+      'vertical-rightleft': {
+        type: 'vertical',
+        mainImage: 'image2', // 主要显示的图片（左）
+        secondaryImage: 'image1', // 次要显示的图片（右）
+        placeholder1: '点击或拖拽上传图片A（右）',
+        placeholder2: '点击或拖拽上传图片B（左）',
+        directionText: '右左（图片B在左，图片A在右）',
+        sliderLeftText: '仅显示图片B（左）',
+        sliderRightText: '仅显示图片A（右）',
+        splitHint: '拖动滑块或分隔线调整切割位置，紫色线左侧显示图片B，右侧显示图片A'
+      }
+    };
+
+    // 初始化
+    function init() {
+      // 验证Canvas支持
+      if (!canvas.getContext) {
+        showNotification('error', '您的浏览器不支持Canvas，无法使用该工具');
+        return;
+      }
+
+      // 设置事件监听器
+      image1Input.addEventListener('change', handleImage1Upload);
+      image2Input.addEventListener('change', handleImage2Upload);
+      splitSlider.addEventListener('input', handleSplitSliderChange);
+      resetButton.addEventListener('click', resetPosition);
+      downloadButton.addEventListener('click', downloadImage);
+      changeImage1.addEventListener('click', () => image1Input.click());
+      changeImage2.addEventListener('click', () => image2Input.click());
+
+      // 拼接方向选择事件
+      joinDirectionSelect.addEventListener('change', handleDirectionChange);
+
+      // 设置拖拽上传
+      setupDragAndDrop('image1Container', (file) => {
+        image1Input.files = file;
+        handleImage1Upload({ target: image1Input });
+      });
+
+      setupDragAndDrop('image2Container', (file) => {
+        image2Input.files = file;
+        handleImage2Upload({ target: image2Input });
+      });
+
+      // 设置拖动分隔线
+      setupDragLine(splitDragLine);
+
+      // 设置窗口大小调整事件
+      window.addEventListener('resize', () => {
+        if (image1 && image2) {
+          resizeCanvas();
+          drawPreview();
+        }
+      });
+
+      // 初始化拼接方向配置
+      updateDirectionConfig();
+    }
+
+    // 处理拼接方向变化
+    function handleDirectionChange() {
+      joinDirection = joinDirectionSelect.value;
+      updateDirectionConfig();
+
+      // 更新遮罩
+      updateSplitMasks();
+
+      // 重新绘制预览
+      if (image1 && image2) {
+        resizeCanvas();
+        drawPreview();
+      }
+    }
+
+    // 更新拼接方向配置
+    function updateDirectionConfig() {
+      const config = directionConfig[joinDirection];
+
+      // 更新占位文本
+      image1PlaceholderText.textContent = config.placeholder1;
+      image2PlaceholderText.textContent = config.placeholder2;
+
+      // 更新方向信息文本
+      directionInfoText.textContent = `当前拼接方向：${config.directionText}`;
+
+      // 更新滑块文本
+      splitSliderLeftText.textContent = config.sliderLeftText;
+      splitSliderRightText.textContent = config.sliderRightText;
+
+      // 更新切割提示文本
+      splitHintText.textContent = config.splitHint;
+
+      // 更新分隔线样式
+      if (config.type === 'horizontal') {
+        splitDragLine.className = 'drag-line-split-horizontal';
+        splitDragLine.style.height = '4px';
+        splitDragLine.style.width = '100%';
+        splitDragLine.style.cursor = 'ns-resize';
+      } else {
+        splitDragLine.className = 'drag-line-split-vertical';
+        splitDragLine.style.width = '4px';
+        splitDragLine.style.height = '100%';
+        splitDragLine.style.cursor = 'ew-resize';
+      }
+
+      // 更新分隔线位置
+      if (image1 && image2) {
+        if (config.type === 'horizontal') {
+          splitDragLine.style.top = `${canvas.height * splitPosition}px`;
+          splitDragLine.style.left = '0';
+        } else {
+          splitDragLine.style.left = `${canvas.width * splitPosition}px`;
+          splitDragLine.style.top = '0';
+        }
+      }
+    }
+
+    // 更新切割预览遮罩
+    function updateSplitMasks() {
+      if (!image1Preview || !image2Preview ||
+          !image1Preview.offsetParent || !image2Preview.offsetParent) {
+        image1SplitMask.classList.add('hidden');
+        image2SplitMask.classList.add('hidden');
+        return;
+      }
+
+      const config = directionConfig[joinDirection];
+      const isHorizontal = config.type === 'horizontal';
+
+      // 获取图片实际显示尺寸
+      const image1Width = image1Preview.clientWidth;
+      const image1Height = image1Preview.clientHeight;
+      const image2Width = image2Preview.clientWidth;
+      const image2Height = image2Preview.clientHeight;
+
+      if (isHorizontal) {
+        // 水平方向（上下/下上）
+        const splitY1 = image1Height * splitPosition;
+        const splitY2 = image2Height * splitPosition;
+
+        if (joinDirection === 'horizontal-updown') {
+          // 上下：图片1上半部分显示，图片2下半部分显示
+          image1SplitMask.style.top = `${splitY1}px`;
+          image1SplitMask.style.left = '0';
+          image1SplitMask.style.width = '100%';
+          image1SplitMask.style.height = `${image1Height - splitY1}px`;
+
+          image2SplitMask.style.top = '0';
+          image2SplitMask.style.left = '0';
+          image2SplitMask.style.width = '100%';
+          image2SplitMask.style.height = `${splitY2}px`;
+        } else {
+          // 下上：图片2上半部分显示，图片1下半部分显示
+          image1SplitMask.style.top = '0';
+          image1SplitMask.style.left = '0';
+          image1SplitMask.style.width = '100%';
+          image1SplitMask.style.height = `${image1Height - splitY1}px`;
+
+          image2SplitMask.style.top = `${splitY2}px`;
+          image2SplitMask.style.left = '0';
+          image2SplitMask.style.width = '100%';
+          image2SplitMask.style.height = `${image2Height - splitY2}px`;
+        }
+      } else {
+        // 垂直方向（左右/右左）
+        const splitX1 = image1Width * splitPosition;
+        const splitX2 = image2Width * splitPosition;
+
+        if (joinDirection === 'vertical-leftright') {
+          // 左右：图片1左半部分显示，图片2右半部分显示
+          image1SplitMask.style.top = '0';
+          image1SplitMask.style.left = `${splitX1}px`;
+          image1SplitMask.style.width = `${image1Width - splitX1}px`;
+          image1SplitMask.style.height = '100%';
+
+          image2SplitMask.style.top = '0';
+          image2SplitMask.style.left = '0';
+          image2SplitMask.style.width = `${splitX2}px`;
+          image2SplitMask.style.height = '100%';
+        } else {
+          // 右左：图片2左半部分显示，图片1右半部分显示
+          image1SplitMask.style.top = '0';
+          image1SplitMask.style.left = '0';
+          image1SplitMask.style.width = `${image1Width - splitX1}px`;
+          image1SplitMask.style.height = '100%';
+
+          image2SplitMask.style.top = '0';
+          image2SplitMask.style.left = `${splitX2}px`;
+          image2SplitMask.style.width = `${image2Width - splitX2}px`;
+          image2SplitMask.style.height = '100%';
+        }
+      }
+
+      image1SplitMask.classList.remove('hidden');
+      image2SplitMask.classList.remove('hidden');
+    }
+
+    // 处理图片1上传
+    function handleImage1Upload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // 验证文件类型
+      if (!file.type.match('image.*')) {
+        showNotification('error', '请上传有效的图片文件（JPG、PNG、GIF）');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        image1 = new Image();
+        // 修复跨域问题
+        image1.crossOrigin = 'anonymous';
+
+        image1.onload = function() {
+          // 显示预览
+          image1Preview.src = e.target.result;
+          image1Preview.classList.remove('hidden');
+          image1Placeholder.classList.add('hidden');
+
+          // 更新图片信息
+          image1Info.textContent = `${image1.width} × ${image1.height}px, ${formatFileSize(file.size)}`;
+          imageInfo.classList.remove('hidden');
+
+          // 检查尺寸匹配
+          checkSizeMatch();
+
+          // 更新遮罩
+          updateSplitMasks();
+
+          // 如果两张图片都已上传，显示预览
+          if (image2) {
+            showPreview();
+          }
+        };
+
+        // 处理图片加载错误
+        image1.onerror = function() {
+          showNotification('error', '图片A加载失败，请重新上传');
+          image1 = null;
+        };
+
+        image1.src = e.target.result;
+      };
+
+      reader.onerror = function() {
+        showNotification('error', '文件读取失败，请重新上传');
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    // 处理图片2上传
+    function handleImage2Upload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // 验证文件类型
+      if (!file.type.match('image.*')) {
+        showNotification('error', '请上传有效的图片文件（JPG、PNG、GIF）');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        image2 = new Image();
+        // 修复跨域问题
+        image2.crossOrigin = 'anonymous';
+
+        image2.onload = function() {
+          // 显示预览
+          image2Preview.src = e.target.result;
+          image2Preview.classList.remove('hidden');
+          image2Placeholder.classList.add('hidden');
+
+          // 更新图片信息
+          image2Info.textContent = `${image2.width} × ${image2.height}px, ${formatFileSize(file.size)}`;
+          imageInfo.classList.remove('hidden');
+
+          // 检查尺寸匹配
+          checkSizeMatch();
+
+          // 更新遮罩
+          updateSplitMasks();
+
+          // 如果两张图片都已上传，显示预览
+          if (image1) {
+            showPreview();
+          }
+        };
+
+        // 处理图片加载错误
+        image2.onerror = function() {
+          showNotification('error', '图片B加载失败，请重新上传');
+          image2 = null;
+        };
+
+        image2.src = e.target.result;
+      };
+
+      reader.onerror = function() {
+        showNotification('error', '文件读取失败，请重新上传');
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    // 检查图片尺寸匹配
+    function checkSizeMatch() {
+      if (!image1 || !image2) return;
+
+      if (image1.width !== image2.width || image1.height !== image2.height) {
+        sizeWarning.classList.remove('hidden');
+      } else {
+        sizeWarning.classList.add('hidden');
+      }
+    }
+
+    // 显示预览
+    function showPreview() {
+      if (!image1 || !image2 || !ctx) return;
+
+      // 显示控制面板和拖动线
+      controlPanel.classList.remove('hidden');
+      splitDragLine.classList.remove('hidden');
+      previewPlaceholder.classList.add('hidden');
+
+      // 确保Canvas尺寸正确
+      resizeCanvas();
+
+      // 绘制预览
+      drawPreview();
+    }
+
+    // 调整Canvas大小
+    function resizeCanvas() {
+      const container = document.getElementById('previewContainer');
+
+      // 获取容器实际可用尺寸，排除padding和border
+      const style = window.getComputedStyle(container);
+      const paddingLeft = parseInt(style.paddingLeft);
+      const paddingRight = parseInt(style.paddingRight);
+      const paddingTop = parseInt(style.paddingTop);
+      const paddingBottom = parseInt(style.paddingBottom);
+
+      const availableWidth = container.clientWidth - paddingLeft - paddingRight;
+      const availableHeight = container.clientHeight - paddingTop - paddingBottom;
+
+      // 设置Canvas实际尺寸
+      canvas.width = availableWidth;
+      canvas.height = availableHeight;
+
+      // 更新拖动线位置
+      const config = directionConfig[joinDirection];
+      if (config.type === 'horizontal') {
+        splitDragLine.style.top = `${canvas.height * splitPosition}px`;
+        splitDragLine.style.left = '0';
+      } else {
+        splitDragLine.style.left = `${canvas.width * splitPosition}px`;
+        splitDragLine.style.top = '0';
+      }
+
+  // Update canvas background based on theme
+  if (document.documentElement.classList.contains('dark')) {
+    canvas.style.backgroundColor = '#1e1e1e';
+  } else {
+    canvas.style.backgroundColor = '';
+  }
+      // 更新遮罩
+      updateSplitMasks();
+    }
+
+    // 绘制预览（核心优化：适配四种拼接方向）
+    function drawPreview() {
+      if (!image1 || !image2 || !ctx) return;
+
+      // 清除Canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const config = directionConfig[joinDirection];
+      const isHorizontal = config.type === 'horizontal';
+
+      // 获取主图和副图
+      const mainImage = config.mainImage === 'image1' ? image1 : image2;
+      const secondaryImage = config.secondaryImage === 'image1' ? image1 : image2;
+
+      // 使用最大尺寸作为基准，保持图片比例
+      const finalWidth = Math.max(image1.width, image2.width);
+      const finalHeight = Math.max(image1.height, image2.height);
+
+      // 计算Canvas缩放比例，确保预览完整显示
+      const scale = Math.min(canvas.width / finalWidth, canvas.height / finalHeight) || 1;
+      const displayWidth = finalWidth * scale;
+      const displayHeight = finalHeight * scale;
+
+      // 计算居中偏移
+      const offsetX = (canvas.width - displayWidth) / 2;
+      const offsetY = (canvas.height - displayHeight) / 2;
+
+      if (isHorizontal) {
+        // 水平方向拼接（上下/下上）
+        const splitY = finalHeight * splitPosition;
+        const displaySplitY = splitY * scale + offsetY;
+
+        // 更新拖动线位置
+        splitDragLine.style.top = `${displaySplitY}px`;
+
+        // 绘制主图（上半部分）
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(offsetX, offsetY, displayWidth, displaySplitY - offsetY);
+        ctx.clip();
+        ctx.drawImage(
+          mainImage,
+          0, 0, mainImage.width, mainImage.height,
+          offsetX, offsetY, displayWidth, displayHeight
+        );
+        ctx.restore();
+
+        // 绘制副图（下半部分）
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(offsetX, displaySplitY, displayWidth, canvas.height - displaySplitY);
+        ctx.clip();
+        ctx.drawImage(
+          secondaryImage,
+          0, 0, secondaryImage.width, secondaryImage.height,
+          offsetX, offsetY, displayWidth, displayHeight
+        );
+        ctx.restore();
+
+        // 绘制拼接边界线
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(offsetX, displaySplitY);
+        ctx.lineTo(offsetX + displayWidth, displaySplitY);
+        ctx.stroke();
+      } else {
+        // 垂直方向拼接（左右/右左）
+        const splitX = finalWidth * splitPosition;
+        const displaySplitX = splitX * scale + offsetX;
+
+        // 更新拖动线位置
+        splitDragLine.style.left = `${displaySplitX}px`;
+
+        // 绘制主图（左半部分）
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(offsetX, offsetY, displaySplitX - offsetX, displayHeight);
+        ctx.clip();
+        ctx.drawImage(
+          mainImage,
+          0, 0, mainImage.width, mainImage.height,
+          offsetX, offsetY, displayWidth, displayHeight
+        );
+        ctx.restore();
+
+        // 绘制副图（右半部分）
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(displaySplitX, offsetY, canvas.width - displaySplitX, displayHeight);
+        ctx.clip();
+        ctx.drawImage(
+          secondaryImage,
+          0, 0, secondaryImage.width, secondaryImage.height,
+          offsetX, offsetY, displayWidth, displayHeight
+        );
+        ctx.restore();
+
+        // 绘制拼接边界线
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(displaySplitX, offsetY);
+        ctx.lineTo(displaySplitX, offsetY + displayHeight);
+        ctx.stroke();
+      }
+    }
+
+    // 处理切割模式滑块变化
+    function handleSplitSliderChange(event) {
+      splitPosition = parseInt(event.target.value) / 100;
+      updateSplitMasks();
+      drawPreview();
+    }
+
+    // 重置切割位置
+    function resetPosition() {
+      splitPosition = 0.5;
+      splitSlider.value = 50;
+      updateSplitMasks();
+      drawPreview();
+      showNotification('success', '已重置切割位置到中间');
+    }
+
+    // 下载拼接图片（适配四种拼接方向）
+    function downloadImage() {
+      if (!image1 || !image2) {
+        showNotification('error', '请先上传两张图片');
+        return;
+      }
+
+      // 创建临时Canvas用于生成高清图片
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d');
+
+      const config = directionConfig[joinDirection];
+      const isHorizontal = config.type === 'horizontal';
+
+      // 获取主图和副图
+      const mainImage = config.mainImage === 'image1' ? image1 : image2;
+      const secondaryImage = config.secondaryImage === 'image1' ? image1 : image2;
+
+      // 使用原始图片最大尺寸，确保图片质量
+      const finalWidth = Math.max(image1.width, image2.width);
+      const finalHeight = Math.max(image1.height, image2.height);
+
+      tempCanvas.width = finalWidth;
+      tempCanvas.height = finalHeight;
+
+      // 计算缩放比例，保持图片比例不变
+      const scale1X = finalWidth / image1.width;
+      const scale1Y = finalHeight / image1.height;
+      const scale2X = finalWidth / image2.width;
+      const scale2Y = finalHeight / image2.height;
+
+      // 使用统一的缩放比例，避免图片变形
+      const scale1 = Math.max(scale1X, scale1Y);
+      const scale2 = Math.max(scale2X, scale2Y);
+
+      const scaledWidth1 = image1.width * scale1;
+      const scaledHeight1 = image1.height * scale1;
+      const scaledWidth2 = image2.width * scale2;
+      const scaledHeight2 = image2.height * scale2;
+
+      // 计算居中偏移，确保图片居中显示
+      const offsetX1 = (finalWidth - scaledWidth1) / 2;
+      const offsetY1 = (finalHeight - scaledHeight1) / 2;
+      const offsetX2 = (finalWidth - scaledWidth2) / 2;
+      const offsetY2 = (finalHeight - scaledHeight2) / 2;
+
+      if (isHorizontal) {
+        const splitY = finalHeight * splitPosition;
+
+        // 绘制主图上半部分
+        tempCtx.save();
+        tempCtx.beginPath();
+        tempCtx.rect(0, 0, finalWidth, splitY);
+        tempCtx.clip();
+        tempCtx.drawImage(
+          mainImage, 0, 0, mainImage.width, mainImage.height,
+          (mainImage === image1 ? offsetX1 : offsetX2),
+          (mainImage === image1 ? offsetY1 : offsetY2),
+          (mainImage === image1 ? scaledWidth1 : scaledWidth2),
+          (mainImage === image1 ? scaledHeight1 : scaledHeight2)
+        );
+        tempCtx.restore();
+
+        // 绘制副图下半部分
+        tempCtx.save();
+        tempCtx.beginPath();
+        tempCtx.rect(0, splitY, finalWidth, finalHeight - splitY);
+        tempCtx.clip();
+        tempCtx.drawImage(
+          secondaryImage, 0, 0, secondaryImage.width, secondaryImage.height,
+          (secondaryImage === image1 ? offsetX1 : offsetX2),
+          (secondaryImage === image1 ? offsetY1 : offsetY2),
+          (secondaryImage === image1 ? scaledWidth1 : scaledWidth2),
+          (secondaryImage === image1 ? scaledHeight1 : scaledHeight2)
+        );
+        tempCtx.restore();
+
+        // 绘制拼接边界线
+        // tempCtx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+        // tempCtx.lineWidth = 2;
+        // tempCtx.beginPath();
+        // tempCtx.moveTo(0, splitY);
+        // tempCtx.lineTo(finalWidth, splitY);
+        // tempCtx.stroke();
+      } else {
+        const splitX = finalWidth * splitPosition;
+
+        // 绘制主图左半部分
+        tempCtx.save();
+        tempCtx.beginPath();
+        tempCtx.rect(0, 0, splitX, finalHeight);
+        tempCtx.clip();
+        tempCtx.drawImage(
+          mainImage, 0, 0, mainImage.width, mainImage.height,
+          (mainImage === image1 ? offsetX1 : offsetX2),
+          (mainImage === image1 ? offsetY1 : offsetY2),
+          (mainImage === image1 ? scaledWidth1 : scaledWidth2),
+          (mainImage === image1 ? scaledHeight1 : scaledHeight2)
+        );
+        tempCtx.restore();
+
+        // 绘制副图右半部分
+        tempCtx.save();
+        tempCtx.beginPath();
+        tempCtx.rect(splitX, 0, finalWidth - splitX, finalHeight);
+        tempCtx.clip();
+        tempCtx.drawImage(
+          secondaryImage, 0, 0, secondaryImage.width, secondaryImage.height,
+          (secondaryImage === image1 ? offsetX1 : offsetX2),
+          (secondaryImage === image1 ? offsetY1 : offsetY2),
+          (secondaryImage === image1 ? scaledWidth1 : scaledWidth2),
+          (secondaryImage === image1 ? scaledHeight1 : scaledHeight2)
+        );
+        tempCtx.restore();
+
+        // 绘制拼接边界线
+        // tempCtx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+        // tempCtx.lineWidth = 2;
+        // tempCtx.beginPath();
+        // tempCtx.moveTo(splitX, 0);
+        // tempCtx.lineTo(splitX, finalHeight);
+        // tempCtx.stroke();
+      }
+
+      // 创建下载链接
+      try {
+        const link = document.createElement('a');
+        const directionName = config.directionText.replace(/（.*）/, '').replace(/：.*/, '');
+        const fileName = `joined-image-${directionName}-${new Date().getTime()}.png`;
+
+        // 使用toBlob提高兼容性和性能
+        tempCanvas.toBlob(function(blob) {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.href = url;
+            link.click();
+
+            // 释放URL对象，避免内存泄漏
+            setTimeout(() => {
+              URL.revokeObjectURL(url);
+            }, 100);
+
+            showNotification('success', `拼接图片（${config.directionText}）下载成功`);
+          } else {
+            // 降级使用toDataURL
+            link.download = fileName;
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+            showNotification('success', `拼接图片（${config.directionText}）下载成功`);
+          }
+        }, 'image/png', 1.0); // 1.0表示最高质量
+      } catch (error) {
+        console.error('下载失败:', error);
+        showNotification('error', '图片下载失败，请重试');
+      }
+    }
+
+    // 设置拖拽上传
+    function setupDragAndDrop(containerId, callback) {
+      const container = document.getElementById(containerId);
+
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        container.classList.add('border-primary', 'border-2');
+      });
+
+      container.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        container.classList.remove('border-primary', 'border-2');
+      });
+
+      container.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        container.classList.remove('border-primary', 'border-2');
+
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.match('image.*')) {
+          callback(new FileList([file]));
+        } else {
+          showNotification('error', '请上传有效的图片文件');
+        }
+      });
+
+      // 点击上传
+      container.addEventListener('click', () => {
+        const input = containerId === 'image1Container' ? image1Input : image2Input;
+        input.click();
+      });
+    }
+
+    // 设置拖动分隔线
+    function setupDragLine(dragLineElement) {
+      const container = document.getElementById('previewContainer');
+
+      dragLineElement.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isDragging = true;
+        // 添加拖动状态样式
+        dragLineElement.style.opacity = '0.8';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const rect = container.getBoundingClientRect();
+        const config = directionConfig[joinDirection];
+
+        if (config.type === 'horizontal') {
+          // 垂直拖动（上下方向）
+          const y = e.clientY - rect.top;
+          const percentage = Math.max(0, Math.min(100, (y / rect.height) * 100));
+          splitPosition = percentage / 100;
+          splitSlider.value = percentage;
+        } else {
+          // 水平拖动（左右方向）
+          const x = e.clientX - rect.left;
+          const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+          splitPosition = percentage / 100;
+          splitSlider.value = percentage;
+        }
+
+        updateSplitMasks();
+        drawPreview();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          // 恢复正常样式
+          dragLineElement.style.opacity = '1';
+        }
+      });
+
+      // 触摸设备支持
+      dragLineElement.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isDragging = true;
+        dragLineElement.style.opacity = '0.8';
+      });
+
+      document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        const touch = e.touches[0];
+        const rect = container.getBoundingClientRect();
+        const config = directionConfig[joinDirection];
+
+        if (config.type === 'horizontal') {
+          const y = touch.clientY - rect.top;
+          const percentage = Math.max(0, Math.min(100, (y / rect.height) * 100));
+          splitPosition = percentage / 100;
+          splitSlider.value = percentage;
+        } else {
+          const x = touch.clientX - rect.left;
+          const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+          splitPosition = percentage / 100;
+          splitSlider.value = percentage;
+        }
+
+        updateSplitMasks();
+        drawPreview();
+      });
+
+      document.addEventListener('touchend', () => {
+        if (isDragging) {
+          isDragging = false;
+          dragLineElement.style.opacity = '1';
+        }
+      });
+    }
+
+    // 格式化文件大小
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // 显示通知
+    function showNotification(type, message) {
+      // 设置图标和颜色
+      if (type === 'success') {
+        notificationIcon.className = 'fa fa-check-circle mr-2';
+        notification.className = 'fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg bg-green-500 text-white transform translate-y-0 opacity-100 transition-all duration-300 flex items-center z-50';
+      } else if (type === 'error') {
+        notificationIcon.className = 'fa fa-exclamation-circle mr-2';
+        notification.className = 'fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg bg-red-500 text-white transform translate-y-0 opacity-100 transition-all duration-300 flex items-center z-50';
+      } else if (type === 'info') {
+        notificationIcon.className = 'fa fa-info-circle mr-2';
+        notification.className = 'fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg bg-blue-500 text-white transform translate-y-0 opacity-100 transition-all duration-300 flex items-center z-50';
+      }
+
+      // 设置消息
+      notificationMessage.textContent = message;
+
+      // 显示通知
+      notification.style.transform = 'translateY(0)';
+      notification.style.opacity = '1';
+
+      // 3秒后隐藏
+      setTimeout(() => {
+        notification.style.transform = 'translateY(20px)';
+        notification.style.opacity = '0';
+      }, 3000);
+    }
+
+    // 自定义 FileList 类，用于模拟文件输入
+    class FileList {
+      constructor(files) {
+        this.files = files;
+        this.length = files.length;
+      }
+
+      item(index) {
+        return this.files[index] || null;
+      }
+    }
+    // Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+const icon = themeToggle.querySelector('i');
+
+// Check for saved user preference
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+  document.documentElement.classList.add('dark');
+  icon.className = 'fa fa-sun text-lg';
+}
+
+// Toggle theme
+themeToggle.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+  
+  if (document.documentElement.classList.contains('dark')) {
+    localStorage.setItem('theme', 'dark');
+    icon.className = 'fa fa-sun text-lg';
+    // Update canvas background for dark mode
+    if (canvas) canvas.style.backgroundColor = '#1e1e1e';
+  } else {
+    localStorage.setItem('theme', 'light');
+    icon.className = 'fa fa-moon text-lg';
+    // Reset canvas background for light mode
+    if (canvas) canvas.style.backgroundColor = '';
+  }
+  
+  // Redraw preview to adapt to new theme
+  if (image1 && image2) {
+    resizeCanvas();
+    drawPreview();
+  }
+});
+
+    // 初始化应用
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

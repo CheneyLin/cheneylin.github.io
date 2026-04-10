@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>QR Code/URL Encode</title>
+  <meta content="URL Encode/QR Code 转码工具 二维码工具" name="descriptison">
+  <meta content="urlencode,qrcode,urldecode" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/favicon.png" rel="icon">
+  <style>
+    body {
+      width: 1024px;
+      margin: 20px auto;
+      background-color: #EEE;
+    }
+
+    h1 {
+      width: 100%;
+      padding: 20px;
+      text-align: left;
+      margin: 20px auto;
+    }
+
+    h5 {
+      width: 100%;
+      padding: 0 20px;
+      text-align: left;
+      margin: 0 auto;
+    }
+
+    #url_input {
+      width: 100%;
+      border: 1px solid #ccc;
+      color: #333;
+      background-color: #FFF;
+      padding: 20px;
+      text-align: center;
+      margin: 5px auto 20px;
+    }
+
+    #url_input.error {
+      border: 1px solid #F33;
+      background-color: #FDD;
+      color: #f33;
+    }
+
+    #url_info {
+      width: 100%;
+      border: 1px solid #DDD;
+      padding: 20px;
+      text-align: left;
+      font-size: 12px;
+      background-color: black;
+      color: white;
+      margin: 5px auto 20px;
+
+    }
+
+    #qrcodes {
+      width: 100%;
+      border: 1px solid #DDD;
+      padding: 20px;
+      text-align: left;
+      font-size: 12px;
+      margin: 5px auto 20px;
+      display: flex;
+      align-items: flex-start;
+      background-color: #FAFAFA;
+
+    }
+
+        #buttons,
+            #buttons2 {
+      width: 100%;
+      padding: 0 20px;
+      display: flex;
+    }
+
+    #act,
+    #encode,
+    #decode,
+    #encode2,
+    #decode2,
+    #check {
+      min-width: 250px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      text-align: center;
+      margin: 5px auto 20px;
+      background-color: #CCC;
+      cursor: pointer;
+    }
+
+    #encode,
+    #decode,
+    #encode2,
+    #decode2{
+      min-width: 160px;
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center;
+      margin: 5px auto 20px;
+      background-color: #DDD;
+      cursor: pointer;
+    }
+    #act:hover,
+    #encode:hover,
+    #decode:hover,
+    #encode2:hover,
+    #decode2:hover,
+    #check:hover {
+      background-color: #CCCCFF;
+    }
+
+    .qrcode {
+      margin: 10px;
+      padding: 10px;
+      float: left;
+      border: 1px solid #DDD;
+      background-color: #FFF;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>QRCode/URL Encode 二维码/URL编码分析</h1>
+  <h5>URL</h5>
+  <div id="url"><input id="url_input" type="text" value="https://d.mgtv.com/u-od"></div>
+  <div id="buttons">
+    <div id="check">URL分析</div>
+    <div id="act">生成二维码</div>
+  </div>
+  <div id="buttons2">
+  <div id="encode">URL编码</div>
+  <div id="decode">URL解码</div>
+  <div id="encode2">URL参数编码</div>
+  <div id="decode2">URL参数解码</div>
+  </div>
+  <h5>QRCode</h5>
+  <div id="qrcodes">
+
+    <div class="qrcode" id="qr512"></div>
+    <div class="qrcode" id="qr256"></div>
+    <div class="qrcode" id="qr128"></div>
+  </div>
+  <h5>URL Info</h5>
+  <div id="url_info"></div>
+  <!-- Vendor JS Files -->
+  <script src="../assets/plugin/jq/jquery.min.js"></script>
+  <script src="../assets/plugin/jq/jquery.qrcode.js"></script>
+  <script src="../assets/plugin/jq/jquery.cookie.js"></script>
+
+
+  <script>
+    $(function() {
+      /*
+
+      imgoecom://subChannel?channel=270308&title=%E6%98%9F%E7%B2%89%E9%A2%91%E9%81%93&searchType=2
+      https://h5.ecom.mgtv.com/yg/20240531/20240531NBM6YSX/index.html?h5Report=1&source_channel=mgtv&source=mgtv_live_tab&preload_resource=0
+
+      */
+
+      var last_url = $.cookie('last_url');
+      $('#url_input').val(last_url);
+      $('#url_input').blur(function() {
+        var input_text = $('#url_input').val();
+        input_text = input_text.trim();
+        $.cookie('last_url', input_text);
+      });
+      $('#url_input').dblclick(function() {
+        $('#url_input').select();
+      });
+
+      function URLInfo(url) {
+        try {
+          const urlObject = new URL(url);
+          var url_info_text = '';
+          url_info_text = url_info_text + `协议: ${urlObject.protocol}` + '<br>';
+          url_info_text = url_info_text + `主机名: ${urlObject.hostname}` + '<br>';
+          url_info_text = url_info_text + `端口: ${urlObject.port}` + '<br>';
+          url_info_text = url_info_text + `路径名: ${urlObject.pathname}` + '<br>';
+          url_info_text = url_info_text + `哈希值: ${urlObject.hash}` + '<br>';
+          url_info_text = url_info_text + `查询部分: ${urlObject.search}` + '<br>';
+
+          console.log(`协议: ${urlObject.protocol}`);
+          console.log(`主机名: ${urlObject.hostname}`);
+          console.log(`端口: ${urlObject.port}`);
+          console.log(`路径名: ${urlObject.pathname}`);
+          console.log(`哈希值: ${urlObject.hash}`);
+          console.log(`查询部分: ${urlObject.search}`);
+          const params = new URLSearchParams(urlObject.search);
+
+          for (const [key, value] of params.entries()) {
+            console.log(` * ${key}: ${value}`);
+            url_info_text = url_info_text + ` * ${key}: ${value}` + '<br>';
+          }
+          return url_info_text;
+        } catch (err) {
+          return err;
+        } finally {
+          console.log(`URL分析完毕`);
+        }
+      }
+
+      function checkURL(url) {
+        try {
+          const urlObject = new URL(url);
+          console.log(`协议: ${urlObject.protocol}`);
+          console.log(`主机名: ${urlObject.hostname}`);
+          console.log(`端口: ${urlObject.port}`);
+          console.log(`路径名: ${urlObject.pathname}`);
+          console.log(`哈希值: ${urlObject.hash}`);
+          console.log(`查询部分: ${urlObject.search}`);
+          return true;
+        } catch (err) {
+          $('#url_input').addClass('error');
+          setTimeout(function() {
+            $('#url_input').removeClass('error');
+          }, 500);
+          return false;
+        } finally {
+          console.log(`URL检查完毕`);
+        }
+      }
+
+      $('#check').click(function() {
+        var input_text = $('#url_input').val();
+        if (!checkURL(input_text)) {
+          return;
+        }
+        $('#url_info').html();
+        $('#url_info').html(URLInfo(input_text)+'<br>'+$('#url_info').html());
+      });
+
+
+      $('#encode').click(function() {
+        var input_text = $('#url_input').val();
+        input_text = encodeURI(input_text);
+        console.log(input_text)
+        $('#url_input').val(input_text);
+        $('#url_info').html('encodeURI:'+input_text+'<br>'+$('#url_info').html());
+      });
+
+
+      $('#decode').click(function() {
+        var input_text = $('#url_input').val();
+        input_text = decodeURI(input_text);
+        console.log(input_text)
+        $('#url_input').val(input_text);
+        $('#url_info').html('decodeURI:'+input_text+'<br>'+$('#url_info').html());
+      });
+
+            $('#encode2').click(function() {
+              var input_text = $('#url_input').val();
+              input_text = encodeURIComponent(input_text);
+              console.log(input_text)
+              $('#url_input').val(input_text);
+              $('#url_info').html('encodeURIComponent:'+input_text+'<br>'+$('#url_info').html()+);
+            });
+
+
+            $('#decode2').click(function() {
+              var input_text = $('#url_input').val();
+              input_text = decodeURIComponent(input_text);
+              console.log(input_text)
+              $('#url_input').val(input_text);
+              $('#url_info').html('decodeURIComponent:'+input_text+'<br>'+$('#url_info').html());
+            });
+
+      $('#act').click(function() {
+        var input_text = $('#url_input').val();
+        if (!checkURL(input_text)) {
+          return;
+        }
+        $('#qr512').html('');
+        $('#qr256').html('');
+        $('#qr128').html('');
+        $('#qr512').qrcode({
+          text: input_text,
+          width: 512,
+          height: 512,
+          render: 'canvas',
+        });
+        $('#qr256').qrcode({
+          text: input_text,
+          width: 256,
+          height: 256,
+          render: 'canvas',
+        });
+        $('#qr128').qrcode({
+          text: input_text,
+          width: 128,
+          height: 128,
+          render: 'canvas',
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>
