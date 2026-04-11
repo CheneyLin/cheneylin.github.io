@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PRD 目录</title>
+  <style>
+    body{font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding:24px}
+    h1{margin-bottom:8px}
+    ul{line-height:1.8}
+    .path{color:#666; font-size:0.9em}
+    .controls{margin:12px 0}
+    .btn{display:inline-block;padding:6px 10px;margin-right:6px;background:#f3f4f6;border:1px solid #ddd;border-radius:6px;cursor:pointer}
+    .btn.active{background:#2563eb;color:#fff;border-color:#1e40af}
+    .group{margin-top:12px}
+    .group h3{margin:8px 0 4px}
+  </style>
+</head>
+<body>
+  <h1>PRD 目录</h1>
+  <p>自动收集当前文件夹下的各项目 <code>index.html</code> 链接。</p>
+  <div class="controls">
+    <span class="btn active" data-mode="flat">平铺列表</span>
+    <span class="btn" data-mode="project">按项目分组</span>
+    <span class="btn" data-mode="month">按月份分组</span>
+  </div>
+
+  <div id="listRoot"></div>
+  <p>说明：已排除隐藏或模板文件（例如包含 <code>.agents</code> 的路径）。</p>
+  <details>
+    <summary>更新 SOP（点击展开）</summary>
+    <ol>
+      <li><strong>手动更新</strong>：打开 <code>prd_index.html</code>，在页面底部脚本的 <code>entries</code> 数组中新增或修改条目，格式为 <code>{title:'显示标题', path:'相对路径/index.html'}</code>，保存并刷新页面。</li>
+      <li><strong>自动扫描（快速列表）</strong>：在 `prd` 目录运行以下命令列出所有非模板的 <code>index.html</code> 路径：
+        <pre><code>find . -name index.html -not -path "./.agents/*"</code></pre>
+      </li>
+      <li><strong>生成 entries JSON（示例，需 Python）</strong>：在 `prd` 目录运行：
+        <pre><code>python3 - <<'PY'
+import json,os
+out=[]
+for root,dirs,files in os.walk('.'):
+  if '.agents' in root: continue
+  if 'index.html' in files:
+    path=os.path.join(root,'index.html').lstrip('./')
+    title=path.rsplit('/',1)[0]
+    out.append({"title":title,"path":path})
+print('const entries = '+json.dumps(out,ensure_ascii=False,indent=2)+';')
+PY</code></pre>
+        将输出复制回 <code>entries</code> 变量位置即可完成批量更新。</li>
+      <li><strong>提交与发布</strong>：更新完成后提交到 Git（例如 <code>git add prd_index.html && git commit -m "update prd index"</code>），并按项目既有发布流程推送。</li>
+    </ol>
+  </details>
+  <script>
+    const entries = [
+      {title:'创新商品工具 / 电子吧唧 v1.1', path:'创新商品工具/创新商品工具20260407电子吧唧/digital_badge_v1.1_prd/index.html'},
+      {title:'创新商品工具 / 电子吧唧 2期', path:'创新商品工具/创新商品工具20260408电子吧唧2期/e_badge_prd/index.html'},
+      {title:'创新商品工具 / 众筹', path:'创新商品工具/创新商品工具20260410众筹/crowdfunding_prd/index.html'},
+      {title:'互动产品 / 明星群聊室', path:'互动产品/互动产品20260401明星群聊室/index.html'},
+      {title:'快闪店 / 预售商品回填单', path:'快闪店/快闪店20260330预售商品回填单/back_form_prd/index.html'},
+      {title:'商家后台 / 商品限购策略', path:'商家后台/商家后台20260327商品限购策略/limit_config_prd/index.html'},
+      {title:'愚公平台 / 新增弹幕墙组件', path:'愚公平台/愚公平台20260413新增弹幕墙组件/index.html'},
+      {title:'愚公平台 / 签售会抽选产品', path:'愚公平台/愚公平台20260316签售会抽选产品/signautograph_selection_prd/index.html'}
+    ];
+
+    function guessMonthFromPath(p){
+      const m = p.match(/(20\d{2})(0[1-9]|1[0-2])(?:\d{2})?/);
+      return m ? (m[1] + '-' + m[2]) : 'unknown';
+    }
+
+    function projectFromPath(p){
+      return p.split('/')[0] || 'root';
+    }
+
+    function renderFlat(list){
+      const ul = document.createElement('ul');
+      list.forEach(e=>{
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${e.path}">${e.title}</a> <span class="path">(${e.path})</span>`;
+        ul.appendChild(li);
+      });
+      return ul;
+    }
+
+    function renderGrouped(list, keyFn){
+      const container = document.createElement('div');
+      const groups = {};
+      list.forEach(e=>{
+        const k = keyFn(e);
+        groups[k] = groups[k] || [];
+        groups[k].push(e);
+      });
+      Object.keys(groups).sort().forEach(gk=>{
+        const gdiv = document.createElement('div');
+        gdiv.className = 'group';
+        const h = document.createElement('h3');
+        h.textContent = gk;
+        gdiv.appendChild(h);
+        gdiv.appendChild(renderFlat(groups[gk]));
+        container.appendChild(gdiv);
+      });
+      return container;
+    }
+
+    const root = document.getElementById('listRoot');
+    function show(mode){
+      root.innerHTML = '';
+      if(mode === 'flat'){
+        root.appendChild(renderFlat(entries));
+      } else if(mode === 'project'){
+        root.appendChild(renderGrouped(entries, e=>projectFromPath(e.path)));
+      } else if(mode === 'month'){
+        root.appendChild(renderGrouped(entries, e=>guessMonthFromPath(e.path)));
+      }
+    }
+
+    document.querySelectorAll('.btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        document.querySelectorAll('.btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        show(b.getAttribute('data-mode'));
+      });
+    });
+
+    show('flat');
+  </script>
+</body>
+</html>
