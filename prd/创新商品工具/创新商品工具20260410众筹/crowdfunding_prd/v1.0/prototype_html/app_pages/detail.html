@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>众筹项目详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #fff; color: #171717; max-width: 375px; margin: 0 auto; }
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 16px; font-weight: 600; }
+        .cover { width: 100%; height: 240px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; }
+        .section { padding: 16px; border-bottom: 1px solid #f0f0f0; }
+        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+        .tag { display: inline-block; background: #f0f0ff; color: #667eea; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 8px; }
+        .progress-section { padding: 16px; cursor: pointer; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .progress-num { font-size: 24px; font-weight: 700; color: #667eea; }
+        .progress-label { font-size: 14px; color: #666; align-self: flex-end; }
+        .progress-bar { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
+        .stretch-entry { padding: 12px 16px; background: #fafafa; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .stretch-entry-text { font-size: 14px; color: #666; }
+        .stretch-entry-arrow { color: #999; }
+        .detail-content { padding: 16px; font-size: 14px; line-height: 1.8; color: #666; }
+        .comment-entry { padding: 16px; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; max-width: 375px; margin: 0 auto; background: #fff; border-top: 1px solid #f0f0f0; padding: 12px 16px; display: flex; gap: 12px; z-index: 100; }
+        .btn-reserve { flex: 1; background: #fff; border: 2px solid #667eea; color: #667eea; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center; cursor: pointer; }
+        .btn-join { flex: 2; background: #667eea; border: none; color: #fff; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center; cursor: pointer; }
+        
+        /* 弹层样式 */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: #fff; width: 100%; max-width: 375px; max-height: 80vh; border-radius: 16px 16px 0 0; overflow-y: auto; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-header { padding: 16px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
+        .modal-title { font-size: 16px; font-weight: 600; }
+        .modal-close { font-size: 20px; color: #999; cursor: pointer; }
+        .modal-body { padding: 16px; }
+        
+        /* 多级奖励弹层 */
+        .benfit-item { border: 1px solid #e4e7ed; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+        .benfit-item.unlocked { border-color: #28a745; background: #fafff0; }
+        .benfit-item.locked { opacity: 0.7; }
+        .benfit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .benfit-name { font-size: 15px; font-weight: 600; }
+        .benfit-badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .badge-unlocked { background: #28a745; color: #fff; }
+        .badge-locked { background: #e2e3e5; color: #383d41; }
+        .badge-all { background: #d4edda; color: #155724; }
+        .badge-lottery { background: #fff3cd; color: #856404; }
+        .benfit-desc { font-size: 13px; color: #666; margin-bottom: 8px; line-height: 1.6; }
+        .benfit-progress { margin-top: 8px; }
+        .benfit-progress-bar { height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
+        .benfit-progress-fill { height: 100%; background: #667eea; border-radius: 3px; }
+        .benfit-progress-text { display: flex; justify-content: space-between; font-size: 12px; color: #999; margin-top: 4px; }
+        
+        /* SKU选择弹层 */
+        .sku-modal-item { border: 1px solid #e4e7ed; border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+        .sku-modal-item.selected { border-color: #667eea; background: #f0f0ff; }
+        .sku-modal-item.capped { opacity: 0.5; pointer-events: none; }
+        .sku-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .sku-modal-name { font-size: 15px; font-weight: 600; }
+        .sku-modal-tag { background: #ff5b4f; color: #fff; padding: 1px 6px; border-radius: 3px; font-size: 10px; }
+        .sku-modal-price { font-size: 18px; font-weight: 700; color: #667eea; margin-bottom: 4px; }
+        .sku-modal-stock { font-size: 12px; color: #999; }
+        .sku-modal-footer { padding: 16px; border-top: 1px solid #f0f0f0; position: sticky; bottom: 0; background: #fff; }
+        .sku-modal-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .sku-modal-total-label { font-size: 14px; color: #666; }
+        .sku-modal-total-price { font-size: 20px; font-weight: 700; color: #667eea; }
+        .btn-support { width: 100%; background: #667eea; border: none; color: #fff; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span><i class="fas fa-chevron-left"></i></span>
+        <span>项目详情</span>
+        <span><i class="fas fa-share-alt"></i></span>
+    </div>
+
+    <!-- 众筹详情页主体 -->
+    <div class="prototype-module" data-prototype="app_project_detail">
+        <div class="cover">
+            <i class="fas fa-rocket"></i>
+        </div>
+
+        <div class="section">
+            <div style="margin-bottom:8px;">
+                <span class="tag">进行中</span>
+                <span class="tag">周边众筹</span>
+            </div>
+            <div style="font-size:20px;font-weight:700;margin-bottom:4px;">星际探险家系列周边</div>
+            <div style="font-size:13px;color:#999;">官方旗舰店｜剩余18天</div>
+        </div>
+
+        <!-- 目标与进度条区（点击弹出多级奖励弹层） -->
+        <div class="progress-section" onclick="openBenfitModal()">
+            <div class="progress-header">
+                <div>
+                    <span class="progress-num">¥68,000</span>
+                    <span class="progress-label">已筹</span>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:14px;font-weight:600;">68%</div>
+                    <div style="font-size:12px;color:#999;">目标 ¥100,000</div>
+                </div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#999;">
+                <span>256人支持</span>
+                <span>剩余 ¥32,000</span>
+            </div>
+        </div>
+
+        <!-- 多级奖励入口 -->
+        <div class="stretch-entry" onclick="openBenfitModal()">
+            <span class="stretch-entry-text">查看多级奖励激励 ></span>
+            <span class="stretch-entry-arrow"><i class="fas fa-chevron-right"></i></span>
+        </div>
+
+        <!-- 商品详情区 -->
+        <div class="detail-content">
+            <div style="font-size:16px;font-weight:600;margin-bottom:12px;">项目详情</div>
+            <p>星际探险家系列周边众筹项目，包含限量金属徽章、设计师签名海报、全套周边福袋等精美周边。支持金额或件数目标解锁，解锁更多奖励。</p>
+            <div style="margin-top:16px;padding:12px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#666;">
+                <div style="font-weight:600;margin-bottom:8px;">FAQ</div>
+                <div style="margin-bottom:6px;">Q: 众筹失败会怎样？</div>
+                <div style="margin-bottom:6px;">A: 未达成目标将原路退款。</div>
+                <div style="margin-bottom:6px;">Q: 发货时间？</div>
+                <div>A: 预计2026年6月起陆续发货。</div>
+            </div>
+        </div>
+
+        <!-- 讨论区入口 -->
+        <div class="comment-entry" onclick="alert('跳转至讨论区')">
+            <span style="font-size:14px;font-weight:600;">讨论区</span>
+            <span style="font-size:13px;color:#999;">32条讨论 ></span>
+        </div>
+    </div>
+
+    <div style="height:80px;"></div>
+    
+    <!-- 吸底操作栏 -->
+    <div class="bottom-bar">
+        <button class="btn-reserve" onclick="alert('预约成功，开售前会提醒您')">预约提醒</button>
+        <button class="btn-join" onclick="openSkuModal()">立即参与 ¥298</button>
+    </div>
+
+    <!-- 多级奖励弹层 -->
+    <div class="modal-overlay" id="benfitModal" onclick="closeBenfitModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">多级奖励说明</span>
+                <span class="modal-close" onclick="closeBenfitModal()">&times;</span>
+            </div>
+            <div class="modal-body prototype-module" data-prototype="app_project_detail_benfit">
+                <!-- 已解锁奖励 -->
+                <div class="benfit-item unlocked">
+                    <div class="benfit-header">
+                        <span class="benfit-name">限量金属徽章</span>
+                        <div style="display:flex;gap:6px;">
+                            <span class="benfit-badge badge-unlocked">已达成</span>
+                            <span class="benfit-badge badge-all">全员赠送</span>
+                        </div>
+                    </div>
+                    <div class="benfit-desc">解锁后全体支持者获赠限量金属徽章1枚，随主包裹发货</div>
+                    <div class="benfit-progress">
+                        <div class="benfit-progress-bar"><div class="benfit-progress-fill" style="width:100%"></div></div>
+                        <div class="benfit-progress-text">
+                            <span>当前进度：¥68,000</span>
+                            <span>目标：¥50,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 未解锁奖励1 -->
+                <div class="benfit-item locked">
+                    <div class="benfit-header">
+                        <span class="benfit-name">签名海报</span>
+                        <div style="display:flex;gap:6px;">
+                            <span class="benfit-badge badge-locked">差¥12,000达成</span>
+                            <span class="benfit-badge badge-lottery">抽选</span>
+                        </div>
+                    </div>
+                    <div class="benfit-desc">解锁后抽选10名支持者获赠设计师签名海报，分开发货</div>
+                    <div class="benfit-progress">
+                        <div class="benfit-progress-bar"><div class="benfit-progress-fill" style="width:85%"></div></div>
+                        <div class="benfit-progress-text">
+                            <span>当前进度：¥68,000</span>
+                            <span>目标：¥80,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 未解锁奖励2 -->
+                <div class="benfit-item locked">
+                    <div class="benfit-header">
+                        <span class="benfit-name">全套福袋</span>
+                        <div style="display:flex;gap:6px;">
+                            <span class="benfit-badge badge-locked">差¥32,000达成</span>
+                            <span class="benfit-badge badge-lottery">抽选</span>
+                        </div>
+                    </div>
+                    <div class="benfit-desc">解锁后抽选5名支持者获赠全套周边福袋，含限定版商品</div>
+                    <div class="benfit-progress">
+                        <div class="benfit-progress-bar"><div class="benfit-progress-fill" style="width:68%"></div></div>
+                        <div class="benfit-progress-text">
+                            <span>当前进度：¥68,000</span>
+                            <span>目标：¥100,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKU选择弹层 -->
+    <div class="modal-overlay" id="skuModal" onclick="closeSkuModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">选择档位</span>
+                <span class="modal-close" onclick="closeSkuModal()">&times;</span>
+            </div>
+            <div class="modal-body prototype-module" data-prototype="app_project_detail_sku_picker">
+                <!-- SKU列表 -->
+                <div class="sku-modal-item selected" onclick="selectSku(this, 298)">
+                    <div class="sku-modal-header">
+                        <span class="sku-modal-name">早鸟档</span>
+                        <span class="sku-modal-tag">限量</span>
+                    </div>
+                    <div class="sku-modal-price">¥298</div>
+                    <div class="sku-modal-stock">库存紧张 · 剩余23件 · 每人限购2件</div>
+                </div>
+
+                <div class="sku-modal-item" onclick="selectSku(this, 398)">
+                    <div class="sku-modal-header">
+                        <span class="sku-modal-name">标准档</span>
+                    </div>
+                    <div class="sku-modal-price">¥398</div>
+                    <div class="sku-modal-stock">库存充足</div>
+                </div>
+
+                <div class="sku-modal-item" onclick="selectSku(this, 698)">
+                    <div class="sku-modal-header">
+                        <span class="sku-modal-name">豪华档</span>
+                    </div>
+                    <div class="sku-modal-price">¥698</div>
+                    <div class="sku-modal-stock">库存充足 · 预计6月发货</div>
+                </div>
+
+                <div class="sku-modal-item capped">
+                    <div class="sku-modal-header">
+                        <span class="sku-modal-name">绝版限定档</span>
+                        <span class="sku-modal-tag">已售罄</span>
+                    </div>
+                    <div class="sku-modal-price">¥999</div>
+                    <div class="sku-modal-stock">已达上限 / 已售罄</div>
+                </div>
+            </div>
+            
+            <!-- 吸底操作栏 -->
+            <div class="sku-modal-footer">
+                <div class="sku-modal-total">
+                    <span class="sku-modal-total-label">合计</span>
+                    <span class="sku-modal-total-price" id="totalPrice">¥298</span>
+                </div>
+                <button class="btn-support" onclick="window.location.href='order.html'">去支持</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 打开多级奖励弹层
+        function openBenfitModal() {
+            document.getElementById('benfitModal').classList.add('show');
+        }
+        
+        // 关闭多级奖励弹层
+        function closeBenfitModal(event) {
+            if (!event || event.target.id === 'benfitModal') {
+                document.getElementById('benfitModal').classList.remove('show');
+            }
+        }
+        
+        // 打开SKU选择弹层
+        function openSkuModal() {
+            document.getElementById('skuModal').classList.add('show');
+        }
+        
+        // 关闭SKU选择弹层
+        function closeSkuModal(event) {
+            if (!event || event.target.id === 'skuModal') {
+                document.getElementById('skuModal').classList.remove('show');
+            }
+        }
+        
+        // 选择SKU
+        function selectSku(element, price) {
+            if (element.classList.contains('capped')) return;
+            document.querySelectorAll('.sku-modal-item').forEach(item => item.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('totalPrice').textContent = '¥' + price;
+        }
+        
+        // PRD高亮功能
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight') {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const targets = document.querySelectorAll(`[data-prototype="${e.data.featureId}"]`);
+                targets.forEach(t => { t.classList.add('feature-highlight'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+            }
+        });
+    </script>
+</body>
+</html>

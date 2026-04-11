@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKU选择</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #fff; color: #171717; max-width: 375px; margin: 0 auto; }
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 16px; font-weight: 600; border-bottom: 1px solid #f0f0f0; }
+        .content { padding: 16px; }
+        .sku-card { border: 1px solid #e4e7ed; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; }
+        .sku-card.selected { border-color: #667eea; background: #f8f7ff; }
+        .sku-card.capped { opacity: 0.6; pointer-events: none; }
+        .sku-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .sku-name { font-size: 16px; font-weight: 600; }
+        .sku-tag { background: #ff5b4f; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .sku-tag-success { background: #28a745; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .sku-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .sku-price { font-size: 22px; font-weight: 700; color: #667eea; }
+        .sku-stock { font-size: 13px; color: #999; }
+        .sku-desc { font-size: 12px; color: #666; margin-top: 4px; }
+        .qty-row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+        .qty-label { font-size: 14px; color: #666; }
+        .qty-control { display: flex; align-items: center; gap: 12px; }
+        .qty-btn { width: 32px; height: 32px; border: 1px solid #e4e7ed; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
+        .qty-btn.minus { color: #ccc; }
+        .qty-num { font-size: 18px; font-weight: 600; min-width: 20px; text-align: center; }
+        .limit-hint { font-size: 12px; color: #ff5b4f; margin-top: 8px; }
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; max-width: 375px; margin: 0 auto; background: #fff; border-top: 1px solid #f0f0f0; padding: 12px 16px; }
+        .btn-join { width: 100%; background: #667eea; border: none; color: #fff; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span><i class="fas fa-chevron-left"></i></span>
+        <span>选择档位</span>
+        <span></span>
+    </div>
+
+    <div class="content prototype-module" data-prototype="app_sku_picker">
+        <div class="sku-card selected" onclick="selectCard(this)">
+            <div class="sku-card-header">
+                <span class="sku-name">早鸟档</span>
+                <span class="sku-tag">限量</span>
+            </div>
+            <div class="sku-price-row">
+                <span class="sku-price">¥298</span>
+                <span class="sku-stock">库存紧张 · 剩余23件</span>
+            </div>
+            <div class="sku-desc">含限量金属徽章1枚，早鸟专属</div>
+            <div class="qty-row">
+                <span class="qty-label">购买数量</span>
+                <div class="qty-control">
+                    <div class="qty-btn minus" onclick="changeQty(-1)">−</div>
+                    <span class="qty-num" id="qty1">1</span>
+                    <div class="qty-btn" onclick="changeQty(1)">+</div>
+                </div>
+            </div>
+            <div class="limit-hint">每人限购2件，您已选1件</div>
+        </div>
+
+        <div class="sku-card" onclick="selectCard(this)">
+            <div class="sku-card-header">
+                <span class="sku-name">标准档</span>
+                <span class="sku-tag-success">推荐</span>
+            </div>
+            <div class="sku-price-row">
+                <span class="sku-price">¥398</span>
+                <span class="sku-stock">库存充足</span>
+            </div>
+            <div class="sku-desc">含标准周边套装，参与所有解锁激励</div>
+            <div class="qty-row">
+                <span class="qty-label">购买数量</span>
+                <div class="qty-control">
+                    <div class="qty-btn minus" onclick="changeQty2(-1)">−</div>
+                    <span class="qty-num" id="qty2">1</span>
+                    <div class="qty-btn" onclick="changeQty2(1)">+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sku-card" onclick="selectCard(this)">
+            <div class="sku-card-header">
+                <span class="sku-name">豪华档</span>
+            </div>
+            <div class="sku-price-row">
+                <span class="sku-price">¥698</span>
+                <span class="sku-stock">库存充足 · 预计6月发货</span>
+            </div>
+            <div class="sku-desc">含全套周边，解锁全部Stretch Goals奖励</div>
+            <div class="qty-row">
+                <span class="qty-label">购买数量</span>
+                <div class="qty-control">
+                    <div class="qty-btn minus" onclick="changeQty3(-1)">−</div>
+                    <span class="qty-num" id="qty3">1</span>
+                    <div class="qty-btn" onclick="changeQty3(1)">+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sku-card capped" onclick="selectCard(this)" style="margin-top:12px;">
+            <div class="sku-card-header">
+                <span class="sku-name">绝版限定档</span>
+                <span class="sku-tag">已售罄</span>
+            </div>
+            <div class="sku-price-row">
+                <span class="sku-price">¥999</span>
+                <span class="sku-stock">已达上限 / 已售罄</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="height:80px;"></div>
+    <div class="bottom-bar">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span style="font-size:14px;color:#666;">已选：早鸟档 x1</span>
+            <span style="font-size:20px;font-weight:700;color:#667eea;">¥298</span>
+        </div>
+        <button class="btn-join" onclick="window.location.href='order.html'">确认参与</button>
+    </div>
+
+    <script>
+        function selectCard(el) {
+            if (el.classList.contains('capped')) return;
+            el.closest('.content').querySelectorAll('.sku-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+        function changeQty(d) {
+            var q = document.getElementById('qty1');
+            var n = parseInt(q.textContent) + d;
+            if (n < 1) n = 1;
+            if (n > 2) n = 2;
+            q.textContent = n;
+        }
+        function changeQty2(d) {
+            var q = document.getElementById('qty2');
+            var n = parseInt(q.textContent) + d;
+            if (n < 1) n = 1;
+            q.textContent = n;
+        }
+        function changeQty3(d) {
+            var q = document.getElementById('qty3');
+            var n = parseInt(q.textContent) + d;
+            if (n < 1) n = 1;
+            q.textContent = n;
+        }
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight') {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const t = document.querySelector(`[data-prototype="${e.data.featureId}"]`);
+                if (t) { t.classList.add('feature-highlight'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }
+        });
+    </script>
+</body>
+</html>

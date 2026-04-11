@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付成功</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #fff; color: #171717; max-width: 375px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+        .success-bg { background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); padding: 40px 0 60px; text-align: center; color: #fff; }
+        .success-icon { width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .success-icon i { font-size: 40px; color: #28a745; }
+        .success-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .success-sub { font-size: 15px; opacity: 0.9; }
+        .content { flex: 1; padding: 20px 16px; }
+        .order-card { background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .order-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+        .order-row:last-child { border-bottom: none; }
+        .order-label { color: #666; }
+        .order-value { font-weight: 500; }
+        .btn-row { display: flex; gap: 12px; margin-top: 20px; }
+        .btn-secondary { flex: 1; background: #f5f5f5; border: none; color: #666; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; }
+        .btn-primary { flex: 2; background: #667eea; border: none; color: #fff; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; }
+        .share-hint { text-align: center; padding: 16px; font-size: 14px; color: #999; }
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+    </style>
+</head>
+<body>
+    <div class="success-bg prototype-module" data-prototype="app_participate">
+        <div class="success-icon"><i class="fas fa-check"></i></div>
+        <div class="success-title">支付成功</div>
+        <div class="success-sub">感谢您支持星际探险家系列</div>
+    </div>
+
+    <div class="content">
+        <div class="order-card prototype-module" data-prototype="app_orders">
+            <div style="font-size:16px;font-weight:600;margin-bottom:12px;">订单信息</div>
+            <div class="order-row">
+                <span class="order-label">订单编号</span>
+                <span class="order-value">CF20260410089</span>
+            </div>
+            <div class="order-row">
+                <span class="order-label">众筹项目</span>
+                <span class="order-value">星际探险家系列周边</span>
+            </div>
+            <div class="order-row">
+                <span class="order-label">档位</span>
+                <span class="order-value">早鸟档</span>
+            </div>
+            <div class="order-row">
+                <span class="order-label">支付金额</span>
+                <span class="order-value" style="color:#667eea;font-weight:700;">¥298.00</span>
+            </div>
+            <div class="order-row">
+                <span class="order-label">订单状态</span>
+                <span class="order-value" style="color:#28a745;">进行中</span>
+            </div>
+            <div class="order-row">
+                <span class="order-label">预计发货</span>
+                <span class="order-value">2026年6月</span>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-secondary" onclick="window.location.href='myorders.html'">查看订单</button>
+            <button class="btn-primary" onclick="window.location.href='detail.html'">返回详情</button>
+        </div>
+
+        <div class="share-hint">
+            <i class="fas fa-share-alt" style="margin-right:6px;"></i> 分享给好友，一起支持项目吧
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight') {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                document.querySelectorAll(`[data-prototype="${e.data.featureId}"]`).forEach(t => { t.classList.add('feature-highlight'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+            }
+        });
+    </script>
+</body>
+</html>
