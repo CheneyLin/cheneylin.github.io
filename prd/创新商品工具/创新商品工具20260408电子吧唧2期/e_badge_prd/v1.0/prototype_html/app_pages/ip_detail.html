@@ -4,63 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP 包详情 - 电子吧唧 2 期</title>
-    <link href="../../assets/tailwind.min.css" rel="stylesheet">
-    <link href="../../assets/font-awesome.min.css" rel="stylesheet">
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
     <link href="../assets/app_styles.css" rel="stylesheet">
+    <style>
+        .ip-cover-gradient { background: linear-gradient(135deg, #667eea, #764ba2); }
+    </style>
 </head>
 <body style="margin: 0; padding: 0;">
-    <!-- IP 包详情页 -->
-    <div id="app_ip_detail" class="phone-frame" style="width: 100%; height: 100vh; border: none; border-radius: 0;">
+    <div id="app_ip_detail" class="phone-frame">
         <div class="phone-notch"></div>
-        
+
         <!-- 状态栏 -->
         <div class="status-bar">
             <span>9:41</span>
             <div class="flex items-center gap-1">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-full"></i>
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
             </div>
         </div>
-        
+
         <!-- 页面内容 -->
         <div class="page-content">
             <!-- 导航栏 -->
             <div class="nav-bar">
-                <div class="nav-back" onclick="navigateToPage('ip_list.html')">
-                    <i class="fas fa-chevron-left"></i>
+                <div class="nav-back cursor-pointer" onclick="navigateToPage('ip_list.html')">
+                    <i class="bi bi-chevron-left"></i>
                 </div>
                 <div class="nav-title">火影忍者</div>
-                <div class="nav-action">
-                    <i class="fas fa-share-alt"></i>
+                <div class="nav-action cursor-pointer">
+                    <i class="bi bi-share"></i>
                 </div>
             </div>
-            
+
             <!-- IP 包封面 -->
-            <div class="w-full h-48 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-                <i class="fas fa-dragon text-8xl text-white"></i>
+            <div class="w-full h-48 ip-cover-gradient flex items-center justify-center">
+                <i class="bi bi-emoji-smile text-8xl" style="color: var(--geist-white);"></i>
             </div>
-            
+
             <!-- IP 包信息 -->
-            <div class="p-4">
-                <h2 class="text-2xl font-bold text-gray-800">火影忍者</h2>
-                <p class="text-sm text-gray-500 mt-2">经典动漫 IP，包含鸣人、佐助等 20 张精美吧唧图片</p>
-                
+            <div class="p-4 content-with-tabbar">
+                <h2 class="sub-heading">火影忍者</h2>
+                <p class="body-small mt-2">经典动漫 IP，包含鸣人、佐助等 20 张精美吧唧图片</p>
+
                 <!-- 收集进度 -->
                 <div class="mt-4">
-                    <div class="flex justify-between text-sm mb-1">
-                        <span class="text-gray-600">已收集</span>
-                        <span class="text-purple-600 font-bold">3/20</span>
+                    <div class="flex justify-between caption mb-1">
+                        <span style="color: var(--geist-gray-600);">已收集</span>
+                        <span style="color: var(--geist-black); font-weight: 600;">3/20</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 15%"></div>
                     </div>
                 </div>
-                
+
                 <!-- 概率公示 -->
                 <div class="card mt-4">
-                    <h3 class="font-bold text-gray-800 mb-2">
-                        <i class="fas fa-chart-pie text-purple-500 mr-2"></i>概率公示
+                    <h3 class="card-title mb-2">
+                        <i class="bi bi-pie-chart-fill mr-2" style="color: var(--develop-blue);"></i>概率公示
                     </h3>
                     <table class="probability-table">
                         <thead>
@@ -75,58 +76,58 @@
                             <tr>
                                 <td><span class="badge-ssr">SSR</span></td>
                                 <td>超稀有</td>
-                                <td class="font-bold">2%</td>
-                                <td class="text-red-500">限量 50 张</td>
+                                <td class="body-small" style="font-weight: 600;">2%</td>
+                                <td class="caption" style="color: var(--ship-red);">限量 50 张</td>
                             </tr>
                             <tr>
                                 <td><span class="badge-sr">SR</span></td>
                                 <td>稀有</td>
-                                <td class="font-bold">18%</td>
-                                <td class="text-orange-500">限量 200 张</td>
+                                <td class="body-small" style="font-weight: 600;">18%</td>
+                                <td class="caption" style="color: #ff9a76;">限量 200 张</td>
                             </tr>
                             <tr>
                                 <td><span class="badge-r">R</span></td>
                                 <td>普通</td>
-                                <td class="font-bold">80%</td>
-                                <td class="text-green-500">不限量</td>
+                                <td class="body-small" style="font-weight: 600;">80%</td>
+                                <td class="caption" style="color: #00c853;">不限量</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- 购买选项 -->
                 <div class="mt-4">
-                    <h3 class="font-bold text-gray-800 mb-3">选择抽选方式</h3>
-                    
+                    <h3 class="card-title mb-3">选择抽选方式</h3>
+
                     <!-- 单抽 -->
-                    <div class="purchase-option" onclick="navigateToPage('single_draw.html')">
+                    <div class="purchase-option cursor-pointer" onclick="navigateToPage('single_draw.html')">
                         <div class="purchase-option-header">
                             <span class="purchase-option-title">单抽</span>
                             <span class="purchase-option-price">¥9.9</span>
                         </div>
                         <p class="purchase-option-desc">每次抽取 1 张图片，有免费次数优先使用</p>
-                        <div class="mt-2 text-xs text-purple-600">
-                            <i class="fas fa-gift mr-1"></i>当前免费次数：2 次
+                        <div class="mt-2 caption" style="color: var(--develop-blue);">
+                            <i class="bi bi-gift mr-1"></i>当前免费次数：2 次
                         </div>
                     </div>
-                    
+
                     <!-- 10 连抽 -->
-                    <div class="purchase-option recommended" onclick="navigateToPage('ten_draw.html')">
+                    <div class="purchase-option recommended cursor-pointer" onclick="navigateToPage('ten_draw.html')">
                         <div class="purchase-option-header">
                             <span class="purchase-option-title">
                                 10 连抽
-                                <span class="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded">推荐</span>
+                                <span class="ml-2 px-2 py-1.5 text-white text-xs rounded" style="background: var(--ship-red); display: inline-block;">推荐</span>
                             </span>
                             <span class="purchase-option-price">¥99</span>
                         </div>
                         <p class="purchase-option-desc">必中 1 张 SR 及以上等级图片</p>
-                        <div class="mt-2 text-xs text-green-600">
-                            <i class="fas fa-check-circle mr-1"></i>比单抽节省约 ¥9
+                        <div class="mt-2 caption" style="color: #00c853;">
+                            <i class="bi bi-check-circle-fill mr-1"></i>比单抽节省约 ¥9
                         </div>
                     </div>
-                    
+
                     <!-- 整包购买 -->
-                    <div class="purchase-option" onclick="handlePackPurchase()">
+                    <div class="purchase-option cursor-pointer" onclick="handlePackPurchase()">
                         <div class="purchase-option-header">
                             <span class="purchase-option-title">整包购买</span>
                             <span class="purchase-option-price">¥150</span>
@@ -138,18 +139,25 @@
         </div>
     </div>
 
-    <script src="../assets/app_scripts.js"></script>
     <script>
-        // 页面内导航函数（用于 iframe 环境）
         function navigateToPage(pageUrl) {
             if (window.parent && window.parent !== window) {
-                window.parent.postMessage({
-                    type: 'PAGE_NAVIGATION',
-                    page: pageUrl
-                }, '*');
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
             } else {
                 window.location.href = pageUrl;
             }
+        }
+
+        function handlePackPurchase() {
+            showToast('整包购买功能开发中...');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast show';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.remove('show'), 2000);
         }
     </script>
 </body>
