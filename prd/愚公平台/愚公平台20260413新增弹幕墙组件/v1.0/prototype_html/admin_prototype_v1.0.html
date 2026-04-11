@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>愚公互动平台 - H5编辑器</title>
+    <link href="assets/app_styles.css" rel="stylesheet">
+    <link href="../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
@@ -246,75 +248,117 @@
             flex: 1;
             background: #f5f5f5;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
+            justify-content: flex-start;
             padding: 40px;
             position: relative;
+            overflow-y: auto;
         }
 
-        .phone-frame {
+        .canvas-container {
             width: 375px;
-            height: 667px;
+            min-height: 667px;
             background: white;
-            border-radius: 36px;
+            border-radius: 8px;
             box-shadow: var(--card-shadow);
             overflow: hidden;
             position: relative;
         }
 
-        .phone-status-bar {
+        .canvas-header {
             height: 44px;
-            background: #0070f3;
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border-light);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            color: white;
-            font-size: 12px;
+            justify-content: center;
+            font-size: 13px;
             font-weight: 600;
+            color: var(--muted);
+            letter-spacing: -0.26px;
         }
 
-        .phone-content {
-            height: calc(100% - 44px);
-            overflow-y: auto;
+        .canvas-content {
+            padding: 20px;
             position: relative;
-            background: linear-gradient(180deg, #0070f3 0%, #7928ca 100%);
+            min-height: 600px;
         }
 
-        /* Bulletin Component */
-        .bulletin-component {
+        /* Canvas Component - Bulletin (90% width square) */
+        .canvas-component-bulletin {
+            width: 90%;
+            aspect-ratio: 1 / 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            overflow: hidden;
             position: relative;
-            width: 100%;
-            height: 200px;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid var(--border-light);
+        }
+
+        .canvas-component-bulletin .canvas-component-header {
+            height: 32px;
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 600;
+            letter-spacing: -0.22px;
+        }
+
+        .canvas-component-bulletin .canvas-component-body {
+            flex: 1;
+            padding: 12px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Mini Bulletin Preview in Canvas */
+        .mini-bulletin-row {
+            position: absolute;
+            left: 0;
+            right: 0;
+            white-space: nowrap;
             overflow: hidden;
         }
 
-        .bulletin-rows {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        .mini-bulletin-item {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            margin-right: 16px;
+            font-size: 10px;
+            color: #171717;
+            font-weight: 500;
+            animation: mini-scroll-left 8s linear infinite;
         }
 
-        .bulletin-row {
-            position: absolute;
-            white-space: nowrap;
-            animation: scroll-left 10s linear infinite;
-        }
-
-        @keyframes scroll-left {
+        @keyframes mini-scroll-left {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
 
-        .bulletin-item {
-            display: inline-block;
-            padding: 6px 12px;
-            background: rgba(255,255,255,0.95);
-            border-radius: 16px;
-            margin-right: 30px;
+        /* Other Component Placeholders */
+        .canvas-component-placeholder {
+            width: 100%;
+            height: 60px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
             font-size: 12px;
-            color: var(--fg);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-weight: 500;
         }
 
         /* Config Panel */
@@ -395,19 +439,48 @@
             margin-top: 6px;
         }
 
+        /* Search Results Dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 4px 4px, rgba(0,0,0,0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+            margin-top: 4px;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .search-result-item {
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: #fafafa;
+        }
+
         /* Tags */
         .selected-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .topic-tag {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
+            padding: 6px 10px;
             background: #ebf5ff;
             border-radius: 9999px;
             font-size: 12px;
@@ -415,12 +488,14 @@
             color: #0068d6;
         }
 
-        .topic-tag i {
+        .topic-tag .bi-x-lg {
             cursor: pointer;
             color: #0068d6;
+            font-size: 12px;
+            transition: color 0.15s;
         }
 
-        .topic-tag i:hover {
+        .topic-tag .bi-x-lg:hover {
             color: #ff5b4f;
         }
 
@@ -450,9 +525,9 @@
         <div class="sidebar">
             <div class="sidebar-logo">愚公互动平台</div>
             <div class="sidebar-menu">
-                <div class="menu-item">活动列表</div>
-                <div class="menu-item active">H5编辑器</div>
-                <div class="menu-item">数据分析</div>
+                <div class="menu-item"><i class="bi bi-collection" style="margin-right: 12px; font-size: 18px;"></i>活动列表</div>
+                <div class="menu-item active"><i class="bi bi-phone" style="margin-right: 12px; font-size: 18px;"></i>H5编辑器</div>
+                <div class="menu-item"><i class="bi bi-bar-chart" style="margin-right: 12px; font-size: 18px;"></i>数据分析</div>
             </div>
         </div>
 
@@ -462,8 +537,8 @@
             <div class="top-bar">
                 <div class="top-bar-title">H5编辑器 - 明星应援活动</div>
                 <div class="top-bar-actions">
-                    <button class="btn btn-ghost">预览</button>
-                    <button class="btn btn-primary">保存并发布</button>
+                    <button class="btn btn-ghost"><i class="bi bi-eye"></i> 预览</button>
+                    <button class="btn btn-primary"><i class="bi bi-check-lg"></i> 保存并发布</button>
                 </div>
             </div>
 
@@ -477,19 +552,19 @@
                         <div class="component-group-title">基础组件</div>
                         <div class="component-grid">
                             <div class="component-item">
-                                <i>📝</i>
+                                <i class="bi bi-text-paragraph"></i>
                                 <div class="component-item-name">文本</div>
                             </div>
                             <div class="component-item">
-                                <i>🖼️</i>
+                                <i class="bi bi-image"></i>
                                 <div class="component-item-name">图片</div>
                             </div>
                             <div class="component-item">
-                                <i>🔘</i>
+                                <i class="bi bi-toggle-on"></i>
                                 <div class="component-item-name">按钮</div>
                             </div>
                             <div class="component-item">
-                                <i>📥</i>
+                                <i class="bi bi-input-cursor-text"></i>
                                 <div class="component-item-name">输入框</div>
                             </div>
                         </div>
@@ -499,20 +574,20 @@
                         <div class="component-group-title">互动组件</div>
                         <div class="component-grid">
                             <div class="component-item new-component prototype-module" data-prototype="admin_bulletin_module">
-                                <i>💬</i>
+                                <i class="bi bi-chat-square-text"></i>
                                 <div class="component-item-name">弹幕墙</div>
                                 <div class="new-badge">NEW</div>
                             </div>
                             <div class="component-item">
-                                <i>👍</i>
+                                <i class="bi bi-hand-thumbs-up"></i>
                                 <div class="component-item-name">投票</div>
                             </div>
                             <div class="component-item">
-                                <i>🎁</i>
+                                <i class="bi bi-gift"></i>
                                 <div class="component-item-name">抽奖</div>
                             </div>
                             <div class="component-item">
-                                <i>⏱️</i>
+                                <i class="bi bi-hourglass-split"></i>
                                 <div class="component-item-name">倒计时</div>
                             </div>
                         </div>
@@ -521,14 +596,33 @@
 
                 <!-- Canvas -->
                 <div class="canvas">
-                    <div class="phone-frame">
-                        <div class="phone-status-bar">
-                            <span>9:41</span>
-                            <span>📶 🔋</span>
-                        </div>
-                        <div class="phone-content">
-                            <div class="bulletin-component prototype-module" data-prototype="h5_bulletin">
-                                <div class="bulletin-rows" id="bulletinPreview"></div>
+                    <div class="canvas-container">
+                        <div class="canvas-header">H5 页面画布</div>
+                        <div class="canvas-content">
+                            <!-- Banner Component Placeholder -->
+                            <div class="canvas-component-placeholder" style="margin-bottom: 20px;">
+                                <i class="bi bi-card-image" style="margin-right: 8px; font-size: 16px;"></i>
+                                <span>轮播图组件</span>
+                            </div>
+
+                            <!-- Title Component Placeholder -->
+                            <div class="canvas-component-placeholder" style="margin-bottom: 20px;">
+                                <i class="bi bi-type-h1" style="margin-right: 8px; font-size: 16px;"></i>
+                                <span>标题组件</span>
+                            </div>
+
+                            <!-- Bulletin Component (Large Square, 90% width) -->
+                            <div class="canvas-component-bulletin prototype-module" data-prototype="h5_bulletin">
+                                <div class="canvas-component-header"><i class="bi bi-chat-square-text" style="margin-right: 6px;"></i>弹幕墙组件</div>
+                                <div class="canvas-component-body">
+                                    <div id="miniBulletinPreview"></div>
+                                </div>
+                            </div>
+
+                            <!-- Image Component Placeholder -->
+                            <div class="canvas-component-placeholder" style="margin-top: 20px;">
+                                <i class="bi bi-image" style="margin-right: 8px; font-size: 16px;"></i>
+                                <span>图片展示组件</span>
                             </div>
                         </div>
                     </div>
@@ -541,24 +635,58 @@
                     </div>
 
                     <button class="btn btn-primary preview-btn" onclick="togglePreview()">
-                        ▶ 预览弹幕效果
+                        <i class="bi bi-play-fill"></i> 预览弹幕效果
                     </button>
 
                     <div class="config-section">
-                        <div class="config-label">话题搜索 <span class="required">*</span></div>
-                        <input type="text" class="config-input" id="topicSearch" placeholder="输入关键字搜索话题" oninput="searchTopics(this.value)">
+                        <div class="config-label">话题ID <span class="required">*</span></div>
+                        <div class="search-input-wrapper" style="position: relative;">
+                            <input type="text" class="config-input" id="topicSearch" placeholder="输入关键字搜索话题" oninput="searchTopics(this.value)" onkeydown="handleTopicKeyDown(event)">
+                            
+                            <!-- Search Results Dropdown -->
+                            <div class="search-results" id="searchResults" style="display: none;">
+                                <div class="search-result-item" onclick="selectTopic('明星应援话题', 10001, 45)">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-size: 13px; color: var(--fg); font-weight: 500;">#明星应援话题#</div>
+                                            <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">ID: 10001</div>
+                                        </div>
+                                        <div style="font-size: 11px; color: #0070f3;">45条帖子</div>
+                                    </div>
+                                </div>
+                                <div class="search-result-item" onclick="selectTopic('粉丝打卡', 10002, 128)">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-size: 13px; color: var(--fg); font-weight: 500;">#粉丝打卡#</div>
+                                            <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">ID: 10002</div>
+                                        </div>
+                                        <div style="font-size: 11px; color: #0070f3;">128条帖子</div>
+                                    </div>
+                                </div>
+                                <div class="search-result-item" onclick="selectTopic('新歌首发', 10003, 67)">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-size: 13px; color: var(--fg); font-weight: 500;">#新歌首发#</div>
+                                            <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">ID: 10003</div>
+                                        </div>
+                                        <div style="font-size: 11px; color: #0070f3;">67条帖子</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
+                        <!-- Selected Topics Tags -->
                         <div class="selected-tags" id="selectedTopics">
                             <div class="topic-tag" data-id="10001">
                                 <span>#明星应援话题#</span>
-                                <i onclick="removeTopic(10001)">✕</i>
+                                <i class="bi bi-x-lg" onclick="removeTopic(10001)"></i>
                             </div>
                             <div class="topic-tag" data-id="10002">
                                 <span>#粉丝打卡#</span>
-                                <i onclick="removeTopic(10002)">✕</i>
+                                <i class="bi bi-x-lg" onclick="removeTopic(10002)"></i>
                             </div>
                         </div>
-                        <div class="config-hint">已选择 2 个话题，建议≤10个</div>
+                        <div class="config-hint">已选择 2 个话题</div>
                     </div>
 
                     <div class="config-section">
@@ -594,20 +722,17 @@
         let selectedTopicIds = [10001, 10002];
         let searchTimeout = null;
 
-        const sampleBulletins = [
-            { title: '哥哥太帅了！', content: '今天舞台表现力满分...', avatar: true },
-            { title: '应援打卡第100天', content: '', avatar: false },
-            { title: '新歌太好听了', content: '单曲循环一整天...', avatar: true },
-            { title: '演唱会见！', content: '', avatar: false },
-            { title: '永远支持你', content: '无论发生什么都在你身边', avatar: true },
-            { title: '舞台王者', content: '', avatar: false }
-        ];
-
         function searchTopics(keyword) {
             clearTimeout(searchTimeout);
-            if (keyword.length < 2) return;
+            
+            if (keyword.length < 2) {
+                document.getElementById('searchResults').style.display = 'none';
+                return;
+            }
+
+            // 防抖500ms后触发搜索建议
             searchTimeout = setTimeout(() => {
-                // Simulated search
+                document.getElementById('searchResults').style.display = 'block';
             }, 500);
         }
 
@@ -619,10 +744,12 @@
             const tag = document.createElement('div');
             tag.className = 'topic-tag';
             tag.dataset.id = id;
-            tag.innerHTML = `<span>#${name}#</span><i onclick="removeTopic(${id})">✕</i>`;
+            tag.innerHTML = `<span>#${name}#</span><i class="bi bi-x-lg" onclick="removeTopic(${id})"></i>`;
             container.appendChild(tag);
             
             updateTopicCount();
+            document.getElementById('searchResults').style.display = 'none';
+            document.getElementById('topicSearch').value = '';
             updateBulletinPreview();
         }
 
@@ -636,36 +763,51 @@
 
         function updateTopicCount() {
             const count = selectedTopicIds.length;
-            const hint = document.querySelector('.config-hint');
-            if (hint) hint.textContent = `已选择 ${count} 个话题，建议≤10个`;
+            const hint = document.querySelector('.config-section .config-hint');
+            if (hint) hint.textContent = `已选择 ${count} 个话题`;
+        }
+
+        function handleTopicKeyDown(event) {
+            const results = document.getElementById('searchResults');
+            if (results.style.display === 'none') return;
+            
+            const items = results.querySelectorAll('.search-result-item');
+            const activeIndex = Array.from(items).findIndex(item => item.matches(':hover'));
+
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                const nextIndex = (activeIndex + 1) % items.length;
+                items[nextIndex]?.scrollIntoView({ block: 'nearest' });
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                const prevIndex = (activeIndex - 1 + items.length) % items.length;
+                items[prevIndex]?.scrollIntoView({ block: 'nearest' });
+            } else if (event.key === 'Enter' && activeIndex >= 0) {
+                event.preventDefault();
+                items[activeIndex].click();
+            } else if (event.key === 'Escape') {
+                results.style.display = 'none';
+            }
         }
 
         function updateBulletinPreview() {
-            const preview = document.getElementById('bulletinPreview');
-            const style = document.getElementById('bulletinStyle').value;
+            const preview = document.getElementById('miniBulletinPreview');
             const rows = parseInt(document.getElementById('bulletinRows').value) || 6;
             
             preview.innerHTML = '';
+            const maxRows = Math.min(rows, 6);
 
-            for (let i = 0; i < rows; i++) {
+            for (let i = 0; i < maxRows; i++) {
                 const row = document.createElement('div');
-                row.className = 'bulletin-row';
-                row.style.top = (i * (200 / rows) + 10) + 'px';
-                row.style.animationDelay = (i * -1.5) + 's';
+                row.className = 'mini-bulletin-row';
+                row.style.top = (i * (100 / maxRows) + 2) + '%';
+                row.style.animationDelay = (i * -1.3) + 's';
 
                 const item = document.createElement('div');
-                item.className = 'bulletin-item';
-                const data = sampleBulletins[i % sampleBulletins.length];
+                item.className = 'mini-bulletin-item';
                 
-                if (style === '1') {
-                    item.innerHTML = data.title;
-                } else if (style === '2') {
-                    item.innerHTML = `<strong>${data.title}</strong>${data.content ? '<br/><span style="color: #666; font-size: 11px;">' + data.content + '</span>' : ''}`;
-                } else if (style === '3') {
-                    item.innerHTML = data.avatar ? `<span>👤</span> ${data.title}` : data.title;
-                } else if (style === '4') {
-                    item.innerHTML = data.avatar ? `<span>👤</span> <strong>${data.title}</strong>${data.content ? '<br/><span style="color: #666; font-size: 10px;">' + data.content + '</span>' : ''}` : `<strong>${data.title}</strong>${data.content ? '<br/><span style="color: #666; font-size: 10px;">' + data.content + '</span>' : ''}`;
-                }
+                const sampleData = ['生日快乐！', '哥哥太帅了', '应援打卡', '新歌好听', '永远支持', '加油！'];
+                item.innerHTML = sampleData[i % sampleData.length];
 
                 row.appendChild(item);
                 preview.appendChild(row);
@@ -675,13 +817,7 @@
         function togglePreview() {
             isPreviewMode = !isPreviewMode;
             const btn = document.querySelector('.preview-btn');
-            if (isPreviewMode) {
-                btn.innerHTML = '⏸ 退出预览';
-                updateBulletinPreview();
-            } else {
-                btn.innerHTML = '▶ 预览弹幕效果';
-                document.getElementById('bulletinPreview').innerHTML = '';
-            }
+            btn.innerHTML = isPreviewMode ? '<i class="bi bi-pause-fill"></i> 退出预览' : '<i class="bi bi-play-fill"></i> 预览弹幕效果';
         }
 
         // Listen for PRD highlight messages
@@ -699,6 +835,15 @@
                         targetModule.classList.remove('feature-highlight');
                     }, 3000);
                 }
+            }
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(event) {
+            const searchWrapper = document.querySelector('.search-input-wrapper');
+            const searchResults = document.getElementById('searchResults');
+            if (searchWrapper && !searchWrapper.contains(event.target)) {
+                searchResults.style.display = 'none';
             }
         });
 

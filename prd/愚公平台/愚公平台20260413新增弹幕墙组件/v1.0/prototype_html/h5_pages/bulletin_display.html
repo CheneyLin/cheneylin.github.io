@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>H5活动页面 - 弹幕展示</title>
+    <link href="../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-feature-settings: "liga";
         }
 
@@ -19,101 +23,207 @@
             height: 812px;
             position: relative;
             overflow: hidden;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
         }
 
-        .activity-header {
-            position: absolute;
-            top: 44px;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            text-align: center;
-            z-index: 10;
-        }
-
-        .activity-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: white;
-            letter-spacing: -0.96px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .activity-subtitle {
-            font-size: 14px;
-            color: rgba(255,255,255,0.9);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-
-        .bulletin-container {
+        /* TV Frame */
+        .tv-frame {
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
-            transform: translateY(-50%);
-            height: 400px;
-            overflow: hidden;
-        }
-
-        .bulletin-row {
-            position: absolute;
-            left: 0;
-            right: 0;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .bulletin-item {
-            display: inline-block;
-            padding: 8px 14px;
-            background: rgba(255,255,255,0.95);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 340px;
+            height: 480px;
+            background: linear-gradient(145deg, #d4d4d4 0%, #a8a8a8 50%, #888 100%);
             border-radius: 20px;
-            margin-right: 30px;
-            font-size: 13px;
-            color: #171717;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            animation: scroll-left 12s linear infinite;
+            padding: 20px;
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(255,255,255,0.5),
+                inset 0 -2px 4px rgba(0,0,0,0.2);
         }
 
-        .bulletin-item-with-avatar {
+        /* TV Screen */
+        .tv-screen {
+            width: 100%;
+            height: calc(100% - 60px);
+            background: #2a2a2a;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* Screen Grid Pattern */
+        .tv-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* TV Bottom Panel */
+        .tv-bottom {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .tv-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #666;
+            padding: 8px 14px;
+            border-radius: 20px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tv-title .heart {
+            color: #ff5b4f;
+            font-size: 16px;
+        }
+
+        .tv-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tv-speaker {
+            width: 60px;
+            height: 20px;
+            background: #777;
+            border-radius: 4px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 3px,
+                #555 3px,
+                #555 4px
+            );
+        }
+
+        .tv-knob {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(145deg, #888, #666);
+            border-radius: 50%;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.3);
+            position: relative;
+        }
+
+        .tv-knob::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 4px;
+            height: 8px;
+            background: #444;
+            border-radius: 2px;
+        }
+
+        /* Bulletin Container */
+        .bulletin-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        /* Bulletin Items */
+        .bulletin-item {
+            position: absolute;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+            white-space: nowrap;
+            animation: scroll-left 15s linear infinite;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
+        /* Different colors for bulletins */
+        .bulletin-pink { background: linear-gradient(135deg, #de1d8d, #ff6b9d); }
+        .bulletin-green { background: linear-gradient(135deg, #22c55e, #4ade80); }
+        .bulletin-orange { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .bulletin-blue { background: linear-gradient(135deg, #0a72ef, #3b82f6); }
+        .bulletin-purple { background: linear-gradient(135deg, #7928ca, #a855f7); }
+        .bulletin-cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+
         .bulletin-avatar {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: rgba(255,255,255,0.3);
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .bulletin-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .bulletin-nickname {
             font-size: 11px;
-            color: #666666;
-            margin-right: 6px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .bulletin-message {
+            font-size: 13px;
+            font-weight: 500;
         }
 
         @keyframes scroll-left {
-            0% { transform: translateX(100vw); }
+            0% { transform: translateX(320px); }
             100% { transform: translateX(-100%); }
         }
 
+        /* Empty State */
         .empty-state {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.5);
             display: none;
+            z-index: 10;
         }
 
         .empty-state-icon {
             font-size: 48px;
             margin-bottom: 12px;
-            opacity: 0.6;
+            color: rgba(255,255,255,0.5);
         }
 
         .empty-state-text {
@@ -127,38 +237,16 @@
             opacity: 0.8;
         }
 
-        .activity-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            text-align: center;
-            background: linear-gradient(transparent, rgba(0,0,0,0.4));
-        }
-
-        .activity-cta {
-            display: inline-block;
-            padding: 12px 28px;
-            background: white;
-            color: #667eea;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            letter-spacing: -0.28px;
-        }
-
+        /* Stats Bar */
         .stats-bar {
             position: absolute;
-            bottom: 70px;
+            bottom: 16px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            color: rgba(255,255,255,0.9);
+            gap: 16px;
+            color: rgba(255,255,255,0.8);
             font-size: 12px;
             font-weight: 500;
         }
@@ -166,74 +254,121 @@
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
 
+        /* CTA Button */
+        .activity-cta {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 24px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Prototype module for PRD linkage */
         .prototype-module { position: relative; }
         .prototype-module[data-prototype] { transition: all 0.3s; }
         .prototype-module.feature-highlight {
             box-shadow: 0 0 0 2px #ff0000, 0 4px 12px rgba(255,0,0,0.3);
         }
 
-        .refresh-indicator {
+        /* Header */
+        .activity-header {
             position: absolute;
-            top: 100px;
-            right: 16px;
-            background: rgba(255,255,255,0.2);
-            padding: 6px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            color: white;
-            display: none;
-            font-weight: 500;
+            top: 44px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
         }
 
-        .refresh-indicator.active { display: block; }
+        .activity-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            letter-spacing: -0.4px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .activity-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
     <div class="activity-page prototype-module" data-prototype="h5_bulletin">
+        <!-- Header -->
         <div class="activity-header">
             <div class="activity-title">✨ 明星应援活动</div>
             <div class="activity-subtitle">一起为哥哥打call吧！</div>
         </div>
 
-        <div class="refresh-indicator" id="refreshIndicator">
-            <span>🔄 刷新中...</span>
+        <!-- TV Frame -->
+        <div class="tv-frame">
+            <!-- TV Screen -->
+            <div class="tv-screen">
+                <div class="bulletin-container" id="bulletinContainer"></div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState">
+                    <i class="bi bi-chat-square-text empty-state-icon"></i>
+                    <div class="empty-state-text">暂无话题内容</div>
+                    <div class="empty-state-hint">快来参与讨论吧！</div>
+                </div>
+            </div>
+
+            <!-- TV Bottom -->
+            <div class="tv-bottom">
+                <div class="tv-title">
+                    <i class="bi bi-heart-fill" style="color: #ff5b4f; font-size: 16px;"></i>
+                    <span>生日祝福弹幕墙</span>
+                </div>
+                <div class="tv-controls">
+                    <div class="tv-speaker"></div>
+                    <div class="tv-knob"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="bulletin-container" id="bulletinContainer"></div>
-
-        <div class="empty-state" id="emptyState">
-            <div class="empty-state-icon">💬</div>
-            <div class="empty-state-text">暂无话题内容</div>
-            <div class="empty-state-hint">快来参与讨论吧！</div>
-        </div>
-
+        <!-- Stats Bar -->
         <div class="stats-bar">
-            <div class="stat-item">🔥 <span>128条讨论</span></div>
-            <div class="stat-item">👥 <span>56人参与</span></div>
+            <div class="stat-item"><i class="bi bi-fire"></i> <span>128条讨论</span></div>
+            <div class="stat-item"><i class="bi bi-people"></i> <span>56人参与</span></div>
         </div>
 
-        <div class="activity-footer">
-            <a href="#" class="activity-cta">立即参与话题讨论</a>
-        </div>
+        <!-- CTA -->
+        <a href="#" class="activity-cta">立即参与话题讨论</a>
     </div>
 
     <script>
         const sampleBulletins = [
-            { title: '哥哥太帅了！', content: '今天舞台表现力满分...', nickname: '小明', avatar: true },
-            { title: '应援打卡第100天', content: '', nickname: '粉丝001', avatar: false },
-            { title: '新歌太好听了', content: '单曲循环一整天...', nickname: '音乐达人', avatar: true },
-            { title: '演唱会见！', content: '', nickname: '期待ing', avatar: false },
-            { title: '永远支持你', content: '无论发生什么都在你身边', nickname: '铁粉', avatar: true },
-            { title: '舞台王者', content: '', nickname: '路人甲', avatar: false },
-            { title: '期待新专辑', content: '已经迫不及待了', nickname: '专辑控', avatar: true },
-            { title: '加油！', content: '', nickname: '啦啦队', avatar: false }
+            { nickname: '追光赴韬', message: '生日快乐！文韬学长', color: 'bulletin-pink', avatar: 'bi bi-person-circle' },
+            { nickname: '拾界漫游', message: '韬韬生日快乐呀！', color: 'bulletin-green', avatar: 'bi bi-person-circle' },
+            { nickname: '文韬0410', message: '生日快乐～', color: 'bulletin-blue', avatar: 'bi bi-person-circle' },
+            { nickname: '一只阿蒲喵', message: '要', color: 'bulletin-orange', avatar: 'bi bi-person-circle' },
+            { nickname: '阿蒲学长', message: '生日快乐', color: 'bulletin-green', avatar: 'bi bi-person-circle' },
+            { nickname: '黄子弘欧欧', message: '黄子', color: 'bulletin-cyan', avatar: 'bi bi-person-circle' },
+            { nickname: '粉丝001', message: '永远支持你！', color: 'bulletin-purple', avatar: 'bi bi-person-circle' },
+            { nickname: '音乐达人', message: '新歌太好听了', color: 'bulletin-pink', avatar: 'bi bi-person-circle' }
         ];
 
         let currentStyle = '4';
-        let currentRows = 7;
+        let currentRows = 6;
         let refreshInterval = null;
 
         function initBulletin() {
@@ -241,27 +376,22 @@
             container.innerHTML = '';
 
             for (let i = 0; i < currentRows; i++) {
-                const row = document.createElement('div');
-                row.className = 'bulletin-row';
-                row.style.top = (i * (100 / currentRows)) + '%';
-
-                const item = document.createElement('div');
-                item.className = 'bulletin-item';
                 const data = sampleBulletins[i % sampleBulletins.length];
                 
-                if (currentStyle === '1') {
-                    item.innerHTML = data.title;
-                } else if (currentStyle === '2') {
-                    item.innerHTML = `<strong>${data.title}</strong>${data.content ? '<br/><span style="color: #666; font-size: 11px;">' + data.content + '</span>' : ''}`;
-                } else if (currentStyle === '3') {
-                    item.innerHTML = data.avatar ? `<div class="bulletin-item-with-avatar"><div class="bulletin-avatar"></div><span>${data.title}</span></div>` : data.title;
-                } else if (currentStyle === '4') {
-                    item.innerHTML = data.avatar ? `<div class="bulletin-item-with-avatar"><div class="bulletin-avatar"></div><div><strong>${data.title}</strong>${data.content ? '<br/><span style="color: #666; font-size: 10px;">' + data.content + '</span>' : ''}</div></div>` : `<strong>${data.title}</strong>${data.content ? '<br/><span style="color: #666; font-size: 10px;">' + data.content + '</span>' : ''}`;
-                }
-
-                item.style.animationDelay = (i * -1.5) + 's';
-                row.appendChild(item);
-                container.appendChild(row);
+                const item = document.createElement('div');
+                item.className = `bulletin-item ${data.color}`;
+                item.style.top = (i * 16 + 10) + '%';
+                item.style.animationDelay = (i * -2.5) + 's';
+                
+                item.innerHTML = `
+                    <div class="bulletin-avatar"><i class="${data.avatar}" style="font-size: 14px;"></i></div>
+                    <div class="bulletin-text">
+                        <div class="bulletin-nickname">${data.nickname}</div>
+                        <div class="bulletin-message">${data.message}</div>
+                    </div>
+                `;
+                
+                container.appendChild(item);
             }
 
             startAutoRefresh();
@@ -270,12 +400,7 @@
         function startAutoRefresh() {
             if (refreshInterval) clearInterval(refreshInterval);
             refreshInterval = setInterval(() => {
-                const indicator = document.getElementById('refreshIndicator');
-                indicator.classList.add('active');
-                setTimeout(() => {
-                    indicator.classList.remove('active');
-                    addNewBulletin();
-                }, 1000);
+                addNewBulletin();
             }, 30000);
         }
 
@@ -284,19 +409,22 @@
             const randomIndex = Math.floor(Math.random() * sampleBulletins.length);
             const data = sampleBulletins[randomIndex];
             
-            const row = document.createElement('div');
-            row.className = 'bulletin-row';
-            row.style.top = Math.random() * 80 + '%';
-            
             const item = document.createElement('div');
-            item.className = 'bulletin-item';
-            item.innerHTML = data.title;
-            item.style.animationDuration = '10s';
+            item.className = `bulletin-item ${data.color}`;
+            item.style.top = Math.random() * 80 + 10 + '%';
+            item.style.animationDuration = '12s';
             
-            row.appendChild(item);
-            container.appendChild(row);
+            item.innerHTML = `
+                <div class="bulletin-avatar"><i class="${data.avatar}" style="font-size: 14px;"></i></div>
+                <div class="bulletin-text">
+                    <div class="bulletin-nickname">${data.nickname}</div>
+                    <div class="bulletin-message">${data.message}</div>
+                </div>
+            `;
             
-            if (container.children.length > 20) {
+            container.appendChild(item);
+            
+            if (container.children.length > 15) {
                 container.removeChild(container.firstChild);
             }
         }
