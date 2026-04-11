@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>愚公平台 - 弹幕墙组件 PRD 与原型主控</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #171717;
+      --muted: #4d4d4d;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-light: rgb(235, 235, 235);
+      --primary: #171717;
+      --primary-text: #ffffff;
+      --accent: #0070f3;
+      --focus: hsla(212, 100%, 48%, 1);
+      --card-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, rgba(0, 0, 0, 0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --card-radius: 8px;
+      --btn-radius: 6px;
+      --pill-radius: 9999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-feature-settings: "liga" 1;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      box-shadow: 0px 0px 0px 1px var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--fg);
+      letter-spacing: -0.32px;
+    }
+
+    .version-badge {
+      background: #f5f5f5;
+      color: var(--muted);
+      box-shadow: 0px 0px 0px 1px var(--border-light);
+      padding: 4px 10px;
+      border-radius: var(--pill-radius);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .main {
+      display: flex;
+      height: calc(100% - 60px);
+      background: var(--bg);
+    }
+
+    .left {
+      width: 50%;
+      height: 100%;
+      box-sizing: border-box;
+      background: var(--bg);
+    }
+
+    .right {
+      width: 50%;
+      height: 100%;
+      box-sizing: border-box;
+      background: #fafafa;
+    }
+
+    .frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .split {
+      width: 1px;
+      cursor: col-resize;
+      background: var(--border-light);
+      position: relative;
+    }
+
+    .split::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -3px;
+      width: 7px;
+      height: 100%;
+    }
+
+    .split:hover {
+      background: var(--accent);
+    }
+
+    .controls {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .controls label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .controls select {
+      background: var(--bg);
+      color: var(--fg);
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 12px;
+      border-radius: var(--btn-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s;
+    }
+
+    .controls select:hover {
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+
+    .controls select:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+
+    .controls option {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    .product-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .product-btn {
+      background: var(--bg);
+      color: var(--fg);
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 14px;
+      border-radius: var(--btn-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      outline: none;
+    }
+
+    .product-btn:hover {
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+
+    .product-btn:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+
+    .product-btn.active {
+      background: var(--primary);
+      color: var(--primary-text);
+      box-shadow: 0px 0px 0px 1px var(--primary);
+    }
+
+    .product-btn.active:hover {
+      opacity: 0.9;
+    }
+
+    .width-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .width-control input[type="range"] {
+      width: 100px;
+      cursor: pointer;
+      accent-color: var(--fg);
+    }
+
+    .width-control span {
+      min-width: 36px;
+    }
+
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-title">愚公平台 - 弹幕墙组件</span>
+    <span class="version-badge">v1.0</span>
+    <div class="divider"></div>
+    <div class="controls">
+      <div class="product-btns">
+        <button class="product-btn active" data-product="admin" onclick="switchProduct('admin')">互动平台</button>
+        <button class="product-btn" data-product="h5" onclick="switchProduct('h5')">H5活动页</button>
+      </div>
+      <div class="divider"></div>
+      <div class="width-control">
+        <span>右侧宽度</span>
+        <input id="rightWidth" type="range" min="30" max="70" value="50">
+        <span id="rightWidthLabel">50%</span>
+      </div>
+      <div class="divider"></div>
+      <div class="width-control">
+        <label for="versionSelect">版本</label>
+        <select id="versionSelect" onchange="switchVersion(this.value)">
+          <option value="1.0" selected>v1.0</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="left">
+      <iframe id="prdFrame" class="frame" src="./v1.0/prd_html/prd_v1.0.html"></iframe>
+    </div>
+    <div class="split" id="splitter" title="拖动调整左右宽度"></div>
+    <div class="right">
+      <iframe id="protoFrame" class="frame" src="./v1.0/prototype_html/admin_prototype_v1.0.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const prdFrame = document.getElementById('prdFrame');
+    const protoFrame = document.getElementById('protoFrame');
+    const rightWidthRange = document.getElementById('rightWidth');
+    const rightWidthLabel = document.getElementById('rightWidthLabel');
+    const versionSelect = document.getElementById('versionSelect');
+    const leftPane = document.querySelector('.left');
+    const rightPane = document.querySelector('.right');
+    const splitter = document.getElementById('splitter');
+    let currentProduct = 'admin';
+    let currentVersion = '1.0';
+    let pendingHighlightId = null;
+
+    // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
+    protoFrame.addEventListener('load', () => {
+      if (!pendingHighlightId) return;
+      protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+      pendingHighlightId = null;
+    });
+
+    function switchVersion(version) {
+      currentVersion = version;
+      // 切换 PRD 文档
+      prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
+      // 切换原型文件
+      if (currentProduct === 'admin') {
+        protoFrame.src = `./v${currentVersion}/prototype_html/admin_prototype_v${currentVersion}.html`;
+      } else if (currentProduct === 'h5') {
+        protoFrame.src = `./v${currentVersion}/prototype_html/h5_prototype_v${currentVersion}.html`;
+      }
+    }
+
+    function switchProduct(product) {
+      currentProduct = product;
+      document.querySelectorAll('.product-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.product === product) btn.classList.add('active');
+      });
+      if (product === 'admin') {
+        protoFrame.src = `./v${currentVersion}/prototype_html/admin_prototype_v${currentVersion}.html`;
+      } else if (product === 'h5') {
+        protoFrame.src = `./v${currentVersion}/prototype_html/h5_prototype_v${currentVersion}.html`;
+      }
+    }
+
+    function setRightWidth(percent) {
+      percent = Math.max(30, Math.min(70, percent));
+      rightWidthLabel.textContent = percent + '%';
+      rightPane.style.width = percent + '%';
+      leftPane.style.width = (100 - percent) + '%';
+    }
+    rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
+    setRightWidth(parseInt(rightWidthRange.value, 10));
+
+    let dragging = false;
+    splitter.addEventListener('mousedown', () => { dragging = true; });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const rect = document.querySelector('.main').getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentRight = Math.round(((rect.width - x) / rect.width) * 100);
+      setRightWidth(percentRight);
+      rightWidthRange.value = percentRight;
+    });
+
+    // 监听来自 PRD 的消息，联动原型高亮
+    window.addEventListener('message', (e) => {
+      const data = e.data || {};
+
+      // 支持两种消息格式：action: 'highlight' 或 type: 'prd-focus'
+      if ((data.action === 'highlight' || data.type === 'prd-focus') && (data.featureId || data.id)) {
+        const fid = String(data.featureId || data.id);
+        let targetProduct = 'admin';
+
+        // 根据功能标识前缀判断目标产品形态
+        if (fid.startsWith('admin_')) {
+          targetProduct = 'admin';
+        } else if (fid.startsWith('h5_')) {
+          targetProduct = 'h5';
+        }
+
+        // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
+        if (targetProduct !== currentProduct) {
+          pendingHighlightId = fid;
+          switchProduct(targetProduct);
+          return;
+        }
+        protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: fid }, '*');
+      }
+    });
+  </script>
+</body>
+</html>

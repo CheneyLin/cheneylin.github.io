@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愚公平台 - H5活动页面原型</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --fg: #171717;
+            --muted: #4d4d4d;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-light: rgb(235, 235, 235);
+            --primary: #171717;
+            --primary-text: #ffffff;
+            --accent: #0070f3;
+            --focus: hsla(212, 100%, 48%, 1);
+            --card-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, rgba(0, 0, 0, 0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+            --card-radius: 8px;
+            --btn-radius: 6px;
+            --pill-radius: 9999px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            font-feature-settings: "liga" 1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            color: var(--fg);
+            background: var(--bg);
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+        }
+
+        #prototypeContainer {
+            width: 100%;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Global View - Grid Layout */
+        .global-view {
+            padding: 60px 40px;
+            max-width: 1800px;
+            margin: 0 auto;
+            background: var(--bg);
+        }
+
+        .global-view-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .global-view-header h1 {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -2.4px;
+            line-height: 1.0;
+            color: var(--fg);
+            margin-bottom: 12px;
+        }
+
+        .global-view-header p {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+
+        .global-view-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(399px, 1fr));
+            gap: 48px;
+            justify-content: center;
+            align-items: start;
+        }
+
+        /* Phone Frame in Global View */
+        .global-view .phone-frame-container {
+            width: 399px !important;
+            height: 836px !important;
+            margin: 0 auto;
+        }
+
+        .global-view .phone-frame-container::after {
+            content: attr(data-page-label);
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted);
+            letter-spacing: -0.28px;
+        }
+
+        /* Single View */
+        .single-view {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+            background: var(--bg);
+        }
+
+        /* Phone Frame Container - Fixed Size */
+        .phone-frame-container {
+            position: relative;
+            width: 399px;
+            height: 836px;
+            background: var(--primary);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: var(--card-shadow);
+            transition: box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .phone-frame-container:hover {
+            box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px, rgba(0,0,0,0.06) 0px 12px 12px -6px, #fafafa 0px 0px 0px 1px;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+
+        .phone-screen {
+            width: 375px;
+            height: 812px;
+            background: var(--bg);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-screen iframe {
+            width: 375px;
+            height: 812px;
+            border: none;
+            display: block;
+        }
+
+        /* Controls Bar - Top Right */
+        .controls-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            background: var(--bg);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .control-btn {
+            background: var(--bg);
+            color: var(--fg);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        }
+
+        .control-btn:hover {
+            background: #fafafa;
+            transform: translateY(-1px);
+        }
+
+        .control-btn.active {
+            background: var(--primary);
+            color: var(--primary-text);
+        }
+
+        .control-btn:focus {
+            outline: 2px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        /* Info Panel - Bottom Center */
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .info-panel h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 4px;
+            letter-spacing: -0.32px;
+        }
+
+        .info-panel p {
+            font-size: 13px;
+            color: #808080;
+        }
+
+        /* Hide elements based on view mode */
+        .global-view .single-only { display: none !important; }
+        .single-view .global-only { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .global-view { padding: 40px 20px; }
+            .global-view-grid {
+                grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .global-view { padding: 30px 16px; }
+            .global-view-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .controls-bar { top: 10px; right: 10px; }
+        }
+
+        /* Prototype module for PRD linkage */
+        .prototype-module {
+            position: relative;
+        }
+
+        .prototype-module[data-prototype] {
+            transition: all 0.3s;
+        }
+
+        .prototype-module.feature-highlight {
+            box-shadow: 0 0 0 2px #ff0000, 0 4px 12px rgba(255,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Right Controls Bar -->
+    <div class="controls-bar">
+        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+            <span>📱</span>
+            <span>单独界面</span>
+        </button>
+        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+            <span>🔲</span>
+            <span>全局视图</span>
+        </button>
+    </div>
+
+    <!-- Main Prototype Container -->
+    <div id="prototypeContainer" class="single-view">
+        <!-- Single View: One Phone Frame -->
+        <div class="phone-frame-container single-only">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <iframe id="prototypeFrame" src="h5_pages/bulletin_display.html" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <!-- Global View: All Phone Frames -->
+        <div class="global-view global-only" style="display: none;">
+            <div class="global-view-header">
+                <h1>H5活动页面原型</h1>
+                <p>C端弹幕展示 - 全部视图预览</p>
+            </div>
+            <div class="global-view-grid">
+                <div class="phone-frame-container" data-page-label="弹幕展示页">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="h5_pages/bulletin_display.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel single-only">
+        <h2>H5活动页面 - 弹幕展示</h2>
+        <p>高密度自动滚动弹幕效果</p>
+    </div>
+
+    <script>
+        let currentView = 'single';
+
+        // Switch between single and global view
+        function switchView(mode) {
+            currentView = mode;
+            const container = document.getElementById('prototypeContainer');
+            const btnSingle = document.getElementById('btnSingleView');
+            const btnGlobal = document.getElementById('btnGlobalView');
+
+            if (mode === 'single') {
+                container.className = 'single-view';
+                btnSingle.classList.add('active');
+                btnGlobal.classList.remove('active');
+                document.querySelectorAll('.single-only').forEach(el => { el.style.display = ''; });
+                document.querySelectorAll('.global-only').forEach(el => { el.style.display = 'none'; });
+            } else {
+                container.className = 'global-view';
+                btnGlobal.classList.add('active');
+                btnSingle.classList.remove('active');
+                document.querySelectorAll('.single-only').forEach(el => { el.style.display = 'none'; });
+                document.querySelectorAll('.global-only').forEach(el => { el.style.display = ''; });
+            }
+
+            window.location.hash = mode;
+        }
+
+        // Listen for PRD highlight messages
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'highlight' && event.data.featureId) {
+                const featureId = event.data.featureId;
+
+                // Remove all highlights
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+
+                // Highlight target module
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${featureId}"]`);
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        targetModule.classList.remove('feature-highlight');
+                    }, 3000);
+                }
+
+                // Also forward highlight to iframe
+                const iframe = document.getElementById('prototypeFrame');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({
+                        action: 'highlight',
+                        featureId: featureId
+                    }, '*');
+                }
+            }
+        });
+
+        // Handle URL hash changes
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'global') {
+                switchView('global');
+            } else if (hash === 'single') {
+                switchView('single');
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'global') {
+                switchView('global');
+            }
+        });
+    </script>
+</body>
+</html>

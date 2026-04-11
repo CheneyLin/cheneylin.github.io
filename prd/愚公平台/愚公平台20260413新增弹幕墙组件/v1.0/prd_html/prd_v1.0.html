@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>愚公平台 - 弹幕墙组件 PRD v1.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../assets/mermaid.min.js"></script>
+  <style>
+    :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:24px; }
+    h1 { font-size:28px; margin:0 0 12px; border-bottom:3px solid var(--primary); padding-bottom:12px; }
+    h2 { font-size:20px; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+    h3 { font-size:16px; margin:20px 0 10px; font-weight:600; }
+    p { margin:8px 0; color:var(--muted); }
+    .card { border:1px solid var(--border); border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#f9fafb; font-weight:600; }
+    .list { margin:0; padding-left:18px; }
+    .btn { display:inline-block; padding:6px 12px; border:1px solid var(--primary); color:#fff; background:var(--primary); border-radius:4px; text-decoration:none; font-size:13px; cursor:pointer; }
+    .btn:hover { opacity:0.9; }
+    .meta { color:#909399; font-size:13px; }
+    .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
+    .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
+    .field-hint { color:var(--muted); font-size:12px; margin-top:4px; }
+    .feature-id { display:inline-block; background:var(--primary); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--primary); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; }
+    .highlight-btn { background:var(--primary); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+    .toc { background:#f9fafb; border-radius:8px; padding:16px; margin:16px 0; }
+    .toc ul { list-style:none; padding:0; }
+    .toc li { margin:8px 0; }
+    .toc a { color:var(--primary); text-decoration:none; }
+    .toc a:hover { text-decoration:underline; }
+    pre { background:#f9fafb; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
+    code { background:#f5f5f5; padding:2px 6px; border-radius:3px; font-size:13px; }
+    strong { color:var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>愚公平台 - 弹幕墙组件 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.0｜状态：需求评审中｜创建时间：2026-04-13｜产品经理：林长宇</p>
+
+    <div class="card" id="section1">
+      <h2>1. 项目信息与版本记录</h2>
+      <table>
+        <tr><th style="width:120px;">产品名称</th><td>愚公互动活动平台 - 弹幕墙组件</td></tr>
+        <tr><th>版本</th><td>v1.0</td></tr>
+        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th>创建时间</th><td>2026-04-13</td></tr>
+        <tr><th>产品范围</th><td>H5编辑器组件 + C端活动页面展示</td></tr>
+        <tr><th>受众角色</th><td>活动创作者（后台）、活动参与者（C端）</td></tr>
+      </table>
+
+      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <table>
+        <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
+        <tr><td>v1.0</td><td>2026-04-13</td><td>初始版本创建，完成弹幕墙组件需求收集与PRD文档编写</td><td>林长宇</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section2">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 现状问题与痛点</h3>
+      <p>当前愚公互动活动平台存在以下痛点：</p>
+      <ol class="list">
+        <li><strong>活动互动形式单一</strong>：现有活动页面缺乏实时互动展示组件，用户参与感和沉浸感不足</li>
+        <li><strong>话题内容利用率低</strong>：社区话题帖子仅在社区内展示，无法有效引流到活动页</li>
+        <li><strong>活动氛围营造弱</strong>：明星应援等活动缺少实时滚动的弹幕氛围，用户无法快速了解活动内容</li>
+        <li><strong>创作者工具不完善</strong>：活动创作者在搭建页面时，缺少弹幕墙这一常见互动组件</li>
+      </ol>
+
+      <h3 style="margin-top:16px;">2.2 需求提出的必要性</h3>
+      <p>通过引入"弹幕墙组件"功能，可以：</p>
+      <ul class="list">
+        <li>丰富活动页面的互动展示形式，提升用户参与度</li>
+        <li>将社区话题内容有效引流到活动页，形成内容消费闭环</li>
+        <li>为明星应援等活动营造实时互动氛围</li>
+        <li>完善活动创作工具链，降低活动搭建成本</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td><strong>用户参与</strong></td><td>提升活动页面用户停留时长</td><td>含弹幕墙活动平均停留时长</td><td>≥3分钟</td></tr>
+        <tr><td><strong>互动提升</strong></td><td>增加话题帖子曝光和点击</td><td>弹幕点击跳转率</td><td>≥8%</td></tr>
+        <tr><td><strong>创作效率</strong></td><td>活动创作者可快速添加弹幕墙</td><td>组件添加配置耗时</td><td>≤2分钟</td></tr>
+        <tr><td><strong>活动质量</strong></td><td>提升活动页面整体满意度</td><td>用户满意度评分</td><td>≥4.2/5.0</td></tr>
+      </table>
+
+      <h3 style="margin-top:16px;">2.4 用户目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th></tr>
+        <tr><td><strong>活动创作者</strong></td><td>快速添加并配置弹幕墙组件，提升活动质量</td><td>组件使用率</td></tr>
+        <tr><td><strong>活动参与者</strong></td><td>浏览弹幕了解活动内容，参与话题讨论</td><td>弹幕互动率</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section3">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>活动创作者</strong>：运营人员、品牌方、活动主办方（使用后台H5编辑器搭建活动页）</li>
+        <li><strong>活动参与者</strong>：明星粉丝、活动用户（浏览活动页面，查看弹幕互动）</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">3.2 典型场景</h3>
+      <ol class="list">
+        <li>活动创作者在后台H5编辑器中拖拽添加弹幕墙组件</li>
+        <li>创作者通过关键字搜索话题，多选添加到弹幕墙配置</li>
+        <li>创作者配置弹幕样式、排序方式</li>
+        <li>保存并预览活动页，查看弹幕实时滚动效果</li>
+        <li>活动发布后，用户访问活动页看到弹幕高密度自动滚动</li>
+        <li>用户点击弹幕可跳转查看完整帖子内容（如有）</li>
+      </ol>
+
+      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
+        <tr><td><strong>创作</strong></td><td>H5编辑器组件面板</td><td>拖拽弹幕墙组件到画布</td><td>期待：能否快速添加并配置？</td><td>提供拖拽式组件，简化配置流程</td></tr>
+        <tr><td><strong>配置</strong></td><td>弹幕墙组件设置面板</td><td>搜索话题、多选添加、选择样式、设置排序</td><td>疑问：如何快速找到想要的话题？</td><td>提供搜索建议，降低查找门槛</td></tr>
+        <tr><td><strong>预览</strong></td><td>预览模式</td><td>查看弹幕滚动效果，调整参数</td><td>满意/调整：效果是否符合预期？</td><td>支持实时预览，即时调整</td></tr>
+        <tr><td><strong>发布</strong></td><td>发布活动</td><td>验收通过后发布到线上</td><td>期待：上线后效果如何？</td><td>提供发布前最终确认</td></tr>
+        <tr><td><strong>浏览</strong></td><td>活动页面</td><td>用户访问活动页，查看弹幕滚动</td><td>兴奋：氛围感强，内容丰富</td><td>高密度展示，营造活动氛围</td></tr>
+        <tr><td><strong>互动</strong></td><td>弹幕点击</td><td>点击感兴趣的弹幕查看详情</td><td>好奇：想了解更多</td><td>支持弹幕跳转帖子详情</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section4">
+      <h2>4. 需求功能清单</h2>
+      <h3>4.1 H5编辑器后台端功能（活动创作者使用）</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>H5编辑器 - 弹幕墙组件</td><td>从组件面板拖拽到画布，支持配置和预览</td><td>P0</td><td><code>admin_bulletin_module</code></td></tr>
+      </table>
+
+      <h3 style="margin-top:20px;">4.2 C端活动页面功能（活动参与者使用）</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>弹幕组件展示</td><td>无帖子数据时展示友好提示、高密度自动滚动播放</td><td>P0</td><td><code>h5_bulletin</code></td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section5">
+      <h2>5. 详细方案</h2>
+
+      <h3>5.1 H5编辑器端功能</h3>
+
+      <div class="feature-module" id="admin_bulletin_module" data-feature="admin_bulletin_module">
+        <h3>5.1.1 弹幕墙组件拖拽添加 <button class="highlight-btn" onclick="highlightFeature('admin_bulletin_module')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：活动创作者从组件面板拖拽弹幕墙组件到H5画布中。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>在H5编辑器的组件面板中新增"弹幕墙"组件图标
+              <ul>
+                <li>组件图标使用弹幕相关视觉元素（如滚动文字图标）</li>
+                <li>支持拖拽到画布任意位置</li>
+                <li>拖拽后默认展示弹幕墙占位框（宽100%，高度可调整）</li>
+                <li>占位框内显示"弹幕墙组件"文字和配置提示</li>
+              </ul>
+            </li>
+            <li>配置面板
+              <ul>
+                <li><strong>话题搜索输入框</strong>
+                  <ul>
+                    <li>输入关键字后（≥2个字符），自动触发搜索建议</li>
+                    <li>已选择的话题以标签（Tag）形式展示在输入框内</li>
+                    <li>支持删除已选择的话题</li>
+                    <li>支持添加多个话题</li>
+                  </ul>
+                </li>
+                <li><strong>行数输入框</strong> - 设置弹幕显示行数</li>
+                <li><strong>样式下拉框</strong>
+                  <ul>
+                    <li><strong>样式1：仅标题</strong> - 只展示帖子标题文字</li>
+                    <li><strong>样式2：标题+内容摘要</strong> - 展示标题和最多50字内容摘要</li>
+                    <li><strong>样式3：用户头像+标题</strong> - 左侧展示用户头像，右侧展示标题</li>
+                    <li><strong>样式4：用户头像+标题+内容摘要</strong> - 完整展示头像、标题、内容摘要</li>
+                  </ul>
+                </li>
+                <li><strong>排序下拉框</strong>
+                  <ul>
+                    <li><strong>按点赞数排序</strong> - 点赞数高的帖子优先展示</li>
+                    <li><strong>按最新发布时间排序</strong> - 最新发布的帖子优先展示</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>拖拽时显示组件预览缩略图</li>
+            <li>放置到画布后自动选中并弹出右侧配置面板</li>
+            <li>组件支持调整大小和位置（与其他H5组件一致）</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户拖拽组件 → 添加到画布 → 生成组件实例ID → 展示配置面板</pre>
+        </div>
+      </div>
+
+      <h3 style="margin-top:32px;">5.2 C端活动页面功能</h3>
+
+      <div class="feature-module" id="h5_bulletin" data-feature="h5_bulletin">
+        <h3>5.2.1 弹幕自动滚动展示 <button class="highlight-btn" onclick="highlightFeature('h5_bulletin')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：活动页面高密度自动滚动展示弹幕。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>弹幕从右向左自动滚动播放</li>
+            <li>高密度展示：同时展示多行弹幕（默认5-8行）</li>
+            <li>弹幕滚动速度适中（约8-12秒完成一次完整滚动）</li>
+            <li>弹幕之间保持适当间距，避免重叠</li>
+            <li>滚动流畅无卡顿，支持CSS动画优化性能</li>
+            <li>弹幕展示内容根据后台配置的样式组合决定</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>弹幕行使用不同垂直位置，营造层次感</li>
+            <li>新弹幕从右侧平滑进入，离开左侧后销毁</li>
+            <li>弹幕支持鼠标悬停暂停（可选，根据活动需求配置）</li>
+            <li>高密度展示营造热烈氛围</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>页面加载 → 获取弹幕配置 → 请求话题帖子数据 → 渲染弹幕行 → 启动滚动动画</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="section6">
+      <h2>6. 业务流程图</h2>
+      <p>略</p>
+    </div>
+
+    <div class="card" id="section7">
+      <h2>7. 异常与边界处理</h2>
+      <ul class="list">
+        <li><strong>空状态处理</strong>：
+          <ul>
+            <li>话题无帖子：显示"暂无话题内容，快来参与讨论吧！"</li>
+            <li>未配置话题ID或配置错误：也显示以上提示</li>
+          </ul>
+        </li>
+        <li><strong>弹幕数量不足</strong>：帖子数量少于弹幕行时，循环展示已有帖子</li>
+        <li><strong>性能边界</strong>：
+          <ul>
+            <li>单组件最多同时展示100条弹幕（超过则排队展示）</li>
+            <li>弹幕刷新间隔最低30秒，避免频繁请求</li>
+            <li>组件最大高度限制为页面高度80%，超出部分可滚动</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card" id="section8">
+      <h2>8. 数据追踪与埋点</h2>
+      <table>
+        <tr><th>页面标识/page_name</th><th>页面上报细节</th><th>模块标识/mod_type</th><th>模块上报细节</th><th>备注</th></tr>
+        <tr><td>活动页面/h5</td><td>-</td><td>弹幕墙曝光/bulletin_view</td><td>-</td><td>记录组件曝光</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section9">
+      <h2>9. 未来演进规划</h2>
+      <table>
+        <tr><th>阶段</th><th>功能</th><th>描述</th></tr>
+        <tr><td>v1.1</td><td>弹幕样式自定义</td><td>支持自定义弹幕颜色、速度、字体大小等参数</td></tr>
+        <tr><td>v1.2</td><td>多弹幕源</td><td>支持除社区话题外的其他弹幕源（如微博、自定义导入）</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section10">
+      <h2>10. 附件</h2>
+      <h3>10.1 参考设计</h3>
+      <ul class="list">
+        <li><code>document/admin_editor.png</code> - H5编辑器界面参考</li>
+        <li><code>document/admin_project_list.png</code> - 项目列表界面参考</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">10.2 技术依赖</h3>
+      <ul class="list">
+        <li>社区系统话题帖子数据接口</li>
+        <li>内容安全审核服务（复用现有）</li>
+        <li>H5编辑器组件框架（现有）</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // 初始化 Mermaid
+    mermaid.initialize({ 
+      startOnLoad: true,
+      theme: 'default',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true
+      }
+    });
+
+    // 高亮功能（用于与原型联动）
+    function highlightFeature(featureId) {
+      // 向父窗口发送消息，触发原型高亮
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ action: 'highlight', featureId: featureId }, '*');
+      }
+    }
+  </script>
+</body>
+</html>
