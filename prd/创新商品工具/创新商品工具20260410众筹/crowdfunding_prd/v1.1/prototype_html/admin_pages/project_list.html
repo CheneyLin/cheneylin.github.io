@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>众筹项目列表</title>
+    <link href="../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #f5f7fa; }
+        .header { background: #fff; padding: 16px 24px; border-bottom: 1px solid #e4e7ed; display: flex; justify-content: space-between; align-items: center; }
+        .header h4 { font-size: 18px; font-weight: 600; margin: 0; }
+        .content { padding: 24px; }
+        .filter-bar { background: #fff; padding: 16px; border-radius: 8px; margin-bottom: 16px; display: flex; gap: 12px; align-items: center; }
+        .filter-bar select, .filter-bar input { border: 1px solid #e4e7ed; border-radius: 4px; padding: 6px 12px; font-size: 14px; }
+        .btn-primary { background: #667eea; border: none; color: #fff; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        .table { background: #fff; border-radius: 8px; overflow: hidden; }
+        .table th { background: #f9fafb; font-weight: 600; font-size: 14px; }
+        .table td { font-size: 14px; vertical-align: middle; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-secondary { background: #e2e3e5; color: #383d41; }
+        .progress-bar-custom { height: 8px; background: #e4e7ed; border-radius: 4px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
+        .action-btns { display: flex; gap: 8px; }
+        .action-btns button { border: none; background: none; cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+        .action-btns .btn-edit { color: #667eea; }
+        .action-btns .btn-pause { color: #ffc107; }
+        .action-btns .btn-end { color: #dc3545; }
+        .action-btns .btn-view { color: #0d6efd; }
+
+        /* 弹窗样式 */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: #fff; width: 90%; max-width: 900px; max-height: 90vh; border-radius: 8px; overflow: hidden; animation: slideUp 0.3s ease; display: flex; flex-direction: column; }
+        @keyframes slideUp { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header { padding: 16px 24px; border-bottom: 1px solid #e4e7ed; display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { border: none; background: none; font-size: 24px; color: #999; cursor: pointer; }
+        .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid #e4e7ed; display: flex; justify-content: flex-end; gap: 12px; }
+        
+        /* 表单样式 */
+        .form-section { margin-bottom: 24px; }
+        .form-section h5 { font-size: 16px; font-weight: 600; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e4e7ed; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { font-weight: 600; font-size: 14px; margin-bottom: 6px; display: block; }
+        .form-group label .required { color: #ff5b4f; }
+        .form-control { width: 100%; border: 1px solid #e4e7ed; border-radius: 4px; padding: 8px 12px; font-size: 14px; }
+        .form-row { display: flex; gap: 16px; }
+        .form-row .form-group { flex: 1; }
+        
+        /* SKU样式 */
+        .sku-item { border: 1px solid #e4e7ed; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .sku-item .sku-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .sku-item .sku-body { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .add-sku-btn { border: 2px dashed #e4e7ed; border-radius: 8px; padding: 16px; text-align: center; color: #909399; cursor: pointer; }
+        .add-sku-btn:hover { border-color: #667eea; color: #667eea; }
+        
+        /* Stretch Goals样式 */
+        .stretch-item { border: 1px solid #e4e7ed; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .stretch-item .stretch-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h4><i class="bi bi-list-ul"></i> 众筹项目列表</h4>
+        <div style="display:flex;gap:12px;align-items:center;">
+            <button class="btn-primary" onclick="openCreateModal()">
+                <i class="bi bi-plus-circle"></i> 创建项目
+            </button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="filter-bar" style="display:flex;gap:12px;align-items:center;">
+            <input type="text" placeholder="搜索项目名称..." style="flex:1;border:1px solid #e4e7ed;border-radius:4px;padding:8px 12px;font-size:14px;" id="searchInput">
+            <button class="btn-primary" onclick="handleSearch()">
+                <i class="bi bi-search"></i> 搜索
+            </button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>项目名称</th>
+                    <th>目标</th>
+                    <th>进度</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-prototype="admin_project_list" class="prototype-module">
+                    <td>
+                        <div style="font-weight:600;">星际探险家系列周边</div>
+                        <div style="font-size:12px;color:#909399;">官方旗舰店</div>
+                    </td>
+                    <td>
+                        <div>¥100,000</div>
+                        <div style="font-size:12px;color:#909399;">件数 500</div>
+                    </td>
+                    <td style="width:150px;">
+                        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                            <span>¥68,000</span><span>68%</span>
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-bar-fill" style="width:68%"></div>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-success">进行中</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-edit" onclick="openEditModal()">编辑</button>
+                            <button class="btn-view" onclick="openSkuModal()" style="color:#667eea;">SKU管理</button>
+                            <button class="btn-pause" onclick="openBenfitModal()" style="color:#f59e0b;">多级奖励</button>
+                            <button class="btn-end" onclick="toggleProjectStatus(this)" style="color:#dc3545;">禁用</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-prototype="admin_project_list" class="prototype-module">
+                    <td>
+                        <div style="font-weight:600;">限定二次元手办众筹</div>
+                        <div style="font-size:12px;color:#909399;">IP授权店</div>
+                    </td>
+                    <td>
+                        <div>¥50,000</div>
+                        <div style="font-size:12px;color:#909399;">件数 200</div>
+                    </td>
+                    <td style="width:150px;">
+                        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                            <span>¥0</span><span>0%</span>
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-bar-fill" style="width:0%"></div>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-info">预热中</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-edit" onclick="openEditModal()">编辑</button>
+                            <button class="btn-view" onclick="openSkuModal()" style="color:#667eea;">SKU管理</button>
+                            <button class="btn-pause" onclick="openBenfitModal()" style="color:#f59e0b;">多级奖励</button>
+                            <button class="btn-end" onclick="toggleProjectStatus(this)" style="color:#dc3545;">禁用</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-prototype="admin_project_list" class="prototype-module">
+                    <td>
+                        <div style="font-weight:600;">设计师联名款众筹</div>
+                        <div style="font-size:12px;color:#909399;">官方旗舰店</div>
+                    </td>
+                    <td>
+                        <div>¥80,000</div>
+                        <div style="font-size:12px;color:#909399;">件数 300</div>
+                    </td>
+                    <td style="width:150px;">
+                        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                            <span>¥96,000</span><span>120%</span>
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-bar-fill" style="width:100%;background:#28a745;"></div>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-secondary">已结束</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-edit" onclick="openEditModal()">编辑</button>
+                            <button class="btn-view" onclick="openSkuModal()" style="color:#667eea;">SKU管理</button>
+                            <button class="btn-pause" onclick="openBenfitModal()" style="color:#f59e0b;">多级奖励</button>
+                            <button class="btn-end" onclick="toggleProjectStatus(this)" style="color:#28a745;">启用</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 创建项目弹窗 -->
+    <div class="modal-overlay" id="createModal" onclick="closeCreateModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h4 style="font-size:18px;font-weight:600;margin:0;"><i class="bi bi-plus-circle"></i> 创建众筹项目</h4>
+                <button class="modal-close" onclick="closeCreateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 基础信息 -->
+                <div class="form-section prototype-module" data-prototype="admin_project_list_create">
+                    <h5><i class="bi bi-info-circle"></i> 项目基础信息</h5>
+                    <div class="form-group">
+                        <label>关联商品ID <span class="required">*</span></label>
+                        <input type="text" class="form-control" value="SPU123456" placeholder="请输入关联的商品ID">
+                    </div>
+                    <div class="form-group">
+                        <label>众筹标题 <span class="required">*</span></label>
+                        <input type="text" class="form-control" value="星际探险家系列周边" placeholder="请输入众筹标题，1-50字">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>所属商家 <span class="required">*</span></label>
+                            <select class="form-control">
+                                <option selected>官方旗舰店</option>
+                                <option>IP授权店</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>类目</label>
+                            <select class="form-control">
+                                <option selected>周边众筹</option>
+                                <option>设计款</option>
+                                <option>联名款</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 时间控制 -->
+                <div class="form-section prototype-module" data-prototype="admin_project_list_create">
+                    <h5><i class="bi bi-clock"></i> 时间控制</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>众筹开始时间 <span class="required">*</span></label>
+                            <input type="datetime-local" class="form-control" value="2026-04-10T00:00">
+                        </div>
+                        <div class="form-group">
+                            <label>众筹结束时间 <span class="required">*</span></label>
+                            <input type="datetime-local" class="form-control" value="2026-05-10T23:59">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:flex;align-items:center;gap:8px;">
+                            <input type="checkbox" checked style="width:auto;">
+                            <span>是否开启预约</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 目标配置 -->
+                <div class="form-section prototype-module" data-prototype="admin_project_list_create">
+                    <h5><i class="bi bi-target"></i> 目标配置</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>目标配置类型 <span class="required">*</span></label>
+                            <select class="form-control">
+                                <option selected>SPU级别金额目标</option>
+                                <option>SPU级别件数目标</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>目标值 <span class="required">*</span></label>
+                            <input type="number" class="form-control" value="100000" placeholder="请输入目标值，0表示必须达成">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>成功判定规则</label>
+                            <select class="form-control">
+                                <option selected>达成目标值即成功</option>
+                                <option>必须达成（0表示必须达成）</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeCreateModal()" style="padding: 8px 16px; border-radius: 4px; border: 1px solid #e4e7ed; background: #fff; cursor: pointer;">取消</button>
+                <button class="btn-primary">保存草稿</button>
+                <button class="btn-primary" style="background:#28a745;">发布项目</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑项目弹窗 -->
+    <div class="modal-overlay" id="editModal" onclick="closeEditModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h4 style="font-size:18px;font-weight:600;margin:0;"><i class="bi bi-pencil-square"></i> 编辑众筹项目</h4>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 基础信息 -->
+                <div class="form-section prototype-module" data-prototype="admin_project_list_create">
+                    <h5><i class="bi bi-info-circle"></i> 基础信息</h5>
+                    <div class="form-group">
+                        <label>项目名称 <span class="required">*</span></label>
+                        <input type="text" class="form-control" value="星际探险家系列周边" placeholder="请输入项目名称，1-50字">
+                    </div>
+                    <div class="form-group">
+                        <label>副标题</label>
+                        <input type="text" class="form-control" value="限量周边，解锁更多奖励" placeholder="请输入项目副标题，0-80字">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>所属商家 <span class="required">*</span></label>
+                            <select class="form-control">
+                                <option selected>官方旗舰店</option>
+                                <option>IP授权店</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>类目</label>
+                            <select class="form-control">
+                                <option selected>周边众筹</option>
+                                <option>设计款</option>
+                                <option>联名款</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 时间设置 -->
+                <div class="form-section prototype-module" data-prototype="admin_project_list_create">
+                    <h5><i class="bi bi-clock"></i> 时间设置</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>预热开始时间</label>
+                            <input type="datetime-local" class="form-control" value="2026-04-01T00:00">
+                        </div>
+                        <div class="form-group">
+                            <label>预热结束时间</label>
+                            <input type="datetime-local" class="form-control" value="2026-04-09T23:59">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>销售开始时间 <span class="required">*</span></label>
+                            <input type="datetime-local" class="form-control" value="2026-04-10T00:00">
+                        </div>
+                        <div class="form-group">
+                            <label>销售结束时间 <span class="required">*</span></label>
+                            <input type="datetime-local" class="form-control" value="2026-05-10T23:59">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 目标设置 -->
+                <div class="form-section prototype-module" data-prototype="admin_project_list_create">
+                    <h5><i class="bi bi-target"></i> 目标设置</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>进度口径 <span class="required">*</span></label>
+                            <select class="form-control">
+                                <option selected>按金额</option>
+                                <option>按件数</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>主目标类型 <span class="required">*</span></label>
+                            <select class="form-control">
+                                <option selected>金额目标</option>
+                                <option>件数目标</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>主目标值 <span class="required">*</span></label>
+                            <input type="number" class="form-control" value="100000" placeholder="请输入目标值">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeEditModal()" style="padding: 8px 16px; border-radius: 4px; border: 1px solid #e4e7ed; background: #fff; cursor: pointer;">取消</button>
+                <button class="btn-primary">保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKU管理弹窗 -->
+    <div class="modal-overlay" id="skuModal" onclick="closeSkuModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h4 style="font-size:18px;font-weight:600;margin:0;"><i class="bi bi-box-seam"></i> SKU与限购管理</h4>
+                <button class="modal-close" onclick="closeSkuModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-section prototype-module" data-prototype="admin_project_list_sku">
+                    <h5><i class="bi bi-box-seam"></i> SKU列表</h5>
+                    
+                    <!-- SKU 1 -->
+                    <div class="sku-item">
+                        <div class="sku-header">
+                            <span style="font-weight:600;">SKU 1 - 早鸟档</span>
+                            <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteSku(this)">删除</button>
+                        </div>
+                        <div class="sku-body">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">SKU名称</label>
+                                <input type="text" class="form-control" value="早鸟档" placeholder="如：早鸟档">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">价格(元)</label>
+                                <input type="number" class="form-control" value="298" placeholder="0">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">库存模式</label>
+                                <select class="form-control">
+                                    <option selected>虚拟库存</option>
+                                    <option>预分配</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">每人限购</label>
+                                <input type="number" class="form-control" value="2" placeholder="0=不限">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">SKU级封顶</label>
+                                <input type="number" class="form-control" value="100" placeholder="0=不限">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">预计发货</label>
+                                <input type="text" class="form-control" value="2026年6月" placeholder="如：2026年6月">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SKU 2 -->
+                    <div class="sku-item">
+                        <div class="sku-header">
+                            <span style="font-weight:600;">SKU 2 - 标准档</span>
+                            <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteSku(this)">删除</button>
+                        </div>
+                        <div class="sku-body">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">SKU名称</label>
+                                <input type="text" class="form-control" value="标准档" placeholder="如：早鸟档">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">价格(元)</label>
+                                <input type="number" class="form-control" value="398" placeholder="0">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">库存模式</label>
+                                <select class="form-control">
+                                    <option selected>虚拟库存</option>
+                                    <option>预分配</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">每人限购</label>
+                                <input type="number" class="form-control" value="0" placeholder="0=不限">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">SKU级封顶</label>
+                                <input type="number" class="form-control" value="0" placeholder="0=不限">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">预计发货</label>
+                                <input type="text" class="form-control" value="2026年6月" placeholder="如：2026年6月">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SKU 3 -->
+                    <div class="sku-item">
+                        <div class="sku-header">
+                            <span style="font-weight:600;">SKU 3 - 豪华档</span>
+                            <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteSku(this)">删除</button>
+                        </div>
+                        <div class="sku-body">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">SKU名称</label>
+                                <input type="text" class="form-control" value="豪华档" placeholder="如：早鸟档">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">价格(元)</label>
+                                <input type="number" class="form-control" value="698" placeholder="0">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">库存模式</label>
+                                <select class="form-control">
+                                    <option selected>虚拟库存</option>
+                                    <option>预分配</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">每人限购</label>
+                                <input type="number" class="form-control" value="0" placeholder="0=不限">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">SKU级封顶</label>
+                                <input type="number" class="form-control" value="0" placeholder="0=不限">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">预计发货</label>
+                                <input type="text" class="form-control" value="2026年6月" placeholder="如：2026年6月">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="add-sku-btn" onclick="addSku()"><i class="bi bi-plus"></i> 添加SKU</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeSkuModal()" style="padding: 8px 16px; border-radius: 4px; border: 1px solid #e4e7ed; background: #fff; cursor: pointer;">取消</button>
+                <button class="btn-primary">保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 多级奖励配置弹窗 -->
+    <div class="modal-overlay" id="benfitModal" onclick="closeBenfitModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h4 style="font-size:18px;font-weight:600;margin:0;"><i class="bi bi-trophy"></i> 多级奖励配置</h4>
+                <button class="modal-close" onclick="closeBenfitModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-section prototype-module" data-prototype="admin_project_list_benfit">
+                    <h5><i class="bi bi-trophy"></i> 目标档位列表</h5>
+                    
+                    <!-- 目标档位 1 -->
+                    <div class="stretch-item">
+                        <div class="stretch-header">
+                            <span style="font-weight:600;">目标档位 1 - ¥50,000</span>
+                            <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteStretch(this)">删除</button>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">解锁条件类型</label>
+                                <select class="form-control">
+                                    <option selected>金额</option>
+                                    <option>件数</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">阈值</label>
+                                <input type="number" class="form-control" value="50000" placeholder="如：50000">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">奖励模式</label>
+                                <select class="form-control">
+                                    <option selected>全员赠送</option>
+                                    <option>抽选</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <label style="font-size:12px;font-weight:600;">奖励说明</label>
+                            <input type="text" class="form-control" value="解锁后全体用户获赠限量金属徽章" placeholder="如：解锁后全体用户获赠限量徽章">
+                        </div>
+                    </div>
+
+                    <!-- 目标档位 2 -->
+                    <div class="stretch-item">
+                        <div class="stretch-header">
+                            <span style="font-weight:600;">目标档位 2 - ¥80,000</span>
+                            <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteStretch(this)">删除</button>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">解锁条件类型</label>
+                                <select class="form-control">
+                                    <option selected>金额</option>
+                                    <option>件数</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">阈值</label>
+                                <input type="number" class="form-control" value="80000" placeholder="如：50000">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">奖励模式</label>
+                                <select class="form-control">
+                                    <option>全员赠送</option>
+                                    <option selected>抽选</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <label style="font-size:12px;font-weight:600;">奖励说明</label>
+                            <input type="text" class="form-control" value="解锁后抽选10名用户获赠设计师签名海报" placeholder="如：解锁后全体用户获赠限量徽章">
+                        </div>
+                    </div>
+
+                    <!-- 目标档位 3 -->
+                    <div class="stretch-item">
+                        <div class="stretch-header">
+                            <span style="font-weight:600;">目标档位 3 - ¥100,000</span>
+                            <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteStretch(this)">删除</button>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">解锁条件类型</label>
+                                <select class="form-control">
+                                    <option selected>金额</option>
+                                    <option>件数</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">阈值</label>
+                                <input type="number" class="form-control" value="100000" placeholder="如：50000">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px;">奖励模式</label>
+                                <select class="form-control">
+                                    <option>全员赠送</option>
+                                    <option selected>抽选</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <label style="font-size:12px;font-weight:600;">奖励说明</label>
+                            <input type="text" class="form-control" value="解锁后抽选5名用户获赠全套周边福袋" placeholder="如：解锁后全体用户获赠限量徽章">
+                        </div>
+                    </div>
+
+                    <div class="add-sku-btn" onclick="addStretch()"><i class="bi bi-plus"></i> 添加目标档位</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeBenfitModal()" style="padding: 8px 16px; border-radius: 4px; border: 1px solid #e4e7ed; background: #fff; cursor: pointer;">取消</button>
+                <button class="btn-primary">保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 创建项目弹窗 ====================
+        function openCreateModal() {
+            const modal = document.getElementById('createModal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+        
+        function closeCreateModal(event) {
+            const modal = document.getElementById('createModal');
+            if (modal) {
+                // 如果没有传入事件（直接调用）或者点击的是遮罩层本身
+                if (!event || event.target.id === 'createModal') {
+                    modal.classList.remove('show');
+                }
+            }
+        }
+        
+        // ==================== 编辑项目弹窗 ====================
+        function openEditModal() {
+            document.getElementById('editModal').classList.add('show');
+        }
+        
+        function closeEditModal(event) {
+            if (!event || event.target.id === 'editModal') {
+                document.getElementById('editModal').classList.remove('show');
+            }
+        }
+        
+        // ==================== SKU管理弹窗 ====================
+        function openSkuModal() {
+            document.getElementById('skuModal').classList.add('show');
+        }
+        
+        function closeSkuModal(event) {
+            if (!event || event.target.id === 'skuModal') {
+                document.getElementById('skuModal').classList.remove('show');
+            }
+        }
+        
+        function deleteSku(btn) {
+            if (confirm('确定要删除这个SKU吗？')) {
+                btn.closest('.sku-item').remove();
+            }
+        }
+        
+        function addSku() {
+            const container = document.querySelector('#skuModal .prototype-module');
+            const skuCount = container.querySelectorAll('.sku-item').length + 1;
+            
+            const newSku = document.createElement('div');
+            newSku.className = 'sku-item';
+            newSku.innerHTML = `
+                <div class="sku-header">
+                    <span style="font-weight:600;">SKU ${skuCount}</span>
+                    <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteSku(this)">删除</button>
+                </div>
+                <div class="sku-body">
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">SKU名称</label>
+                        <input type="text" class="form-control" placeholder="如：早鸟档">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">价格(元)</label>
+                        <input type="number" class="form-control" placeholder="0">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">库存模式</label>
+                        <select class="form-control">
+                            <option>虚拟库存</option>
+                            <option>预分配</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">每人限购</label>
+                        <input type="number" class="form-control" placeholder="0=不限">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">SKU级封顶</label>
+                        <input type="number" class="form-control" placeholder="0=不限">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">预计发货</label>
+                        <input type="text" class="form-control" placeholder="如：2026年6月">
+                    </div>
+                </div>
+            `;
+            
+            container.insertBefore(newSku, container.querySelector('.add-sku-btn'));
+        }
+        
+        // ==================== 多级奖励配置弹窗 ====================
+        function openBenfitModal() {
+            document.getElementById('benfitModal').classList.add('show');
+        }
+        
+        function closeBenfitModal(event) {
+            if (!event || event.target.id === 'benfitModal') {
+                document.getElementById('benfitModal').classList.remove('show');
+            }
+        }
+        
+        function deleteStretch(btn) {
+            if (confirm('确定要删除这个目标档位吗？')) {
+                btn.closest('.stretch-item').remove();
+            }
+        }
+        
+        function addStretch() {
+            const container = document.querySelector('#benfitModal .prototype-module');
+            const stretchCount = container.querySelectorAll('.stretch-item').length + 1;
+            
+            const newStretch = document.createElement('div');
+            newStretch.className = 'stretch-item';
+            newStretch.innerHTML = `
+                <div class="stretch-header">
+                    <span style="font-weight:600;">目标档位 ${stretchCount}</span>
+                    <button style="border:none;background:none;color:#dc3545;cursor:pointer;" onclick="deleteStretch(this)">删除</button>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">解锁条件类型</label>
+                        <select class="form-control">
+                            <option>金额</option>
+                            <option>件数</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">阈值</label>
+                        <input type="number" class="form-control" placeholder="如：50000">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">奖励模式</label>
+                        <select class="form-control">
+                            <option>全员赠送</option>
+                            <option>抽选</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:12px;">
+                    <label style="font-size:12px;font-weight:600;">奖励说明</label>
+                    <input type="text" class="form-control" placeholder="如：解锁后全体用户获赠限量徽章">
+                </div>
+            `;
+            
+            container.insertBefore(newStretch, container.querySelector('.add-sku-btn'));
+        }
+        
+        // ==================== 禁用/启用切换 ====================
+        function toggleProjectStatus(btn) {
+            const currentText = btn.textContent.trim();
+            if (currentText === '禁用') {
+                if (confirm('确定要禁用这个项目吗？')) {
+                    btn.textContent = '启用';
+                    btn.style.color = '#28a745';
+                }
+            } else {
+                if (confirm('确定要启用这个项目吗？')) {
+                    btn.textContent = '禁用';
+                    btn.style.color = '#dc3545';
+                }
+            }
+        }
+        
+        // ==================== 搜索功能 ====================
+        function handleSearch() {
+            const searchValue = document.getElementById('searchInput').value.trim();
+            if (!searchValue) {
+                alert('请输入搜索关键词');
+                return;
+            }
+            
+            // 模拟搜索功能
+            console.log('搜索项目名称:', searchValue);
+            alert(`正在搜索: "${searchValue}"`);
+            
+            // 这里可以添加实际的搜索逻辑，例如：
+            // 1. 调用API搜索项目
+            // 2. 过滤表格数据
+            // 3. 高亮匹配的项目名称
+        }
+        
+        // 支持回车键搜索
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        handleSearch();
+                    }
+                });
+            }
+        });
+        
+        // ==================== PRD高亮功能 ====================
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight') {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const target = document.querySelector(`[data-prototype="${e.data.featureId}"]`);
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户须知 - 电子吧唧 v1.2</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #AF75F8;
+            --primary-purple-light: #E5E2F9;
+            --primary-purple-lighter: #F6F4FD;
+            --text-primary: #171717;
+            --text-secondary: #666666;
+            --text-white: #FFFFFF;
+            --bg-white: #FFFFFF;
+            --bg-light: #FAFAFA;
+            --border-color: rgba(0, 0, 0, 0.06);
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-light);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--bg-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--text-primary);
+            border-radius: 0 0 18px 18px;
+            z-index: 50;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: var(--bg-white);
+            position: relative;
+            padding: 0 16px;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .status-bar-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .page-content {
+            height: calc(812px - 44px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 背景模糊层 */
+        .bg-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-purple-light) 0%, var(--primary-purple) 100%);
+            filter: blur(8px);
+            opacity: 0.5;
+        }
+
+        /* 底部弹层 */
+        .modal-sheet {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-white);
+            width: 100%;
+            border-radius: 20px 20px 0 0;
+            padding: 28px 24px 40px;
+            max-height: 85%;
+            overflow-y: auto;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--bg-light);
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.04em;
+            color: var(--text-primary);
+        }
+
+        .agreement-frame {
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-light);
+        }
+
+        .agreement-frame iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--text-primary);
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-white);
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-purple);
+        }
+
+        .checkbox-group label {
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--primary-purple);
+            color: var(--text-white);
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #9B5FE6;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-cancel {
+            margin-top: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-bar-icons">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <!-- 背景模糊层 -->
+            <div class="bg-blur"></div>
+
+            <!-- 底部弹层 -->
+            <div class="modal-sheet">
+                <div class="modal-content">
+                    <div class="modal-handle"></div>
+
+                    <div class="modal-title">用户须知</div>
+
+                    <!-- H5 内容区域 -->
+                    <div class="agreement-frame">
+                        <iframe src="https://d.tazai.com/zK-5" frameborder="0"></iframe>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agree_check" onchange="toggleBtn()">
+                        <label for="agree_check">请认真阅读上述用户须知，并勾选同意后继续操作</label>
+                    </div>
+
+                    <button id="btn_agree" class="btn-primary" disabled onclick="navigateToHome()">导入图片</button>
+                    <button class="btn-cancel" onclick="navigateToHome()">暂不导入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleBtn() {
+            const checkbox = document.getElementById('agree_check');
+            const btn = document.getElementById('btn_agree');
+            if (checkbox && btn) {
+                btn.disabled = !checkbox.checked;
+            }
+        }
+
+        function navigateToHome() {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: 'home.html' }, '*');
+            }
+        }
+    </script>
+</body>
+</html>

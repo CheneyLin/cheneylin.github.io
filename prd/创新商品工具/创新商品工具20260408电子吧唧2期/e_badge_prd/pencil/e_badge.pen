@@ -1,0 +1,1640 @@
+{
+  "version": "2.10",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "admin_main",
+      "x": 0,
+      "y": 700,
+      "name": "运营后台 - IP包管理",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F5F7FA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "rect",
+          "id": "admin_sidebar",
+          "x": 0,
+          "y": 0,
+          "width": 240,
+          "height": 900,
+          "fill": "#1A1A2E",
+          "children": [
+            {
+              "type": "text",
+              "id": "admin_logo",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 60,
+              "text": "🏪 电子吧唧管理",
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "fill": "#FFFFFF",
+              "textAlign": "center"
+            },
+            {
+              "type": "text",
+              "id": "menu_group_1",
+              "x": 24,
+              "y": 100,
+              "width": 192,
+              "height": 30,
+              "text": "IP 包管理",
+              "fontSize": 12,
+              "fontWeight": "bold",
+              "fill": "rgba(255,255,255,0.5)",
+              "textAlign": "left"
+            },
+            {
+              "type": "rect",
+              "id": "menu_ip_list",
+              "x": 0,
+              "y": 130,
+              "width": 240,
+              "height": 44,
+              "fill": "rgba(255,255,255,0.15)",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "menu_ip_list_text",
+                  "x": 24,
+                  "y": 0,
+                  "width": 200,
+                  "height": 44,
+                  "text": "📋 IP 包列表",
+                  "fontSize": 14,
+                  "fill": "#FFFFFF",
+                  "textAlign": "left",
+                  "lineHeight": 44
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "menu_group_2",
+              "x": 24,
+              "y": 200,
+              "width": 192,
+              "height": 30,
+              "text": "订单管理",
+              "fontSize": 12,
+              "fontWeight": "bold",
+              "fill": "rgba(255,255,255,0.5)",
+              "textAlign": "left"
+            },
+            {
+              "type": "rect",
+              "id": "menu_order",
+              "x": 0,
+              "y": 230,
+              "width": 240,
+              "height": 44,
+              "fill": "transparent",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "menu_order_text",
+                  "x": 24,
+                  "y": 0,
+                  "width": 200,
+                  "height": 44,
+                  "text": "📄 订单列表",
+                  "fontSize": 14,
+                  "fill": "rgba(255,255,255,0.7)",
+                  "textAlign": "left",
+                  "lineHeight": 44
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rect",
+          "id": "admin_content",
+          "x": 240,
+          "y": 0,
+          "width": 1200,
+          "height": 900,
+          "fill": "#F5F7FA",
+          "children": [
+            {
+              "type": "group",
+              "id": "page_header",
+              "x": 24,
+              "y": 24,
+              "width": 1152,
+              "height": 60,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "page_title",
+                  "x": 0,
+                  "y": 0,
+                  "width": 400,
+                  "height": 40,
+                  "text": "IP 包管理",
+                  "fontSize": 24,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "btn_add",
+                  "x": 952,
+                  "y": 8,
+                  "width": 200,
+                  "height": 44,
+                  "fill": "#1677FF",
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "btn_add_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 200,
+                      "height": 44,
+                      "text": "+ 新增 IP 包",
+                      "fontSize": 14,
+                      "fontWeight": "bold",
+                      "fill": "#FFFFFF",
+                      "textAlign": "center",
+                      "lineHeight": 44
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rect",
+              "id": "filter_card",
+              "x": 24,
+              "y": 108,
+              "width": 1152,
+              "height": 80,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "shadow": "0 2px 8px rgba(0,0,0,0.08)",
+              "children": [
+                {
+                  "type": "rect",
+                  "id": "filter_input_search",
+                  "x": 20,
+                  "y": 20,
+                  "width": 300,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "filter_search_placeholder",
+                      "x": 12,
+                      "y": 0,
+                      "width": 276,
+                      "height": 40,
+                      "text": "搜索 IP 包名称",
+                      "fontSize": 14,
+                      "fill": "#999999",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "filter_select_status",
+                  "x": 340,
+                  "y": 20,
+                  "width": 150,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "filter_status_text",
+                      "x": 12,
+                      "y": 0,
+                      "width": 126,
+                      "height": 40,
+                      "text": "全部状态",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "btn_search",
+                  "x": 510,
+                  "y": 20,
+                  "width": 80,
+                  "height": 40,
+                  "fill": "#1677FF",
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "btn_search_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 80,
+                      "height": 40,
+                      "text": "查询",
+                      "fontSize": 14,
+                      "fill": "#FFFFFF",
+                      "textAlign": "center",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "btn_reset",
+                  "x": 610,
+                  "y": 20,
+                  "width": 80,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "btn_reset_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 80,
+                      "height": 40,
+                      "text": "重置",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "center",
+                      "lineHeight": 40
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rect",
+              "id": "table_card",
+              "x": 24,
+              "y": 212,
+              "width": 1152,
+              "height": 500,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "shadow": "0 2px 8px rgba(0,0,0,0.08)",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "table_title",
+                  "x": 20,
+                  "y": 16,
+                  "width": 200,
+                  "height": 30,
+                  "text": "IP 包列表",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "table_header",
+                  "x": 0,
+                  "y": 60,
+                  "width": 1152,
+                  "height": 40,
+                  "fill": "#F8F9FA",
+                  "children": [
+                    { "type": "text", "id": "th_id", "x": 20, "y": 0, "width": 80, "height": 40, "text": "IP 包 ID", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_name", "x": 120, "y": 0, "width": 200, "height": 40, "text": "IP 名称", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_images", "x": 340, "y": 0, "width": 80, "height": 40, "text": "图片数量", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_ssr_stock", "x": 440, "y": 0, "width": 100, "height": 40, "text": "SSR 库存", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_sr_stock", "x": 560, "y": 0, "width": 100, "height": 40, "text": "SR 库存", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_status", "x": 680, "y": 0, "width": 100, "height": 40, "text": "状态", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_start_time", "x": 800, "y": 0, "width": 120, "height": 40, "text": "上架时间", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "th_actions", "x": 960, "y": 0, "width": 160, "height": 40, "text": "操作", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "table_row_1",
+                  "x": 0,
+                  "y": 100,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FFFFFF",
+                  "children": [
+                    { "type": "text", "id": "tr1_id", "x": 20, "y": 0, "width": 80, "height": 60, "text": "1001", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr1_name", "x": 120, "y": 0, "width": 200, "height": 60, "text": "初音未来 2024", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr1_images", "x": 340, "y": 0, "width": 80, "height": 60, "text": "20", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr1_ssr", "x": 440, "y": 0, "width": 100, "height": 60, "text": "85/100", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr1_sr", "x": 560, "y": 0, "width": 100, "height": 60, "text": "320/500", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr1_status", "x": 680, "y": 12, "width": 80, "height": 36, "fill": "#F6FFED", "cornerRadius": 4, "stroke": "#B7EB8F", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "tr1_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已上架", "fontSize": 12, "fill": "#52C41A", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "tr1_time", "x": 800, "y": 0, "width": 120, "height": 60, "text": "2026-04-01", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr1_btn_edit", "x": 960, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr1_btn_edit_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "编辑", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "rect", "id": "tr1_btn_off", "x": 1040, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#FF4D4F", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr1_btn_off_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "下架", "fontSize": 13, "fill": "#FF4D4F", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "table_row_2",
+                  "x": 0,
+                  "y": 160,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FAFAFA",
+                  "children": [
+                    { "type": "text", "id": "tr2_id", "x": 20, "y": 0, "width": 80, "height": 60, "text": "1002", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr2_name", "x": 120, "y": 0, "width": 200, "height": 60, "text": "原神 雷电将军", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr2_images", "x": 340, "y": 0, "width": 80, "height": 60, "text": "15", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr2_ssr", "x": 440, "y": 0, "width": 100, "height": 60, "text": "100/100", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr2_sr", "x": 560, "y": 0, "width": 100, "height": 60, "text": "500/500", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr2_status", "x": 680, "y": 12, "width": 80, "height": 36, "fill": "#F6FFED", "cornerRadius": 4, "stroke": "#B7EB8F", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "tr2_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已上架", "fontSize": 12, "fill": "#52C41A", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "tr2_time", "x": 800, "y": 0, "width": 120, "height": 60, "text": "2026-04-05", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr2_btn_edit", "x": 960, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr2_btn_edit_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "编辑", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "rect", "id": "tr2_btn_off", "x": 1040, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#FF4D4F", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr2_btn_off_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "下架", "fontSize": 13, "fill": "#FF4D4F", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "table_row_3",
+                  "x": 0,
+                  "y": 220,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FFFFFF",
+                  "children": [
+                    { "type": "text", "id": "tr3_id", "x": 20, "y": 0, "width": 80, "height": 60, "text": "1003", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr3_name", "x": 120, "y": 0, "width": 200, "height": 60, "text": "鬼灭之刃 限定", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr3_images", "x": 340, "y": 0, "width": 80, "height": 60, "text": "25", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr3_ssr", "x": 440, "y": 0, "width": 100, "height": 60, "text": "0/50", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr3_sr", "x": 560, "y": 0, "width": 100, "height": 60, "text": "0/300", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr3_status", "x": 680, "y": 12, "width": 80, "height": 36, "fill": "#FFF1F0", "cornerRadius": 4, "stroke": "#FFA39E", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "tr3_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已售罄", "fontSize": 12, "fill": "#FF4D4F", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "tr3_time", "x": 800, "y": 0, "width": 120, "height": 60, "text": "2026-03-20", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr3_btn_edit", "x": 960, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr3_btn_edit_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "编辑", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "rect", "id": "tr3_btn_off", "x": 1040, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#D9D9D9", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr3_btn_off_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "下架", "fontSize": 13, "fill": "#999999", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "table_row_4",
+                  "x": 0,
+                  "y": 280,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FAFAFA",
+                  "children": [
+                    { "type": "text", "id": "tr4_id", "x": 20, "y": 0, "width": 80, "height": 60, "text": "1004", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr4_name", "x": 120, "y": 0, "width": 200, "height": 60, "text": "咒术回战 五条悟", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr4_images", "x": 340, "y": 0, "width": 80, "height": 60, "text": "18", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr4_ssr", "x": 440, "y": 0, "width": 100, "height": 60, "text": "-", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "tr4_sr", "x": 560, "y": 0, "width": 100, "height": 60, "text": "-", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr4_status", "x": 680, "y": 12, "width": 80, "height": 36, "fill": "#FFF2E8", "cornerRadius": 4, "stroke": "#FFD591", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "tr4_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已下架", "fontSize": 12, "fill": "#FA8C16", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "tr4_time", "x": 800, "y": 0, "width": 120, "height": 60, "text": "2026-03-01", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "tr4_btn_edit", "x": 960, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr4_btn_edit_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "编辑", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "rect", "id": "tr4_btn_on", "x": 1040, "y": 12, "width": 70, "height": 36, "fill": "#FFFFFF", "stroke": "#52C41A", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "tr4_btn_on_text", "x": 0, "y": 0, "width": 70, "height": 36, "text": "上架", "fontSize": 13, "fill": "#52C41A", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "id": "pagination",
+              "x": 476,
+              "y": 740,
+              "width": 400,
+              "height": 40,
+              "children": [
+                { "type": "rect", "id": "page_prev", "x": 0, "y": 0, "width": 80, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "page_prev_text", "x": 0, "y": 0, "width": 80, "height": 40, "text": "上一页", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "page_1", "x": 100, "y": 0, "width": 40, "height": 40, "fill": "#1677FF", "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "page_1_text", "x": 0, "y": 0, "width": 40, "height": 40, "text": "1", "fontSize": 14, "fill": "#FFFFFF", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "page_2", "x": 160, "y": 0, "width": 40, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "page_2_text", "x": 0, "y": 0, "width": 40, "height": 40, "text": "2", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "page_3", "x": 220, "y": 0, "width": 40, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "page_3_text", "x": 0, "y": 0, "width": 40, "height": 40, "text": "3", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "page_next", "x": 280, "y": 0, "width": 80, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "page_next_text", "x": 0, "y": 0, "width": 80, "height": 40, "text": "下一页", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "admin_edit",
+      "x": 0,
+      "y": 1700,
+      "name": "运营后台 - IP包编辑",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F5F7FA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "rect",
+          "id": "admin_edit_sidebar",
+          "x": 0,
+          "y": 0,
+          "width": 240,
+          "height": 900,
+          "fill": "#1A1A2E",
+          "children": [
+            {
+              "type": "text",
+              "id": "admin_edit_logo",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 60,
+              "text": "🏪 电子吧唧管理",
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "fill": "#FFFFFF",
+              "textAlign": "center"
+            },
+            {
+              "type": "text",
+              "id": "admin_edit_menu_group_1",
+              "x": 24,
+              "y": 100,
+              "width": 192,
+              "height": 30,
+              "text": "IP 包管理",
+              "fontSize": 12,
+              "fontWeight": "bold",
+              "fill": "rgba(255,255,255,0.5)",
+              "textAlign": "left"
+            },
+            {
+              "type": "rect",
+              "id": "admin_edit_menu_ip_list",
+              "x": 0,
+              "y": 130,
+              "width": 240,
+              "height": 44,
+              "fill": "transparent",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin_edit_menu_ip_list_text",
+                  "x": 24,
+                  "y": 0,
+                  "width": 200,
+                  "height": 44,
+                  "text": "📋 IP 包列表",
+                  "fontSize": 14,
+                  "fill": "rgba(255,255,255,0.7)",
+                  "textAlign": "left",
+                  "lineHeight": 44
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "admin_edit_menu_group_2",
+              "x": 24,
+              "y": 200,
+              "width": 192,
+              "height": 30,
+              "text": "订单管理",
+              "fontSize": 12,
+              "fontWeight": "bold",
+              "fill": "rgba(255,255,255,0.5)",
+              "textAlign": "left"
+            },
+            {
+              "type": "rect",
+              "id": "admin_edit_menu_order",
+              "x": 0,
+              "y": 230,
+              "width": 240,
+              "height": 44,
+              "fill": "transparent",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin_edit_menu_order_text",
+                  "x": 24,
+                  "y": 0,
+                  "width": 200,
+                  "height": 44,
+                  "text": "📄 订单列表",
+                  "fontSize": 14,
+                  "fill": "rgba(255,255,255,0.7)",
+                  "textAlign": "left",
+                  "lineHeight": 44
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rect",
+          "id": "admin_edit_content",
+          "x": 240,
+          "y": 0,
+          "width": 1200,
+          "height": 900,
+          "fill": "#F5F7FA",
+          "children": [
+            {
+              "type": "group",
+              "id": "edit_header",
+              "x": 24,
+              "y": 24,
+              "width": 1152,
+              "height": 60,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "edit_title",
+                  "x": 0,
+                  "y": 0,
+                  "width": 600,
+                  "height": 40,
+                  "text": "编辑 IP 包 - 初音未来 2024",
+                  "fontSize": 24,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "edit_btn_cancel",
+                  "x": 952,
+                  "y": 8,
+                  "width": 80,
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "edit_btn_cancel_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 80,
+                      "height": 44,
+                      "text": "取消",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "center",
+                      "lineHeight": 44
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "edit_btn_save",
+                  "x": 1052,
+                  "y": 8,
+                  "width": 100,
+                  "height": 44,
+                  "fill": "#1677FF",
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "edit_btn_save_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 100,
+                      "height": 44,
+                      "text": "保存",
+                      "fontSize": 14,
+                      "fontWeight": "bold",
+                      "fill": "#FFFFFF",
+                      "textAlign": "center",
+                      "lineHeight": 44
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rect",
+              "id": "edit_tabs",
+              "x": 24,
+              "y": 108,
+              "width": 1152,
+              "height": 50,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "children": [
+                { "type": "text", "id": "tab_basic", "x": 20, "y": 0, "width": 100, "height": 50, "text": "基本信息", "fontSize": 14, "fontWeight": "bold", "fill": "#1677FF", "textAlign": "center", "lineHeight": 50 },
+                { "type": "text", "id": "tab_images", "x": 140, "y": 0, "width": 120, "height": 50, "text": "图片库管理", "fontSize": 14, "fill": "#666666", "textAlign": "center", "lineHeight": 50 },
+                { "type": "text", "id": "tab_probability", "x": 280, "y": 0, "width": 120, "height": 50, "text": "概率与库存", "fontSize": 14, "fill": "#666666", "textAlign": "center", "lineHeight": 50 },
+                { "type": "text", "id": "tab_pack", "x": 420, "y": 0, "width": 120, "height": 50, "text": "整包配置", "fontSize": 14, "fill": "#666666", "textAlign": "center", "lineHeight": 50 },
+                { "type": "rect", "id": "tab_indicator", "x": 20, "y": 48, "width": 100, "height": 2, "fill": "#1677FF" }
+              ]
+            },
+            {
+              "type": "rect",
+              "id": "edit_content_card",
+              "x": 24,
+              "y": 182,
+              "width": 1152,
+              "height": 680,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "shadow": "0 2px 8px rgba(0,0,0,0.08)",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "section_basic_title",
+                  "x": 32,
+                  "y": 24,
+                  "width": 200,
+                  "height": 30,
+                  "text": "基本信息",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "section_basic_indicator",
+                  "x": 20,
+                  "y": 28,
+                  "width": 4,
+                  "height": 24,
+                  "fill": "#1677FF",
+                  "cornerRadius": 2
+                },
+                {
+                  "type": "text",
+                  "id": "label_name",
+                  "x": 32,
+                  "y": 80,
+                  "width": 200,
+                  "height": 30,
+                  "text": "* IP 名称",
+                  "fontSize": 14,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "input_name",
+                  "x": 32,
+                  "y": 116,
+                  "width": 500,
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "input_name_value", "x": 12, "y": 0, "width": 476, "height": 44, "text": "初音未来 2024", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 44 }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "label_cover",
+                  "x": 564,
+                  "y": 80,
+                  "width": 200,
+                  "height": 30,
+                  "text": "* 封面图",
+                  "fontSize": 14,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "upload_cover",
+                  "x": 564,
+                  "y": 116,
+                  "width": 200,
+                  "height": 150,
+                  "fill": "#FAFAFA",
+                  "stroke": "#1677FF",
+                  "strokeWidth": 2,
+                  "strokeDasharray": "6,4",
+                  "cornerRadius": 8,
+                  "children": [
+                    { "type": "text", "id": "upload_cover_icon", "x": 0, "y": 40, "width": 200, "height": 40, "text": "📷", "fontSize": 48, "fill": "#666666", "textAlign": "center" },
+                    { "type": "text", "id": "upload_cover_text", "x": 0, "y": 100, "width": 200, "height": 30, "text": "点击上传封面图", "fontSize": 14, "fill": "#666666", "textAlign": "center" }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "label_desc",
+                  "x": 32,
+                  "y": 184,
+                  "width": 200,
+                  "height": 30,
+                  "text": "简介",
+                  "fontSize": 14,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "textarea_desc",
+                  "x": 32,
+                  "y": 220,
+                  "width": 732,
+                  "height": 100,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "textarea_desc_value", "x": 12, "y": 12, "width": 708, "height": 76, "text": "全新初音未来系列吧唧，包含 20 张精美图片，涵盖 SSR/SR/R 三个等级。", "fontSize": 14, "fill": "#333333", "textAlign": "left" }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "label_start_time",
+                  "x": 32,
+                  "y": 344,
+                  "width": 200,
+                  "height": 30,
+                  "text": "* 上架时间",
+                  "fontSize": 14,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "input_start_time",
+                  "x": 32,
+                  "y": 380,
+                  "width": 300,
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "input_start_time_value", "x": 12, "y": 0, "width": 276, "height": 44, "text": "2026-04-01 00:00", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 44 }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "label_end_time",
+                  "x": 364,
+                  "y": 344,
+                  "width": 200,
+                  "height": 30,
+                  "text": "* 下架时间",
+                  "fontSize": 14,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "input_end_time",
+                  "x": 364,
+                  "y": 380,
+                  "width": 300,
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "input_end_time_value", "x": 12, "y": 0, "width": 276, "height": 44, "text": "2026-06-30 23:59", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 44 }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "section_prob_title",
+                  "x": 32,
+                  "y": 460,
+                  "width": 300,
+                  "height": 30,
+                  "text": "概率与库存配置",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "section_prob_indicator",
+                  "x": 20,
+                  "y": 464,
+                  "width": 4,
+                  "height": 24,
+                  "fill": "#1677FF",
+                  "cornerRadius": 2
+                },
+                {
+                  "type": "rect",
+                  "id": "prob_card",
+                  "x": 32,
+                  "y": 506,
+                  "width": 1088,
+                  "height": 150,
+                  "fill": "#F8F9FF",
+                  "cornerRadius": 8,
+                  "children": [
+                    {
+                      "type": "text", "id": "prob_ssr_label", "x": 20, "y": 20, "width": 150, "height": 30,
+                      "text": "SSR（超稀有）", "fontSize": 14, "fontWeight": "bold", "fill": "#FF4D4F", "textAlign": "left"
+                    },
+                    {
+                      "type": "text", "id": "prob_ssr_prob_label", "x": 200, "y": 20, "width": 100, "height": 30,
+                      "text": "抽取概率", "fontSize": 13, "fill": "#666666", "textAlign": "left"
+                    },
+                    {
+                      "type": "rect", "id": "prob_ssr_prob_input", "x": 200, "y": 50, "width": 100, "height": 36,
+                      "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_ssr_prob_value", "x": 8, "y": 0, "width": 60, "height": 36, "text": "2", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 36 },
+                        { "type": "text", "id": "prob_ssr_prob_unit", "x": 70, "y": 0, "width": 24, "height": 36, "text": "%", "fontSize": 14, "fill": "#999999", "textAlign": "left", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "text", "id": "prob_ssr_stock_label", "x": 340, "y": 20, "width": 100, "height": 30,
+                      "text": "库存总量", "fontSize": 13, "fill": "#666666", "textAlign": "left"
+                    },
+                    {
+                      "type": "rect", "id": "prob_ssr_stock_input", "x": 340, "y": 50, "width": 120, "height": 36,
+                      "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_ssr_stock_value", "x": 8, "y": 0, "width": 70, "height": 36, "text": "100", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 36 },
+                        { "type": "text", "id": "prob_ssr_stock_unit", "x": 80, "y": 0, "width": 36, "height": 36, "text": "张", "fontSize": 12, "fill": "#999999", "textAlign": "left", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "text", "id": "prob_sr_label", "x": 20, "y": 70, "width": 150, "height": 30,
+                      "text": "SR（稀有）", "fontSize": 14, "fontWeight": "bold", "fill": "#FA8C16", "textAlign": "left"
+                    },
+                    {
+                      "type": "text", "id": "prob_sr_prob_label", "x": 200, "y": 70, "width": 100, "height": 30,
+                      "text": "抽取概率", "fontSize": 13, "fill": "#666666", "textAlign": "left"
+                    },
+                    {
+                      "type": "rect", "id": "prob_sr_prob_input", "x": 200, "y": 100, "width": 100, "height": 36,
+                      "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_sr_prob_value", "x": 8, "y": 0, "width": 60, "height": 36, "text": "18", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 36 },
+                        { "type": "text", "id": "prob_sr_prob_unit", "x": 70, "y": 0, "width": 24, "height": 36, "text": "%", "fontSize": 14, "fill": "#999999", "textAlign": "left", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "text", "id": "prob_sr_stock_label", "x": 340, "y": 70, "width": 100, "height": 30,
+                      "text": "库存总量", "fontSize": 13, "fill": "#666666", "textAlign": "left"
+                    },
+                    {
+                      "type": "rect", "id": "prob_sr_stock_input", "x": 340, "y": 100, "width": 120, "height": 36,
+                      "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_sr_stock_value", "x": 8, "y": 0, "width": 70, "height": 36, "text": "500", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 36 },
+                        { "type": "text", "id": "prob_sr_stock_unit", "x": 80, "y": 0, "width": 36, "height": 36, "text": "张", "fontSize": 12, "fill": "#999999", "textAlign": "left", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "text", "id": "prob_r_label", "x": 500, "y": 20, "width": 150, "height": 30,
+                      "text": "R（普通）", "fontSize": 14, "fontWeight": "bold", "fill": "#52C41A", "textAlign": "left"
+                    },
+                    {
+                      "type": "text", "id": "prob_r_prob_label", "x": 680, "y": 20, "width": 100, "height": 30,
+                      "text": "抽取概率", "fontSize": 13, "fill": "#666666", "textAlign": "left"
+                    },
+                    {
+                      "type": "rect", "id": "prob_r_prob_input", "x": 680, "y": 50, "width": 100, "height": 36,
+                      "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_r_prob_value", "x": 8, "y": 0, "width": 60, "height": 36, "text": "80", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 36 },
+                        { "type": "text", "id": "prob_r_prob_unit", "x": 70, "y": 0, "width": 24, "height": 36, "text": "%", "fontSize": 14, "fill": "#999999", "textAlign": "left", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "text", "id": "prob_r_stock_label", "x": 820, "y": 20, "width": 100, "height": 30,
+                      "text": "库存总量", "fontSize": 13, "fill": "#666666", "textAlign": "left"
+                    },
+                    {
+                      "type": "rect", "id": "prob_r_stock_input", "x": 820, "y": 50, "width": 120, "height": 36,
+                      "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_r_stock_value", "x": 8, "y": 0, "width": 70, "height": 36, "text": "-1", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 36 },
+                        { "type": "text", "id": "prob_r_stock_unit", "x": 80, "y": 0, "width": 36, "height": 36, "text": "不限量", "fontSize": 12, "fill": "#999999", "textAlign": "left", "lineHeight": 36 }
+                      ]
+                    },
+                    {
+                      "type": "rect",
+                      "id": "prob_summary",
+                      "x": 20, "y": 110, "width": 300, "height": 30,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "prob_summary_text", "x": 12, "y": 0, "width": 276, "height": 30, "text": "概率总和：100% ✅", "fontSize": 13, "fontWeight": "bold", "fill": "#52C41A", "textAlign": "left", "lineHeight": 30 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "label_draw10_guarantee",
+                  "x": 32,
+                  "y": 680,
+                  "width": 300,
+                  "height": 30,
+                  "text": "* 10 连抽必中等级",
+                  "fontSize": 14,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "select_draw10_guarantee",
+                  "x": 32,
+                  "y": 716,
+                  "width": 300,
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "select_draw10_guarantee_value", "x": 12, "y": 0, "width": 276, "height": 44, "text": "SR（稀有）", "fontSize": 14, "fill": "#333333", "textAlign": "left", "lineHeight": 44 }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "select_draw10_hint",
+                  "x": 32,
+                  "y": 766,
+                  "width": 400,
+                  "height": 24,
+                  "text": "用户 10 连抽必中该等级或以上",
+                  "fontSize": 12,
+                  "fill": "#999999",
+                  "textAlign": "left"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "admin_order",
+      "x": 0,
+      "y": 2700,
+      "name": "运营后台 - 订单管理",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F5F7FA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "rect",
+          "id": "admin_order_sidebar",
+          "x": 0,
+          "y": 0,
+          "width": 240,
+          "height": 900,
+          "fill": "#1A1A2E",
+          "children": [
+            {
+              "type": "text",
+              "id": "admin_order_logo",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 60,
+              "text": "🏪 电子吧唧管理",
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "fill": "#FFFFFF",
+              "textAlign": "center"
+            },
+            {
+              "type": "text",
+              "id": "admin_order_menu_group_1",
+              "x": 24,
+              "y": 100,
+              "width": 192,
+              "height": 30,
+              "text": "IP 包管理",
+              "fontSize": 12,
+              "fontWeight": "bold",
+              "fill": "rgba(255,255,255,0.5)",
+              "textAlign": "left"
+            },
+            {
+              "type": "rect",
+              "id": "admin_order_menu_ip_list",
+              "x": 0,
+              "y": 130,
+              "width": 240,
+              "height": 44,
+              "fill": "transparent",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin_order_menu_ip_list_text",
+                  "x": 24,
+                  "y": 0,
+                  "width": 200,
+                  "height": 44,
+                  "text": "📋 IP 包列表",
+                  "fontSize": 14,
+                  "fill": "rgba(255,255,255,0.7)",
+                  "textAlign": "left",
+                  "lineHeight": 44
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "admin_order_menu_group_2",
+              "x": 24,
+              "y": 200,
+              "width": 192,
+              "height": 30,
+              "text": "订单管理",
+              "fontSize": 12,
+              "fontWeight": "bold",
+              "fill": "rgba(255,255,255,0.5)",
+              "textAlign": "left"
+            },
+            {
+              "type": "rect",
+              "id": "admin_order_menu_order",
+              "x": 0,
+              "y": 230,
+              "width": 240,
+              "height": 44,
+              "fill": "rgba(255,255,255,0.15)",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin_order_menu_order_text",
+                  "x": 24,
+                  "y": 0,
+                  "width": 200,
+                  "height": 44,
+                  "text": "📄 订单列表",
+                  "fontSize": 14,
+                  "fill": "#FFFFFF",
+                  "textAlign": "left",
+                  "lineHeight": 44
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rect",
+          "id": "admin_order_content",
+          "x": 240,
+          "y": 0,
+          "width": 1200,
+          "height": 900,
+          "fill": "#F5F7FA",
+          "children": [
+            {
+              "type": "group",
+              "id": "order_header",
+              "x": 24,
+              "y": 24,
+              "width": 1152,
+              "height": 60,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "order_title",
+                  "x": 0,
+                  "y": 0,
+                  "width": 400,
+                  "height": 40,
+                  "text": "订单管理",
+                  "fontSize": 24,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "btn_export",
+                  "x": 952,
+                  "y": 8,
+                  "width": 200,
+                  "height": 44,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "btn_export_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 200,
+                      "height": 44,
+                      "text": "📥 导出 Excel",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "center",
+                      "lineHeight": 44
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rect",
+              "id": "order_filter_card",
+              "x": 24,
+              "y": 108,
+              "width": 1152,
+              "height": 80,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "shadow": "0 2px 8px rgba(0,0,0,0.08)",
+              "children": [
+                {
+                  "type": "rect",
+                  "id": "order_filter_input_user",
+                  "x": 20,
+                  "y": 20,
+                  "width": 200,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_filter_user_placeholder",
+                      "x": 12,
+                      "y": 0,
+                      "width": 176,
+                      "height": 40,
+                      "text": "用户 ID/手机号",
+                      "fontSize": 14,
+                      "fill": "#999999",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_filter_select_ip",
+                  "x": 240,
+                  "y": 20,
+                  "width": 200,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_filter_ip_text",
+                      "x": 12,
+                      "y": 0,
+                      "width": 176,
+                      "height": 40,
+                      "text": "全部 IP 包",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_filter_select_type",
+                  "x": 460,
+                  "y": 20,
+                  "width": 150,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_filter_type_text",
+                      "x": 12,
+                      "y": 0,
+                      "width": 126,
+                      "height": 40,
+                      "text": "全部类型",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_filter_date_start",
+                  "x": 630,
+                  "y": 20,
+                  "width": 160,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_filter_date_start_text",
+                      "x": 12,
+                      "y": 0,
+                      "width": 136,
+                      "height": 40,
+                      "text": "开始日期",
+                      "fontSize": 14,
+                      "fill": "#999999",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_filter_date_end",
+                  "x": 810,
+                  "y": 20,
+                  "width": 160,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_filter_date_end_text",
+                      "x": 12,
+                      "y": 0,
+                      "width": 136,
+                      "height": 40,
+                      "text": "结束日期",
+                      "fontSize": 14,
+                      "fill": "#999999",
+                      "textAlign": "left",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_btn_search",
+                  "x": 990,
+                  "y": 20,
+                  "width": 70,
+                  "height": 40,
+                  "fill": "#1677FF",
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_btn_search_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 70,
+                      "height": 40,
+                      "text": "查询",
+                      "fontSize": 14,
+                      "fill": "#FFFFFF",
+                      "textAlign": "center",
+                      "lineHeight": 40
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_btn_reset",
+                  "x": 1070,
+                  "y": 20,
+                  "width": 70,
+                  "height": 40,
+                  "fill": "#FFFFFF",
+                  "stroke": "#E0E0E0",
+                  "strokeWidth": 1,
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "order_btn_reset_text",
+                      "x": 0,
+                      "y": 0,
+                      "width": 70,
+                      "height": 40,
+                      "text": "重置",
+                      "fontSize": 14,
+                      "fill": "#333333",
+                      "textAlign": "center",
+                      "lineHeight": 40
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rect",
+              "id": "order_table_card",
+              "x": 24,
+              "y": 212,
+              "width": 1152,
+              "height": 500,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "shadow": "0 2px 8px rgba(0,0,0,0.08)",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "order_table_title",
+                  "x": 20,
+                  "y": 16,
+                  "width": 200,
+                  "height": 30,
+                  "text": "订单列表",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "fill": "#333333",
+                  "textAlign": "left"
+                },
+                {
+                  "type": "rect",
+                  "id": "order_table_header",
+                  "x": 0,
+                  "y": 60,
+                  "width": 1152,
+                  "height": 40,
+                  "fill": "#F8F9FA",
+                  "children": [
+                    { "type": "text", "id": "order_th_id", "x": 20, "y": 0, "width": 120, "height": 40, "text": "订单号", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_user", "x": 160, "y": 0, "width": 100, "height": 40, "text": "用户 ID", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_ip", "x": 280, "y": 0, "width": 150, "height": 40, "text": "IP 包名称", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_type", "x": 450, "y": 0, "width": 80, "height": 40, "text": "类型", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_amount", "x": 550, "y": 0, "width": 80, "height": 40, "text": "金额", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_status", "x": 650, "y": 0, "width": 80, "height": 40, "text": "状态", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_time", "x": 750, "y": 0, "width": 140, "height": 40, "text": "支付时间", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 },
+                    { "type": "text", "id": "order_th_actions", "x": 960, "y": 0, "width": 160, "height": 40, "text": "操作", "fontSize": 13, "fontWeight": "bold", "fill": "#333333", "textAlign": "left", "lineHeight": 40 }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_table_row_1",
+                  "x": 0,
+                  "y": 100,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FFFFFF",
+                  "children": [
+                    { "type": "text", "id": "order_tr1_id", "x": 20, "y": 0, "width": 120, "height": 60, "text": "ORD20260412001", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr1_user", "x": 160, "y": 0, "width": 100, "height": 60, "text": "U10001", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr1_ip", "x": 280, "y": 0, "width": 150, "height": 60, "text": "初音未来 2024", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr1_type", "x": 450, "y": 0, "width": 80, "height": 60, "text": "单抽", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr1_amount", "x": 550, "y": 0, "width": 80, "height": 60, "text": "¥9.9", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr1_status", "x": 650, "y": 12, "width": 80, "height": 36, "fill": "#F6FFED", "cornerRadius": 4, "stroke": "#B7EB8F", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "order_tr1_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已支付", "fontSize": 12, "fill": "#52C41A", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "order_tr1_time", "x": 750, "y": 0, "width": 140, "height": 60, "text": "2026-04-12 10:30", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr1_btn_detail", "x": 960, "y": 12, "width": 100, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "order_tr1_btn_detail_text", "x": 0, "y": 0, "width": 100, "height": 36, "text": "查看详情", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_table_row_2",
+                  "x": 0,
+                  "y": 160,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FAFAFA",
+                  "children": [
+                    { "type": "text", "id": "order_tr2_id", "x": 20, "y": 0, "width": 120, "height": 60, "text": "ORD20260412002", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr2_user", "x": 160, "y": 0, "width": 100, "height": 60, "text": "U10002", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr2_ip", "x": 280, "y": 0, "width": 150, "height": 60, "text": "原神 雷电将军", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr2_type", "x": 450, "y": 0, "width": 80, "height": 60, "text": "10连抽", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr2_amount", "x": 550, "y": 0, "width": 80, "height": 60, "text": "¥99", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr2_status", "x": 650, "y": 12, "width": 80, "height": 36, "fill": "#F6FFED", "cornerRadius": 4, "stroke": "#B7EB8F", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "order_tr2_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已支付", "fontSize": 12, "fill": "#52C41A", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "order_tr2_time", "x": 750, "y": 0, "width": 140, "height": 60, "text": "2026-04-12 11:15", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr2_btn_detail", "x": 960, "y": 12, "width": 100, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "order_tr2_btn_detail_text", "x": 0, "y": 0, "width": 100, "height": 36, "text": "查看详情", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_table_row_3",
+                  "x": 0,
+                  "y": 220,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FFFFFF",
+                  "children": [
+                    { "type": "text", "id": "order_tr3_id", "x": 20, "y": 0, "width": 120, "height": 60, "text": "ORD20260412003", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr3_user", "x": 160, "y": 0, "width": 100, "height": 60, "text": "U10003", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr3_ip", "x": 280, "y": 0, "width": 150, "height": 60, "text": "初音未来 2024", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr3_type", "x": 450, "y": 0, "width": 80, "height": 60, "text": "整包购买", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr3_amount", "x": 550, "y": 0, "width": 80, "height": 60, "text": "¥50", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr3_status", "x": 650, "y": 12, "width": 80, "height": 36, "fill": "#F6FFED", "cornerRadius": 4, "stroke": "#B7EB8F", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "order_tr3_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "已支付", "fontSize": 12, "fill": "#52C41A", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "order_tr3_time", "x": 750, "y": 0, "width": 140, "height": 60, "text": "2026-04-12 12:00", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr3_btn_detail", "x": 960, "y": 12, "width": 100, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "order_tr3_btn_detail_text", "x": 0, "y": 0, "width": 100, "height": 36, "text": "查看详情", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rect",
+                  "id": "order_table_row_4",
+                  "x": 0,
+                  "y": 280,
+                  "width": 1152,
+                  "height": 60,
+                  "fill": "#FAFAFA",
+                  "children": [
+                    { "type": "text", "id": "order_tr4_id", "x": 20, "y": 0, "width": 120, "height": 60, "text": "ORD20260412004", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr4_user", "x": 160, "y": 0, "width": 100, "height": 60, "text": "U10004", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr4_ip", "x": 280, "y": 0, "width": 150, "height": 60, "text": "鬼灭之刃 限定", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr4_type", "x": 450, "y": 0, "width": 80, "height": 60, "text": "单抽", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    { "type": "text", "id": "order_tr4_amount", "x": 550, "y": 0, "width": 80, "height": 60, "text": "¥0", "fontSize": 13, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr4_status", "x": 650, "y": 12, "width": 80, "height": 36, "fill": "#E6F7FF", "cornerRadius": 4, "stroke": "#91D5FF", "strokeWidth": 1,
+                      "children": [
+                        { "type": "text", "id": "order_tr4_status_text", "x": 0, "y": 0, "width": 80, "height": 36, "text": "免费", "fontSize": 12, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    },
+                    { "type": "text", "id": "order_tr4_time", "x": 750, "y": 0, "width": 140, "height": 60, "text": "2026-04-12 13:20", "fontSize": 12, "fill": "#333333", "textAlign": "left", "lineHeight": 60 },
+                    {
+                      "type": "rect", "id": "order_tr4_btn_detail", "x": 960, "y": 12, "width": 100, "height": 36, "fill": "#FFFFFF", "stroke": "#1677FF", "strokeWidth": 1, "cornerRadius": 4,
+                      "children": [
+                        { "type": "text", "id": "order_tr4_btn_detail_text", "x": 0, "y": 0, "width": 100, "height": 36, "text": "查看详情", "fontSize": 13, "fill": "#1677FF", "textAlign": "center", "lineHeight": 36 }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "id": "order_pagination",
+              "x": 476,
+              "y": 740,
+              "width": 400,
+              "height": 40,
+              "children": [
+                { "type": "rect", "id": "order_page_prev", "x": 0, "y": 0, "width": 80, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "order_page_prev_text", "x": 0, "y": 0, "width": 80, "height": 40, "text": "上一页", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "order_page_1", "x": 100, "y": 0, "width": 40, "height": 40, "fill": "#1677FF", "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "order_page_1_text", "x": 0, "y": 0, "width": 40, "height": 40, "text": "1", "fontSize": 14, "fill": "#FFFFFF", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "order_page_2", "x": 160, "y": 0, "width": 40, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "order_page_2_text", "x": 0, "y": 0, "width": 40, "height": 40, "text": "2", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "order_page_3", "x": 220, "y": 0, "width": 40, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "order_page_3_text", "x": 0, "y": 0, "width": 40, "height": 40, "text": "3", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]},
+                { "type": "rect", "id": "order_page_next", "x": 280, "y": 0, "width": 80, "height": 40, "fill": "#FFFFFF", "stroke": "#E0E0E0", "strokeWidth": 1, "cornerRadius": 4, "children": [
+                  { "type": "text", "id": "order_page_next_text", "x": 0, "y": 0, "width": 80, "height": 40, "text": "下一页", "fontSize": 14, "fill": "#333333", "textAlign": "center", "lineHeight": 40 }
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

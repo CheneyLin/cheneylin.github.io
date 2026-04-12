@@ -220,7 +220,7 @@
 <body>
   <div class="header">
     <span class="header-title">众筹</span>
-    <span class="version-badge">v1.0</span>
+    <span class="version-badge" id="versionBadge">v1.1</span>
     <div class="divider"></div>
     <div class="controls">
       <div class="product-btns">
@@ -237,18 +237,19 @@
       <div class="width-control">
         <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
-          <option value="1.0" selected>v1.0</option>
+          <option value="1.0">v1.0</option>
+          <option value="1.1" selected>v1.1</option>
         </select>
       </div>
     </div>
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.0/prd_html/prd_v1.0.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.0/prototype_html/admin_prototype_v1.0.html"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/admin_prototype_v1.1.html"></iframe>
     </div>
   </div>
 
@@ -262,7 +263,7 @@
     const rightPane = document.querySelector('.right');
     const splitter = document.getElementById('splitter');
     let currentProduct = 'admin';
-    let currentVersion = '1.0';
+    let currentVersion = '1.1';
     let pendingHighlightId = null;
 
     protoFrame.addEventListener('load', () => {
@@ -273,6 +274,7 @@
 
     function switchVersion(version) {
       currentVersion = version;
+      document.getElementById('versionBadge').textContent = `v${version}`;
       prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
       if (currentProduct === 'app') {
         protoFrame.src = `./v${version}/prototype_html/app_prototype_v${version}.html`;

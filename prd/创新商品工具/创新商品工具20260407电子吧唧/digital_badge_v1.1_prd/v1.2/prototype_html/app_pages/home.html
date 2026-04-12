@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吧唧背包 - 电子吧唧 v1.2</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #AF75F8;
+            --primary-purple-light: #E5E2F9;
+            --primary-purple-lighter: #F6F4FD;
+            --primary-purple-gradient: #B4A1FA;
+            --text-primary: #202020;
+            --text-secondary: #999999;
+            --text-white: #FFFFFF;
+            --bg-white: #FFFFFF;
+            --bg-light: #F6F6F6;
+            --success-green: #1AB85C;
+            --border-color: rgba(0, 0, 0, 0.06);
+            --shadow-card: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-nav: 0px 8px 0px 0px #FFFFFF;
+            --ring-border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "PingFang SC", "Source Han Sans CN", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-white);
+            min-height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--bg-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--text-primary);
+            border-radius: 0 0 18px 18px;
+            z-index: 100;
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            height: 44px;
+            background: rgba(255, 255, 255, 0);
+            position: relative;
+            padding: 0 16px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-white);
+            font-family: "Inter", sans-serif;
+        }
+
+        .status-bar-icons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-bar-icons i {
+            font-size: 14px;
+        }
+
+        /* Banner 背景 - 整页固定 */
+        .banner-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 375px;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .banner-bg img {
+            width: 100%;
+            /* height: 100%;
+            object-fit: cover; */
+            display: block;
+        }
+
+        .banner-bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%,  rgba(246, 244, 253, 1.0) 200px,  rgba(246, 244, 253, 1.0) 100%);
+        }
+
+        /* 导航栏 */
+        .nav-bar {
+            width: 100%;
+            height: 44px;
+            /* background: var(--bg-white); */
+            /* box-shadow: var(--shadow-nav); */
+            position: relative;
+            z-index: 40;
+        }
+
+        .nav-bar-inner {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        .nav-back:hover {
+            opacity: 0.7;
+        }
+
+        .nav-back i {
+            font-size: 20px;
+        }
+
+        .nav-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .import-btn {
+            width: 80px;
+            height: 28px;
+            background: var(--bg-white);
+            color: var(--primary-purple);
+            border: 0.5px solid var(--primary-purple);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Source Han Sans CN", sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            box-sizing: border-box;
+        }
+
+        .import-btn:hover {
+            background: var(--primary-purple-lighter);
+            transform: translateY(-1px);
+        }
+
+        /* Tab 切换组件 */
+        .tab-switcher {
+            width: 100%;
+            height: 48px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .tab-item {
+            flex: 1;
+            height: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 0 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .tab-label {
+            font-size: 16px;
+            line-height: 22px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .tab-item.active .tab-label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .tab-item:not(.active) .tab-label {
+            color: var(--text-secondary);
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            width: 20px;
+            background: var(--primary-purple-gradient);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-item.active .tab-indicator {
+            opacity: 1;
+        }
+
+        .tab-item:not(.active) .tab-indicator {
+            opacity: 0;
+        }
+
+        /* 用户信息卡片 */
+        .user-card {
+            /* background: var(--bg-white); */
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* border-bottom: 1px solid var(--border-color); */
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-card);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .user-meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .device-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .device-name i {
+            font-size: 10px;
+        }
+
+        .connection-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .status-connected {
+            color: var(--success-green);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-connected::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--success-green);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* 吧唧网格 */
+        .badge-section {
+            background: transparent;
+            padding: 16px;
+            height: calc(812px - 44px - 88px - 48px - 89px);
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .badge-section::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .badge-card {
+            background: var(--bg-white);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .badge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        .badge-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            overflow: hidden;
+            box-shadow: var(--ring-border);
+        }
+
+        .badge-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .badge-name {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+
+        <!-- 固定整页背景 -->
+        <div class="banner-bg">
+            <img src="../../assets/banner-bg.webp" alt="Banner" onerror="this.style.background='linear-gradient(135deg, #E5E2F9 0%, #AF75F8 100%)';">
+            <div class="banner-bg-overlay"></div>
+        </div>
+
+        <!-- 内容层 -->
+        <div style="position: relative; z-index: 1;">
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <span>9:41</span>
+                <div class="status-bar-icons">
+                    <i class="bi bi-reception-4"></i>
+                    <i class="bi bi-wifi"></i>
+                    <i class="bi bi-battery-full"></i>
+                </div>
+            </div>
+
+            <!-- 导航栏 -->
+            <div class="nav-bar">
+                <div class="nav-bar-inner">
+                    <div class="nav-back">
+                        <i class="bi bi-chevron-left"></i>
+                    </div>
+                    <div class="nav-title">吧唧背包</div>
+                    <button class="import-btn" onclick="navigateToProtocol()">
+                        导入图片
+                    </button>
+                </div>
+            </div>
+
+            <!-- 用户信息卡片 -->
+            <div class="user-card">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <img src="../../assets/avatar-default.jpeg" alt="Avatar" onerror="this.style.background='#f0f0f0';">
+                    </div>
+                    <div class="user-meta">
+                        <div class="user-name">用昵称的上限是十二个字符</div>
+                        <div class="device-name">设备名称显示显示显示 <i class="bi bi-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="connection-status">
+                    <span class="status-connected">已连接</span>
+                </div>
+            </div>
+
+            <!-- Tab 切换 -->
+            <div class="tab-switcher">
+                <div class="tab-item active" onclick="switchTab(this, 'unlock')">
+                    <span class="tab-label">待解锁</span>
+                    <div class="tab-indicator"></div>
+                </div>
+                <div class="tab-item" onclick="switchTab(this, 'owned')">
+                    <span class="tab-label">已拥有 (123)</span>
+                    <div class="tab-indicator"></div>
+                </div>
+            </div>
+
+            <!-- 吧唧网格区域 -->
+            <div class="badge-section" id="badgeSection">
+                <div class="badge-grid" id="badgeGrid">
+                    <!-- 内容根据 Tab 切换动态渲染 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab 数据
+        const tabData = {
+            unlock: [
+                { name: '吧唧名称 1', img: '../../assets/badge-1.jpeg' },
+                { name: '吧唧名称 2', img: '../../assets/badge-2.jpg' },
+                { name: '吧唧名称 3', img: '../../assets/badge-3.jpeg' },
+                { name: '吧唧名称 4', img: '../../assets/badge-4.jpg' }
+            ],
+            owned: [
+                { name: '已拥有 1', img: '../../assets/badge-1.jpeg' },
+                { name: '已拥有 2', img: '../../assets/badge-2.jpg' },
+                { name: '已拥有 3', img: '../../assets/badge-3.jpeg' },
+                { name: '已拥有 4', img: '../../assets/badge-4.jpg' },
+                { name: '已拥有 5', img: '../../assets/badge-1.jpeg' },
+                { name: '已拥有 6', img: '../../assets/badge-2.jpg' }
+            ]
+        };
+
+        // 渲染吧唧网格
+        function renderBadges(tab) {
+            const grid = document.getElementById('badgeGrid');
+            const data = tabData[tab] || [];
+            grid.innerHTML = data.map(item => `
+                <div class="badge-card">
+                    <div class="badge-img">
+                        <img src="${item.img}" alt="${item.name}" onerror="this.style.background='#f0f0f0';">
+                    </div>
+                    <div class="badge-name">${item.name}</div>
+                </div>
+            `).join('');
+        }
+
+        // 切换 Tab
+        function switchTab(el, tab) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            renderBadges(tab);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBadges('unlock');
+        });
+
+        function navigateToProtocol() {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: 'protocol.html' }, '*');
+            }
+        }
+    </script>
+</body>
+</html>

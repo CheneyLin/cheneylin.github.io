@@ -185,7 +185,7 @@
 <body>
   <div class="header">
     <span class="header-title">电子吧唧</span>
-    <span class="version-badge">v1.1</span>
+    <span class="version-badge" id="currentVersionBadge">v1.2</span>
     <div class="divider"></div>
     <div class="controls">
       <div class="width-control">
@@ -197,18 +197,19 @@
       <div class="width-control">
         <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
-          <option value="1.1" selected>v1.1</option>
+          <option value="1.1">v1.1</option>
+          <option value="1.2" selected>v1.2 - 高保真视觉升级</option>
         </select>
       </div>
     </div>
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v1.2/prd_html/prd_v1.2.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/app_v1.1.html"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v1.2/prototype_html/app_v1.2.html"></iframe>
     </div>
   </div>
 
@@ -221,7 +222,7 @@
     const leftPane = document.querySelector('.left');
     const rightPane = document.querySelector('.right');
     const splitter = document.getElementById('splitter');
-    let currentVersion = '1.1';
+    let currentVersion = '1.2';
     let pendingHighlightId = null;
 
     // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
@@ -233,6 +234,8 @@
 
     function switchVersion(version) {
       currentVersion = version;
+      // 更新版本号徽章
+      document.getElementById('currentVersionBadge').textContent = `v${version}`;
       // 切换 PRD 文档
       prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
       // 切换原型文件

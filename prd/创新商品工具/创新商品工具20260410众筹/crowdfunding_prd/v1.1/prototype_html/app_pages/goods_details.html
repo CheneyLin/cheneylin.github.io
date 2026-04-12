@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情</title>
+    <link href="../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #F6F6F6; color: #171717; max-width: 375px; margin: 0 auto; min-height: 812px; }
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 16px; font-weight: 600; }
+        .content { padding-bottom: 80px; }
+        .goods-cover { width: 100%; height: 375px; background: linear-gradient(180deg, rgba(24, 61, 105, 0.7) 0%, rgba(18, 30, 44, 0.9) 100%), url('https://image-resource.mastergo.com/44975189849858/44975189849859/14697bc679600881d14b88a2ce0f9575.png'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; position: relative; }
+        .cover-placeholder { width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .cover-placeholder i { font-size: 48px; color: rgba(255,255,255,0.5); }
+        .cover-nav { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; }
+        .cover-nav-btn { width: 36px; height: 36px; background: rgba(0,0,0,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; cursor: pointer; }
+        .page-indicator { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+        .page-dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+        .page-dot.active { background: #fff; width: 18px; border-radius: 3px; }
+        .subsidy-card { margin: 12px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .subsidy-header { background: linear-gradient(180deg, #393939 0%, #030303 100%); padding: 12px 16px; display: flex; align-items: center; gap: 12px; position: relative; }
+        .subsidy-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(24, 61, 105, 0.7) 0%, rgba(18, 30, 44, 0.9) 100%); pointer-events: none; }
+        .subsidy-price-wrap { position: relative; z-index: 1; display: flex; align-items: baseline; gap: 4px; }
+        .subsidy-currency { font-family: 'DIN Alternate', sans-serif; font-size: 14px; font-weight: bold; color: #fff; }
+        .subsidy-price { font-family: 'DIN Alternate', sans-serif; font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0px 1px 2px #FD5101; }
+        .subsidy-tag { position: relative; z-index: 1; background: linear-gradient(256deg, #9174E1 0%, #6FFFAB 100%); padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 500; color: #fff; margin-left: auto; box-shadow: inset 0px 0px 4px 0px rgba(111,255,171,0.5); }
+        .subsidy-body { padding: 12px 16px 16px; }
+        .subsidy-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .subsidy-time-label { font-size: 12px; color: #999; }
+        .subsidy-time-value { font-family: 'DIN Alternate', sans-serif; font-size: 12px; color: #fff; background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); padding: 2px 8px; border-radius: 4px; }
+        .subsidy-original { display: flex; align-items: center; gap: 6px; }
+        .subsidy-original-label { font-size: 11px; color: rgba(255,255,255,0.6); }
+        .subsidy-original-price { font-family: 'DIN Alternate', sans-serif; font-size: 12px; color: rgba(255,255,255,0.6); text-decoration: line-through; }
+        .subsidy-badges { display: flex; gap: 8px; margin-top: 12px; }
+        .badge { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
+        .badge-purple { background: #9174E1; color: #fff; }
+        .badge-green { background: linear-gradient(90deg, rgba(255, 88, 105, 0.24) -1%, rgba(255, 145, 162, 0.16) 100%); color: #F92121; }
+        .goods-info { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; }
+        .goods-title { font-size: 17px; font-weight: 600; color: #202020; margin-bottom: 8px; line-height: 1.4; }
+        .goods-desc { font-size: 12px; color: #999; line-height: 1.6; }
+        .promotion-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+        .promo-tag { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: #FFF3F4; border-radius: 4px; font-size: 11px; color: #F92121; }
+        .condition-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; }
+        .condition-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .condition-icon { width: 24px; height: 24px; background: linear-gradient(135deg, #9174E1 0%, #6FFFAB 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; }
+        .condition-title { font-size: 15px; font-weight: 600; color: #202020; }
+        .condition-list { display: flex; flex-direction: column; gap: 10px; }
+        .condition-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: #fafafa; border-radius: 8px; }
+        .condition-item.checked { background: #f0fff4; border: 1px solid #28a745; }
+        .condition-check { width: 20px; height: 20px; border: 2px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; flex-shrink: 0; }
+        .condition-item.checked .condition-check { background: #28a745; border-color: #28a745; }
+        .condition-text { flex: 1; }
+        .condition-name { font-size: 14px; font-weight: 500; color: #202020; margin-bottom: 2px; }
+        .condition-hint { font-size: 11px; color: #999; }
+        .condition-item.checked .condition-hint { color: #28a745; }
+        .shop-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .shop-info { display: flex; align-items: center; gap: 12px; }
+        .shop-avatar { width: 44px; height: 44px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
+        .shop-name { font-size: 15px; font-weight: 600; color: #202020; }
+        .shop-label { font-size: 11px; color: #9174E1; background: rgba(145,116,225,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+        .shop-desc { font-size: 12px; color: #999; margin-top: 2px; }
+        .shop-arrow { color: #ccc; font-size: 18px; }
+        .detail-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; }
+        .detail-header { font-size: 15px; font-weight: 600; color: #202020; margin-bottom: 12px; }
+        .detail-images { display: flex; flex-direction: column; gap: 8px; }
+        .detail-img-placeholder { width: 100%; height: 200px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 32px; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; max-width: 375px; margin: 0 auto; background: #fff; border-top: 1px solid #f0f0f0; padding: 12px 16px; display: flex; gap: 12px; z-index: 100; }
+        .btn-contact { width: 52px; background: #fff; border: 1px solid #e4e7ed; color: #666; padding: 10px; border-radius: 8px; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+        .btn-contact i { font-size: 18px; }
+        .btn-buy { flex: 1; background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); border: none; color: #fff; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn-buy:disabled { background: #ccc; cursor: not-allowed; }
+        .condition-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+        .condition-modal.show { display: flex; }
+        .condition-modal-content { background: #fff; width: 100%; max-width: 375px; max-height: 70vh; border-radius: 16px 16px 0 0; overflow-y: auto; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .condition-modal-header { padding: 16px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
+        .condition-modal-title { font-size: 16px; font-weight: 600; }
+        .condition-modal-close { font-size: 20px; color: #999; cursor: pointer; }
+        .condition-modal-body { padding: 16px; }
+        .condition-modal-item { padding: 14px; background: #fafafa; border-radius: 10px; margin-bottom: 12px; }
+        .condition-modal-item-title { font-size: 14px; font-weight: 600; color: #202020; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .condition-modal-item-title i { color: #9174E1; }
+        .condition-modal-item-desc { font-size: 12px; color: #666; line-height: 1.6; }
+        .condition-modal-item-progress { margin-top: 10px; }
+        .condition-progress-bar { height: 6px; background: #e4e7ed; border-radius: 3px; overflow: hidden; }
+        .condition-progress-fill { height: 100%; background: linear-gradient(90deg, #9174E1 0%, #6FFFAB 100%); border-radius: 3px; }
+        .condition-progress-text { display: flex; justify-content: space-between; font-size: 11px; color: #999; margin-top: 4px; }
+        .condition-btn { width: 100%; background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); border: none; color: #fff; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 12px; }
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span><i class="bi bi-chevron-left"></i></span>
+        <span>商品详情</span>
+        <span><i class="bi bi-share"></i></span>
+    </div>
+
+    <div class="content">
+        <div class="prototype-module" data-prototype="goods_details_cover">
+            <div class="goods-cover">
+                <div class="cover-placeholder">
+                    <i class="bi bi-image"></i>
+                </div>
+                <div class="cover-nav">
+                    <div class="cover-nav-btn"><i class="bi bi-chevron-left"></i></div>
+                    <div class="cover-nav-btn"><i class="bi bi-chevron-right"></i></div>
+                </div>
+                <div class="page-indicator">
+                    <div class="page-dot active"></div>
+                    <div class="page-dot"></div>
+                    <div class="page-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="subsidy_card">
+            <div class="subsidy-card">
+                <div class="subsidy-header">
+                    <div class="subsidy-price-wrap">
+                        <span class="subsidy-currency">¥</span>
+                        <span class="subsidy-price">399</span>
+                    </div>
+                    <div class="subsidy-tag">抢购价</div>
+                </div>
+                <div class="subsidy-body">
+                    <div class="subsidy-row">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="subsidy-time-label">结束时间</span>
+                            <span class="subsidy-time-value">12月25日 23:59</span>
+                        </div>
+                        <div class="subsidy-original">
+                            <span class="subsidy-original-label">优惠前</span>
+                            <span class="subsidy-original-price">¥460</span>
+                        </div>
+                    </div>
+                    <div class="subsidy-badges">
+                        <div class="badge badge-purple">
+                            <i class="bi bi-shield-check"></i>
+                            <span>硬核补贴</span>
+                        </div>
+                        <div class="badge badge-green">
+                            <i class="bi bi-tag"></i>
+                            <span>全网最低价</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="goods_info">
+            <div class="goods-info">
+                <div class="goods-title">呢子抗皱性好，耐磨，PU皮韧性大易打理</div>
+                <div class="goods-desc">精选优质面料，时尚百搭，经典款式</div>
+                <div class="promotion-tags">
+                    <div class="promo-tag"><i class="bi bi-check-circle"></i>七天退换</div>
+                    <div class="promo-tag"><i class="bi bi-truck"></i>包邮</div>
+                    <div class="promo-tag"><i class="bi bi-credit-card"></i>先验后付</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="purchase_condition">
+            <div class="condition-section" onclick="showConditionModal()">
+                <div class="condition-header">
+                    <div class="condition-icon"><i class="bi bi-check2-all"></i></div>
+                    <span class="condition-title">购买条件</span>
+                    <span style="margin-left: auto; font-size: 12px; color: #999;">查看详情<i class="bi bi-chevron-right" style="margin-left: 2px;"></i></span>
+                </div>
+                <div class="condition-list">
+                    <div class="condition-item checked">
+                        <div class="condition-check"><i class="bi bi-check"></i></div>
+                        <div class="condition-text">
+                            <div class="condition-name">参与过众筹项目</div>
+                            <div class="condition-hint">已满足 · 2024年3月21日 12:00</div>
+                        </div>
+                    </div>
+                    <div class="condition-item checked">
+                        <div class="condition-check"><i class="bi bi-check"></i></div>
+                        <div class="condition-text">
+                            <div class="condition-name">完成实名认证</div>
+                            <div class="condition-hint">已满足</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="shop_info">
+            <div class="shop-section">
+                <div class="shop-info">
+                    <div class="shop-avatar"><i class="bi bi-shop"></i></div>
+                    <div>
+                        <div class="shop-name">官方旗舰店<span class="shop-label">自营</span></div>
+                        <div class="shop-desc">在售商品 128 件 · 好评率 98%</div>
+                    </div>
+                </div>
+                <div class="shop-arrow"><i class="bi bi-chevron-right"></i></div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="goods_detail_images">
+            <div class="detail-section">
+                <div class="detail-header">商品详情</div>
+                <div class="detail-images">
+                    <div class="detail-img-placeholder"><i class="bi bi-image"></i></div>
+                    <div class="detail-img-placeholder"><i class="bi bi-image"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="btn-contact">
+            <i class="bi bi-chat-dots"></i>
+            <span>客服</span>
+        </div>
+        <button class="btn-buy" onclick="handleBuy()">立即购买</button>
+    </div>
+
+    <div class="condition-modal" id="conditionModal">
+        <div class="condition-modal-content">
+            <div class="condition-modal-header">
+                <span class="condition-modal-title">购买条件说明</span>
+                <span class="condition-modal-close" onclick="hideConditionModal()"><i class="bi bi-x-lg"></i></span>
+            </div>
+            <div class="condition-modal-body">
+                <div class="condition-modal-item">
+                    <div class="condition-modal-item-title"><i class="bi bi-people"></i>参与过众筹项目</div>
+                    <div class="condition-modal-item-desc">本商品为硬核补贴专享商品，仅对曾经参与过众筹项目的用户开放购买。您已参与"星际探险家系列周边"众筹项目。</div>
+                    <div class="condition-modal-item-progress">
+                        <div class="condition-progress-bar">
+                            <div class="condition-progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <div class="condition-progress-text">
+                            <span>条件状态</span>
+                            <span>已满足</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="condition-modal-item">
+                    <div class="condition-modal-item-title"><i class="bi bi-person-badge"></i>完成实名认证</div>
+                    <div class="condition-modal-item-desc">根据相关法规要求，购买商品需完成实名认证。请确保您的账号已完成实名认证。</div>
+                    <div class="condition-modal-item-progress">
+                        <div class="condition-progress-bar">
+                            <div class="condition-progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <div class="condition-progress-text">
+                            <span>条件状态</span>
+                            <span>已满足</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="condition-btn" onclick="hideConditionModal()">我知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showConditionModal() {
+            document.getElementById('conditionModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideConditionModal() {
+            document.getElementById('conditionModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function handleBuy() {
+            alert('正在跳转支付页面...');
+        }
+
+        document.getElementById('conditionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideConditionModal();
+            }
+        });
+    </script>
+</body>
+</html>
