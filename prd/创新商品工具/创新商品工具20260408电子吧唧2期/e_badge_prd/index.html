@@ -252,6 +252,9 @@
     </div>
   </div>
 
+  <!-- 隐藏预加载容器 -->
+  <div id="preloadContainer" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;"></div>
+
   <script>
     const prdFrame = document.getElementById('prdFrame');
     const protoFrame = document.getElementById('protoFrame');
@@ -261,16 +264,145 @@
     const leftPane = document.querySelector('.left');
     const rightPane = document.querySelector('.right');
     const splitter = document.getElementById('splitter');
+    const preloadContainer = document.getElementById('preloadContainer');
     let currentProduct = 'app';
     let currentVersion = '1.0';
     let pendingHighlightId = null;
 
+    // 原型预加载管理器
+    const PrototypePreloader = {
+      // iframe池：缓存已加载的原型iframe
+      iframePool: new Map(),
+      // 记录已预加载的页面
+      preloadedPages: new Set(),
+      // 当前正在预加载的队列
+      preloadQueue: [],
+      isPreloading: false,
+      // 当前显示的原型src
+      currentVisibleSrc: null,
+
+      // 获取iframe的key
+      getIframeKey(src) {
+        return src;
+      },
+
+      // 创建隐藏的预加载iframe
+      createPreloadIframe(src) {
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;';
+        iframe.className = 'preload-iframe';
+        return iframe;
+      },
+
+      // 预加载单个页面
+      preload(src) {
+        const key = this.getIframeKey(src);
+        if (this.preloadedPages.has(key)) return;
+
+        this.preloadedPages.add(key);
+        const iframe = this.createPreloadIframe(src);
+        this.iframePool.set(key, iframe);
+        preloadContainer.appendChild(iframe);
+        
+        // 为预加载的iframe也添加监听器
+        iframe.addEventListener('load', () => {
+          if (!pendingHighlightId) return;
+          iframe.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+          pendingHighlightId = null;
+        });
+        
+        console.log('[预加载]', src);
+      },
+
+      // 批量预加载所有原型
+      preloadAllPrototypes(versions, products) {
+        const srcs = [];
+        versions.forEach(version => {
+          products.forEach(product => {
+            const src = `./v${version}/prototype_html/${product}_prototype_v${version}.html`;
+            srcs.push(src);
+          });
+        });
+
+        // 串行预加载，避免并发过多
+        this.preloadQueue = srcs;
+        this.startPreloadQueue();
+      },
+
+      startPreloadQueue() {
+        if (this.isPreloading || this.preloadQueue.length === 0) return;
+        this.isPreloading = true;
+        this.preloadNext();
+      },
+
+      preloadNext() {
+        if (this.preloadQueue.length === 0) {
+          this.isPreloading = false;
+          console.log('[预加载] 全部完成');
+          return;
+        }
+
+        const src = this.preloadQueue.shift();
+        this.preload(src);
+
+        // 每个iframe加载后延迟100ms再加载下一个，避免浏览器压力
+        const key = this.getIframeKey(src);
+        const iframe = this.iframePool.get(key);
+        if (iframe) {
+          iframe.onload = () => {
+            setTimeout(() => this.preloadNext(), 100);
+          };
+        } else {
+          // 如果iframe创建失败，继续下一个
+          setTimeout(() => this.preloadNext(), 100);
+        }
+      },
+
+      // 快速切换原型（从缓存获取）
+      switchProto(protoFrame, newSrc) {
+        const key = this.getIframeKey(newSrc);
+        const cachedIframe = this.iframePool.get(key);
+
+        if (cachedIframe) {
+          // 记录当前显示的src
+          const oldSrc = this.currentVisibleSrc || protoFrame.src;
+          const oldKey = this.getIframeKey(oldSrc);
+
+          // 隐藏当前显示的iframe
+          protoFrame.style.display = 'none';
+          protoFrame.id = '';
+          protoFrame.className = 'preload-iframe';
+          protoFrame.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;';
+          preloadContainer.appendChild(protoFrame);
+          this.iframePool.set(oldKey, protoFrame);
+
+          // 显示缓存的iframe
+          cachedIframe.id = 'protoFrame';
+          cachedIframe.className = 'frame';
+          cachedIframe.style.cssText = 'width:100%;height:100%;border:0;display:block;';
+          rightPane.appendChild(cachedIframe);
+
+          // 更新引用和状态
+          this.currentVisibleSrc = newSrc;
+          window.protoFrame = cachedIframe;
+          console.log('[切换] 使用预加载缓存', newSrc);
+          return true;
+        }
+        return false;
+      }
+    };
+
     // iframe 切换到另一个原型后，等待加载完成再发送高亮指令
-    protoFrame.addEventListener('load', () => {
-      if (!pendingHighlightId) return;
-      protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
-      pendingHighlightId = null;
-    });
+    function setupProtoFrameListener(iframe) {
+      iframe.addEventListener('load', () => {
+        if (!pendingHighlightId) return;
+        iframe.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+        pendingHighlightId = null;
+      });
+    }
+    setupProtoFrameListener(protoFrame);
+    PrototypePreloader.currentVisibleSrc = protoFrame.src;
 
     function switchVersion(version) {
       currentVersion = version;
@@ -278,9 +410,17 @@
       prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
       // 切换原型文件
       if (currentProduct === 'app') {
-        protoFrame.src = `./v${version}/prototype_html/app_prototype_v${version}.html`;
+        const newSrc = `./v${version}/prototype_html/app_prototype_v${version}.html`;
+        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
+          protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
       } else if (currentProduct === 'admin') {
-        protoFrame.src = `./v${version}/prototype_html/admin_prototype_v${version}.html`;
+        const newSrc = `./v${version}/prototype_html/admin_prototype_v${version}.html`;
+        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
+          protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
       }
     }
 
@@ -290,10 +430,19 @@
         btn.classList.remove('active');
         if (btn.dataset.product === product) btn.classList.add('active');
       });
+      console.log('切换产品：', product);
       if (product === 'app') {
-        protoFrame.src = `./v${currentVersion}/prototype_html/app_prototype_v${currentVersion}.html`;
+        const newSrc = `./v${currentVersion}/prototype_html/app_prototype_v${currentVersion}.html`;
+        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
+          protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
       } else if (product === 'admin') {
-        protoFrame.src = `./v${currentVersion}/prototype_html/admin_prototype_v${currentVersion}.html`;
+        const newSrc = `./v${currentVersion}/prototype_html/admin_prototype_v${currentVersion}.html`;
+        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
+          protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
       }
     }
 
@@ -321,19 +470,19 @@
     // 监听来自 PRD 的消息，联动原型高亮
     window.addEventListener('message', (e) => {
       const data = e.data || {};
-      
+
       // 支持两种消息格式：action: 'highlight' 或 type: 'prd-focus'
       if ((data.action === 'highlight' || data.type === 'prd-focus') && (data.featureId || data.id)) {
         const fid = String(data.featureId || data.id);
         let targetProduct = 'app';
-        
+
         // 根据功能标识前缀判断目标产品形态
         if (fid.startsWith('admin_')) {
           targetProduct = 'admin';
         } else if (fid.startsWith('app_')) {
           targetProduct = 'app';
         }
-        
+        console.log('Received highlight request for feature:', fid, 'Target product:', targetProduct, 'Current product:', currentProduct);
         // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
         if (targetProduct !== currentProduct) {
           pendingHighlightId = fid;
@@ -342,6 +491,14 @@
         }
         protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: fid }, '*');
       }
+    });
+
+    // 页面加载完成后开始预加载
+    window.addEventListener('DOMContentLoaded', () => {
+      // 预加载所有版本和产品的原型
+      const versions = ['1.0'];
+      const products = ['app', 'admin'];
+      PrototypePreloader.preloadAllPrototypes(versions, products);
     });
   </script>
 </body>
