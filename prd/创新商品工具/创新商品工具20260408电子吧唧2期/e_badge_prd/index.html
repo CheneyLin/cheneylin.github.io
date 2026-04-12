@@ -360,22 +360,27 @@
       },
 
       // 快速切换原型（从缓存获取）
-      switchProto(protoFrame, newSrc) {
+      switchProto(newSrc) {
         const key = this.getIframeKey(newSrc);
         const cachedIframe = this.iframePool.get(key);
 
         if (cachedIframe) {
+          // 获取当前显示的iframe
+          const currentIframe = window.protoFrame || protoFrame;
+          
           // 记录当前显示的src
-          const oldSrc = this.currentVisibleSrc || protoFrame.src;
+          const oldSrc = this.currentVisibleSrc || currentIframe.src;
           const oldKey = this.getIframeKey(oldSrc);
 
+          console.log('[切换] 从', oldSrc, '切换到', newSrc);
+
           // 隐藏当前显示的iframe
-          protoFrame.style.display = 'none';
-          protoFrame.id = '';
-          protoFrame.className = 'preload-iframe';
-          protoFrame.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;';
-          preloadContainer.appendChild(protoFrame);
-          this.iframePool.set(oldKey, protoFrame);
+          currentIframe.style.display = 'none';
+          currentIframe.id = '';
+          currentIframe.className = 'preload-iframe';
+          currentIframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;';
+          preloadContainer.appendChild(currentIframe);
+          this.iframePool.set(oldKey, currentIframe);
 
           // 显示缓存的iframe
           cachedIframe.id = 'protoFrame';
@@ -401,6 +406,9 @@
         pendingHighlightId = null;
       });
     }
+    
+    // 初始化window.protoFrame指向当前显示的iframe
+    window.protoFrame = protoFrame;
     setupProtoFrameListener(protoFrame);
     PrototypePreloader.currentVisibleSrc = protoFrame.src;
 
@@ -411,14 +419,14 @@
       // 切换原型文件
       if (currentProduct === 'app') {
         const newSrc = `./v${version}/prototype_html/app_prototype_v${version}.html`;
-        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
-          protoFrame.src = newSrc;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
           PrototypePreloader.currentVisibleSrc = newSrc;
         }
       } else if (currentProduct === 'admin') {
         const newSrc = `./v${version}/prototype_html/admin_prototype_v${version}.html`;
-        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
-          protoFrame.src = newSrc;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
           PrototypePreloader.currentVisibleSrc = newSrc;
         }
       }
@@ -433,14 +441,14 @@
       console.log('切换产品：', product);
       if (product === 'app') {
         const newSrc = `./v${currentVersion}/prototype_html/app_prototype_v${currentVersion}.html`;
-        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
-          protoFrame.src = newSrc;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
           PrototypePreloader.currentVisibleSrc = newSrc;
         }
       } else if (product === 'admin') {
         const newSrc = `./v${currentVersion}/prototype_html/admin_prototype_v${currentVersion}.html`;
-        if (!PrototypePreloader.switchProto(protoFrame, newSrc)) {
-          protoFrame.src = newSrc;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
           PrototypePreloader.currentVisibleSrc = newSrc;
         }
       }
@@ -489,7 +497,9 @@
           switchProduct(targetProduct);
           return;
         }
-        protoFrame.contentWindow.postMessage({ action: 'highlight', featureId: fid }, '*');
+        // 使用window.protoFrame确保获取的是当前显示的iframe
+        const currentProtoFrame = window.protoFrame || protoFrame;
+        currentProtoFrame.contentWindow.postMessage({ action: 'highlight', featureId: fid }, '*');
       }
     });
 

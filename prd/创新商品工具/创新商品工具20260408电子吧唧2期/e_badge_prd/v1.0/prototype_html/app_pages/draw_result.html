@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽选结算弹窗 - 电子吧唧 2 期</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/app_styles.css" rel="stylesheet">
+    <style>
+        .result-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card.ssr::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .result-level-ssr {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .result-level-sr {
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .result-level-r {
+            background: var(--geist-gray-100);
+            color: var(--geist-gray-600);
+            font-weight: 600;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--geist-white);
+            border-radius: 16px;
+            max-width: 350px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--geist-gray-100);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .modal-header p {
+            color: var(--geist-gray-600);
+            font-size: 13px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .result-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: var(--geist-gray-50);
+            border: 1px solid var(--geist-gray-100);
+        }
+
+        .result-item-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .result-item-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--geist-gray-100);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--geist-gray-100);
+            background: var(--geist-white);
+            color: var(--geist-black);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--geist-gray-50);
+        }
+
+        .rare-notice {
+            background: linear-gradient(135deg, #fff9e6, #fff3cc);
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rare-notice i {
+            font-size: 24px;
+            color: #ffaa00;
+        }
+
+        .rare-notice p {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+        }
+
+        .rare-notice p strong {
+            color: var(--geist-black);
+        }
+
+        .address-hint {
+            background: var(--geist-gray-50);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .address-hint p {
+            font-size: 12px;
+            color: var(--geist-gray-600);
+            margin-bottom: 8px;
+        }
+
+        .address-hint a {
+            color: var(--link-blue);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .address-hint a:hover {
+            text-decoration: underline;
+        }
+
+        .page-content {
+            padding-top: 44px;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--geist-gray-50);
+        }
+
+        .demo-hint {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .demo-hint p {
+            color: var(--geist-gray-600);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .demo-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--geist-gray-100);
+            background: var(--geist-white);
+            color: var(--geist-black);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .demo-btn:hover {
+            background: var(--geist-gray-50);
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_draw_result" class="phone-frame">
+        <div class="phone-notch"></div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <div class="demo-hint">
+                <p>抽选结算弹窗演示</p>
+                <button class="demo-btn" onclick="showModal()">
+                    <i class="bi bi-play-fill"></i> 展示弹窗
+                </button>
+            </div>
+        </div>
+
+        <!-- 弹窗遮罩 -->
+        <div class="modal-overlay" id="resultModal" style="display: none;">
+            <div class="modal-content">
+                <!-- 弹窗头部 -->
+                <div class="modal-header">
+                    <h2 id="modalTitle">恭喜获得稀有吧唧！</h2>
+                    <p id="modalSubtitle">本次抽选获得 3 张图片</p>
+                </div>
+
+                <!-- 弹窗主体 -->
+                <div class="modal-body">
+                    <!-- 稀有提示 -->
+                    <div class="rare-notice" id="rareNotice">
+                        <i class="bi bi-stars"></i>
+                        <div>
+                            <p><strong>SSR 超稀有！</strong></p>
+                            <p>稀有吧唧支持实体配送，请填写收货地址</p>
+                        </div>
+                    </div>
+
+                    <!-- 结果网格 -->
+                    <div class="result-grid">
+                        <!-- SSR 卡片 -->
+                        <div class="result-item ssr">
+                            <div class="result-item-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <i class="bi bi-emoji-smile" style="color: var(--geist-white);"></i>
+                            </div>
+                            <span class="result-item-badge result-level-ssr">SSR</span>
+                        </div>
+
+                        <!-- SR 卡片 -->
+                        <div class="result-item">
+                            <div class="result-item-image" style="background: linear-gradient(135deg, #0a72ef, #00c6ff);">
+                                <i class="bi bi-ghost" style="color: var(--geist-white);"></i>
+                            </div>
+                            <span class="result-item-badge result-level-sr">SR</span>
+                        </div>
+
+                        <!-- R 卡片 -->
+                        <div class="result-item">
+                            <div class="result-item-image" style="background: var(--geist-gray-100);">
+                                <i class="bi bi-image" style="color: var(--geist-gray-400);"></i>
+                            </div>
+                            <span class="result-item-badge result-level-r">R</span>
+                        </div>
+                    </div>
+
+                    <!-- 地址提示 -->
+                    <div class="address-hint" id="addressHint">
+                        <p><i class="bi bi-geo-alt"></i> 您还未填写收货地址</p>
+                        <a href="#" onclick="goToAddress(); return false;">
+                            去填写 <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 弹窗底部按钮 -->
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="goToGallery()">
+                        去查看
+                    </button>
+                    <button class="btn-secondary" onclick="closeModal()">
+                        继续抽选
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal() {
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+            // 返回 IP 包详情页
+            navigateToPage('ip_detail.html');
+        }
+
+        function goToGallery() {
+            // 跳转到图库
+            navigateToPage('badge_gallery.html');
+        }
+
+        function goToAddress() {
+            // 跳转到邮寄页面
+            navigateToPage('badge_delivery.html');
+        }
+
+        // 页面加载时自动显示弹窗
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                showModal();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

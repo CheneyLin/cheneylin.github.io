@@ -50,6 +50,16 @@
             overflow-x: hidden;
         }
 
+        /* 页面标题居中 */
+        h1 {
+            text-align: center;
+            margin: 20px 0 0 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 2;
+        }
+
         /* Typography */
         h1, h2, h3, h4, h5, h6 {
             font-weight: 600;
@@ -80,7 +90,7 @@
 
         /* Global View - Grid Layout */
         .global-view {
-            padding: 80px 40px;
+            padding: 40px 40px 40px 40px;
             max-width: 1800px;
             margin: 0 auto;
             background: var(--geist-white);
@@ -232,7 +242,7 @@
         /* Page Selector Bar - Top Center (Single View Only) */
         .page-selector-bar {
             position: fixed;
-            top: 20px;
+            top: 90px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--geist-white);
@@ -400,7 +410,7 @@
             }
 
             .page-dropdown {
-                top: 10px;
+                top: 70px;
                 left: 10px;
             }
         }
@@ -416,6 +426,8 @@
     </style>
 </head>
 <body>
+    <!-- Project Title -->
+    <h1>电子吧唧 2 期 APP 原型设计</h1>
     <!-- Top Center Page Selector Bar (Single View Only) - Desktop -->
     <div class="page-selector-bar single-only">
         <div class="page-item-bar active" data-page="ip_list.html" onclick="loadPage('ip_list.html', this)">
@@ -434,9 +446,17 @@
             <i class="bi bi-grid-3x3"></i>
             <span>10连抽</span>
         </div>
+        <div class="page-item-bar" data-page="draw_result.html" onclick="loadPage('draw_result.html', this)">
+            <i class="bi bi-trophy"></i>
+            <span>结算弹窗</span>
+        </div>
         <div class="page-item-bar" data-page="badge_gallery.html" onclick="loadPage('badge_gallery.html', this)">
             <i class="bi bi-images"></i>
             <span>图库</span>
+        </div>
+        <div class="page-item-bar" data-page="merge_upgrade.html" onclick="loadPage('merge_upgrade.html', this)">
+            <i class="bi bi-arrow-up-circle"></i>
+            <span>合并升级</span>
         </div>
         <div class="page-item-bar" data-page="badge_delivery.html" onclick="loadPage('badge_delivery.html', this)">
             <i class="bi bi-truck"></i>
@@ -468,9 +488,17 @@
                 <i class="bi bi-grid-3x3"></i>
                 <span>10 连抽功能</span>
             </div>
+            <div class="dropdown-item" data-page="draw_result.html" onclick="loadPage('draw_result.html', this)">
+                <i class="bi bi-trophy"></i>
+                <span>抽选结算弹窗</span>
+            </div>
             <div class="dropdown-item" data-page="badge_gallery.html" onclick="loadPage('badge_gallery.html', this)">
                 <i class="bi bi-images"></i>
                 <span>我的吧唧图库</span>
+            </div>
+            <div class="dropdown-item" data-page="merge_upgrade.html" onclick="loadPage('merge_upgrade.html', this)">
+                <i class="bi bi-arrow-up-circle"></i>
+                <span>合并升级功能</span>
             </div>
             <div class="dropdown-item" data-page="badge_delivery.html" onclick="loadPage('badge_delivery.html', this)">
                 <i class="bi bi-truck"></i>
@@ -503,10 +531,6 @@
 
         <!-- Global View: All Phone Frames -->
         <div class="global-view global-only" style="display: none;">
-            <div class="global-view-header">
-                <h1 class="display-hero">电子吧唧 2 期</h1>
-                <p class="body-large">APP 端原型 - 全部页面预览</p>
-            </div>
             <div class="global-view-grid">
                 <div class="phone-frame-container" data-page-label="IP 主题包列表">
                     <div class="phone-notch"></div>
@@ -532,10 +556,22 @@
                         <iframe src="app_pages/ten_draw.html" frameborder="0"></iframe>
                     </div>
                 </div>
+                <div class="phone-frame-container" data-page-label="抽选结算弹窗">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/draw_result.html" frameborder="0"></iframe>
+                    </div>
+                </div>
                 <div class="phone-frame-container" data-page-label="我的吧唧图库">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
                         <iframe src="app_pages/badge_gallery.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="合并升级功能">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/merge_upgrade.html" frameborder="0"></iframe>
                     </div>
                 </div>
                 <div class="phone-frame-container" data-page-label="申请邮寄">
@@ -650,7 +686,9 @@
                 'ip_detail.html': 'IP详情',
                 'single_draw.html': '单抽',
                 'ten_draw.html': '10连抽',
+                'draw_result.html': '结算弹窗',
                 'badge_gallery.html': '图库',
+                'merge_upgrade.html': '合并升级',
                 'badge_delivery.html': '邮寄'
             };
             const label = document.getElementById('currentPageLabel');
@@ -709,8 +747,10 @@
                 else if (featureId.startsWith('app_ip_detail')) targetPage = 'ip_detail.html';
                 else if (featureId.startsWith('app_single_draw')) targetPage = 'single_draw.html';
                 else if (featureId.startsWith('app_ten_draw')) targetPage = 'ten_draw.html';
-                else if (featureId.startsWith('app_pack_purchase') || featureId.startsWith('app_draw_result')) targetPage = 'ten_draw.html';
-                else if (featureId.startsWith('app_badge_gallery') || featureId.startsWith('app_merge_upgrade')) targetPage = 'badge_gallery.html';
+                else if (featureId.startsWith('app_pack_purchase')) targetPage = 'ten_draw.html';
+                else if (featureId.startsWith('app_draw_result')) targetPage = 'draw_result.html';
+                else if (featureId.startsWith('app_badge_gallery')) targetPage = 'badge_gallery.html';
+                else if (featureId.startsWith('app_merge_upgrade')) targetPage = 'merge_upgrade.html';
                 else if (featureId.startsWith('app_badge_delivery') || featureId.startsWith('app_logistics_track')) targetPage = 'badge_delivery.html';
 
                 if (targetPage) {
