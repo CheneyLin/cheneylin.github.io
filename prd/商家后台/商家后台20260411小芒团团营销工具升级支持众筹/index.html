@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>小芒团团营销工具升级支持众筹玩法 - PRD 与原型主控</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #171717;
+      --muted: #4d4d4d;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-light: rgb(235, 235, 235);
+      --primary: #171717;
+      --primary-text: #ffffff;
+      --accent: #0070f3;
+      --focus: hsla(212, 100%, 48%, 1);
+      --card-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, rgba(0, 0, 0, 0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --card-radius: 8px;
+      --btn-radius: 6px;
+      --pill-radius: 9999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-feature-settings: "liga" 1;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      box-shadow: 0px 0px 0px 1px var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--fg);
+      letter-spacing: -0.32px;
+    }
+
+    .version-badge {
+      background: #f5f5f5;
+      color: var(--muted);
+      box-shadow: 0px 0px 0px 1px var(--border-light);
+      padding: 4px 10px;
+      border-radius: var(--pill-radius);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .main {
+      display: flex;
+      height: calc(100% - 60px);
+      background: var(--bg);
+    }
+
+    .left {
+      width: 50%;
+      height: 100%;
+      box-sizing: border-box;
+      background: var(--bg);
+    }
+
+    .right {
+      width: 50%;
+      height: 100%;
+      box-sizing: border-box;
+      background: #fafafa;
+    }
+
+    .frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .split {
+      width: 1px;
+      cursor: col-resize;
+      background: var(--border-light);
+      position: relative;
+    }
+
+    .split::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -3px;
+      width: 7px;
+      height: 100%;
+    }
+
+    .split:hover {
+      background: var(--accent);
+    }
+
+    .controls {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .controls label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .controls select {
+      background: var(--bg);
+      color: var(--fg);
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 12px;
+      border-radius: var(--btn-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s;
+    }
+
+    .controls select:hover {
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+
+    .controls select:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+
+    .controls option {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    .product-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .product-btn {
+      background: var(--bg);
+      color: var(--fg);
+      box-shadow: 0px 0px 0px 1px var(--border);
+      padding: 6px 14px;
+      border-radius: var(--btn-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      outline: none;
+    }
+
+    .product-btn:hover {
+      box-shadow: 0px 0px 0px 1px var(--fg);
+    }
+
+    .product-btn:focus {
+      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
+    }
+
+    .product-btn.active {
+      background: var(--primary);
+      color: var(--primary-text);
+      box-shadow: 0px 0px 0px 1px var(--primary);
+    }
+
+    .product-btn.active:hover {
+      opacity: 0.9;
+    }
+
+    .width-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .width-control input[type="range"] {
+      width: 100px;
+      cursor: pointer;
+      accent-color: var(--fg);
+    }
+
+    .width-control span {
+      min-width: 36px;
+    }
+
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-title">小芒团团营销工具升级支持众筹玩法</span>
+    <span class="version-badge">v1.0</span>
+    <div class="divider"></div>
+    <div class="controls">
+      <div class="product-btns">
+        <button class="product-btn active" data-product="admin" onclick="switchProduct('admin')">商家后台</button>
+        <button class="product-btn" data-product="app" onclick="switchProduct('app')">APP 端</button>
+      </div>
+      <div class="divider"></div>
+      <div class="width-control">
+        <span>右侧宽度</span>
+        <input id="rightWidth" type="range" min="30" max="70" value="50">
+        <span id="rightWidthLabel">50%</span>
+      </div>
+      <div class="divider"></div>
+      <div class="width-control">
+        <label for="versionSelect">版本</label>
+        <select id="versionSelect" onchange="switchVersion(this.value)">
+          <option value="1.0" selected>v1.0</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="left">
+      <iframe id="prdFrame" class="frame" src="./v1.0/prd_html/prd_v1.0.html"></iframe>
+    </div>
+    <div class="split" id="splitter" title="拖动调整左右宽度"></div>
+    <div class="right">
+      <iframe id="protoFrame" class="frame" src="./v1.0/prototype_html/admin_prototype_v1.0.html"></iframe>
+    </div>
+  </div>
+
+  <!-- 隐藏预加载容器 -->
+  <div id="preloadContainer" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;"></div>
+
+  <script>
+    const prdFrame = document.getElementById('prdFrame');
+    const protoFrame = document.getElementById('protoFrame');
+    const rightWidthRange = document.getElementById('rightWidth');
+    const rightWidthLabel = document.getElementById('rightWidthLabel');
+    const versionSelect = document.getElementById('versionSelect');
+    const leftPane = document.querySelector('.left');
+    const rightPane = document.querySelector('.right');
+    const splitter = document.getElementById('splitter');
+    const preloadContainer = document.getElementById('preloadContainer');
+    let currentProduct = 'admin';
+    let currentVersion = '1.0';
+    let pendingHighlightId = null;
+
+    // 原型预加载管理器
+    const PrototypePreloader = {
+      iframePool: new Map(),
+      preloadedPages: new Set(),
+      preloadQueue: [],
+      isPreloading: false,
+      currentVisibleSrc: null,
+
+      getIframeKey(src) {
+        return src;
+      },
+
+      createPreloadIframe(src) {
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;';
+        iframe.className = 'preload-iframe';
+        return iframe;
+      },
+
+      preload(src) {
+        const key = this.getIframeKey(src);
+        if (this.preloadedPages.has(key)) return;
+
+        this.preloadedPages.add(key);
+        const iframe = this.createPreloadIframe(src);
+        this.iframePool.set(key, iframe);
+        preloadContainer.appendChild(iframe);
+
+        iframe.addEventListener('load', () => {
+          if (!pendingHighlightId) return;
+          iframe.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+          pendingHighlightId = null;
+        });
+
+        console.log('[预加载]', src);
+      },
+
+      preloadAllPrototypes(versions, products) {
+        const srcs = [];
+        versions.forEach(version => {
+          products.forEach(product => {
+            const src = `./v${version}/prototype_html/${product}_prototype_v${version}.html`;
+            srcs.push(src);
+          });
+        });
+
+        this.preloadQueue = srcs;
+        this.startPreloadQueue();
+      },
+
+      startPreloadQueue() {
+        if (this.isPreloading || this.preloadQueue.length === 0) return;
+        this.isPreloading = true;
+        this.preloadNext();
+      },
+
+      preloadNext() {
+        if (this.preloadQueue.length === 0) {
+          this.isPreloading = false;
+          console.log('[预加载] 全部完成');
+          return;
+        }
+
+        const src = this.preloadQueue.shift();
+        this.preload(src);
+
+        const key = this.getIframeKey(src);
+        const iframe = this.iframePool.get(key);
+        if (iframe) {
+          iframe.onload = () => {
+            setTimeout(() => this.preloadNext(), 100);
+          };
+        } else {
+          setTimeout(() => this.preloadNext(), 100);
+        }
+      },
+
+      switchProto(newSrc) {
+        const key = this.getIframeKey(newSrc);
+        const cachedIframe = this.iframePool.get(key);
+
+        if (cachedIframe) {
+          const currentIframe = window.protoFrame || protoFrame;
+
+          const oldSrc = this.currentVisibleSrc || currentIframe.src;
+          const oldKey = this.getIframeKey(oldSrc);
+
+          console.log('[切换] 从', oldSrc, '切换到', newSrc);
+
+          currentIframe.style.display = 'none';
+          currentIframe.id = '';
+          currentIframe.className = 'preload-iframe';
+          currentIframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;pointer-events:none;';
+          preloadContainer.appendChild(currentIframe);
+          this.iframePool.set(oldKey, currentIframe);
+
+          cachedIframe.id = 'protoFrame';
+          cachedIframe.className = 'frame';
+          cachedIframe.style.cssText = 'width:100%;height:100%;border:0;display:block;';
+          rightPane.appendChild(cachedIframe);
+
+          this.currentVisibleSrc = newSrc;
+          window.protoFrame = cachedIframe;
+          console.log('[切换] 使用预加载缓存', newSrc);
+          return true;
+        }
+        return false;
+      }
+    };
+
+    function setupProtoFrameListener(iframe) {
+      iframe.addEventListener('load', () => {
+        if (!pendingHighlightId) return;
+        iframe.contentWindow.postMessage({ action: 'highlight', featureId: pendingHighlightId }, '*');
+        pendingHighlightId = null;
+      });
+    }
+
+    window.protoFrame = protoFrame;
+    setupProtoFrameListener(protoFrame);
+    PrototypePreloader.currentVisibleSrc = protoFrame.src;
+
+    function switchVersion(version) {
+      currentVersion = version;
+      prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
+      if (currentProduct === 'app') {
+        const newSrc = `./v${version}/prototype_html/app_prototype_v${version}.html`;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
+      } else if (currentProduct === 'admin') {
+        const newSrc = `./v${version}/prototype_html/admin_prototype_v${version}.html`;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
+      }
+    }
+
+    function switchProduct(product) {
+      currentProduct = product;
+      document.querySelectorAll('.product-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.product === product) btn.classList.add('active');
+      });
+      console.log('切换产品：', product);
+      if (product === 'app') {
+        const newSrc = `./v${currentVersion}/prototype_html/app_prototype_v${currentVersion}.html`;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
+      } else if (product === 'admin') {
+        const newSrc = `./v${currentVersion}/prototype_html/admin_prototype_v${currentVersion}.html`;
+        if (!PrototypePreloader.switchProto(newSrc)) {
+          window.protoFrame.src = newSrc;
+          PrototypePreloader.currentVisibleSrc = newSrc;
+        }
+      }
+    }
+
+    function setRightWidth(percent) {
+      percent = Math.max(30, Math.min(70, percent));
+      rightWidthLabel.textContent = percent + '%';
+      rightPane.style.width = percent + '%';
+      leftPane.style.width = (100 - percent) + '%';
+    }
+    rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
+    setRightWidth(parseInt(rightWidthRange.value, 10));
+
+    let dragging = false;
+    splitter.addEventListener('mousedown', () => { dragging = true; });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const rect = document.querySelector('.main').getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentRight = Math.round(((rect.width - x) / rect.width) * 100);
+      setRightWidth(percentRight);
+      rightWidthRange.value = percentRight;
+    });
+
+    window.addEventListener('message', (e) => {
+      const data = e.data || {};
+
+      if ((data.action === 'highlight' || data.type === 'prd-focus') && (data.featureId || data.id)) {
+        const fid = String(data.featureId || data.id);
+        let targetProduct = 'admin';
+
+        if (fid.startsWith('admin_')) {
+          targetProduct = 'admin';
+        } else if (fid.startsWith('app_')) {
+          targetProduct = 'app';
+        }
+        console.log('Received highlight request for feature:', fid, 'Target product:', targetProduct, 'Current product:', currentProduct);
+        if (targetProduct !== currentProduct) {
+          pendingHighlightId = fid;
+          switchProduct(targetProduct);
+          return;
+        }
+        const currentProtoFrame = window.protoFrame || protoFrame;
+        currentProtoFrame.contentWindow.postMessage({ action: 'highlight', featureId: fid }, '*');
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const versions = ['1.0'];
+      const products = ['admin', 'app'];
+      PrototypePreloader.preloadAllPrototypes(versions, products);
+    });
+  </script>
+</body>
+</html>

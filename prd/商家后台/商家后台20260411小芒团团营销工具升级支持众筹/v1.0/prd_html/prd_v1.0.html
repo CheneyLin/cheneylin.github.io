@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - 商家后台：小芒团团营销工具升级支持众筹玩法 v1.0</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f7fa; padding: 20px; }
+        .container { min-width: 1024px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 40px; }
+        h1 { font-size: 24px; color: #1a1a1a; margin-bottom: 10px; border-bottom: 3px solid #4f46e5; padding-bottom: 12px; }
+        h2 { font-size: 20px; color: #1a1a1a; margin: 32px 0 16px; border-left: 4px solid #4f46e5; padding-left: 12px; }
+        h3 { font-size: 17px; color: #333; margin: 24px 0 12px; }
+        h4 { font-size: 15px; color: #555; margin: 16px 0 8px; }
+        p { margin-bottom: 12px; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+        th, td { border: 1px solid #e5e7eb; padding: 10px 12px; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; color: #374151; }
+        tr:nth-child(even) { background: #f9fafb; }
+        ul, ol { margin: 12px 0; padding-left: 20px; }
+        li { margin-bottom: 6px; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: #e11d48; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 13px; line-height: 1.5; }
+        .tag { display: inline-block; background: #e0e7ff; color: #4f46e5; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-right: 6px; font-weight: 500; }
+        .tag.p0 { background: #fee2e2; color: #dc2626; }
+        .tag.p1 { background: #fef3c7; color: #d97706; }
+        .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .card-header { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .prototype-btn { background: #4f46e5; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: background 0.2s; }
+        .prototype-btn:hover { background: #4338ca; }
+        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+        .note { background: #e0f2fe; border-left: 4px solid #0ea5e9; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+        .mermaid { text-align: center; margin: 20px 0; }
+        blockquote { border-left: 4px solid #d1d5db; padding-left: 16px; color: #6b7280; margin: 16px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PRD - 商家后台：小芒团团营销工具升级支持众筹玩法</h1>
+        <p><strong>版本：</strong>v1.0 &nbsp;|&nbsp; <strong>创建时间：</strong>2026-04-13 &nbsp;|&nbsp; <strong>状态：</strong>初稿评审中</p>
+
+        <h2>版本记录</h2>
+        <table>
+            <tr><th>版本</th><th>日期</th><th>修改人</th><th>修改类型</th><th>修改说明</th></tr>
+            <tr><td>v1.0</td><td>2026-04-13</td><td>Qwen</td><td>新增</td><td>初始版本，新增众筹玩法配置功能</td></tr>
+        </table>
+
+        <h2>一、需求背景</h2>
+        <h3>1.1 现状问题</h3>
+        <p>当前小芒团团营销工具仅支持<strong>单一团购玩法</strong>，无法满足商家对众筹营销场景的需求。众筹玩法的核心差异在于：</p>
+        <ul>
+            <li>需要设定目标（金额/件数），达标后商品才会生产/发货</li>
+            <li>未达标需触发退款流程</li>
+            <li>需要展示众筹进度、氛围等专属信息</li>
+        </ul>
+
+        <h2>二、需求目标</h2>
+        <table>
+            <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+            <tr><td>业务目标</td><td>商家可在小芒团团营销工具中配置众筹玩法</td><td>众筹活动创建成功率</td><td>≥95%</td></tr>
+            <tr><td>用户体验</td><td>App端展示众筹进度、目标、已购人数等信息</td><td>众筹商品详情页转化率</td><td>提升 10%</td></tr>
+            <tr><td>技术目标</td><td>实现实时状态切换逻辑</td><td>状态切换延迟</td><td>≤500ms</td></tr>
+        </table>
+
+        <h2>三、用户与使用场景</h2>
+        <h3>3.1 典型用户</h3>
+        <table>
+            <tr><th>用户角色</th><th>描述</th><th>核心诉求</th></tr>
+            <tr><td>商家运营人员</td><td>负责在商家后台配置营销活动</td><td>快速配置众筹玩法，灵活控制活动策略</td></tr>
+            <tr><td>App 消费者</td><td>浏览商品并参与众筹</td><td>清晰了解众筹进度、目标、规则，便捷参与</td></tr>
+        </table>
+
+        <h3>3.2 用户旅程图 (User Journey Map)</h3>
+        <h4>商家侧旅程</h4>
+        <table>
+            <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会点</th></tr>
+            <tr><td>发现入口</td><td>商家后台-小芒团团项目列表</td><td>点击"创建/编辑活动"</td><td>担心找不到新配置项</td><td>清晰标识"氛围配置"入口</td></tr>
+            <tr><td>配置策略</td><td>氛围配置弹窗</td><td>配置时间/进度条样式、选择截止类型</td><td>配置项较多，易遗漏</td><td>提供默认值，按需展开</td></tr>
+            <tr><td>发布活动</td><td>确认提交</td><td>保存并发布众筹活动</td><td>担心配置错误</td><td>提供配置预览</td></tr>
+            <tr><td>监控进度</td><td>活动管理列表</td><td>查看众筹进度、状态</td><td>关注是否达标</td><td>实时进度展示 + 状态提醒</td></tr>
+        </table>
+
+        <h4>用户侧旅程</h4>
+        <table>
+            <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会点</th></tr>
+            <tr><td>浏览商品</td><td>App 商品详情页</td><td>查看众筹商品详情</td><td>担心众筹是否可信</td><td>展示进度、已购人数增强信任</td></tr>
+            <tr><td>了解规则</td><td>众筹信息区</td><td>阅读目标金额/件数、截止时间</td><td>不理解未达标如何处理</td><td>清晰标注退款规则</td></tr>
+            <tr><td>参与众筹</td><td>点击"立即参与"</td><td>选择规格、支付</td><td>支付流程复杂</td><td>简化参与路径</td></tr>
+            <tr><td>等待结果</td><td>订单详情页</td><td>查看众筹进度、状态</td><td>焦虑等待</td><td>实时推送进度更新</td></tr>
+            <tr><td>结果通知</td><td>系统通知</td><td>收到众筹成功/失败通知</td><td>成功喜悦/失败失落</td><td>失败时推荐类似活动</td></tr>
+        </table>
+
+        <h2>四、需求功能清单</h2>
+        <h3>4.1 商家后台</h3>
+        <table>
+            <tr><th>功能标识</th><th>功能名称</th><th>产品形态</th><th>优先级</th><th>描述</th></tr>
+            <tr><td><code>admin_activity_list</code></td><td>小芒团团活动列表</td><td>商家后台</td><td><span class="tag p0">P0</span></td><td>列表展示已创建的活动，提供 创建、编辑、氛围配置、下线 操作</td></tr>
+            <tr><td><code>admin_activity_list_popup_info</code></td><td>基本配置项</td><td>商家后台</td><td><span class="tag p0">P0</span></td><td>活动名称、开始时间、截止时间、众筹目标类型、众筹目标值</td></tr>
+            <tr><td><code>admin_activity_list_popup_extra</code></td><td>氛围配置项</td><td>商家后台</td><td><span class="tag p0">P0</span></td><td>分享卡片图片、展示渠道（APP、M站、小程序）、达标即发货（开启/关闭）、时间样式/前缀/后缀、进度条前缀/说明、进度条样式、活动截止类型配置</td></tr>
+        </table>
+
+        <h3>4.2 App：商品详情页</h3>
+        <table>
+            <tr><th>功能标识</th><th>功能名称</th><th>产品形态</th><th>优先级</th><th>描述</th></tr>
+            <tr><td><code>app_goods_details_status_running</code></td><td>App 端众筹信息展示区（进行中）</td><td>App</td><td><span class="tag p0">P0</span></td><td>活动未截止且未达标时的进度展示</td></tr>
+            <tr><td><code>app_goods_details_status_success</code></td><td>App 端众筹信息展示区（成功）</td><td>App</td><td><span class="tag p0">P0</span></td><td>活动已截止且达标时的成功状态展示</td></tr>
+            <tr><td><code>app_goods_details_status_fail</code></td><td>App 端众筹信息展示区（失败）</td><td>App</td><td><span class="tag p0">P0</span></td><td>活动已截止且未达标时的失败状态展示</td></tr>
+            <tr><td><code>app_goods_details_status_end</code></td><td>App 端众筹信息展示区（已结束）</td><td>App</td><td><span class="tag p0">P0</span></td><td>活动截止类型为 A/B 时的已结束状态展示</td></tr>
+        </table>
+
+        <h3>4.3 交易系统模块</h3>
+        <table>
+            <tr><th>功能标识</th><th>功能名称</th><th>产品形态</th><th>优先级</th><th>描述</th></tr>
+            <tr><td><code>system_status_switch</code></td><td>实时状态切换</td><td>系统</td><td><span class="tag p0">P0</span></td><td>截止时实时根据进度判定活动状态</td></tr>
+            <tr><td><code>system_refund_logic</code></td><td>未达标退款逻辑</td><td>系统</td><td><span class="tag p0">P0</span></td><td>众筹未达标自动触发退款</td></tr>
+        </table>
+
+        <h2>五、详细方案</h2>
+
+        <div class="card" data-feature="admin_activity_list">
+            <div class="card-header">
+                <span>5.1 商家后台：小芒团团活动列表</span>
+                <button class="prototype-btn" onclick="viewPrototype('admin_activity_list')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商家已开通小芒团团营销工具权限</li>
+                <li>商家已登录商家后台</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>展示商家已创建的所有小芒团团活动列表</li>
+                <li>列表字段包含：活动名称、玩法类型（单品团购/众筹）、截止时间、当前进度、状态、操作</li>
+                <li>提供操作按钮：创建活动、编辑、氛围配置、下线</li>
+                <li>玩法类型标签区分：
+                    <ul>
+                        <li>单品团购：绿色标签</li>
+                        <li>众筹：蓝色标签</li>
+                    </ul>
+                </li>
+            </ol>
+            <h4>数据流向</h4>
+            <pre>后端查询活动列表 → 前端渲染表格 → 商家操作（创建/编辑/下线） → 提交后端更新</pre>
+            <h4>交互逻辑</h4>
+            <ul>
+                <li>点击"创建活动"：打开团购配置弹窗</li>
+                <li>点击"编辑"：打开团购配置弹窗，回显当前活动配置</li>
+                <li>点击"氛围配置"：打开氛围配置弹窗</li>
+                <li>点击"下线"：二次确认后下线活动</li>
+            </ul>
+        </div>
+
+        <div class="card" data-feature="admin_activity_list_popup_info">
+            <div class="card-header">
+                <span>5.2 商家后台：基本配置项</span>
+                <button class="prototype-btn" onclick="viewPrototype('admin_activity_list_popup_info')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商家点击"创建活动"或"编辑"按钮</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>在团购配置弹窗中展示基本配置项</li>
+                <li>配置项清单：
+                    <table>
+                        <tr><th>配置项</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr>
+                        <tr><td>活动名称</td><td>文本输入</td><td>是</td><td>空</td><td>活动名称，用于列表展示</td></tr>
+                        <tr><td>开始时间</td><td>日期时间选择器</td><td>是</td><td>当前时间</td><td>活动开始时间</td></tr>
+                        <tr><td>截止时间</td><td>日期时间选择器</td><td>是</td><td>当前时间 + 7天</td><td>活动截止时间</td></tr>
+                        <tr><td>众筹目标类型</td><td>下拉选择</td><td>是（众筹玩法）</td><td>按金额</td><td>按金额 / 按件数</td></tr>
+                        <tr><td>众筹目标值</td><td>数字输入</td><td>是（众筹玩法）</td><td>空</td><td>目标金额或件数</td></tr>
+                    </table>
+                </li>
+            </ol>
+            <h4>交互逻辑</h4>
+            <ul>
+                <li>活动名称：限制 50 字以内</li>
+                <li>开始时间 ≤ 截止时间</li>
+                <li>选择众筹玩法时，必须配置众筹目标</li>
+            </ul>
+        </div>
+
+        <div class="card" data-feature="admin_activity_list_popup_extra">
+            <div class="card-header">
+                <span>5.3 商家后台：氛围配置项</span>
+                <button class="prototype-btn" onclick="viewPrototype('admin_activity_list_popup_extra')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商家在团购配置弹窗中选择"众筹"玩法</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>选择"众筹"玩法后，展开氛围配置区</li>
+                <li>配置项清单：
+                    <table>
+                        <tr><th>配置项</th><th>类型</th><th>默认值</th><th>说明</th></tr>
+                        <tr><td>分享卡片图片</td><td>图片上传</td><td>系统默认图片</td><td>众筹活动分享时的封面图片</td></tr>
+                        <tr><td>展示渠道</td><td>多选</td><td>APP、M站、小程序（全选）</td><td>选择众筹活动展示的渠道</td></tr>
+                        <tr><td>达标即发货</td><td>开关</td><td>关闭</td><td>开启后，达标后立即安排发货（无需等待截止）</td></tr>
+                        <tr><td>时间样式</td><td>下拉选择</td><td><code>MM-DD HH:mm - MM-DD HH:mm</code>、<code>YYYY-MM-DD HH:mm</code>、<code>倒计时</code></td><td>自定义时间展示格式</td></tr>
+                        <tr><td>时间前缀</td><td>文本输入</td><td>空</td><td>如"距结束"、"剩余"等</td></tr>
+                        <tr><td>时间后缀</td><td>文本输入</td><td><code>结束</code></td><td>时间后的补充说明（可选）</td></tr>
+                        <tr><td>进度条样式</td><td>单选</td><td><code>B: 众筹</code></td><td>A: 团购样式 / B: 众筹样式</td></tr>
+                        <tr><td>进度条前缀</td><td>文本输入</td><td><code>已销售</code></td><td>如"已筹"、"已完成"等</td></tr>
+                        <tr><td>进度条说明</td><td>文本输入</td><td>根据团购策略生成</td><td>动态生成进度说明文案</td></tr>
+                        <tr><td>活动截止类型</td><td>单选</td><td><code>C: 截止后根据目标判定</code></td><td>A/B/C 三种类型</td></tr>
+                    </table>
+                </li>
+            </ol>
+            <h4>进度条样式选项</h4>
+            <table>
+                <tr><th>选项</th><th>名称</th><th>视觉效果</th></tr>
+                <tr><td>A</td><td>团购</td><td>绿色渐变进度条</td></tr>
+                <tr><td>B</td><td>众筹</td><td>橙色渐变进度条</td></tr>
+            </table>
+            <h4>活动截止类型选项</h4>
+            <table>
+                <tr><th>类型</th><th>名称</th><th>逻辑说明</th></tr>
+                <tr><td>A</td><td>截止后活动下线</td><td>原逻辑，时间到直接下线</td></tr>
+                <tr><td>B</td><td>截止后继续展示但不可售</td><td>团购长期展示，但不可购买</td></tr>
+                <tr><td>C</td><td>截止后根据目标判定是否可售</td><td><strong>众筹专属</strong>：达标→可售；未达标→退款</td></tr>
+            </table>
+            <h4>交互逻辑</h4>
+            <ul>
+                <li>氛围配置区默认展开，支持收起/展开</li>
+                <li>所有配置项均有默认值，商家可修改</li>
+                <li>提供进度条实时预览</li>
+                <li>配置区底部展示预览效果</li>
+            </ul>
+        </div>
+
+        <div class="card" data-feature="app_goods_details_status_running">
+            <div class="card-header">
+                <span>5.4 App 端：商品详情页 - 众筹进行中状态</span>
+                <button class="prototype-btn" onclick="viewPrototype('app_goods_details_status_running')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商品为众筹类型</li>
+                <li>活动未截止且未达标</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li><strong>替换</strong>原有团购信息展示区为众筹信息展示区</li>
+                <li>展示内容：
+                    <ul>
+                        <li>进度条（样式根据商家配置决定）</li>
+                        <li>进度文案（进度条前缀 + 当前进度 + 进度条说明）</li>
+                        <li>目标信息（目标金额/件数，根据商家配置的目标类型展示）</li>
+                        <li>已购人数</li>
+                        <li>已购金额</li>
+                        <li>截止时间（时间样式 + 时间前缀 + 时间后缀）</li>
+                        <li>众筹规则说明（未达标退款等）</li>
+                    </ul>
+                </li>
+            </ol>
+            <h4>进度展示逻辑</h4>
+            <table>
+                <tr><th>目标类型</th><th>展示文案</th><th>示例</th></tr>
+                <tr><td>按金额</td><td>已筹 ¥XXX / ¥目标金额</td><td>已筹 ¥12,580 / ¥20,000</td></tr>
+                <tr><td>按件数</td><td>已筹 XXX 件 / 目标 XXX 件</td><td>已筹 256 件 / 500 件</td></tr>
+            </table>
+            <h4>数据展示区</h4>
+            <table>
+                <tr><th>字段</th><th>说明</th></tr>
+                <tr><td>进度百分比</td><td>(当前进度 / 目标) × 100%</td></tr>
+                <tr><td>已购人数</td><td>参与众筹的去重用户数</td></tr>
+                <tr><td>已购金额</td><td>当前累计支付金额</td></tr>
+                <tr><td>倒计时</td><td>截止时间 - 当前时间</td></tr>
+            </table>
+            <h4>交互逻辑</h4>
+            <ul>
+                <li>点击进度条/目标信息可展开详细规则</li>
+                <li>支持分享众筹商品链接</li>
+                <li>底部展示"立即参与"按钮</li>
+            </ul>
+        </div>
+
+        <div class="card" data-feature="app_goods_details_status_success">
+            <div class="card-header">
+                <span>5.5 App 端：商品详情页 - 众筹成功状态</span>
+                <button class="prototype-btn" onclick="viewPrototype('app_goods_details_status_success')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商品为众筹类型</li>
+                <li>活动已截止且已达标</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>展示众筹成功标识（🎉 图标 + "众筹成功！"文案）</li>
+                <li>展示最终进度（100% 或超额完成）</li>
+                <li>展示预计发货时间</li>
+                <li>底部操作按钮变更为"立即购买"（商品可售状态）</li>
+            </ol>
+            <h4>展示内容</h4>
+            <table>
+                <tr><th>字段</th><th>说明</th></tr>
+                <tr><td>成功标识</td><td>🎉 图标 + "众筹成功！"</td></tr>
+                <tr><td>最终进度</td><td>已筹 ¥XXX / 目标 ¥XXX（100%）</td></tr>
+                <tr><td>发货说明</td><td>预计发货时间：XXXX 年 XX 月 XX 日前</td></tr>
+                <tr><td>操作按钮</td><td>"立即购买"</td></tr>
+            </table>
+        </div>
+
+        <div class="card" data-feature="app_goods_details_status_fail">
+            <div class="card-header">
+                <span>5.6 App 端：商品详情页 - 众筹失败状态</span>
+                <button class="prototype-btn" onclick="viewPrototype('app_goods_details_status_fail')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商品为众筹类型</li>
+                <li>活动已截止且未达标</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>展示众筹失败标识（😔 图标 + "众筹未达标"文案）</li>
+                <li>展示最终进度（未达 100%）</li>
+                <li>展示退款说明</li>
+                <li>底部操作按钮变更为"查看其他活动"</li>
+            </ol>
+            <h4>展示内容</h4>
+            <table>
+                <tr><th>字段</th><th>说明</th></tr>
+                <tr><td>失败标识</td><td>😔 图标 + "众筹未达标"</td></tr>
+                <tr><td>最终进度</td><td>已筹 ¥XXX / 目标 ¥XXX（XX%）</td></tr>
+                <tr><td>退款说明</td><td>退款将在 T+1 个工作日内退回</td></tr>
+                <tr><td>操作按钮</td><td>"查看其他活动"</td></tr>
+            </table>
+        </div>
+
+        <div class="card" data-feature="app_goods_details_status_end">
+            <div class="card-header">
+                <span>5.7 App 端：商品详情页 - 活动已结束状态</span>
+                <button class="prototype-btn" onclick="viewPrototype('app_goods_details_status_end')">查看原型</button>
+            </div>
+            <h4>前置条件</h4>
+            <ul>
+                <li>商品为众筹类型</li>
+                <li>活动截止类型为 A（截止后活动下线）或 B（截止后继续展示但不可售）</li>
+                <li>活动已截止</li>
+            </ul>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li><strong>类型 A（截止后活动下线）</strong>：
+                    <ul>
+                        <li>商品详情页不展示众筹信息区</li>
+                        <li>展示"活动已结束"占位图</li>
+                        <li>底部操作按钮隐藏或变更为"查看其他活动"</li>
+                    </ul>
+                </li>
+                <li><strong>类型 B（截止后继续展示但不可售）</strong>：
+                    <ul>
+                        <li>展示众筹信息区（进度条、目标、已购人数/金额）</li>
+                        <li>进度条展示为灰色（不可交互）</li>
+                        <li>底部操作按钮变更为"活动已结束"</li>
+                    </ul>
+                </li>
+            </ol>
+            <h4>展示内容</h4>
+            <table>
+                <tr><th>截止类型</th><th>进度条</th><th>操作按钮</th><th>说明文案</th></tr>
+                <tr><td>A</td><td>隐藏</td><td>隐藏/查看其他活动</td><td>"活动已结束"</td></tr>
+                <tr><td>B</td><td>灰色禁用</td><td>活动已结束</td><td>"活动已结束，感谢您的关注"</td></tr>
+            </table>
+        </div>
+
+        <div class="card" data-feature="system_status_switch">
+            <div class="card-header">
+                <span>5.8 系统：实时状态切换</span>
+                <button class="prototype-btn" onclick="viewPrototype('system_status_switch')">查看原型</button>
+            </div>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>活动截止时间到达时，系统<strong>实时</strong>触发状态判定</li>
+                <li>判定逻辑：
+                    <pre>if (当前进度 >= 目标) {
+  状态变更为 "众筹成功"
+  商品变为可售状态
+  订单正常流转
+} else {
+  状态变更为 "众筹失败"
+  触发退款流程
+}</pre>
+                </li>
+                <li>状态变更后：
+                    <ul>
+                        <li>更新 App 端展示状态（成功/失败/已结束）</li>
+                        <li>向参与用户推送系统通知</li>
+                        <li>更新商家后台活动列表状态</li>
+                    </ul>
+                </li>
+            </ol>
+            <h4>状态变更通知</h4>
+            <table>
+                <tr><th>状态</th><th>通知内容</th><th>接收人</th></tr>
+                <tr><td>众筹成功</td><td>"恭喜！您参与的众筹活动已成功，商家将尽快安排发货。"</td><td>所有参与用户</td></tr>
+                <tr><td>众筹失败</td><td>"很遗憾，众筹未达标。退款已发起，将在 T+1 个工作日内退回。"</td><td>所有参与用户</td></tr>
+            </table>
+        </div>
+
+        <div class="card" data-feature="system_refund_logic">
+            <div class="card-header">
+                <span>5.9 系统：未达标退款逻辑</span>
+                <button class="prototype-btn" onclick="viewPrototype('system_refund_logic')">查看原型</button>
+            </div>
+            <h4>核心逻辑</h4>
+            <ol>
+                <li>众筹失败后，系统<strong>自动</strong>触发退款</li>
+                <li>退款路径：原路退回用户支付账户</li>
+                <li>退款时效：T+1 个工作日内到账（依赖支付渠道）</li>
+                <li>通知推送：向参与用户推送"众筹失败，已发起退款"通知</li>
+                <li>订单状态：变更为"已关闭-众筹未达标"</li>
+            </ol>
+            <h4>退款流程</h4>
+            <pre>flowchart TD
+    A[众筹失败判定] --> B[查询所有参与订单]
+    B --> C[逐单发起退款请求]
+    C --> D{支付渠道退款}
+    D -->|成功| E[更新订单状态为已退款]
+    D -->|失败| F[记录失败日志，重试]
+    F --> C
+    E --> G[推送退款成功通知]</pre>
+            <h4>异常处理</h4>
+            <table>
+                <tr><th>异常场景</th><th>处理逻辑</th></tr>
+                <tr><td>支付渠道退款失败</td><td>记录失败日志，延迟 5 分钟后重试，最多重试 3 次</td></tr>
+                <tr><td>用户账户异常</td><td>联系人工客服处理</td></tr>
+                <tr><td>退款金额不一致</td><td>核对订单金额，人工介入处理</td></tr>
+            </table>
+        </div>
+
+        <h2>六、业务流程图</h2>
+        <div class="mermaid">
+            <pre class="language-mermaid">
+flowchart TD
+    A[商家进入小芒团团项目列表] --> B[点击创建活动/编辑]
+    B --> C[配置基本信息<br/>活动名称/时间/目标]
+    C --> D[配置氛围选项<br/>时间样式/前缀/后缀<br/>进度条样式/说明]
+    D --> E{选择截止类型}
+    E -->|A: 截止后下线| F[保存配置]
+    E -->|B: 截止后展示不可售| F
+    E -->|C: 截止后判定| F
+    F --> G[发布众筹活动]
+    G --> H[App 端展示众筹信息]
+    H --> I[用户浏览商品]
+    I --> J[用户参与众筹支付]
+    J --> K[更新实时进度]
+    K --> L{活动是否截止}
+    L -->|未截止| K
+    L -->|已截止| M{是否达标}
+    M -->|达标| N[众筹成功，商品可售]
+    M -->|未达标| O[众筹失败，触发退款]
+    N --> P[订单正常流转]
+    O --> Q[原路退款，通知用户]
+            </pre>
+        </div>
+
+        <h2>七、异常与边界处理</h2>
+        <table>
+            <tr><th>异常场景</th><th>处理逻辑</th></tr>
+            <tr><td>网络中断（商家提交配置时）</td><td>提示"网络异常，请重试"，保留已填配置数据</td></tr>
+            <tr><td>网络中断（用户支付时）</td><td>支付状态查询，未完成则取消订单，已完成则保留</td></tr>
+            <tr><td>空数据状态（App 端无众筹商品）</td><td>展示"暂无众筹活动"空状态页，推荐普通团购商品</td></tr>
+            <tr><td>权限不足（商家无小芒团团权限）</td><td>提示"您暂无权限使用此功能，请联系客服开通"</td></tr>
+            <tr><td>库存不足（用户参与时）</td><td>提示"库存不足"，禁止参与</td></tr>
+            <tr><td>重复参与（同一用户多次参与）</td><td>按已有功能逻辑处理（需确认是否允许多次参与）</td></tr>
+            <tr><td>商家中途修改目标/时间</td><td>按已有功能配置逻辑处理</td></tr>
+        </table>
+
+        <h2>八、数据追踪与埋点（可选）</h2>
+        <table>
+            <tr><th>埋点事件</th><th>触发时机</th><th>埋点参数</th></tr>
+            <tr><td><code>crowd_config_create</code></td><td>商家创建众筹活动</td><td>activity_id, deadline_type, progress_style</td></tr>
+            <tr><td><code>crowd_page_view</code></td><td>用户浏览众筹商品详情页</td><td>product_id, current_progress, target</td></tr>
+            <tr><td><code>crowd_join_click</code></td><td>用户点击"立即参与"</td><td>product_id, user_id</td></tr>
+            <tr><td><code>crowd_payment_success</code></td><td>用户众筹支付成功</td><td>order_id, amount, product_id</td></tr>
+            <tr><td><code>crowd_status_change</code></td><td>活动状态变更（成功/失败）</td><td>activity_id, status, final_progress</td></tr>
+        </table>
+
+        <h2>九、未来演进规划（可选）</h2>
+        <table>
+            <tr><th>版本</th><th>规划内容</th></tr>
+            <tr><td>v1.1</td><td>支持阶梯目标（不同金额/件数触发不同权益）</td></tr>
+            <tr><td>v1.2</td><td>支持众筹活动审核流程</td></tr>
+            <tr><td>v1.3</td><td>支持"延长冲刺期"功能</td></tr>
+            <tr><td>v2.0</td><td>支持多人拼团 + 众筹混合玩法</td></tr>
+        </table>
+
+        <h2>十、附件</h2>
+        <table>
+            <tr><th>附件名称</th><th>说明</th></tr>
+            <tr><td>admin_config.png</td><td>商家后台配置参考截图（待补充）</td></tr>
+        </table>
+
+        <div class="note">
+            <strong>📝 文档说明</strong>：本文档为第一版初稿，待原型确认后补充交互细节和界面流转图。
+        </div>
+    </div>
+
+    <script>
+        function viewPrototype(featureId) {
+            window.parent.postMessage({ action: 'highlight', featureId: featureId }, '*');
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.origin !== window.location.origin && e.data.featureId) return;
+        });
+    </script>
+</body>
+</html>

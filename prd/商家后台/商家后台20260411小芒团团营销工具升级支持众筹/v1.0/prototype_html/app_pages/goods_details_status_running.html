@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>众筹进行中 - 商品详情页</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #f5f5f5; }
+        
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 16px 8px; font-size: 12px; font-weight: 600; }
+        .nav-bar { height: 44px; background: #fff; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+        .nav-bar .back { font-size: 18px; cursor: pointer; }
+        .nav-bar .title { font-size: 16px; font-weight: 600; }
+        
+        .product-image { width: 100%; height: 375px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; position: relative; }
+        .product-image .badge { position: absolute; top: 12px; right: 12px; background: #FFD91D; color: #202020; padding: 4px 12px; border-radius: 12px; font-size: 14px; font-weight: 600; }
+        
+        /* 价格条组件 */
+        .price-bar { margin: 12px 12px 0; border-radius: 8px 8px 0 0; overflow: hidden; position: relative; }
+        .price-bar-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, #393939 0%, #030303 100%); }
+        .price-bar-bg::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(270deg, rgba(215,255,255,0.15) 0%, rgba(216,216,216,0) 100%); }
+        .price-bar-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(32,32,32,0) 0%, #202020 100%); opacity: 0.3; }
+        .price-bar-content { position: relative; z-index: 1; padding: 10px 12px 12px; }
+        .price-bar-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .price-bar-title { position: absolute; top: 8px; right: 12px; font-family: "PingFang SC", -apple-system, sans-serif; font-size: 16px; font-weight: 600; color: #FFD91D; line-height: 20px; z-index: 2; }
+        
+        .price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+        .price-symbol { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 14px; font-weight: 700; color: #fff; line-height: 18px; }
+        .price-value { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 24px; font-weight: 700; color: #fff; line-height: 28px; }
+        .price-unit { font-family: "PingFang SC", -apple-system, sans-serif; font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 14px; margin-left: 2px; }
+        
+        .price-tag { display: inline-flex; align-items: center; background: #FFD91D; border-radius: 20px; padding: 2px 6px; border: 0.5px solid rgba(255,255,255,0.2); margin-left: 8px; }
+        .price-tag-inner { display: flex; flex-direction: column; align-items: flex-end; padding: 0 2px; }
+        .price-tag-label { font-family: "PingFang SC", -apple-system, sans-serif; font-size: 12px; color: #202020; line-height: 18px; }
+        .price-tag-row { display: flex; align-items: baseline; gap: 2px; }
+        .price-tag-symbol { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 12px; font-weight: 700; color: #202020; line-height: 14px; }
+        .price-tag-value { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 16px; font-weight: 700; color: #202020; line-height: 20px; }
+        .price-tag-unit { font-family: "PingFang SC", -apple-system, sans-serif; font-size: 12px; color: #202020; line-height: 18px; }
+        
+        .price-bar-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .countdown-inline { display: flex; align-items: center; gap: 2px; }
+        .countdown-num { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 14px; font-weight: 700; color: #fff; line-height: 18px; }
+        .countdown-unit { font-family: "PingFang SC", -apple-system, sans-serif; font-size: 10px; color: rgba(255,255,255,0.8); line-height: 14px; }
+        .countdown-suffix { font-family: "PingFang SC", -apple-system, sans-serif; font-size: 10px; font-weight: 500; color: #fff; line-height: 14px; margin-left: 4px; }
+        
+        /* 众筹进度卡片 */
+        .crowd-section { margin: 0 12px 12px; border-radius: 0 0 8px 8px; overflow: hidden; position: relative; }
+        .crowd-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, #FF3E3D 0%, #FFEBEB 97%); z-index: 0; }
+        .crowd-content { position: relative; z-index: 1; padding: 16px; }
+        
+        .crowd-stats-card { background: rgba(255,255,255,0.94); border-radius: 8px; padding: 12px; border: 1px solid #fff; }
+        
+        .stats-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .stats-left { display: flex; align-items: baseline; gap: 4px; }
+        .stats-label { font-size: 14px; font-weight: 500; color: #202020; }
+        .stats-value { font-size: 14px; font-weight: 500; color: #F92121; }
+        .stats-unit { font-size: 14px; font-weight: 500; color: #202020; }
+        .stats-target { font-size: 11px; color: #F92121; }
+        
+        .progress-wrapper { margin-bottom: 12px; }
+        .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .progress-bar-bg { flex: 1; height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; overflow: hidden; position: relative; margin-right: 8px; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, rgba(255,223,210,0) 0%, #FFBCB1 30%, #FF7069 99%); border-radius: 4px; position: relative; }
+        .progress-bar-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%); border-radius: 4px 4px 0 0; }
+        .progress-bar-shine { position: absolute; top: 0; left: 0; right: 0; height: 100%; background: linear-gradient(90deg, rgba(255,216,204,0) 0%, #FFD8CC 16%, #FFD8CC 53%, #FFD8CC 79%, rgba(255,216,204,0) 100%); animation: shimmer 2s infinite; }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-percent { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 14px; font-weight: 700; color: #202020; white-space: nowrap; }
+        
+        .crowd-desc { font-size: 11px; color: rgba(32, 32, 32, 0.9); margin-top: 12px; line-height: 1.5; }
+        .crowd-desc .highlight { color: #202020; font-weight: 500; }
+        
+        .product-info { background: #fff; margin: 12px; border-radius: 12px; padding: 16px; }
+        .product-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .product-desc { font-size: 13px; color: #666; line-height: 1.5; }
+        
+        /* 底部操作栏 */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: #fff; border-top: 0.5px solid rgba(0,0,0,0.1); display: flex; align-items: flex-start; padding-top: 3px; z-index: 100; }
+        .bottom-actions { display: flex; gap: 0; flex-shrink: 0; }
+        .bottom-action-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 49px; height: 49px; cursor: pointer; position: relative; }
+        .bottom-action-item:active { opacity: 0.6; }
+        .bottom-action-icon { width: 24px; height: 24px; margin-bottom: 1px; display: flex; align-items: center; justify-content: center; }
+        .bottom-action-icon svg { width: 24px; height: 24px; }
+        .bottom-action-text { font-size: 10px; color: #505050; line-height: 12px; font-weight: 400; }
+        
+        .cart-badge { position: absolute; top: 2px; left: 16px; min-width: 20px; height: 14px; background: #FF5869; border-radius: 7px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+        .cart-badge-text { font-family: "DIN Alternate", -apple-system, sans-serif; font-size: 11px; font-weight: 700; color: #fff; line-height: 13px; }
+        
+        .bottom-cta { flex: 1; height: 40px; margin: 6px 12px 6px 0; background: #FFD91D; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+        .bottom-cta:active { opacity: 0.85; }
+        .bottom-cta-text { font-family: "PingFang SC", -apple-system, sans-serif; font-size: 14px; font-weight: 500; color: #202020; line-height: 17px; }
+        
+        .prototype-module { transition: box-shadow 0.3s; }
+        .prototype-module.feature-highlight { box-shadow: 0 0 0 3px rgba(79,70,229,0.3), 0 8px 24px rgba(79,70,229,0.15); }
+    </style>
+</head>
+<body>
+    <div class="status-bar"><span>15:30</span><span>📶 🔋</span></div>
+    <div class="nav-bar"><span class="back">←</span><span class="title">商品详情</span><span>🔗</span></div>
+    
+    <div class="product-image">
+        <span>📦 商品图片</span>
+        <span class="badge">🎯 众筹中</span>
+    </div>
+    
+    <!-- 价格条 -->
+    <div class="price-bar prototype-module" data-prototype="app_goods_details_status_running">
+        <div class="price-bar-bg"></div>
+        <div class="price-bar-overlay"></div>
+        <span class="price-bar-title">🎯 众筹</span>
+        <div class="price-bar-content">
+            <div class="price-bar-top">
+                <div class="price-row">
+                    <span class="price-symbol">¥</span>
+                    <span class="price-value">399</span>
+                    <span class="price-unit">起</span>
+                    <!-- <div class="price-tag">
+                        <div class="price-tag-inner">
+                            <span class="price-tag-label">抢购价</span>
+                            <div class="price-tag-row">
+                                <span class="price-tag-symbol">¥</span>
+                                <span class="price-tag-value">260</span>
+                                <span class="price-tag-unit">起</span>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="price-bar-bottom">
+                <div class="countdown-inline">
+                    <span class="countdown-num">01</span><span class="countdown-unit">日</span>
+                    <span class="countdown-num">09</span><span class="countdown-unit">时</span>
+                    <span class="countdown-num">20</span><span class="countdown-unit">分</span>
+                    <span class="countdown-num">14</span><span class="countdown-unit">秒</span>
+                </div>
+                <span class="countdown-suffix">后结束</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 众筹进度 -->
+    <div class="crowd-section prototype-module" data-prototype="app_goods_details_status_running">
+        <div class="crowd-bg"></div>
+        <div class="crowd-content">
+            <div class="crowd-stats-card">
+                <div class="stats-row">
+                    <div class="stats-left">
+                        <span class="stats-label">已参团</span>
+                        <span class="stats-value">327</span>
+                        <span class="stats-unit">件</span>
+                    </div>
+                    <span class="stats-target">500件</span>
+                </div>
+                
+                <div class="progress-wrapper">
+                    <div class="progress-row">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 65%;"></div>
+                            <div class="progress-bar-shine"></div>
+                        </div>
+                        <span class="progress-percent">65%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="crowd-desc">已有 <span class="highlight">256人</span> 参与，众筹金额 <span class="highlight">¥12,580</span><br/>截止时达标则众筹成功，未达标自动退款</div>
+        </div>
+    </div>
+    
+    <!-- 商品信息 -->
+    <div class="product-info">
+        <div class="product-name">春季新品 众筹限定 高品质生活好物</div>
+        <div class="product-desc">精选优质材料，匠心打造，为您带来全新生活体验。众筹期间享受超值优惠价！</div>
+    </div>
+    
+    <div style="height: 100px;"></div>
+    
+    <!-- 底部操作栏 -->
+    <div class="bottom-bar">
+        <div class="bottom-actions">
+            <div class="bottom-action-item">
+                <div class="bottom-action-icon">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 3.54 1.84 6.6 4.6 8.34.26.17.4.47.4.79v2.87c0 .55.67.83 1.06.44l2.94-2.94c.18-.18.43-.28.69-.28.1 0 .2.01.3.04.76.2 1.56.31 2.39.31.13 0 .26 0 .39-.01C17.48 20.84 20.84 16.98 20.84 12.5 20.84 6.73 16.73 2 12 2z" fill="#505050"/><path d="M8.5 8.5c0-.83.67-1.5 1.5-1.5h4c.83 0 1.5.67 1.5 1.5v0c0 .83-.67 1.5-1.5 1.5h-4c-.83 0-1.5-.67-1.5-1.5v0zM10 12c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v0c0 .83-.67 1.5-1.5 1.5h-2c-.83 0-1.5-.67-1.5-1.5v0z" fill="#505050"/><circle cx="8" cy="16.5" r="1.5" fill="#505050"/><circle cx="16" cy="16.5" r="1.5" fill="#505050"/></svg>
+                </div>
+                <span class="bottom-action-text">客服</span>
+            </div>
+            <div class="bottom-action-item">
+                <div class="bottom-action-icon">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#505050"/></svg>
+                </div>
+                <span class="bottom-action-text">已收藏</span>
+            </div>
+            <div class="bottom-action-item">
+                <div class="cart-badge"><span class="cart-badge-text">99</span></div>
+                <div class="bottom-action-icon">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="#505050"/></svg>
+                </div>
+                <span class="bottom-action-text">购物车</span>
+            </div>
+        </div>
+        <button class="bottom-cta"><span class="bottom-cta-text">立即参团</span></button>
+    </div>
+    
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const target = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => target.classList.remove('feature-highlight'), 3000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

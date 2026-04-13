@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动已结束 - 商品详情页</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #f5f5f5; }
+        
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 16px 8px; font-size: 12px; font-weight: 600; }
+        .nav-bar { height: 44px; background: #fff; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+        .nav-bar .back { font-size: 18px; cursor: pointer; }
+        .nav-bar .title { font-size: 16px; font-weight: 600; }
+        
+        .product-image { width: 100%; height: 375px; background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; position: relative; }
+        .product-image .badge { position: absolute; top: 12px; right: 12px; background: #6b7280; color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 14px; font-weight: 600; }
+        .product-image::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); }
+        
+        .price-bar { margin: 12px 12px 0; border-radius: 8px 8px 0 0; overflow: hidden; position: relative; background: #6b7280; }
+        .price-bar-content { position: relative; z-index: 1; padding: 10px 12px 12px; }
+        .price-bar-title { position: absolute; top: 8px; right: 12px; font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.6); z-index: 2; }
+        
+        .price-row { display: flex; align-items: baseline; gap: 4px; }
+        .price-symbol { font-family: "DIN Alternate", sans-serif; font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.6); }
+        .price-value { font-family: "DIN Alternate", sans-serif; font-size: 24px; font-weight: 700; color: rgba(255,255,255,0.6); }
+        .price-unit { font-size: 10px; color: rgba(255,255,255,0.4); margin-left: 2px; }
+        
+        /* 已结束状态卡片 */
+        .crowd-section { margin: 0 12px 12px; border-radius: 0 0 8px 8px; overflow: hidden; position: relative; background: #e5e7eb; }
+        .crowd-content { position: relative; z-index: 1; padding: 16px; }
+        
+        .end-banner { text-align: center; margin-bottom: 16px; }
+        .end-icon { font-size: 48px; margin-bottom: 4px; opacity: 0.5; }
+        .end-title { font-size: 16px; font-weight: 600; color: #6b7280; margin-bottom: 4px; }
+        .end-desc { font-size: 12px; color: #9ca3af; }
+        
+        .crowd-stats-card { background: rgba(255,255,255,0.6); border-radius: 8px; padding: 12px; }
+        
+        .stats-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .stats-left { display: flex; align-items: baseline; gap: 4px; }
+        .stats-label { font-size: 14px; font-weight: 500; color: #6b7280; }
+        .stats-value { font-size: 14px; font-weight: 500; color: #6b7280; }
+        .stats-unit { font-size: 14px; font-weight: 500; color: #6b7280; }
+        .stats-target { font-size: 11px; color: #6b7280; }
+        
+        .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .progress-bar-bg { flex: 1; height: 8px; background: rgba(107,114,128,0.3); border-radius: 4px; overflow: hidden; margin-right: 8px; }
+        .progress-bar-fill { height: 100%; background: #9ca3af; border-radius: 4px; }
+        .progress-percent { font-family: "DIN Alternate", sans-serif; font-size: 14px; font-weight: 700; color: #6b7280; }
+        
+        .product-info { background: #fff; margin: 12px; border-radius: 12px; padding: 16px; }
+        .product-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .product-desc { font-size: 13px; color: #666; line-height: 1.5; }
+        
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: #fff; border-top: 0.5px solid rgba(0,0,0,0.1); display: flex; align-items: flex-start; padding-top: 3px; }
+        .bottom-cta { flex: 1; height: 40px; margin: 6px 12px 6px 12px; background: #e5e7eb; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: default; border: none; color: #9ca3af; font-size: 14px; font-weight: 500; }
+        
+        .prototype-module { transition: box-shadow 0.3s; }
+        .prototype-module.feature-highlight { box-shadow: 0 0 0 3px rgba(79,70,229,0.3), 0 8px 24px rgba(79,70,229,0.15); }
+    </style>
+</head>
+<body>
+    <div class="status-bar"><span>15:30</span><span>📶 🔋</span></div>
+    <div class="nav-bar"><span class="back">←</span><span class="title">商品详情</span><span>🔗</span></div>
+    
+    <div class="product-image">
+        <span style="z-index:1">📦 商品图片</span>
+        <span class="badge" style="z-index:1">⏰ 已结束</span>
+    </div>
+    
+    <div class="price-bar">
+        <span class="price-bar-title">🎯 众筹</span>
+        <div class="price-bar-content">
+            <div class="price-row"><span class="price-symbol">¥</span><span class="price-value">399</span><span class="price-unit">起</span></div>
+        </div>
+    </div>
+    
+    <div class="crowd-section prototype-module" data-prototype="app_goods_details_status_end">
+        <div class="crowd-content">
+            <div class="end-banner">
+                <div class="end-icon">⏰</div>
+                <div class="end-title">活动已结束</div>
+                <div class="end-desc">感谢您的关注，更多活动敬请期待</div>
+            </div>
+            
+            <div class="crowd-stats-card">
+                <div class="stats-row">
+                    <div class="stats-left"><span class="stats-label">已参团</span><span class="stats-value">327</span><span class="stats-unit">件</span></div>
+                    <span class="stats-target">500件</span>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 65%;"></div></div>
+                    <span class="progress-percent">65%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="product-info">
+        <div class="product-name">春季新品 众筹限定 高品质生活好物</div>
+        <div class="product-desc">精选优质材料，匠心打造，为您带来全新生活体验。</div>
+    </div>
+    
+    <div style="height: 100px;"></div>
+    
+    <div class="bottom-bar">
+        <button class="bottom-cta">活动已结束</button>
+    </div>
+    
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const target = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => target.classList.remove('feature-highlight'), 3000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
