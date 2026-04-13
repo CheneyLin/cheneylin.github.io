@@ -6,59 +6,439 @@
     <title>小芒团团营销工具 - APP 端原型</title>
     <link href="../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
+        /* ============================================
+           Vercel Design System - Geist-inspired
+           ============================================ */
+
         :root {
-            --geist-black: #171717; --geist-white: #ffffff; --geist-gray-600: #4d4d4d;
-            --geist-gray-100: #ebebeb; --geist-gray-50: #fafafa;
-            --shadow-border: rgba(0,0,0,0.08) 0px 0px 0px 1px;
-            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+            /* Colors */
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+
+            /* Accent Colors */
+            --ship-red: #ff5b4f;
+            --preview-pink: #de1d8d;
+            --develop-blue: #0a72ef;
             --focus-blue: hsla(212, 100%, 48%, 1);
+
+            /* Shadows (Vercel's signature shadow-as-border) */
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+            --shadow-focus: 0 0 0 2px var(--focus-blue);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; background: var(--geist-white); color: var(--geist-black); min-height: 100vh; }
-        
-        h1 { text-align: center; margin: 20px 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 2; }
-        
-        #prototypeContainer { width: 100%; min-height: 100vh; transition: all 0.3s ease; }
-        
-        .global-view { padding: 40px; max-width: 1800px; margin: 0 auto; }
-        .global-view-header { text-align: center; margin-bottom: 64px; }
-        .global-view-header h1 { color: var(--geist-black); margin-bottom: 16px; }
-        .global-view-header p { color: var(--geist-gray-600); }
-        .global-view-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(399px, 1fr)); gap: 48px; justify-content: center; }
-        .global-view .phone-frame-container { width: 399px !important; height: 836px !important; margin: 0 auto; position: relative; }
-        .global-view .phone-frame-container::after { content: attr(data-page-label); display: block; text-align: center; margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--geist-gray-600); }
-        
-        .single-view { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
-        
-        .phone-frame-container { position: relative; width: 399px; height: 836px; background: var(--geist-black); border-radius: 50px; padding: 12px; box-shadow: var(--shadow-card); flex-shrink: 0; }
-        .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 150px; height: 30px; background: var(--geist-black); border-radius: 0 0 20px 20px; z-index: 100; }
-        .phone-screen { width: 375px; height: 812px; background: var(--geist-white); border-radius: 40px; overflow: hidden; position: relative; }
-        .phone-screen iframe { width: 375px; height: 812px; border: none; }
-        
-        .controls-bar { position: fixed; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 1000; background: var(--geist-white); padding: 8px; border-radius: 8px; box-shadow: var(--shadow-card); }
-        .control-btn { background: var(--geist-white); color: var(--geist-black); border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; box-shadow: var(--shadow-border); min-height: 38px; }
-        .control-btn:hover { background: var(--geist-gray-50); transform: translateY(-1px); }
-        .control-btn.active { background: var(--geist-black); color: var(--geist-white); }
-        .control-btn:focus { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
-        
-        .page-selector-bar { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); background: var(--geist-white); border-radius: 8px; padding: 8px; box-shadow: var(--shadow-card); z-index: 1000; display: flex; gap: 6px; }
-        .page-item-bar { padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--geist-gray-600); display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: var(--shadow-border); min-height: 38px; }
-        .page-item-bar:hover { background: var(--geist-gray-50); color: var(--geist-black); }
-        .page-item-bar.active { background: var(--geist-black); color: var(--geist-white); }
-        .page-item-bar i { font-size: 14px; width: 14px; }
-        
-        .global-only { display: none !important; }
-        .single-only { display: none !important; }
-        .global-view .single-only { display: none !important; }
-        .global-view .global-only { display: block !important; }
-        .single-view .global-only { display: none !important; }
-        .single-view .single-only { display: block !important; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1;
+            -webkit-font-smoothing: antialiased;
+            background: var(--geist-white);
+            color: var(--geist-black);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 页面标题居中 */
+        h1 {
+            text-align: center;
+            margin: 20px 0 0 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 2;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .display-hero {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -2.4px;
+            line-height: 1.0;
+        }
+
+        .body-large {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: var(--geist-gray-600);
+        }
+
+        /* Layout */
+        #prototypeContainer {
+            width: 100%;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Global View - Grid Layout */
+        .global-view {
+            padding: 40px 40px 40px 40px;
+            max-width: 1800px;
+            margin: 0 auto;
+            background: var(--geist-white);
+        }
+
+        .global-view-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .global-view-header h1 {
+            color: var(--geist-black);
+            margin-bottom: 16px;
+        }
+
+        .global-view-header p {
+            color: var(--geist-gray-600);
+        }
+
+        .global-view-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(399px, 1fr));
+            gap: 48px;
+            justify-content: center;
+            align-items: start;
+        }
+
+        /* Phone Frame in Global View */
+        .global-view .phone-frame {
+            width: 399px !important;
+            height: 836px !important;
+            margin: 0 auto;
+            padding-bottom: 52px;
+        }
+
+        .global-view .phone-frame::after {
+            content: attr(data-page-label);
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            letter-spacing: -0.28px;
+        }
+
+        /* Single View */
+        .single-view {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+            background: var(--geist-white);
+        }
+
+        /* Phone Frame Container */
+        .phone-frame {
+            position: relative;
+            width: 399px;
+            height: 836px;
+            background: var(--geist-black);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: var(--shadow-card);
+            transition: box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .phone-frame:hover {
+            box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px, rgba(0,0,0,0.06) 0px 12px 12px -6px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+
+        .phone-frame.feature-highlight {
+            box-shadow: 0 0 0 3px var(--focus-blue), var(--shadow-card);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--geist-black);
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+
+        .phone-screen {
+            width: 375px;
+            height: 812px;
+            background: var(--geist-white);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-screen iframe {
+            width: 375px;
+            height: 812px;
+            border: none;
+            display: block;
+        }
+
+        /* Controls Bar - Top Right */
+        .controls-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            background: var(--geist-white);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .control-btn {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-border);
+            font-family: inherit;
+            min-height: 38px;
+            line-height: 1.5;
+        }
+
+        .control-btn:hover {
+            background: var(--geist-gray-50);
+            transform: translateY(-1px);
+        }
+
+        .control-btn.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+
+        .control-btn:focus {
+            outline: 2px solid var(--focus-blue);
+            outline-offset: 2px;
+        }
+
+        /* Page Selector Bar - Top Center (Single View Only) */
+        .page-selector-bar {
+            position: fixed;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--geist-white);
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: var(--shadow-card);
+            z-index: 1000;
+            display: flex;
+            gap: 6px;
+            max-width: 90vw;
+            overflow-x: auto;
+        }
+
+        .page-selector-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .page-selector-bar::-webkit-scrollbar-thumb {
+            background: var(--geist-gray-100);
+            border-radius: 2px;
+        }
+
+        .page-item-bar {
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            box-shadow: var(--shadow-border);
+            min-height: 38px;
+            line-height: 1.5;
+        }
+
+        .page-item-bar:hover {
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+        }
+
+        .page-item-bar.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+
+        .page-item-bar i {
+            font-size: 14px;
+            width: 14px;
+        }
+
+        /* Dropdown Menu for Mobile/Tablet */
+        .page-dropdown {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .dropdown-toggle {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s;
+            font-family: inherit;
+            min-height: 38px;
+            line-height: 1.5;
+        }
+
+        .dropdown-toggle:hover {
+            background: var(--geist-gray-50);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: var(--geist-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+            padding: 8px;
+            min-width: 200px;
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+        }
+
+        .dropdown-item.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+
+        .dropdown-item i {
+            font-size: 14px;
+            width: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-selector-bar {
+                display: none !important;
+            }
+
+            .page-dropdown {
+                display: block;
+            }
+
+            .global-view {
+                padding: 40px 20px;
+            }
+
+            .global-view-grid {
+                grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .global-view {
+                padding: 30px 16px;
+            }
+
+            .global-view-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .controls-bar {
+                top: 10px;
+                right: 10px;
+            }
+
+            .page-dropdown {
+                top: 70px;
+                left: 10px;
+            }
+        }
+
+        /* Hide elements based on view mode */
+        .global-view .single-only {
+            display: none !important;
+        }
+
+        .single-view .global-only {
+            display: none !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
     <h1>小芒团团营销工具 APP 原型设计</h1>
     
-    <div class="page-selector-bar single-only">
+    <!-- Page Selector Bar (Single View Only) -->
+    <div id="pageBar" class="page-selector-bar">
         <div class="page-item-bar active" data-page="goods_details_status_running.html" onclick="loadPage('goods_details_status_running.html', this)">
             <i class="bi bi-bullseye"></i><span>进行中</span>
         </div>
@@ -73,76 +453,170 @@
         </div>
     </div>
     
-    <div class="controls-bar">
-        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')"><i class="bi bi-phone"></i><span>单独界面</span></button>
-        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')"><i class="bi bi-grid-3x3"></i><span>全局视图</span></button>
+    <!-- Dropdown Menu for Mobile/Tablet -->
+    <div class="page-dropdown single-only">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            <i class="bi bi-list"></i>
+            <span id="currentPageLabel">进行中</span>
+            <i class="bi bi-chevron-down" style="margin-left: 4px;"></i>
+        </button>
+        <div class="dropdown-menu" id="pageDropdownMenu">
+            <div class="dropdown-item active" data-page="goods_details_status_running.html" onclick="loadPage('goods_details_status_running.html', this)">
+                <i class="bi bi-bullseye"></i><span>进行中</span>
+            </div>
+            <div class="dropdown-item" data-page="goods_details_status_success.html" onclick="loadPage('goods_details_status_success.html', this)">
+                <i class="bi bi-check-circle"></i><span>众筹成功</span>
+            </div>
+            <div class="dropdown-item" data-page="goods_details_status_fail.html" onclick="loadPage('goods_details_status_fail.html', this)">
+                <i class="bi bi-x-circle"></i><span>众筹失败</span>
+            </div>
+            <div class="dropdown-item" data-page="goods_details_status_end.html" onclick="loadPage('goods_details_status_end.html', this)">
+                <i class="bi bi-clock"></i><span>活动已结束</span>
+            </div>
+        </div>
     </div>
     
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+            <i class="bi bi-phone"></i><span>单独界面</span>
+        </button>
+        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+            <i class="bi bi-grid-3x3"></i><span>全局视图</span>
+        </button>
+    </div>
+    
+    <!-- Prototype Container -->
     <div id="prototypeContainer" class="single-view">
-        <div class="phone-frame-container single-only">
+        <!-- Single View -->
+        <div id="singlePhone" class="phone-frame">
             <div class="phone-notch"></div>
-            <div class="phone-screen"><iframe id="prototypeFrame" src="app_pages/goods_details_status_running.html" frameborder="0"></iframe></div>
+            <div class="phone-screen">
+                <iframe id="prototypeFrame" src="app_pages/goods_details_status_running.html" frameborder="0"></iframe>
+            </div>
         </div>
-        <div class="global-view global-only">
-            <div class="global-view-header"><h1>众筹商品详情页 - 4种状态</h1><p>进行中 / 成功 / 失败 / 已结束</p></div>
+        <!-- Global View -->
+        <div id="globalView" class="global-view hidden">
+            <div class="global-view-header">
+                <h1>众筹商品详情页 - 4种状态</h1>
+                <p>进行中 / 成功 / 失败 / 已结束</p>
+            </div>
             <div class="global-view-grid">
-                <div class="phone-frame-container" data-page-label="进行中">
+                <div class="phone-frame" data-page-label="进行中">
                     <div class="phone-notch"></div>
-                    <div class="phone-screen"><iframe src="app_pages/goods_details_status_running.html" frameborder="0"></iframe></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_running.html" frameborder="0"></iframe>
+                    </div>
                 </div>
-                <div class="phone-frame-container" data-page-label="众筹成功">
+                <div class="phone-frame" data-page-label="众筹成功">
                     <div class="phone-notch"></div>
-                    <div class="phone-screen"><iframe src="app_pages/goods_details_status_success.html" frameborder="0"></iframe></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_success.html" frameborder="0"></iframe>
+                    </div>
                 </div>
-                <div class="phone-frame-container" data-page-label="众筹失败">
+                <div class="phone-frame" data-page-label="众筹失败">
                     <div class="phone-notch"></div>
-                    <div class="phone-screen"><iframe src="app_pages/goods_details_status_fail.html" frameborder="0"></iframe></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_fail.html" frameborder="0"></iframe>
+                    </div>
                 </div>
-                <div class="phone-frame-container" data-page-label="活动已结束">
+                <div class="phone-frame" data-page-label="活动已结束">
                     <div class="phone-notch"></div>
-                    <div class="phone-screen"><iframe src="app_pages/goods_details_status_end.html" frameborder="0"></iframe></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_end.html" frameborder="0"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        let currentView = 'single', currentPage = 'goods_details_status_running.html';
-        
+        let currentView = 'single';
+        let currentPage = 'goods_details_status_running.html';
+        let dropdownOpen = false;
+
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (dropdownOpen) {
+                menu.classList.add('show');
+            } else {
+                menu.classList.remove('show');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.page-dropdown');
+            if (dropdown && !dropdown.contains(event.target)) {
+                dropdownOpen = false;
+                const menu = document.getElementById('pageDropdownMenu');
+                if (menu) {
+                    menu.classList.remove('show');
+                }
+            }
+        });
+
+        // Switch between single and global view
         function switchView(mode) {
             currentView = mode;
-            const c = document.getElementById('prototypeContainer');
-            c.className = mode === 'single' ? 'single-view' : 'global-view';
-            document.getElementById('btnSingleView').classList.toggle('active', mode === 'single');
-            document.getElementById('btnGlobalView').classList.toggle('active', mode === 'global');
-            window.location.hash = mode;
+            const singlePhone = document.getElementById('singlePhone');
+            const globalView = document.getElementById('globalView');
+            const pageBar = document.getElementById('pageBar');
+            const container = document.getElementById('prototypeContainer');
+
+            if (mode === 'single') {
+                singlePhone.classList.remove('hidden');
+                globalView.classList.add('hidden');
+                pageBar.classList.remove('hidden');
+                container.className = 'single-view';
+                document.getElementById('btnSingleView').classList.add('active');
+                document.getElementById('btnGlobalView').classList.remove('active');
+            } else {
+                singlePhone.classList.add('hidden');
+                globalView.classList.remove('hidden');
+                pageBar.classList.add('hidden');
+                container.className = 'global-view';
+                document.getElementById('btnSingleView').classList.remove('active');
+                document.getElementById('btnGlobalView').classList.add('active');
+            }
         }
-        
+
+        // Load specific page in single view
         function loadPage(url, el) {
             currentPage = url;
             document.getElementById('prototypeFrame').src = 'app_pages/' + url;
-            document.querySelectorAll('.page-item-bar').forEach(i => i.classList.remove('active'));
-            if (el) el.classList.add('active');
-            window.location.hash = 'single-' + url;
-        }
-        
-        window.addEventListener('hashchange', function() {
-            const h = window.location.hash.substring(1);
-            if (h === 'global') switchView('global');
-            else if (h === 'single') switchView('single');
-            else if (h.startsWith('single-')) {
-                switchView('single');
-                const url = h.substring(7);
-                const el = document.querySelector(`[data-page="${url}"]`);
-                if (el) loadPage(url, el);
+
+            // Update active state for both selector bar and dropdown
+            document.querySelectorAll('.page-item-bar').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-page') === url);
+            });
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-page') === url);
+            });
+
+            // Update dropdown label
+            const pageNames = {
+                'goods_details_status_running.html': '进行中',
+                'goods_details_status_success.html': '众筹成功',
+                'goods_details_status_fail.html': '众筹失败',
+                'goods_details_status_end.html': '活动已结束'
+            };
+            const label = document.getElementById('currentPageLabel');
+            if (label) {
+                label.textContent = pageNames[url] || '页面';
             }
-        });
-        
-        window.addEventListener('DOMContentLoaded', function() {
-            const h = window.location.hash.substring(1);
-            if (h) { const el = document.querySelector(`[data-page="${h.substring(7)}"]`); if (el) loadPage(h.substring(7), el); }
-        });
-        
+
+            // Close dropdown
+            dropdownOpen = false;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (menu) {
+                menu.classList.remove('show');
+            }
+        }
+
+        // Listen for PRD highlight messages
         window.addEventListener('message', function(e) {
             if (e.data && e.data.action === 'highlight' && e.data.featureId) {
                 const fid = e.data.featureId;
@@ -151,11 +625,15 @@
                 else if (fid.startsWith('app_goods_details_status_success')) tp = 'goods_details_status_success.html';
                 else if (fid.startsWith('app_goods_details_status_fail')) tp = 'goods_details_status_fail.html';
                 else if (fid.startsWith('app_goods_details_status_end')) tp = 'goods_details_status_end.html';
-                
+
                 if (currentView !== 'single') switchView('single');
+
                 setTimeout(() => {
-                    const el = document.querySelector(`[data-page="${tp}"]`);
-                    if (el) { loadPage(tp, el); const pf = document.querySelector('.phone-frame-container.single-only'); if (pf) { pf.style.boxShadow = '0 0 0 3px #0070f3, var(--shadow-card)'; setTimeout(() => pf.style.boxShadow = '', 2000); } }
+                    const el = document.querySelector(`.page-item-bar[data-page="${tp}"]`);
+                    if (el) loadPage(tp, el);
+                    const phone = document.getElementById('singlePhone');
+                    phone.classList.add('feature-highlight');
+                    setTimeout(() => phone.classList.remove('feature-highlight'), 2000);
                 }, 100);
             }
         });

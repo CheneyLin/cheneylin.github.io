@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>众筹成功 - 商品详情页</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #f5f5f5; }
@@ -14,12 +15,12 @@
         .nav-bar .title { font-size: 16px; font-weight: 600; }
         
         .product-image { width: 100%; height: 375px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; position: relative; }
-        .product-image .badge { position: absolute; top: 12px; right: 12px; background: #10b981; color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 14px; font-weight: 600; }
+        .product-image .badge { position: absolute; top: 12px; right: 12px; background: #10b981; color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
         
         .price-bar { margin: 12px 12px 0; border-radius: 8px 8px 0 0; overflow: hidden; position: relative; }
         .price-bar-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, #393939 0%, #030303 100%); }
         .price-bar-content { position: relative; z-index: 1; padding: 10px 12px 12px; }
-        .price-bar-title { position: absolute; top: 8px; right: 12px; font-size: 16px; font-weight: 600; color: #FFD91D; z-index: 2; }
+        .price-bar-title { position: absolute; top: 8px; right: 12px; font-size: 16px; font-weight: 600; color: #FFD91D; z-index: 2; display: flex; align-items: center; gap: 4px; }
         
         .price-row { display: flex; align-items: baseline; gap: 4px; }
         .price-symbol { font-family: "DIN Alternate", sans-serif; font-size: 14px; font-weight: 700; color: #fff; }
@@ -31,7 +32,7 @@
         .crowd-content { position: relative; z-index: 1; padding: 16px; }
         
         .success-banner { text-align: center; margin-bottom: 16px; }
-        .success-icon { font-size: 48px; margin-bottom: 4px; }
+        .success-icon { font-size: 48px; margin-bottom: 4px; color: #fff; }
         .success-title { font-size: 16px; font-weight: 600; color: #059669; margin-bottom: 4px; }
         .success-desc { font-size: 12px; color: #059669; }
         
@@ -50,7 +51,7 @@
         .progress-percent { font-family: "DIN Alternate", sans-serif; font-size: 14px; font-weight: 700; color: #059669; }
         
         .ship-info { background: rgba(16,185,129,0.1); border-radius: 8px; padding: 10px 12px; margin-top: 12px; display: flex; align-items: center; gap: 8px; }
-        .ship-info .icon { font-size: 20px; }
+        .ship-info .bi { font-size: 20px; color: #059669; }
         .ship-info .text { font-size: 12px; color: #059669; }
         .ship-info .text strong { font-weight: 600; }
         
@@ -58,7 +59,7 @@
         .product-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
         .product-desc { font-size: 13px; color: #666; line-height: 1.5; }
         
-        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: #fff; border-top: 0.5px solid rgba(0,0,0,0.1); display: flex; align-items: flex-start; padding-top: 3px; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: #fff; border-top: 0.5px solid rgba(0,0,0,0.1); display: flex; align-items: flex-start; padding-top: 3px; z-index: 100; }
         .bottom-cta { flex: 1; height: 40px; margin: 6px 12px 6px 12px; background: #FFD91D; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
         .bottom-cta:active { opacity: 0.85; }
         .bottom-cta-text { font-size: 14px; font-weight: 500; color: #202020; }
@@ -69,16 +70,16 @@
 </head>
 <body>
     <div class="status-bar"><span>15:30</span><span>📶 🔋</span></div>
-    <div class="nav-bar"><span class="back">←</span><span class="title">商品详情</span><span>🔗</span></div>
+    <div class="nav-bar"><span class="back"><i class="bi bi-chevron-left"></i></span><span class="title">商品详情</span><span><i class="bi bi-share"></i></span></div>
     
     <div class="product-image">
-        <span>📦 商品图片</span>
-        <span class="badge">✅ 众筹成功</span>
+        <span><i class="bi bi-box-seam" style="font-size: 64px;"></i></span>
+        <span class="badge"><i class="bi bi-check-circle"></i> 众筹成功</span>
     </div>
     
     <div class="price-bar">
         <div class="price-bar-bg"></div>
-        <span class="price-bar-title">🎯 众筹</span>
+        <span class="price-bar-title"><i class="bi bi-bullseye"></i> 众筹</span>
         <div class="price-bar-content">
             <div class="price-row">
                 <span class="price-symbol">¥</span><span class="price-value">399</span><span class="price-unit">起</span>
@@ -89,7 +90,7 @@
     <div class="crowd-section prototype-module" data-prototype="app_goods_details_status_success">
         <div class="crowd-content">
             <div class="success-banner">
-                <div class="success-icon">🎉</div>
+                <div class="success-icon"><i class="bi bi-trophy"></i></div>
                 <div class="success-title">众筹成功！</div>
                 <div class="success-desc">感谢参与，商家将尽快安排发货</div>
             </div>
@@ -106,7 +107,7 @@
             </div>
             
             <div class="ship-info">
-                <span class="icon">📦</span>
+                <i class="bi bi-truck"></i>
                 <div class="text">预计发货时间：<strong>2026-04-25 前</strong></div>
             </div>
         </div>
