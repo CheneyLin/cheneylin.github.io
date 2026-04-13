@@ -416,14 +416,16 @@
                 <li>订单状态：变更为"已关闭-众筹未达标"</li>
             </ol>
             <h4>退款流程</h4>
-            <pre>flowchart TD
+            <pre class="mermaid">
+flowchart TD
     A[众筹失败判定] --> B[查询所有参与订单]
     B --> C[逐单发起退款请求]
     C --> D{支付渠道退款}
     D -->|成功| E[更新订单状态为已退款]
     D -->|失败| F[记录失败日志，重试]
     F --> C
-    E --> G[推送退款成功通知]</pre>
+    E --> G[推送退款成功通知]
+</pre>
             <h4>异常处理</h4>
             <table>
                 <tr><th>异常场景</th><th>处理逻辑</th></tr>
@@ -435,7 +437,7 @@
 
         <h2>六、业务流程图</h2>
         <div class="mermaid">
-            <pre class="language-mermaid">
+<pre class="mermaid">
 flowchart TD
     A[商家进入小芒团团项目列表] --> B[点击创建活动/编辑]
     B --> C[配置基本信息<br/>活动名称/时间/目标]
@@ -456,7 +458,7 @@ flowchart TD
     M -->|未达标| O[众筹失败，触发退款]
     N --> P[订单正常流转]
     O --> Q[原路退款，通知用户]
-            </pre>
+</pre>
         </div>
 
         <h2>七、异常与边界处理</h2>
@@ -495,10 +497,6 @@ flowchart TD
             <tr><th>附件名称</th><th>说明</th></tr>
             <tr><td>admin_config.png</td><td>商家后台配置参考截图（待补充）</td></tr>
         </table>
-
-        <div class="note">
-            <strong>📝 文档说明</strong>：本文档为第一版初稿，待原型确认后补充交互细节和界面流转图。
-        </div>
     </div>
 
     <script>
@@ -508,6 +506,15 @@ flowchart TD
 
         window.addEventListener('message', function(e) {
             if (e.origin !== window.location.origin && e.data.featureId) return;
+        });
+    </script>
+    <script src="../assets/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
         });
     </script>
 </body>
