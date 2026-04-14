@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待发货订单详情</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1;
+            -webkit-font-smoothing: antialiased;
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+            height: 812px;
+            overflow: hidden;
+        }
+        .app-status-bar { height: 44px; background: var(--geist-white); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; border-bottom: var(--shadow-border); }
+        .app-nav-bar { height: 56px; background: var(--geist-white); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: var(--shadow-border); }
+        .app-nav-back { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+        .app-nav-back:hover { background: var(--geist-gray-50); }
+        .app-nav-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+        .app-nav-placeholder { width: 32px; }
+        .app-page-content { height: calc(812px - 44px - 56px - 60px); overflow-y: auto; padding-bottom: 20px; }
+        .app-page-content::-webkit-scrollbar { width: 0; }
+        .app-card { background: var(--geist-white); margin: 12px; padding: 16px; border-radius: 8px; box-shadow: var(--shadow-border); }
+        .app-logistics-status { display: flex; flex-direction: column; gap: 8px; }
+        .app-status-header { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--geist-gray-600); }
+        .app-status-dot { width: 8px; height: 8px; background: #ffd700; border-radius: 50%; display: inline-block; }
+        .app-status-text { font-size: 15px; font-weight: 500; color: var(--geist-black); }
+        .app-status-time { font-size: 12px; color: var(--geist-gray-400); }
+        .app-address-card { display: flex; align-items: flex-start; gap: 12px; }
+        .app-address-icon { font-size: 18px; color: var(--geist-gray-600); margin-top: 2px; }
+        .app-address-main { font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--geist-black); }
+        .app-address-contact { font-size: 13px; color: var(--geist-gray-600); margin-top: 4px; }
+        .app-shop-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 14px; color: var(--geist-gray-600); }
+        .app-product-item { display: flex; gap: 12px; margin-bottom: 16px; }
+        .app-product-item:last-child { margin-bottom: 0; }
+        .app-product-image { width: 80px; height: 80px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-size: 10px; text-align: center; }
+        .app-product-info { flex: 1; }
+        .app-product-tag { display: inline-block; background: #ffd700; color: var(--geist-black); padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+        .app-product-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; line-height: 1.4; }
+        .app-product-sku { font-size: 12px; color: var(--geist-gray-400); margin-bottom: 4px; }
+        .app-product-review-tag { font-size: 12px; color: #ff6b35; display: flex; align-items: center; gap: 4px; }
+        .app-product-review-tag::after { content: '›'; font-size: 14px; }
+        .app-product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        .app-product-price { font-size: 15px; font-weight: 500; }
+        .app-product-quantity { font-size: 13px; color: var(--geist-gray-400); }
+        .app-product-total { font-size: 15px; font-weight: 500; text-align: right; margin-top: 8px; }
+        .app-actual-amount { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: var(--shadow-border); cursor: pointer; }
+        .app-actual-amount-label { font-size: 14px; color: var(--geist-gray-600); }
+        .app-actual-amount-value { font-size: 18px; color: #ff3333; font-weight: 600; }
+        .app-order-info-section { padding: 0 4px; }
+        .app-order-info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: var(--shadow-border); }
+        .app-order-info-row:last-child { border-bottom: none; }
+        .app-order-info-label { font-size: 13px; color: var(--geist-gray-400); }
+        .app-order-info-value { font-size: 13px; color: var(--geist-gray-600); display: flex; align-items: center; gap: 8px; }
+        .app-btn-copy { font-size: 12px; color: var(--focus-blue); cursor: pointer; background: none; border: none; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; font-family: inherit; }
+        .app-btn-copy:hover { background: var(--geist-gray-50); }
+        .app-btn-more { text-align: center; padding: 12px 0; font-size: 13px; color: var(--geist-gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .app-contact-service { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 0 8px; font-size: 14px; color: var(--geist-black); cursor: pointer; }
+        .app-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; background: var(--geist-white); padding: 12px 16px; padding-bottom: 34px; display: flex; justify-content: flex-end; gap: 8px; border-top: var(--shadow-border); }
+        .app-btn-bottom { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); font-family: inherit; }
+        .app-btn-bottom:hover { background: var(--geist-gray-50); }
+        .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
+        .prototype-module { transition: all 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="app-status-bar">
+        <span>10:32</span>
+        <div class="flex items-center gap-2">
+            <i class="bi bi-reception-4"></i>
+            <i class="bi bi-wifi"></i>
+            <i class="bi bi-battery-full"></i>
+        </div>
+    </div>
+    <div class="app-nav-bar">
+        <div class="app-nav-back"><i class="bi bi-chevron-left"></i></div>
+        <div class="app-nav-title">待发货</div>
+        <div class="app-nav-placeholder"></div>
+    </div>
+    <div class="app-page-content">
+        <div class="app-card app-logistics-status prototype-module" data-prototype="app_my_order_details_waiting_out">
+            <div class="app-status-header">
+                <i class="bi bi-box-seam"></i>
+                <span>包裹</span>
+            </div>
+            <div class="app-status-text">
+                <span class="app-status-dot"></span>
+                下单成功，商家已接单
+            </div>
+            <div class="app-status-time">2026-04-13 09:18:03</div>
+        </div>
+        <div class="app-card">
+            <div class="app-address-card">
+                <i class="bi bi-geo-alt app-address-icon"></i>
+                <div>
+                    <div class="app-address-main">送至湖南省长沙市开福区锦绣路8号七彩盒子东广场漂浮办公区</div>
+                    <div class="app-address-contact">丁大刀 17773101093</div>
+                </div>
+            </div>
+        </div>
+        <div class="app-card">
+            <div class="app-shop-header">
+                <i class="bi bi-shop"></i>
+                <span>小芒自营1店</span>
+            </div>
+            <div class="app-product-item">
+                <div class="app-product-image" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                    <div><i class="bi bi-star-fill" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>钻石级</div>
+                </div>
+                <div class="app-product-info">
+                    <span class="app-product-tag">自营</span>
+                    <div class="app-product-name">【快闪店分销】【璀璨钻石级...</div>
+                    <div class="app-product-sku">粉色1号</div>
+                    <div class="app-product-review-tag">售后待审核</div>
+                    <div class="app-product-bottom">
+                        <span class="app-product-price">¥128.00</span>
+                        <span class="app-product-quantity">x1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="app-product-total">¥128</div>
+            <div class="app-actual-amount">
+                <span class="app-actual-amount-label">实付金额</span>
+                <span class="app-actual-amount-value">¥128.19</span>
+                <i class="bi bi-chevron-down"></i>
+            </div>
+        </div>
+        <div class="app-card">
+            <div class="app-order-info-section">
+                <div class="app-order-info-row">
+                    <span class="app-order-info-label">订单编号</span>
+                    <span class="app-order-info-value">7628047211178296039 <button class="app-btn-copy">复制</button></span>
+                </div>
+                <div class="app-order-info-row">
+                    <span class="app-order-info-label">支付方式</span>
+                    <span class="app-order-info-value">外渠支付</span>
+                </div>
+                <div class="app-order-info-row">
+                    <span class="app-order-info-label">下单时间</span>
+                    <span class="app-order-info-value">2026-04-13 09:18:03</span>
+                </div>
+                <div class="app-order-info-row">
+                    <span class="app-order-info-label">交易流水</span>
+                    <span class="app-order-info-value">7628046967772013925</span>
+                </div>
+            </div>
+            <div class="app-btn-more">查看更多 <i class="bi bi-chevron-down"></i></div>
+            <div class="app-contact-service">
+                <i class="bi bi-headset"></i>
+                <span>联系客服</span>
+            </div>
+        </div>
+    </div>
+    <div class="app-bottom-bar">
+        <button class="app-btn-bottom">发票服务</button>
+        <button class="app-btn-bottom">再次购买</button>
+    </div>
+    <script>
+        // 接收父窗口高亮消息
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { module.classList.remove('feature-highlight'); });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+        // 复制按钮交互
+        document.querySelectorAll('.app-btn-copy').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const originalText = this.textContent; this.textContent = '已复制'; this.style.color = '#52c41a';
+                setTimeout(() => { this.textContent = originalText; this.style.color = ''; }, 1500);
+            });
+        });
+        // 通知父窗口页面加载完成
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'app_my_order_details_waiting_out.html' }, '*');
+    </script>
+</body>
+</html>

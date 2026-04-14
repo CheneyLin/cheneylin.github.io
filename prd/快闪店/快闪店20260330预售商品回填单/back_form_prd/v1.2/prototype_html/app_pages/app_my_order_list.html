@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快闪店订单列表</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1;
+            -webkit-font-smoothing: antialiased;
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+            height: 812px;
+            overflow: hidden;
+        }
+        .app-status-bar { height: 44px; background: var(--geist-white); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; border-bottom: var(--shadow-border); }
+        .app-nav-bar { height: 56px; background: var(--geist-white); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: var(--shadow-border); }
+        .app-nav-back { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+        .app-nav-back:hover { background: var(--geist-gray-50); }
+        .app-nav-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+        .app-nav-placeholder { width: 32px; }
+        .app-tabs { height: 44px; background: var(--geist-white); display: flex; align-items: center; padding: 0 16px; gap: 24px; border-bottom: var(--shadow-border); overflow-x: auto; }
+        .app-tabs::-webkit-scrollbar { display: none; }
+        .app-tab { font-size: 14px; color: var(--geist-gray-600); cursor: pointer; white-space: nowrap; padding: 8px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .app-tab.active { color: var(--geist-black); font-weight: 600; border-bottom-color: var(--geist-black); }
+        .app-sub-tabs { height: 40px; background: var(--geist-white); display: flex; align-items: center; padding: 0 16px; gap: 12px; border-bottom: var(--shadow-border); overflow-x: auto; }
+        .app-sub-tabs::-webkit-scrollbar { display: none; }
+        .app-sub-tab { font-size: 13px; color: var(--geist-gray-600); cursor: pointer; white-space: nowrap; padding: 6px 12px; border-radius: 16px; transition: all 0.2s; }
+        .app-sub-tab.active { background: var(--geist-black); color: var(--geist-white); }
+        .app-page-content { height: calc(812px - 44px - 56px - 44px - 40px); overflow-y: auto; padding-bottom: 20px; }
+        .app-page-content::-webkit-scrollbar { width: 0; }
+        .app-order-card {
+            background: var(--geist-white);
+            margin: 12px;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-border);
+            position: relative;
+        }
+        .app-order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .app-shop-info { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--geist-gray-600); }
+        .app-order-status { font-size: 12px; padding: 4px 10px; border-radius: 12px; font-weight: 500; }
+        .app-order-status.waiting-out { background: #fef3c7; color: #92400e; }
+        .app-order-status.out { background: #dbeafe; color: #1e40af; }
+        .app-order-status.waiting-receive { background: #d1fae5; color: #065f46; }
+        .app-product-item { display: flex; gap: 12px; margin-bottom: 12px; }
+        .app-product-item:last-child { margin-bottom: 0; }
+        .app-product-image { width: 80px; height: 80px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-size: 10px; text-align: center; }
+        .app-product-info { flex: 1; }
+        .app-product-tag { display: inline-block; background: #ffd700; color: var(--geist-black); padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+        .app-product-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; line-height: 1.4; }
+        .app-product-sku { font-size: 12px; color: var(--geist-gray-400); margin-bottom: 4px; }
+        .app-product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        .app-product-price { font-size: 15px; font-weight: 500; }
+        .app-product-quantity { font-size: 13px; color: var(--geist-gray-400); }
+        .app-order-footer { border-top: var(--shadow-border); padding-top: 12px; margin-top: 12px; }
+        .app-back-form-no { font-size: 12px; color: var(--geist-gray-400); margin-bottom: 8px; }
+        .app-actual-amount { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .app-actual-amount-label { font-size: 13px; color: var(--geist-gray-600); }
+        .app-actual-amount-value { font-size: 16px; font-weight: 600; color: var(--geist-black); }
+        .app-logistics-info { font-size: 12px; color: var(--geist-gray-400); margin-bottom: 8px; display: flex; align-items: center; gap: 4px; }
+        .app-logistics-info i { font-size: 14px; }
+        .app-order-actions { display: flex; justify-content: flex-end; gap: 8px; }
+        .app-btn-action { padding: 6px 14px; border-radius: 16px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); font-family: inherit; }
+        .app-btn-action:hover { background: var(--geist-gray-50); }
+        .app-btn-action.primary { background: var(--geist-black); color: var(--geist-white); border-color: var(--geist-black); }
+        .app-btn-action.primary:hover { background: var(--geist-gray-900); }
+        .app-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; }
+        .app-empty-icon { font-size: 64px; color: var(--geist-gray-100); margin-bottom: 16px; }
+        .app-empty-title { font-size: 16px; font-weight: 500; color: var(--geist-gray-600); margin-bottom: 8px; }
+        .app-empty-desc { font-size: 13px; color: var(--geist-gray-400); margin-bottom: 20px; }
+        .app-empty-btn { padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); font-family: inherit; }
+        .app-empty-btn:hover { background: var(--geist-gray-50); }
+        .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
+        .prototype-module { transition: all 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="app-status-bar">
+        <span>10:32</span>
+        <div class="flex items-center gap-2">
+            <i class="bi bi-reception-4"></i>
+            <i class="bi bi-wifi"></i>
+            <i class="bi bi-battery-full"></i>
+        </div>
+    </div>
+    <div class="app-nav-bar">
+        <div class="app-nav-back"><i class="bi bi-chevron-left"></i></div>
+        <div class="app-nav-title">快闪店订单</div>
+        <div class="app-nav-placeholder"></div>
+    </div>
+    <!-- 订单状态 Tab -->
+    <div class="app-tabs">
+        <div class="app-tab active">全部</div>
+        <div class="app-tab">待支付</div>
+        <div class="app-tab">待发货</div>
+        <div class="app-tab">待收货</div>
+        <div class="app-tab">待评价</div>
+    </div>
+    <!-- 业务分类 Tab -->
+    <div class="app-sub-tabs">
+        <div class="app-sub-tab">全部</div>
+        <div class="app-sub-tab active">快闪店</div>
+        <div class="app-sub-tab">商城</div>
+        <div class="app-sub-tab">其他</div>
+    </div>
+    <div class="app-page-content">
+        <!-- 订单列表 -->
+        <div class="prototype-module" data-prototype="app_order_list">
+            <!-- 订单卡片 1: 待发货 -->
+            <div class="app-order-card">
+                <div class="app-order-header">
+                    <div class="app-shop-info">
+                        <i class="bi bi-shop"></i>
+                        <span>快闪店预售活动 | 五一促销专场</span>
+                    </div>
+                    <span class="app-order-status waiting-out">待发货</span>
+                </div>
+                <div class="app-product-item">
+                    <div class="app-product-image" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                        <div><i class="bi bi-star-fill" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>钻石级</div>
+                    </div>
+                    <div class="app-product-info">
+                        <span class="app-product-tag">自营</span>
+                        <div class="app-product-name">【快闪店分销】【璀璨钻石级...</div>
+                        <div class="app-product-sku">粉色1号</div>
+                        <div class="app-product-bottom">
+                            <span class="app-product-price">¥128.00</span>
+                            <span class="app-product-quantity">x1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-order-footer">
+                    <div class="app-back-form-no">回填单：HT202603300001</div>
+                    <div class="app-actual-amount">
+                        <span class="app-actual-amount-label">实付款</span>
+                        <span class="app-actual-amount-value">¥128.19</span>
+                    </div>
+                    <div class="app-order-actions">
+                        <button class="app-btn-action">查看物流</button>
+                        <button class="app-btn-action primary">售后服务</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单卡片 2: 已发货/待收货 -->
+            <div class="app-order-card">
+                <div class="app-order-header">
+                    <div class="app-shop-info">
+                        <i class="bi bi-shop"></i>
+                        <span>快闪店预售活动 | 五一促销专场</span>
+                    </div>
+                    <span class="app-order-status waiting-receive">待收货</span>
+                </div>
+                <div class="app-product-item">
+                    <div class="app-product-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <div><i class="bi bi-gift" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>臻礼</div>
+                    </div>
+                    <div class="app-product-info">
+                        <span class="app-product-tag">自营</span>
+                        <div class="app-product-name">【回填单】徐福记 悦享臻礼 14...</div>
+                        <div class="app-product-sku">深灰色1号</div>
+                        <div class="app-product-bottom">
+                            <span class="app-product-price">¥12.00</span>
+                            <span class="app-product-quantity">x2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-order-footer">
+                    <div class="app-back-form-no">回填单：HT202603300002</div>
+                    <div class="app-logistics-info">
+                        <i class="bi bi-truck"></i>
+                        <span>顺丰速运：SF7444702825582</span>
+                    </div>
+                    <div class="app-actual-amount">
+                        <span class="app-actual-amount-label">实付款</span>
+                        <span class="app-actual-amount-value">¥70.86</span>
+                    </div>
+                    <div class="app-order-actions">
+                        <button class="app-btn-action">查看物流</button>
+                        <button class="app-btn-action primary">确认收货</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单卡片 3: 出库中 -->
+            <div class="app-order-card">
+                <div class="app-order-header">
+                    <div class="app-shop-info">
+                        <i class="bi bi-shop"></i>
+                        <span>快闪店预售活动 | 五一促销专场</span>
+                    </div>
+                    <span class="app-order-status out">出库中</span>
+                </div>
+                <div class="app-product-item">
+                    <div class="app-product-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <div><i class="bi bi-bag" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>红色</div>
+                    </div>
+                    <div class="app-product-info">
+                        <span class="app-product-tag">自营</span>
+                        <div class="app-product-name">【回填单】徐福记 悦享臻礼 14...</div>
+                        <div class="app-product-sku">深蓝色2号</div>
+                        <div class="app-product-bottom">
+                            <span class="app-product-price">¥22.00</span>
+                            <span class="app-product-quantity">x2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-order-footer">
+                    <div class="app-back-form-no">回填单：HT202603300003</div>
+                    <div class="app-actual-amount">
+                        <span class="app-actual-amount-label">实付款</span>
+                        <span class="app-actual-amount-value">¥46.08</span>
+                    </div>
+                    <div class="app-order-actions">
+                        <button class="app-btn-action">售后服务</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Tab 切换交互
+        document.querySelectorAll('.app-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.app-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        document.querySelectorAll('.app-sub-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.app-sub-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        // 接收父窗口高亮消息
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { module.classList.remove('feature-highlight'); });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+        // 通知父窗口页面加载完成
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'app_my_order_list.html' }, '*');
+    </script>
+</body>
+</html>

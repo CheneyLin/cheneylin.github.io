@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回填单填写</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717; --geist-white: #ffffff; --geist-gray-900: #171717; --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666; --geist-gray-400: #808080; --geist-gray-100: #ebebeb; --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1; -webkit-font-smoothing: antialiased;
+            background: var(--geist-gray-50); color: var(--geist-black);
+            height: 812px; overflow: hidden;
+        }
+        .h5-status-bar { height: 44px; background: var(--geist-white); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; border-bottom: var(--shadow-border); }
+        .h5-page-content { height: calc(812px - 44px - 60px); overflow-y: auto; padding-bottom: 20px; background: var(--geist-gray-50); }
+        .h5-page-content::-webkit-scrollbar { width: 0; }
+        .h5-card { background: var(--geist-white); margin: 12px; padding: 16px; border-radius: 8px; box-shadow: var(--shadow-border); }
+        .h5-section-title { font-size: 14px; font-weight: 600; color: var(--geist-black); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .h5-section-title::before { content: ''; width: 4px; height: 16px; background: var(--geist-black); border-radius: 2px; }
+        .h5-product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .h5-product-card { background: var(--geist-white); border: var(--shadow-border); border-radius: 12px; padding: 12px; }
+        .h5-product-img { width: 100%; height: 80px; background: var(--geist-gray-50); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--geist-gray-400); margin-bottom: 8px; }
+        .h5-product-name { font-size: 14px; font-weight: 600; color: var(--geist-black); margin-bottom: 4px; }
+        .h5-product-sku { font-size: 12px; color: var(--geist-gray-400); margin-bottom: 4px; }
+        .h5-product-price { font-size: 14px; font-weight: 600; color: var(--geist-black); margin-bottom: 8px; }
+        .h5-qty-control { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .h5-qty-btn { width: 32px; height: 32px; border: var(--shadow-border); border-radius: 6px; background: var(--geist-white); color: var(--geist-black); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-family: inherit; }
+        .h5-qty-btn:hover { background: var(--geist-gray-50); }
+        .h5-qty-value { font-size: 14px; font-weight: 600; min-width: 32px; text-align: center; }
+        .h5-address-preview { font-size: 14px; color: var(--geist-black); margin-bottom: 12px; }
+        .h5-address-name { font-weight: 600; margin-bottom: 4px; }
+        .h5-address-detail { color: var(--geist-gray-600); font-size: 13px; }
+        .h5-btn-group { display: flex; gap: 8px; margin-top: 12px; }
+        .h5-btn { flex: 1; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); font-family: inherit; }
+        .h5-btn:hover { background: var(--geist-gray-50); }
+        .h5-btn.primary { background: var(--geist-black); color: var(--geist-white); border-color: var(--geist-black); }
+        .h5-btn.primary:hover { background: var(--geist-gray-900); }
+        .h5-input { width: 100%; padding: 10px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit; background: var(--geist-white); margin-top: 8px; }
+        .h5-input:focus { outline: 2px solid var(--focus-blue); outline-offset: -2px; }
+        .h5-file-upload { width: 100%; padding: 12px; border: 2px dashed var(--geist-gray-100); border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s; margin-top: 8px; background: var(--geist-white); }
+        .h5-file-upload:hover { border-color: var(--focus-blue); }
+        .h5-submit-bar { position: absolute; bottom: 0; left: 0; right: 0; background: var(--geist-white); padding: 12px 16px; padding-bottom: 34px; border-top: var(--shadow-border); }
+        .h5-submit-btn { width: 100%; padding: 12px 16px; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; background: var(--geist-black); color: var(--geist-white); font-family: inherit; }
+        .h5-submit-btn:hover { background: var(--geist-gray-900); }
+        .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
+        .prototype-module { transition: all 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="h5-status-bar">
+        <span>9:41</span>
+        <div class="flex items-center gap-2">
+            <i class="bi bi-reception-4"></i><i class="bi bi-wifi"></i><i class="bi bi-battery-full"></i>
+        </div>
+    </div>
+    <div class="h5-page-content">
+        <div class="h5-card" style="margin-top: 12px;">
+            <div style="font-size: 18px; font-weight: 600; color: var(--geist-black); margin-bottom: 8px;">快闪店预售回填单</div>
+            <div style="font-size: 13px; color: var(--geist-gray-600);">请在本页完成商品选择、收货地址和小票信息填写。</div>
+        </div>
+        <div class="prototype-module" data-prototype="h5_back_form_edit">
+            <div class="h5-card">
+                <div class="h5-section-title">商品选择</div>
+                <div class="h5-product-grid">
+                    <div class="h5-product-card">
+                        <div class="h5-product-img"><i class="bi bi-box" style="font-size: 32px;"></i></div>
+                        <div class="h5-product-name">芒果 TV 会员月卡</div>
+                        <div class="h5-product-sku">VIP-001 · 30天</div>
+                        <div class="h5-product-price">¥19.9</div>
+                        <div class="h5-qty-control">
+                            <button class="h5-qty-btn" onclick="adjustQty('qty_p1', -1)"><i class="bi bi-dash"></i></button>
+                            <span class="h5-qty-value" id="qty_p1">1</span>
+                            <button class="h5-qty-btn" onclick="adjustQty('qty_p1', 1)"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="h5-product-card">
+                        <div class="h5-product-img"><i class="bi bi-box" style="font-size: 32px;"></i></div>
+                        <div class="h5-product-name">芒果 TV 会员季卡</div>
+                        <div class="h5-product-sku">VIP-003 · 90天</div>
+                        <div class="h5-product-price">¥59.0</div>
+                        <div class="h5-qty-control">
+                            <button class="h5-qty-btn" onclick="adjustQty('qty_p2', -1)"><i class="bi bi-dash"></i></button>
+                            <span class="h5-qty-value" id="qty_p2">0</span>
+                            <button class="h5-qty-btn" onclick="adjustQty('qty_p2', 1)"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h5-card">
+            <div class="h5-section-title">收货地址</div>
+            <div class="h5-address-preview">
+                <div class="h5-address-name">张三（150****8888）</div>
+                <div class="h5-address-detail">浙江省杭州市西湖区文一西路 100 号</div>
+            </div>
+            <div class="h5-btn-group">
+                <button class="h5-btn">选择其他地址</button>
+                <button class="h5-btn primary">新建地址</button>
+            </div>
+        </div>
+        <div class="h5-card">
+            <div class="h5-section-title">小票信息</div>
+            <div style="font-size: 13px; color: var(--geist-gray-600); margin-bottom: 4px;">小票号码（必填）</div>
+            <input id="receiptNo" type="text" placeholder="请输入小票号码" class="h5-input">
+            <div style="font-size: 13px; color: var(--geist-gray-600); margin-top: 12px; margin-bottom: 4px;">小票照片（必填，最多10张）</div>
+            <input id="receiptPhotos" type="file" accept="image/*" multiple class="h5-file-upload">
+        </div>
+        <div class="prototype-module" data-prototype="feature_02" style="height: 80px; margin: 12px;"></div>
+    </div>
+    <div class="h5-submit-bar">
+        <button class="h5-submit-btn" onclick="submitOrder()">提交回填单</button>
+    </div>
+    <script>
+        function adjustQty(id, delta) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.textContent) + delta;
+            if (val < 0) val = 0;
+            el.textContent = val;
+        }
+        function submitOrder() {
+            const qty1 = parseInt(document.getElementById('qty_p1').textContent);
+            const qty2 = parseInt(document.getElementById('qty_p2').textContent);
+            const receiptNo = document.getElementById('receiptNo').value;
+            const photos = document.getElementById('receiptPhotos').files.length;
+            if (qty1 + qty2 < 1) { alert('请至少选择1件商品'); return; }
+            if (!receiptNo) { alert('请填写小票号码'); return; }
+            if (photos < 1) { alert('请上传小票照片'); return; }
+            window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: 'h5_back_form_success.html' }, '*');
+        }
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { module.classList.remove('feature-highlight'); });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) { targetModule.classList.add('feature-highlight'); targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }
+        });
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'h5_back_form.html' }, '*');
+    </script>
+</body>
+</html>

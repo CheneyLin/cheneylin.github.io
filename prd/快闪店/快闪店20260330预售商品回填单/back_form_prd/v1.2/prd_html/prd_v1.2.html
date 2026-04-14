@@ -8,7 +8,7 @@
   <style>
     :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
     body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
-    .page { max-width:1000px; margin:0 auto; padding:24px; }
+    .page { min-width:1024px; margin:0 auto; padding:24px; }
     h1 { font-size:28px; margin:0 0 12px; border-bottom:3px solid var(--primary); padding-bottom:12px; }
     h2 { font-size:20px; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
     h3 { font-size:16px; margin:20px 0 10px; font-weight:600; }
@@ -293,6 +293,189 @@
 用户进入快闪店订单页面 → 拉取用户订单列表
 → 按状态筛选/分页加载 → 展示订单卡片
 → 点击售后服务 → 跳转售后流程</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_my_order_details_waiting_out">
+        <h3>5.3.2 快闪店订单详情 - 待发货 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_waiting_out')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户点击待发货状态的订单后，进入订单详情页面，查看订单完整信息，包括物流状态、收货地址、商品明细、订单信息等。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>页面顶部展示物流状态区：包裹图标 + "包裹"标题 + 状态文本"下单成功，商家已接单" + 时间戳（如 2026-04-13 09:18:03）</li>
+            <li>收货地址卡片：定位图标 + "送至"前缀 + 完整收货地址 + 收件人姓名 + 手机号</li>
+            <li>店铺商品区：店铺名称（如：小芒自营1店）+ 商品图片 + 自营标签（黄色背景）+ 商品标题 + SKU 规格</li>
+            <li>若商品处于售后审核中，SKU 规格下方展示"售后待审核"橙色文字 + 右箭头</li>
+            <li>单价（左下）+ 数量（右下，如 x1）+ 商品总计（右侧对齐，如 ¥128）</li>
+            <li>实付金额：右侧展示"实付金额 ¥128.19" + 下拉箭头，支持展开/收起</li>
+            <li>订单信息区：订单编号（右侧灰色字体 + "复制"蓝色按钮）+ 支付方式（如：外渠支付）+ 下单时间 + 交易流水号 + "查看更多"可展开更多订单信息</li>
+            <li>联系客服入口（底部居中，图标 + "联系客服"文字）</li>
+            <li>底部操作栏固定展示：发票服务 | 再次购买</li>
+            <li>页面加载时调用订单详情接口，获取完整订单数据</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>物流状态区采用白色卡片，包裹图标 + 圆点 + 状态文本，时间戳灰色</li>
+            <li>地址卡片与商品区采用卡片式设计，有圆角和阴影</li>
+            <li>实付金额支持点击展开/收起动画</li>
+            <li>复制按钮点击后展示"已复制"Toast 提示</li>
+            <li>底部操作栏按钮等高，间距均匀</li>
+            <li>"售后待审核"为橙色文字，醒目提示</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户点击待发货订单 → 调用订单详情 API
+→ 渲染物流状态、地址、商品、订单信息
+→ 用户操作（复制/展开/联系客服）→ 反馈结果</pre>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">特殊字段说明</div>
+          <ul class="list">
+            <li><strong>售后待审核</strong>：当商品已申请售后且审核中时展示，橙色文字 + 右箭头，点击可查看售后进度</li>
+            <li><strong>联系客服</strong>：提供客服入口，便于用户咨询订单问题</li>
+            <li><strong>商品总计</strong>：单个商品的总价（单价 × 数量）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_my_order_details_out">
+        <h3>5.3.3 快闪店订单详情 - 出库中 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_out')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户点击出库中状态的订单后，进入订单详情页面，查看订单信息和当前出库进度。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>页面顶部直接展示收货地址卡片（<strong>无物流状态区</strong>）：定位图标 + "送至"前缀 + 完整收货地址 + 收件人姓名 + 手机号</li>
+            <li>店铺商品区：店铺名称（如：小芒自营1店）+ 商品图片 + 自营标签（黄色背景）+ 商品标题 + SKU 规格</li>
+            <li>单价（左下）+ 数量（右下，如 x2）+ 商品总计（右侧对齐，如 ¥24）</li>
+            <li>多商品时依次展示，每个商品独立展示"商品总计"</li>
+            <li>实付金额：右侧展示"实付金额 ¥70.86" + 下拉箭头，支持展开/收起</li>
+            <li>订单信息区：订单编号（右侧灰色字体 + "复制"蓝色按钮）+ 支付方式 + 下单时间 + 交易流水号 + "查看更多"可展开更多订单信息</li>
+            <li>底部操作栏固定展示：发票服务 | 申请退款 | 再次购买</li>
+            <li>出库中状态不支持确认收货操作</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>页面标题展示"出库中"</li>
+            <li>收货地址卡片置顶，无物流状态区</li>
+            <li>底部操作栏包含"申请退款"按钮，支持用户在出库阶段申请退款</li>
+            <li>多商品时每个商品独立展示"商品总计"，清晰区分</li>
+            <li>其他交互与待发货状态保持一致</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户点击出库中订单 → 调用订单详情 API
+→ 渲染地址、商品、订单信息
+→ 用户操作（复制/展开/申请退款）→ 反馈结果</pre>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">特殊字段说明</div>
+          <ul class="list">
+            <li><strong>申请退款</strong>：出库中状态允许用户发起退款申请，进入售后流程</li>
+            <li><strong>无物流信息</strong>：此阶段商品尚未交付物流，不展示物流追踪信息</li>
+            <li><strong>商品总计</strong>：每个商品独立展示总计（单价 × 数量）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_my_order_details_waiting_receive">
+        <h3>5.3.4 快闪店订单详情 - 待收货 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_waiting_receive')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户点击待收货状态的订单后，进入订单详情页面，查看物流追踪信息和订单详情，支持确认收货。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>页面顶部展示物流信息区：包裹图标 + "包裹"标题 + 物流信息"顺丰速运: SF7444702825582" + 右侧"复制"蓝色按钮</li>
+            <li>物流状态文本："商家已发货，正在通知物流公司揽件" + 右侧下拉箭头 + 时间戳（如 2026-04-13 10:21:54）</li>
+            <li>收货地址卡片：定位图标 + "送至"前缀 + 完整收货地址 + 收件人姓名 + 手机号</li>
+            <li>店铺商品区：店铺名称（如：小芒自营1店）+ 商品图片 + 自营标签（黄色背景）+ 商品标题 + SKU 规格</li>
+            <li>单价（左下）+ 数量（右下，如 x1）+ 商品总计（右侧对齐，如 ¥22）</li>
+            <li>每个商品下方展示"申请售后"按钮（灰色边框，圆角按钮）</li>
+            <li>多商品时依次展示，每个商品独立展示"商品总计"和"申请售后"按钮</li>
+            <li>实付金额：右侧展示"实付金额 ¥46.08" + 下拉箭头，支持展开/收起</li>
+            <li>订单信息区（若有）：订单编号 + 支付方式 + 下单时间 + 交易流水号 + "查看更多"</li>
+            <li>底部操作栏固定展示：发票服务 | 再次购买 | 确认收货（黄色高亮主按钮）</li>
+            <li>点击"确认收货"按钮，弹出二次确认弹窗，确认后更新订单状态</li>
+            <li>点击商品下方的"申请售后"按钮，跳转到申请售后页面（5.3.5）</li>
+            <li>点击物流信息区下拉箭头，展开物流追踪时间线</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>物流信息区白色卡片展示，物流单号和复制按钮同行展示</li>
+            <li>"确认收货"按钮采用黄色高亮主操作样式，吸引用户注意</li>
+            <li>商品维度的"申请售后"按钮为灰色边框圆角按钮，便于用户针对单个商品发起售后</li>
+            <li>物流追踪时间线采用时间轴样式展示</li>
+            <li>多商品时每个商品独立展示"商品总计"和"申请售后"按钮</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户点击待收货订单 → 调用订单详情 API + 物流追踪 API
+→ 渲染物流信息、地址、商品、订单信息
+→ 用户操作（确认收货/申请售后/复制/展开）→ 调用对应接口 → 反馈结果</pre>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">特殊字段说明</div>
+          <ul class="list">
+            <li><strong>确认收货</strong>：主操作按钮，黄色高亮，用户确认后订单状态变更为"已完成"</li>
+            <li><strong>商品级售后</strong>：支持按单个商品发起售后，而非整单</li>
+            <li><strong>物流追踪</strong>：对接物流公司接口，实时展示包裹位置</li>
+            <li><strong>商品总计</strong>：每个商品独立展示总计（单价 × 数量）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_my_order_details_after_sale">
+        <h3>5.3.5 快闪店订单详情 - 售后处理 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_after_sale')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户在订单详情页点击"申请售后"后，进入售后申请页面，选择售后类型并提交申请。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>页面顶部导航栏：左侧返回箭头 + 标题"申请售后"</li>
+            <li>售后类型选项列表（单选卡片式布局）：</li>
+            <li><strong>我要退货退款</strong>：橙色包裹循环箭头图标 + "已收到货，需要退换已收到的货物" + 右侧灰色右箭头</li>
+            <li><strong>我要退款（无需退货）</strong>：红色人民币符号循环箭头图标 + "未收到货，或与商家协商之后，同意仅退款" + 右侧灰色右箭头</li>
+            <li><strong>申请补寄</strong>：蓝色带加号的包裹图标 + "商品少发、漏发或质量问题，与商家协商补寄" + 右侧灰色右箭头</li>
+            <li>用户点击某一选项后，跳转到对应的售后申请表单页</li>
+            <li>页面加载时根据订单状态和售后状态展示可用售后类型</li>
+            <li>若订单已发起售后，展示售后进度而非申请选项</li>
+            <li>三个选项卡片采用白色圆角卡片设计，等间距排列</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>三个售后选项采用卡片式设计，白色背景，圆角，等间距排列</li>
+            <li>每个卡片左侧图标 + 标题 + 灰色说明文字，右侧灰色右箭头引导点击</li>
+            <li>图标颜色区分售后类型：退货退款（橙色）、仅退款（红色）、补寄（蓝色）</li>
+            <li>卡片点击有按压反馈效果</li>
+            <li>说明文字采用灰色字体，弱化展示</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户点击申请售后 → 调用售后可用性检查 API
+→ 渲染售后类型选项
+→ 用户选择售后类型 → 跳转对应售后表单页
+→ 用户填写并提交 → 返回提交结果</pre>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">特殊字段说明</div>
+          <ul class="list">
+            <li><strong>售后状态依赖</strong>：根据订单当前状态和物流状态，动态展示可用售后类型</li>
+            <li><strong>售后进度展示</strong>：若已申请售后，页面展示售后审核进度和处理结果</li>
+            <li><strong>图标语义化</strong>：不同售后类型采用不同颜色和图标，便于用户快速识别</li>
+          </ul>
         </div>
       </div>
     </div>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>线下场次管理</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717; --geist-white: #ffffff; --geist-gray-900: #171717; --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666; --geist-gray-400: #808080; --geist-gray-100: #ebebeb; --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1; -webkit-font-smoothing: antialiased;
+            background: var(--geist-gray-50); color: var(--geist-black);
+            min-height: 100vh;
+        }
+        .admin-page { min-height: 100vh; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 24px 24px 0; }
+        .page-title { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+        .admin-card { background: var(--geist-white); border-radius: 8px; box-shadow: var(--shadow-border); margin: 0 24px 24px; }
+        .admin-card-header { padding: 16px 20px; border-bottom: var(--shadow-border); font-weight: 600; }
+        .admin-card-body { padding: 20px; }
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th { background: var(--geist-gray-50); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: var(--shadow-border); }
+        .admin-table td { padding: 12px 16px; border-bottom: var(--shadow-border); vertical-align: middle; }
+        .admin-table tr:hover { background: var(--geist-gray-50); }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-passed { background: #d1fae5; color: #065f46; }
+        .btn-action { padding: 6px 12px; font-size: 13px; border-radius: 6px; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); cursor: pointer; transition: all 0.2s; font-family: inherit; font-weight: 500; }
+        .btn-action:hover { background: var(--geist-gray-50); }
+        .btn-action.primary { background: var(--geist-black); color: var(--geist-white); border-color: var(--geist-black); }
+        .btn-action.primary:hover { background: var(--geist-gray-900); }
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 16px 20px; }
+        .filter-bar select, .filter-bar input { padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit; background: var(--geist-white); }
+        .filter-bar input { width: 200px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: var(--geist-white); border-radius: 12px; box-shadow: var(--shadow-card); max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px; border-bottom: var(--shadow-border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 18px; font-weight: 600; }
+        .modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+        .modal-close:hover { background: var(--geist-gray-50); }
+        .modal-body { padding: 20px; }
+        .detail-section { padding: 20px; border-bottom: var(--shadow-border); }
+        .detail-section:last-child { border-bottom: none; }
+        .detail-label { font-size: 13px; color: var(--geist-gray-400); margin-bottom: 6px; }
+        .detail-value { font-size: 14px; color: var(--geist-black); }
+        .qr-code { width: 120px; height: 120px; background: var(--geist-gray-50); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
+        .prototype-module { transition: all 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="admin-page">
+        <div class="page-header">
+            <div class="page-title">线下场次管理</div>
+            <button class="btn-action primary" onclick="showModal('activityModal')">
+                <i class="bi bi-plus-lg"></i> 新增场次
+            </button>
+        </div>
+
+        <div class="admin-card">
+            <div class="filter-bar">
+                <select style="width: 150px;"><option value="">全部状态</option><option value="1" selected>启用</option><option value="0">禁用</option></select>
+                <input type="text" placeholder="搜索场次名称">
+                <button class="btn-action primary">搜索</button>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="admin-card-header">场次列表</div>
+            <div class="admin-card-body" style="padding: 0;">
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>场次 ID</th><th>场次名称</th><th>订单渠道</th><th>商品池</th><th>活动时间</th><th>状态</th><th>回填单数</th><th>操作</th></tr>
+                    </thead>
+                    <tbody class="prototype-module" data-prototype="admin_activity_admin">
+                        <tr>
+                            <td>ACT001</td><td>快闪店预售活动</td><td>线下渠道 A</td><td>会员商品池</td><td>2026-03-30 ~ 2026-04-30</td>
+                            <td><span class="badge badge-passed">启用</span></td><td>156</td>
+                            <td><button class="btn-action" onclick="showModal('activityModal')">编辑</button><button class="btn-action" onclick="showModal('qrModal')">二维码</button></td>
+                        </tr>
+                        <tr>
+                            <td>ACT002</td><td>五一促销专场</td><td>线下渠道 B</td><td>电器商品池</td><td>2026-05-01 ~ 2026-05-07</td>
+                            <td><span class="badge badge-pending">待启用</span></td><td>0</td>
+                            <td><button class="btn-action" onclick="showModal('activityModal')">编辑</button><button class="btn-action" onclick="showModal('qrModal')">二维码</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 活动编辑弹窗 -->
+    <div class="modal-overlay" id="activityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">编辑场次 - ACT001</div>
+                <div class="modal-close" onclick="closeModal('activityModal')"><i class="bi bi-x-lg"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section"><div class="detail-label">场次名称</div><input type="text" value="快闪店预售活动" style="width: 100%; padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit;"></div>
+                <div class="detail-section"><div class="detail-label">活动时间</div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;"><input type="date" value="2026-03-30" style="padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit;"><input type="date" value="2026-04-30" style="padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit;"></div></div>
+                <div class="detail-section"><div class="detail-label">关联商品池</div><select style="width: 100%; padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit;"><option selected>会员商品池</option><option>电器商品池</option></select></div>
+                <div class="detail-section"><div class="detail-label">订单渠道</div><input type="text" value="线下渠道 A" style="width: 100%; padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit;"></div>
+                <div style="padding: 20px; display: flex; gap: 12px; justify-content: flex-end;"><button class="btn-action" onclick="closeModal('activityModal')">取消</button><button class="btn-action primary" onclick="closeModal('activityModal')">保存</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二维码弹窗 -->
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header"><div class="modal-title">回填单二维码</div><div class="modal-close" onclick="closeModal('qrModal')"><i class="bi bi-x-lg"></i></div></div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="qr-code" style="margin: 0 auto 16px;"><i class="bi bi-qr-code" style="font-size: 64px; color: var(--geist-gray-400);"></i></div>
+                <div style="font-size: 14px; color: var(--geist-gray-600);">扫码填写回填单</div>
+                <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: center;"><button class="btn-action">下载二维码</button><button class="btn-action primary" onclick="closeModal('qrModal')">复制链接</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal(modalId) { document.getElementById(modalId).classList.add('show'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('show'); }
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) { if (e.target === modal) { closeModal(modal.id); } });
+        });
+        // 接收父窗口高亮消息
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { module.classList.remove('feature-highlight'); });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) { targetModule.classList.add('feature-highlight'); targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }
+        });
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'admin_activity.html' }, '*');
+    </script>
+</body>
+</html>

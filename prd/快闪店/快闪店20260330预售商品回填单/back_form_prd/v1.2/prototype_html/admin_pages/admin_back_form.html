@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回填单审核</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717; --geist-white: #ffffff; --geist-gray-900: #171717; --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666; --geist-gray-400: #808080; --geist-gray-100: #ebebeb; --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1; -webkit-font-smoothing: antialiased;
+            background: var(--geist-gray-50); color: var(--geist-black);
+            min-height: 100vh;
+        }
+        .admin-page { min-height: 100vh; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 24px 24px 0; }
+        .page-title { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+        .admin-card { background: var(--geist-white); border-radius: 8px; box-shadow: var(--shadow-border); margin: 0 24px 24px; }
+        .admin-card-header { padding: 16px 20px; border-bottom: var(--shadow-border); font-weight: 600; }
+        .admin-card-body { padding: 20px; }
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th { background: var(--geist-gray-50); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: var(--shadow-border); }
+        .admin-table td { padding: 12px 16px; border-bottom: var(--shadow-border); vertical-align: middle; }
+        .admin-table tr:hover { background: var(--geist-gray-50); }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-passed { background: #d1fae5; color: #065f46; }
+        .badge-rejected { background: #fee2e2; color: #991b1b; }
+        .btn-action { padding: 6px 12px; font-size: 13px; border-radius: 6px; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); cursor: pointer; transition: all 0.2s; font-family: inherit; font-weight: 500; }
+        .btn-action:hover { background: var(--geist-gray-50); }
+        .btn-action.primary { background: var(--geist-black); color: var(--geist-white); border-color: var(--geist-black); }
+        .btn-action.primary:hover { background: var(--geist-gray-900); }
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 16px 20px; }
+        .filter-bar select, .filter-bar input { padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; font-size: 14px; font-family: inherit; background: var(--geist-white); }
+        .filter-bar input { width: 200px; }
+        .pagination { display: flex; justify-content: center; margin-top: 20px; gap: 8px; }
+        .pagination-item { padding: 8px 12px; border: var(--shadow-border); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .pagination-item:hover { background: var(--geist-gray-50); }
+        .pagination-item.active { background: var(--geist-black); color: var(--geist-white); }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: var(--geist-white); border-radius: 12px; box-shadow: var(--shadow-card); max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px; border-bottom: var(--shadow-border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 18px; font-weight: 600; }
+        .modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+        .modal-close:hover { background: var(--geist-gray-50); }
+        .modal-body { padding: 20px; }
+        .detail-section { padding: 20px; border-bottom: var(--shadow-border); }
+        .detail-section:last-child { border-bottom: none; }
+        .detail-label { font-size: 13px; color: var(--geist-gray-400); margin-bottom: 6px; }
+        .detail-value { font-size: 14px; color: var(--geist-black); }
+        .product-thumb { width: 60px; height: 60px; background: var(--geist-gray-50); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 12px; }
+        .product-info { display: flex; align-items: center; }
+        .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
+        .prototype-module { transition: all 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="admin-page">
+        <div class="page-header">
+            <div class="page-title">回填单审核</div>
+            <button class="btn-action primary"><i class="bi bi-download"></i> 导出</button>
+        </div>
+
+        <div class="admin-card">
+            <div class="filter-bar">
+                <select style="width: 150px;"><option value="">全部状态</option><option value="0" selected>待审核</option><option value="1">已通过</option><option value="2">已驳回</option></select>
+                <select style="width: 150px;"><option value="">全部活动</option><option value="1">快闪店预售活动</option></select>
+                <input type="text" placeholder="搜索回填单号/手机号/小票号">
+                <button class="btn-action primary">搜索</button>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="admin-card-header">回填单列表</div>
+            <div class="admin-card-body" style="padding: 0;">
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>回填单号</th><th>活动</th><th>用户</th><th>商品信息</th><th>小票号</th><th>状态</th><th>提交时间</th><th>操作</th></tr>
+                    </thead>
+                    <tbody class="prototype-module" data-prototype="admin_back_form_admin">
+                        <tr>
+                            <td>HT202603300001</td><td>快闪店预售活动</td><td>138****8888</td><td>芒果 TV 会员月卡 x2</td><td>PJ20260330001</td>
+                            <td><span class="badge badge-pending">待审核</span></td><td>2026-03-30 10:30</td>
+                            <td><button class="btn-action primary" onclick="showModal('detailModal')">审核</button></td>
+                        </tr>
+                        <tr>
+                            <td>HT202603300002</td><td>快闪店预售活动</td><td>139****9999</td><td>芒果 TV 会员年卡 x1</td><td>PJ20260330002</td>
+                            <td><span class="badge badge-passed">已通过</span></td><td>2026-03-30 10:25</td>
+                            <td><button class="btn-action" onclick="showModal('detailModal')">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>HT202603300003</td><td>快闪店预售活动</td><td>137****7777</td><td>芒果 TV+ 京东 PLUS x1</td><td>PJ20260330003</td>
+                            <td><span class="badge badge-rejected">已驳回</span></td><td>2026-03-30 10:20</td>
+                            <td><button class="btn-action" onclick="showModal('detailModal')">查看</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <div class="pagination-item">上一页</div><div class="pagination-item active">1</div><div class="pagination-item">2</div><div class="pagination-item">3</div><div class="pagination-item">下一页</div>
+        </div>
+    </div>
+
+    <!-- 审核详情弹窗 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">回填单详情 - HT202603300001</div>
+                <div class="modal-close" onclick="closeModal('detailModal')"><i class="bi bi-x-lg"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div><div class="detail-label">活动</div><div class="detail-value">快闪店预售活动</div></div>
+                        <div><div class="detail-label">提交时间</div><div class="detail-value">2026-03-30 10:30:25</div></div>
+                    </div>
+                </div>
+                <div class="detail-section"><div class="detail-label">用户信息</div><div class="detail-value">手机号：138****8888</div></div>
+                <div class="detail-section">
+                    <div class="detail-label">商品信息</div>
+                    <div class="product-info">
+                        <div class="product-thumb"><i class="bi bi-box" style="font-size: 24px; color: var(--geist-gray-400);"></i></div>
+                        <div><div style="font-weight: 500;">芒果 TV 会员月卡</div><div style="color: var(--geist-gray-400); font-size: 13px;">SKU：VIP-001 | 单价：¥19.9</div></div>
+                    </div>
+                    <div style="margin-top: 8px;">数量：2 | 小计：¥39.8</div>
+                </div>
+                <div class="detail-section"><div class="detail-label">收货地址</div><div class="detail-value">北京市朝阳区 XX 街道 XX 小区 1-1-101</div></div>
+                <div class="detail-section">
+                    <div class="detail-label">小票信息</div>
+                    <div class="detail-value">
+                        <div>小票号码：PJ20260330001</div>
+                        <div style="margin-top: 8px;">
+                            <div style="font-size: 13px; color: var(--geist-gray-400); margin-bottom: 8px;">小票照片：</div>
+                            <div style="display: flex; gap: 8px;">
+                                <div style="width: 80px; height: 80px; background: var(--geist-gray-50); border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-image" style="font-size: 24px; color: var(--geist-gray-400);"></i></div>
+                                <div style="width: 80px; height: 80px; background: var(--geist-gray-50); border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-image" style="font-size: 24px; color: var(--geist-gray-400);"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+                    <button class="btn-action" onclick="closeModal('detailModal')">驳回</button>
+                    <button class="btn-action primary" onclick="closeModal('detailModal')">通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal(modalId) { document.getElementById(modalId).classList.add('show'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('show'); }
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) { if (e.target === modal) { closeModal(modal.id); } });
+        });
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { module.classList.remove('feature-highlight'); });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) { targetModule.classList.add('feature-highlight'); targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }
+        });
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'admin_back_form.html' }, '*');
+    </script>
+</body>
+</html>

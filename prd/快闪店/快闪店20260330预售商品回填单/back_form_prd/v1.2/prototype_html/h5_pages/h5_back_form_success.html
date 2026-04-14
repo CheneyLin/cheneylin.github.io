@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提交成功</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717; --geist-white: #ffffff; --geist-gray-900: #171717; --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666; --geist-gray-400: #808080; --geist-gray-100: #ebebeb; --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1; -webkit-font-smoothing: antialiased;
+            background: var(--geist-gray-50); color: var(--geist-black);
+            height: 812px; overflow: hidden;
+        }
+        .h5-status-bar { height: 44px; background: var(--geist-white); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; border-bottom: var(--shadow-border); }
+        .h5-page-content { height: calc(812px - 44px); overflow-y: auto; background: var(--geist-gray-50); padding-bottom: 20px; }
+        .h5-page-content::-webkit-scrollbar { width: 0; }
+        .h5-success-icon { width: 64px; height: 64px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 40px auto 16px; font-size: 32px; color: var(--geist-white); }
+        .h5-success-title { font-size: 20px; font-weight: 600; color: var(--geist-black); margin-bottom: 8px; text-align: center; }
+        .h5-success-orderno { font-size: 14px; color: var(--geist-gray-600); margin-bottom: 20px; text-align: center; }
+        .h5-info-group { background: var(--geist-gray-50); border-radius: 8px; padding: 12px; margin: 12px; }
+        .h5-info-title { font-size: 14px; font-weight: 600; color: var(--geist-black); margin-bottom: 8px; }
+        .h5-info-item { font-size: 13px; color: var(--geist-gray-600); margin-bottom: 4px; }
+        .h5-btn { flex: 1; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); font-family: inherit; }
+        .h5-btn:hover { background: var(--geist-gray-50); }
+        .h5-btn.primary { background: var(--geist-black); color: var(--geist-white); border-color: var(--geist-black); }
+        .h5-btn.primary:hover { background: var(--geist-gray-900); }
+        .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
+        .prototype-module { transition: all 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="h5-status-bar">
+        <span>9:41</span>
+        <div class="flex items-center gap-2">
+            <i class="bi bi-reception-4"></i><i class="bi bi-wifi"></i><i class="bi bi-battery-full"></i>
+        </div>
+    </div>
+    <div class="h5-page-content">
+        <div class="prototype-module" data-prototype="h5_back_form_success">
+            <div class="h5-success-icon"><i class="bi bi-check-lg"></i></div>
+            <div class="h5-success-title">提交成功</div>
+            <div class="h5-success-orderno">回填单号：<span style="font-weight: 600; color: var(--geist-black);">HT202603300001</span></div>
+            <div class="h5-info-group">
+                <div class="h5-info-title">商品列表</div>
+                <div class="h5-info-item" style="display: flex; justify-content: space-between;"><span>芒果 TV 会员月卡</span><span>x2</span></div>
+                <div class="h5-info-item" style="display: flex; justify-content: space-between;"><span>芒果 TV 会员季卡</span><span>x1</span></div>
+            </div>
+            <div class="h5-info-group">
+                <div class="h5-info-title">收货地址</div>
+                <div class="h5-info-item">北京市朝阳区 XX 街道 XX 小区 1-1-101</div>
+            </div>
+            <div class="h5-info-group">
+                <div class="h5-info-title">小票号码</div>
+                <div class="h5-info-item" style="font-family: monospace; font-size: 14px;">1234567890</div>
+            </div>
+            <div style="padding: 12px;">
+                <button class="h5-btn primary" style="width: 100%;" onclick="saveToAlbum()">
+                    <i class="bi bi-camera"></i><span style="margin-left: 8px;">保存到相册</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function saveToAlbum() { alert('已保存到相册'); }
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { module.classList.remove('feature-highlight'); });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) { targetModule.classList.add('feature-highlight'); targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }
+        });
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'h5_back_form_success.html' }, '*');
+    </script>
+</body>
+</html>

@@ -3,781 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>快闪店预售商品回填单 - App 订单列表原型</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>快闪店预售商品回填单 - APP 端原型 v1.2</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background-color: #1a1a1a;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        
-        /* 手机框架 */
         :root {
-            --phone-width: 375px;
-            --phone-height: 812px;
-        }
-        
-        .phone-frame {
-            width: var(--phone-width);
-            height: var(--phone-height);
-            background: #f5f5f5;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            border: 12px solid #1a1a1a;
-        }
-        
-        .phone-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 30px;
-            background: #1a1a1a;
-            border-radius: 0 0 20px 20px;
-            z-index: 50;
-        }
-        
-        .status-bar {
-            height: 44px;
-            background: #fff;
-            position: relative;
-            padding: 0 16px;
-            z-index: 40;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        /* 导航栏 */
-        .nav-bar {
-            height: 44px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            border-bottom: 1px solid #f0f0f0;
-            position: relative;
-            z-index: 30;
-        }
-        
-        .nav-back {
-            font-size: 20px;
-            color: #333;
-            cursor: pointer;
-        }
-        
-        .nav-title {
-            font-size: 17px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .nav-filter {
-            font-size: 14px;
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        /* 订单状态 Tabs */
-        .order-tabs {
-            background: #fff;
-            display: flex;
-            overflow-x: auto;
-            border-bottom: 1px solid #f0f0f0;
-            position: relative;
-            z-index: 20;
-        }
-        
-        .order-tabs::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .order-tab {
-            flex: 0 0 auto;
-            padding: 12px 20px;
-            font-size: 14px;
-            color: #666;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s;
-        }
-        
-        .order-tab.active {
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .order-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 3px;
-            background: #ffd700;
-            border-radius: 2px;
-        }
-        
-        /* 业务分类 Tabs */
-        .category-tabs {
-            background: #f5f5f5;
-            display: flex;
-            gap: 8px;
-            padding: 12px 16px;
-            overflow-x: auto;
-            position: relative;
-            z-index: 15;
-        }
-        
-        .category-tabs::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .category-tab {
-            flex: 0 0 auto;
-            padding: 6px 16px;
-            background: #fff;
-            border-radius: 16px;
-            font-size: 13px;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .category-tab.active {
-            background: #ffd700;
-            color: #333;
-            font-weight: 600;
-            border-color: #ffd700;
-        }
-        
-        .category-tab:hover {
-            background: #ffe44d;
-        }
-        
-        /* 订单列表容器 */
-        .order-list {
-            height: calc(var(--phone-height) - 44px - 44px - 48px - 56px);
-            overflow-y: auto;
-            padding: 12px 16px;
-        }
-        
-        .order-list::-webkit-scrollbar {
-            display: none;
-        }
-        
-        /* 订单卡片 */
-        .order-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: all 0.3s;
-        }
-        
-        .order-card:active {
-            transform: scale(0.98);
-        }
-        
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .shop-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .shop-icon {
-            font-size: 18px;
-            color: #999;
-        }
-        
-        .shop-name {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .shop-tag {
-            background: #ffd700;
-            color: #333;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        
-        .order-status {
-            font-size: 14px;
-            color: #999;
-            font-weight: 500;
-        }
-        
-        .order-status.cancelled {
-            color: #999;
-        }
-        
-        .order-status.shipped {
-            color: #ff6b35;
-        }
-        
-        .order-status.completed {
-            color: #52c41a;
-        }
-        
-        /* 商品列表 */
-        .product-list {
-            margin-bottom: 12px;
-        }
-        
-        .product-item {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        
-        .product-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .product-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            background: #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        
-        .product-info {
-            flex: 1;
-        }
-        
-        .product-name {
-            font-size: 15px;
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 6px;
-            line-height: 1.4;
-        }
-        
-        .product-price {
-            font-size: 16px;
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .product-price::before {
-            content: '¥';
-            font-size: 12px;
-        }
-        
-        .product-quantity {
-            font-size: 13px;
-            color: #999;
-            text-align: right;
-            margin-top: 4px;
-        }
-        
-        .product-quantity::before {
-            content: 'x';
-        }
-        
-        /* 回填单号 */
-        .back-form-no {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 8px;
-        }
-        
-        /* 物流信息 */
-        .logistics-info {
-            background: #f9f9f9;
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .logistics-icon {
-            font-size: 16px;
-            color: #ff6b35;
-        }
-        
-        .logistics-text {
-            font-size: 12px;
-            color: #666;
-            flex: 1;
-        }
-        
-        .logistics-company {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        /* 订单底部 */
-        .order-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 12px;
-            border-top: 1px solid #f0f0f0;
-        }
-        
-        .order-amount {
-            font-size: 13px;
-            color: #666;
-        }
-        
-        .order-amount-value {
-            font-size: 18px;
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .order-amount-value::before {
-            content: '¥';
-            font-size: 13px;
-        }
-        
-        .order-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .btn-action {
-            padding: 6px 16px;
-            border-radius: 16px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #e0e0e0;
-            background: #fff;
-            color: #666;
-        }
-        
-        .btn-action:hover {
-            background: #f5f5f5;
-        }
-        
-        .btn-primary {
-            background: #ffd700;
-            color: #333;
-            border-color: #ffd700;
-            font-weight: 600;
-        }
-        
-        .btn-primary:hover {
-            background: #ffe44d;
-        }
-        
-        /* 空状态 */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-        }
-        
-        .empty-icon {
-            font-size: 80px;
-            color: #ddd;
-            margin-bottom: 16px;
-        }
-        
-        .empty-text {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 20px;
-        }
-        
-        .btn-guide {
-            padding: 10px 24px;
-            background: #ffd700;
-            color: #333;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn-guide:hover {
-            background: #ffe44d;
-        }
-        
-        /* 高亮模块 */
-        .feature-highlight {
-            border: 2px solid #ff4d4f !important;
-            box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.2);
-            transition: all 0.3s;
-        }
-        
-        .prototype-module {
-            transition: all 0.3s;
-        }
-        
-        /* Loading 动画 */
-        .loading-spinner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-        
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #ffd700;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --ship-red: #ff5b4f;
+            --preview-pink: #de1d8d;
+            --develop-blue: #0a72ef;
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1;
+            -webkit-font-smoothing: antialiased;
+            background: var(--geist-white);
+            color: var(--geist-black);
+            min-height: 100vh;
+        }
+        h1 { text-align: center; margin: 20px 0 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 2; }
+        #prototypeContainer { width: 100%; min-height: 100vh; transition: all 0.3s ease; }
+        .global-view { padding: 40px; max-width: 1800px; margin: 0 auto; background: var(--geist-white); }
+        .global-view-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(399px, 1fr)); gap: 48px; justify-content: center; align-items: start; }
+        .global-view .phone-frame-container { width: 399px !important; height: 836px !important; margin: 0 auto; }
+        .global-view .phone-frame-container::after { content: attr(data-page-label); display: block; text-align: center; margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--geist-gray-600); letter-spacing: -0.28px; }
+        .single-view { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; background: var(--geist-white); }
+        .phone-frame-container { position: relative; width: 399px; height: 836px; background: var(--geist-black); border-radius: 50px; padding: 12px; box-shadow: var(--shadow-card); transition: box-shadow 0.3s ease; flex-shrink: 0; }
+        .phone-frame-container:hover { box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px, rgba(0,0,0,0.06) 0px 12px 12px -6px, var(--geist-gray-50) 0px 0px 0px 1px; }
+        .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 150px; height: 30px; background: var(--geist-black); border-radius: 0 0 20px 20px; z-index: 100; }
+        .phone-screen { width: 375px; height: 812px; background: var(--geist-white); border-radius: 40px; overflow: hidden; position: relative; }
+        .phone-screen iframe { width: 375px; height: 812px; border: none; display: block; }
+        .controls-bar { position: fixed; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 1000; background: var(--geist-white); padding: 8px; border-radius: 8px; box-shadow: var(--shadow-card); }
+        .control-btn { background: var(--geist-white); color: var(--geist-black); border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-border); font-family: inherit; min-height: 38px; line-height: 1.5; }
+        .control-btn:hover { background: var(--geist-gray-50); transform: translateY(-1px); }
+        .control-btn.active { background: var(--geist-black); color: var(--geist-white); }
+        .control-btn:focus { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
+        .page-selector-bar { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); background: var(--geist-white); border-radius: 8px; padding: 8px; box-shadow: var(--shadow-card); z-index: 1000; display: flex; gap: 6px; max-width: 90vw; overflow-x: auto; }
+        .page-selector-bar::-webkit-scrollbar { height: 4px; }
+        .page-selector-bar::-webkit-scrollbar-thumb { background: var(--geist-gray-100); border-radius: 2px; }
+        .page-item-bar { padding: 10px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: 500; color: var(--geist-gray-600); display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: var(--shadow-border); min-height: 38px; line-height: 1.5; }
+        .page-item-bar:hover { background: var(--geist-gray-50); color: var(--geist-black); }
+        .page-item-bar.active { background: var(--geist-black); color: var(--geist-white); }
+        .page-item-bar i { font-size: 14px; width: 14px; }
+        .page-dropdown { display: none; position: fixed; top: 20px; left: 20px; z-index: 1000; }
+        .dropdown-toggle { background: var(--geist-white); color: var(--geist-black); border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-card); transition: all 0.2s; font-family: inherit; min-height: 38px; line-height: 1.5; }
+        .dropdown-toggle:hover { background: var(--geist-gray-50); }
+        .dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 8px; background: var(--geist-white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 8px; min-width: 200px; display: none; }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 10px 14px; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 14px; font-weight: 500; color: var(--geist-gray-600); display: flex; align-items: center; gap: 8px; }
+        .dropdown-item:hover { background: var(--geist-gray-50); color: var(--geist-black); }
+        .dropdown-item.active { background: var(--geist-black); color: var(--geist-white); }
+        .dropdown-item i { font-size: 14px; width: 14px; }
+        @media (max-width: 1024px) { .page-selector-bar { display: none !important; } .page-dropdown { display: block; } .global-view { padding: 40px 20px; } .global-view-grid { grid-template-columns: repeat(auto-fill, minmax(375px, 1fr)); gap: 30px; } }
+        @media (max-width: 768px) { .global-view { padding: 30px 16px; } .global-view-grid { grid-template-columns: 1fr; gap: 24px; } .controls-bar { top: 10px; right: 10px; } .page-dropdown { top: 70px; left: 10px; } }
+        .global-view .single-only { display: none !important; }
+        .single-view .global-only { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="phone-frame">
-        <div class="phone-notch"></div>
-        
-        <!-- 状态栏 -->
-        <div class="status-bar">
-            <span>16:22</span>
-            <div class="flex items-center gap-2">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-full"></i>
+    <h1>快闪店预售商品回填单 - APP 端原型 v1.2</h1>
+
+    <!-- Top Center Page Selector Bar (Single View Only) - Desktop -->
+    <div class="page-selector-bar single-only">
+        <div class="page-item-bar active" data-page="app_my_order_list.html" onclick="loadPage('app_my_order_list.html', this)">
+            <i class="bi bi-list-ul"></i>
+            <span>订单列表</span>
+        </div>
+        <div class="page-item-bar" data-page="app_my_order_details_waiting_out.html" onclick="loadPage('app_my_order_details_waiting_out.html', this)">
+            <i class="bi bi-box-seam"></i>
+            <span>待发货订单</span>
+        </div>
+        <div class="page-item-bar" data-page="app_my_order_details_out.html" onclick="loadPage('app_my_order_details_out.html', this)">
+            <i class="bi bi-truck"></i>
+            <span>出库中订单</span>
+        </div>
+        <div class="page-item-bar" data-page="app_my_order_details_waiting_receive.html" onclick="loadPage('app_my_order_details_waiting_receive.html', this)">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>待收货订单</span>
+        </div>
+        <div class="page-item-bar" data-page="app_my_order_details_after_sale.html" onclick="loadPage('app_my_order_details_after_sale.html', this)">
+            <i class="bi bi-arrow-return-left"></i>
+            <span>申请售后</span>
+        </div>
+    </div>
+
+    <!-- Top Center Page Dropdown (Single View Only) - Mobile -->
+    <div class="page-dropdown single-only">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            <i class="bi bi-list"></i>
+            <span id="currentPageLabel">订单列表</span>
+            <i class="bi bi-chevron-down" style="margin-left: 4px;"></i>
+        </button>
+        <div class="dropdown-menu" id="pageDropdownMenu">
+            <div class="dropdown-item active" data-page="app_my_order_list.html" onclick="loadPage('app_my_order_list.html', this)">
+                <i class="bi bi-list-ul"></i>
+                <span>订单列表</span>
+            </div>
+            <div class="dropdown-item" data-page="app_my_order_details_waiting_out.html" onclick="loadPage('app_my_order_details_waiting_out.html', this)">
+                <i class="bi bi-box-seam"></i>
+                <span>待发货订单</span>
+            </div>
+            <div class="dropdown-item" data-page="app_my_order_details_out.html" onclick="loadPage('app_my_order_details_out.html', this)">
+                <i class="bi bi-truck"></i>
+                <span>出库中订单</span>
+            </div>
+            <div class="dropdown-item" data-page="app_my_order_details_waiting_receive.html" onclick="loadPage('app_my_order_details_waiting_receive.html', this)">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>待收货订单</span>
+            </div>
+            <div class="dropdown-item" data-page="app_my_order_details_after_sale.html" onclick="loadPage('app_my_order_details_after_sale.html', this)">
+                <i class="bi bi-arrow-return-left"></i>
+                <span>申请售后</span>
             </div>
         </div>
-        
-        <!-- 导航栏 -->
-        <div class="nav-bar">
-            <div class="nav-back">
-                <i class="fas fa-chevron-left"></i>
-            </div>
-            <div class="nav-title">订单列表</div>
-            <div class="nav-filter">
-                <span>筛选</span>
-                <i class="fas fa-filter"></i>
+    </div>
+
+    <!-- Top Right Controls Bar -->
+    <div class="controls-bar">
+        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+            <i class="bi bi-phone"></i>
+            <span>单独界面</span>
+        </button>
+        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+            <i class="bi bi-grid-3x3"></i>
+            <span>全局视图</span>
+        </button>
+    </div>
+
+    <!-- Main Prototype Container -->
+    <div id="prototypeContainer" class="single-view">
+        <!-- Single View: One Phone Frame with iframe -->
+        <div class="phone-frame-container single-only">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <iframe id="prototypeFrame" src="app_pages/app_my_order_list.html" frameborder="0"></iframe>
             </div>
         </div>
-        
-        <!-- 订单状态 Tabs -->
-        <div class="order-tabs">
-            <div class="order-tab active">全部</div>
-            <div class="order-tab">待支付</div>
-            <div class="order-tab">待发货</div>
-            <div class="order-tab">待收货</div>
-            <div class="order-tab">待评价</div>
-        </div>
-        
-        <!-- 业务分类 Tabs -->
-        <div class="category-tabs">
-            <div class="category-tab">商城</div>
-            <div class="category-tab active">快闪店</div>
-            <div class="category-tab">戳戳乐</div>
-            <div class="category-tab">云集市</div>
-        </div>
-        
-        <!-- 订单列表 -->
-        <div class="order-list prototype-module" data-prototype="app_order_list">
-            <!-- 订单卡片 1 - 已取消 -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="shop-info">
-                        <i class="fas fa-store shop-icon"></i>
-                        <span class="shop-name">快闪店预售活动</span>
-                        <span class="shop-tag">预售</span>
-                    </div>
-                    <div class="order-status cancelled">已取消</div>
-                </div>
-                
-                <div class="product-list">
-                    <div class="product-item">
-                        <div class="product-image">
-                            <i class="fas fa-box-open" style="font-size: 40px; color: #ccc;"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">唱片专辑魔力盒</div>
-                            <div class="product-price">65.00</div>
-                        </div>
-                        <div class="product-quantity">1</div>
+
+        <!-- Global View: All Phone Frames with iframes -->
+        <div class="global-view global-only" style="display: none;">
+            <div class="global-view-grid">
+                <div class="phone-frame-container" data-page-label="订单列表">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_list.html" frameborder="0"></iframe>
                     </div>
                 </div>
-                
-                <div class="back-form-no">回填单：HT202603300001</div>
-                
-                <div class="order-footer">
-                    <div class="order-amount">
-                        实付金额 <span class="order-amount-value">65.00</span>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-action">删除订单</button>
+                <div class="phone-frame-container" data-page-label="待发货订单">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_details_waiting_out.html" frameborder="0"></iframe>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 订单卡片 2 - 已取消 -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="shop-info">
-                        <i class="fas fa-store shop-icon"></i>
-                        <span class="shop-name">快闪店预售活动</span>
-                        <span class="shop-tag">预售</span>
-                    </div>
-                    <div class="order-status cancelled">已取消</div>
-                </div>
-                
-                <div class="product-list">
-                    <div class="product-item">
-                        <div class="product-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <div style="color: white; font-size: 12px; text-align: center; padding: 8px;">
-                                <i class="fas fa-gift" style="font-size: 24px; display: block; margin-bottom: 4px;"></i>
-                                青春版
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">青春版魔力盒1发</div>
-                            <div class="product-price">29.90</div>
-                        </div>
-                        <div class="product-quantity">1</div>
+                <div class="phone-frame-container" data-page-label="出库中订单">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_details_out.html" frameborder="0"></iframe>
                     </div>
                 </div>
-                
-                <div class="back-form-no">回填单：HT202603300002</div>
-                
-                <div class="order-footer">
-                    <div class="order-amount">
-                        实付金额 <span class="order-amount-value">29.90</span>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-action">删除订单</button>
+                <div class="phone-frame-container" data-page-label="待收货订单">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_details_waiting_receive.html" frameborder="0"></iframe>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 订单卡片 3 - 已发货（展示物流信息） -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="shop-info">
-                        <i class="fas fa-store shop-icon"></i>
-                        <span class="shop-name">快闪店预售活动</span>
-                        <span class="shop-tag">预售</span>
-                    </div>
-                    <div class="order-status shipped">已发货</div>
-                </div>
-                
-                <div class="product-list">
-                    <div class="product-item">
-                        <div class="product-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                            <div style="color: white; font-size: 12px; text-align: center; padding: 8px;">
-                                <i class="fas fa-crown" style="font-size: 24px; display: block; margin-bottom: 4px;"></i>
-                                年卡
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">芒果 TV 会员年卡</div>
-                            <div class="product-price">199.00</div>
-                        </div>
-                        <div class="product-quantity">1</div>
-                    </div>
-                    <div class="product-item">
-                        <div class="product-image">
-                            <i class="fas fa-box-open" style="font-size: 40px; color: #ccc;"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">芒果 TV 会员月卡</div>
-                            <div class="product-price">19.90</div>
-                        </div>
-                        <div class="product-quantity">2</div>
-                    </div>
-                </div>
-                
-                <div class="back-form-no">回填单：HT202603300003 | 场次：2026春季快闪店</div>
-                
-                <!-- 物流信息 -->
-                <div class="logistics-info">
-                    <i class="fas fa-truck logistics-icon"></i>
-                    <div class="logistics-text">
-                        <span class="logistics-company">顺丰速运</span> SF1234567890
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: #999; font-size: 12px;"></i>
-                </div>
-                
-                <div class="order-footer">
-                    <div class="order-amount">
-                        实付金额 <span class="order-amount-value">238.80</span>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-action btn-primary">售后服务</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 订单卡片 4 - 待收货 -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="shop-info">
-                        <i class="fas fa-store shop-icon"></i>
-                        <span class="shop-name">快闪店预售活动</span>
-                        <span class="shop-tag">预售</span>
-                    </div>
-                    <div class="order-status shipped">待收货</div>
-                </div>
-                
-                <div class="product-list">
-                    <div class="product-item">
-                        <div class="product-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                            <div style="color: white; font-size: 12px; text-align: center; padding: 8px;">
-                                <i class="fas fa-star" style="font-size: 24px; display: block; margin-bottom: 4px;"></i>
-                                季卡
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">芒果 TV 会员季卡</div>
-                            <div class="product-price">59.00</div>
-                        </div>
-                        <div class="product-quantity">1</div>
-                    </div>
-                </div>
-                
-                <div class="back-form-no">回填单：HT202603300004 | 场次：2026春季快闪店</div>
-                
-                <!-- 物流信息 -->
-                <div class="logistics-info">
-                    <i class="fas fa-truck logistics-icon"></i>
-                    <div class="logistics-text">
-                        <span class="logistics-company">圆通速递</span> YT9876543210
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: #999; font-size: 12px;"></i>
-                </div>
-                
-                <div class="order-footer">
-                    <div class="order-amount">
-                        实付金额 <span class="order-amount-value">59.00</span>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-action btn-primary">售后服务</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 订单卡片 5 - 已完成 -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="shop-info">
-                        <i class="fas fa-store shop-icon"></i>
-                        <span class="shop-name">快闪店预售活动</span>
-                        <span class="shop-tag">预售</span>
-                    </div>
-                    <div class="order-status completed">已完成</div>
-                </div>
-                
-                <div class="product-list">
-                    <div class="product-item">
-                        <div class="product-image" style="background: linear-gradient(135deg, #fa709a, #fee140);">
-                            <div style="color: white; font-size: 12px; text-align: center; padding: 8px;">
-                                <i class="fas fa-ticket-alt" style="font-size: 24px; display: block; margin-bottom: 4px;"></i>
-                                月卡
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">芒果 TV 会员月卡</div>
-                            <div class="product-price">19.90</div>
-                        </div>
-                        <div class="product-quantity">3</div>
-                    </div>
-                </div>
-                
-                <div class="back-form-no">回填单：HT202603300005 | 场次：2026春季快闪店</div>
-                
-                <div class="order-footer">
-                    <div class="order-amount">
-                        实付金额 <span class="order-amount-value">59.70</span>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-action">删除订单</button>
-                        <button class="btn-action btn-primary">售后服务</button>
+                <div class="phone-frame-container" data-page-label="申请售后">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_details_after_sale.html" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Tab 切换交互
-        document.querySelectorAll('.order-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
+        let currentView = 'single';
+        let currentPage = 'app_my_order_details_waiting_out.html';
+        let dropdownOpen = false;
+
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (dropdownOpen) { menu.classList.add('show'); } else { menu.classList.remove('show'); }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.page-dropdown');
+            if (dropdown && !dropdown.contains(event.target)) {
+                dropdownOpen = false;
+                const menu = document.getElementById('pageDropdownMenu');
+                if (menu) { menu.classList.remove('show'); }
+            }
         });
-        
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
+
+        // Switch between single and global view
+        function switchView(mode) {
+            currentView = mode;
+            const container = document.getElementById('prototypeContainer');
+            const btnSingle = document.getElementById('btnSingleView');
+            const btnGlobal = document.getElementById('btnGlobalView');
+
+            if (mode === 'single') {
+                container.className = 'single-view';
+                btnSingle.classList.add('active');
+                btnGlobal.classList.remove('active');
+                document.querySelectorAll('.single-only').forEach(el => { el.style.display = ''; });
+                document.querySelectorAll('.global-only').forEach(el => { el.style.display = 'none'; });
+            } else {
+                container.className = 'global-view';
+                btnGlobal.classList.add('active');
+                btnSingle.classList.remove('active');
+                document.querySelectorAll('.single-only').forEach(el => { el.style.display = 'none'; });
+                document.querySelectorAll('.global-only').forEach(el => { el.style.display = ''; });
+            }
+            window.location.hash = mode;
+        }
+
+        // Load specific page in single view
+        function loadPage(pageUrl, element) {
+            currentPage = pageUrl;
+            const frame = document.getElementById('prototypeFrame');
+            frame.src = `app_pages/${pageUrl}`;
+
+            document.querySelectorAll('.page-item-bar').forEach(item => { item.classList.remove('active'); });
+            document.querySelectorAll('.dropdown-item').forEach(item => { item.classList.remove('active'); });
+
+            if (element) {
+                element.classList.add('active');
+                const pageName = element.getAttribute('data-page');
+                const otherItem = document.querySelector(`[data-page="${pageName}"]:not(.${element.className.split(' ')[0]})`);
+                if (otherItem) { otherItem.classList.add('active'); }
+            }
+            updateDropdownLabel();
+            dropdownOpen = false;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (menu) { menu.classList.remove('show'); }
+            window.location.hash = `single-${pageUrl}`;
+        }
+
+        // Update dropdown label
+        function updateDropdownLabel() {
+            const pageNames = {
+                'app_my_order_list.html': '订单列表',
+                'app_my_order_details_waiting_out.html': '待发货订单',
+                'app_my_order_details_out.html': '出库中订单',
+                'app_my_order_details_waiting_receive.html': '待收货订单',
+                'app_my_order_details_after_sale.html': '申请售后'
+            };
+            const label = document.getElementById('currentPageLabel');
+            if (label) { label.textContent = pageNames[currentPage] || '页面'; }
+        }
+
+        // Handle URL hash changes
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            handleHashChange(hash);
         });
-        
-        // 接收主控文档联动指令
-        window.addEventListener('message', function(e) {
-            if (e.data.action === 'highlight' && e.data.featureId) {
-                // 移除所有高亮
-                document.querySelectorAll('.prototype-module').forEach(module => {
-                    module.classList.remove('feature-highlight');
-                });
-                // 高亮对应模块
-                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
-                if (targetModule) {
-                    targetModule.classList.add('feature-highlight');
-                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Handle hash on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) { handleHashChange(hash); }
+            updateDropdownLabel();
+        });
+
+        function handleHashChange(hash) {
+            if (hash === 'global') { switchView('global'); }
+            else if (hash === 'single') { switchView('single'); }
+            else if (hash.startsWith('single-')) {
+                const pageUrl = hash.substring(7);
+                switchView('single');
+                const pageItem = document.querySelector(`[data-page="${pageUrl}"]`);
+                if (pageItem) { loadPage(pageUrl, pageItem); }
+            }
+        }
+
+        // Listen for messages from iframes (PAGE_NAVIGATION)
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'PAGE_NAVIGATION') {
+                const targetPage = event.data.page;
+                if (currentView === 'single') {
+                    const pageItem = document.querySelector(`[data-page="${targetPage}"]`);
+                    if (pageItem) { loadPage(targetPage, pageItem); }
+                }
+            }
+
+            // Forward highlight messages to iframe
+            if (event.data && event.data.action === 'highlight' && event.data.featureId) {
+                const frame = document.getElementById('prototypeFrame');
+                if (frame && frame.contentWindow) {
+                    frame.contentWindow.postMessage({
+                        action: 'highlight',
+                        featureId: event.data.featureId
+                    }, '*');
+                }
+
+                // If feature is app_order_list, switch to that page
+                if (event.data.featureId === 'app_order_list') {
+                    const pageItem = document.querySelector(`[data-page="app_my_order_list.html"]`);
+                    if (pageItem && currentView === 'single') { loadPage('app_my_order_list.html', pageItem); }
                 }
             }
         });
