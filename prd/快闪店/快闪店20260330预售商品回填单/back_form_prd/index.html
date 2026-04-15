@@ -304,15 +304,21 @@
     });
 
     function switchVersion(version) {
+      console.log('switchVersion', version);
+      console.log('currentProduct', currentProduct);
+      
       currentVersion = version;
       // 切换 PRD 文档
       prdFrame.src = `./v${version}/prd_html/prd_v${version}.html`;
       // 切换原型文件
       if (currentProduct === 'h5') {
+        console.log('h5')
         protoFrame.src = `./v${version}/prototype_html/h5_v${version}.html`;
       } else if (currentProduct === 'admin') {
+        console.log('admin')
         protoFrame.src = `./v${version}/prototype_html/admin_v${version}.html`;
       } else {
+        console.log('app')
         protoFrame.src = `./v${version}/prototype_html/app_v${version}.html`;
       }
     }
@@ -368,7 +374,9 @@
         } else if (fid.startsWith('h5_')) {
           targetProduct = 'h5';
         }
-        
+        console.log('fid', fid);
+        console.log('targetProduct', targetProduct);
+        console.log('currentProduct', currentProduct);
         // 如果当前 iframe 展示的不是对应原型，则先切换再高亮
         if (targetProduct !== currentProduct) {
           pendingHighlightId = data.id;
