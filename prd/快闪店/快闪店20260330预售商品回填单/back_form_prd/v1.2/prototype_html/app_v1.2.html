@@ -84,13 +84,13 @@
             <i class="bi bi-box-seam"></i>
             <span>待发货订单</span>
         </div>
-        <div class="page-item-bar" data-page="app_my_order_details_out.html" onclick="loadPage('app_my_order_details_out.html', this)">
-            <i class="bi bi-truck"></i>
-            <span>出库中订单</span>
-        </div>
         <div class="page-item-bar" data-page="app_my_order_details_waiting_receive.html" onclick="loadPage('app_my_order_details_waiting_receive.html', this)">
             <i class="bi bi-box-arrow-right"></i>
             <span>待收货订单</span>
+        </div>
+        <div class="page-item-bar" data-page="app_my_order_details_completed.html" onclick="loadPage('app_my_order_details_completed.html', this)">
+            <i class="bi bi-check-circle"></i>
+            <span>已完成订单</span>
         </div>
         <div class="page-item-bar" data-page="app_my_order_details_after_sale.html" onclick="loadPage('app_my_order_details_after_sale.html', this)">
             <i class="bi bi-arrow-return-left"></i>
@@ -114,13 +114,13 @@
                 <i class="bi bi-box-seam"></i>
                 <span>待发货订单</span>
             </div>
-            <div class="dropdown-item" data-page="app_my_order_details_out.html" onclick="loadPage('app_my_order_details_out.html', this)">
-                <i class="bi bi-truck"></i>
-                <span>出库中订单</span>
-            </div>
             <div class="dropdown-item" data-page="app_my_order_details_waiting_receive.html" onclick="loadPage('app_my_order_details_waiting_receive.html', this)">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>待收货订单</span>
+            </div>
+            <div class="dropdown-item" data-page="app_my_order_details_completed.html" onclick="loadPage('app_my_order_details_completed.html', this)">
+                <i class="bi bi-check-circle"></i>
+                <span>已完成订单</span>
             </div>
             <div class="dropdown-item" data-page="app_my_order_details_after_sale.html" onclick="loadPage('app_my_order_details_after_sale.html', this)">
                 <i class="bi bi-arrow-return-left"></i>
@@ -166,16 +166,16 @@
                         <iframe src="app_pages/app_my_order_details_waiting_out.html" frameborder="0"></iframe>
                     </div>
                 </div>
-                <div class="phone-frame-container" data-page-label="出库中订单">
-                    <div class="phone-notch"></div>
-                    <div class="phone-screen">
-                        <iframe src="app_pages/app_my_order_details_out.html" frameborder="0"></iframe>
-                    </div>
-                </div>
                 <div class="phone-frame-container" data-page-label="待收货订单">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
                         <iframe src="app_pages/app_my_order_details_waiting_receive.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="已完成订单">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_details_completed.html" frameborder="0"></iframe>
                     </div>
                 </div>
                 <div class="phone-frame-container" data-page-label="申请售后">
@@ -190,7 +190,7 @@
 
     <script>
         let currentView = 'single';
-        let currentPage = 'app_my_order_details_waiting_out.html';
+        let currentPage = 'app_my_order_list.html';
         let dropdownOpen = false;
 
         // Toggle dropdown menu
@@ -260,7 +260,7 @@
             const pageNames = {
                 'app_my_order_list.html': '订单列表',
                 'app_my_order_details_waiting_out.html': '待发货订单',
-                'app_my_order_details_out.html': '出库中订单',
+                'app_my_order_details_completed.html': '已完成订单',
                 'app_my_order_details_waiting_receive.html': '待收货订单',
                 'app_my_order_details_after_sale.html': '申请售后'
             };
@@ -277,7 +277,18 @@
         // Handle hash on page load
         window.addEventListener('DOMContentLoaded', function() {
             const hash = window.location.hash.substring(1);
-            if (hash) { handleHashChange(hash); }
+            if (hash) { 
+                handleHashChange(hash); 
+            } else {
+                // Ensure default active state for both desktop bar and mobile dropdown
+                const defaultPage = 'app_my_order_list.html';
+                document.querySelectorAll('.page-item-bar, .dropdown-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-page') === defaultPage) {
+                        item.classList.add('active');
+                    }
+                });
+            }
             updateDropdownLabel();
         });
 
@@ -302,20 +313,50 @@
                 }
             }
 
-            // Forward highlight messages to iframe
+            // Forward highlight messages to iframe and navigate to correct page
             if (event.data && event.data.action === 'highlight' && event.data.featureId) {
-                const frame = document.getElementById('prototypeFrame');
-                if (frame && frame.contentWindow) {
-                    frame.contentWindow.postMessage({
-                        action: 'highlight',
-                        featureId: event.data.featureId
-                    }, '*');
+                const featureId = event.data.featureId;
+                
+                // Map feature IDs to pages using prefix matching
+                let targetPage = null;
+                if (featureId.startsWith('app_my_order_list')) {
+                    targetPage = 'app_my_order_list.html';
+                } else if (featureId.startsWith('app_my_order_details_waiting_out')) {
+                    targetPage = 'app_my_order_details_waiting_out.html';
+                } else if (featureId.startsWith('app_my_order_details_completed')) {
+                    targetPage = 'app_my_order_details_completed.html';
+                } else if (featureId.startsWith('app_my_order_details_waiting_receive')) {
+                    targetPage = 'app_my_order_details_waiting_receive.html';
+                } else if (featureId.startsWith('app_my_order_details_after_sale')) {
+                    targetPage = 'app_my_order_details_after_sale.html';
                 }
 
-                // If feature is app_order_list, switch to that page
-                if (event.data.featureId === 'app_order_list') {
-                    const pageItem = document.querySelector(`[data-page="app_my_order_list.html"]`);
-                    if (pageItem && currentView === 'single') { loadPage('app_my_order_list.html', pageItem); }
+                // Navigate to the target page if found
+                if (targetPage && currentView === 'single') {
+                    const pageItem = document.querySelector(`[data-page="${targetPage}"]`);
+                    if (pageItem) { 
+                        loadPage(targetPage, pageItem);
+                        
+                        // Wait for iframe to load, then forward highlight message
+                        setTimeout(() => {
+                            const frame = document.getElementById('prototypeFrame');
+                            if (frame && frame.contentWindow) {
+                                frame.contentWindow.postMessage({
+                                    action: 'highlight',
+                                    featureId: featureId
+                                }, '*');
+                            }
+                        }, 300);
+                    }
+                } else if (targetPage) {
+                    // In global view, just forward the highlight message
+                    const frame = document.getElementById('prototypeFrame');
+                    if (frame && frame.contentWindow) {
+                        frame.contentWindow.postMessage({
+                            action: 'highlight',
+                            featureId: featureId
+                        }, '*');
+                    }
                 }
             }
         });

@@ -36,7 +36,7 @@
         .app-nav-back:hover { background: var(--geist-gray-50); }
         .app-nav-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
         .app-nav-placeholder { width: 32px; }
-        .app-page-content { height: calc(812px - 44px - 56px - 60px); overflow-y: auto; padding-bottom: 20px; }
+        .app-page-content { height: calc(812px - 44px - 56px - 80px); overflow-y: auto; padding-bottom: 20px; }
         .app-page-content::-webkit-scrollbar { width: 0; }
         .app-card { background: var(--geist-white); margin: 12px; padding: 16px; border-radius: 8px; box-shadow: var(--shadow-border); }
         .app-logistics-status { display: flex; flex-direction: column; gap: 8px; }
@@ -159,6 +159,12 @@
             </div>
         </div>
     </div>
+    
+    <!-- Bottom Toolbar: Only Confirm Receipt Button -->
+    <div class="app-bottom-bar">
+        <button class="app-btn-bottom-primary">确认收货</button>
+    </div>
+    
     <script>
         // 接收父窗口高亮消息
         window.addEventListener('message', function(e) {
@@ -178,6 +184,15 @@
                 setTimeout(() => { this.textContent = originalText; this.style.color = ''; }, 1500);
             });
         });
+        
+        // 确认收货按钮交互
+        document.querySelector('.app-btn-bottom-primary').addEventListener('click', function() {
+            if (confirm('确认已收到商品？')) {
+                alert('确认收货成功！');
+                // 这里可以添加跳转到订单列表或其他逻辑
+            }
+        });
+        
         // 通知父窗口页面加载完成
         window.parent.postMessage({ type: 'PAGE_LOADED', page: 'app_my_order_details_waiting_receive.html' }, '*');
     </script>

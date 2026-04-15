@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>出库中订单详情</title>
+    <title>已完成订单详情</title>
     <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root {
@@ -54,6 +54,9 @@
         .app-product-price { font-size: 15px; font-weight: 500; }
         .app-product-quantity { font-size: 13px; color: var(--geist-gray-400); }
         .app-product-total { font-size: 15px; font-weight: 500; text-align: right; margin-top: 8px; }
+        .app-product-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
+        .app-btn-after-sale { font-size: 12px; color: var(--geist-gray-500); background: var(--geist-gray-50); border: var(--shadow-border); padding: 4px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .app-btn-after-sale:hover { background: var(--geist-gray-100); }
         .app-actual-amount { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: var(--shadow-border); cursor: pointer; }
         .app-actual-amount-label { font-size: 14px; color: var(--geist-gray-600); }
         .app-actual-amount-value { font-size: 18px; color: #ff3333; font-weight: 600; }
@@ -65,10 +68,6 @@
         .app-btn-copy { font-size: 12px; color: var(--focus-blue); cursor: pointer; background: none; border: none; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; font-family: inherit; }
         .app-btn-copy:hover { background: var(--geist-gray-50); }
         .app-btn-more { text-align: center; padding: 12px 0; font-size: 13px; color: var(--geist-gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .app-contact-service { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 0 8px; font-size: 14px; color: var(--geist-black); cursor: pointer; }
-        .app-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; background: var(--geist-white); padding: 12px 16px; padding-bottom: 34px; display: flex; justify-content: flex-end; gap: 8px; border-top: var(--shadow-border); }
-        .app-btn-bottom { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: var(--shadow-border); background: var(--geist-white); color: var(--geist-black); font-family: inherit; }
-        .app-btn-bottom:hover { background: var(--geist-gray-50); }
         .feature-highlight { border: 2px solid var(--focus-blue) !important; box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2); transition: all 0.3s; }
         .prototype-module { transition: all 0.3s; }
     </style>
@@ -84,7 +83,7 @@
     </div>
     <div class="app-nav-bar">
         <div class="app-nav-back"><i class="bi bi-chevron-left"></i></div>
-        <div class="app-nav-title">出库中</div>
+        <div class="app-nav-title">已完成</div>
         <div class="app-nav-placeholder"></div>
     </div>
     <div class="app-page-content">
@@ -97,43 +96,32 @@
                 </div>
             </div>
         </div>
-        <div class="app-card prototype-module" data-prototype="app_my_order_details_out">
+        <div class="app-card prototype-module" data-prototype="app_my_order_details_completed">
             <div class="app-shop-header">
                 <i class="bi bi-shop"></i>
                 <span>小芒自营1店</span>
             </div>
             <div class="app-product-item">
-                <div class="app-product-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                    <div><i class="bi bi-box-fill" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>商品图</div>
+                <div class="app-product-image" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                    <div><i class="bi bi-cup-hot" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>暖饮</div>
                 </div>
                 <div class="app-product-info">
                     <span class="app-product-tag">自营</span>
-                    <div class="app-product-name">徐福记 悦享臻礼</div>
-                    <div class="app-product-sku">深灰色1号</div>
+                    <div class="app-product-name">【回填单】冬日暖心饮品套餐</div>
+                    <div class="app-product-sku">标准套餐</div>
                     <div class="app-product-bottom">
-                        <span class="app-product-price">¥12.00</span>
-                        <span class="app-product-quantity">x2</span>
+                        <span class="app-product-price">¥68.00</span>
+                        <span class="app-product-quantity">x1</span>
                     </div>
                 </div>
             </div>
-            <div class="app-product-item">
-                <div class="app-product-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                    <div><i class="bi bi-box-fill" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>商品图</div>
-                </div>
-                <div class="app-product-info">
-                    <span class="app-product-tag">自营</span>
-                    <div class="app-product-name">徐福记 悦享臻礼</div>
-                    <div class="app-product-sku">深蓝色2号</div>
-                    <div class="app-product-bottom">
-                        <span class="app-product-price">¥22.00</span>
-                        <span class="app-product-quantity">x2</span>
-                    </div>
-                </div>
+            <div class="app-product-total">¥68</div>
+            <div class="app-product-actions">
+                <button class="app-btn-after-sale">申请售后</button>
             </div>
-            <div class="app-product-total">¥44</div>
             <div class="app-actual-amount">
                 <span class="app-actual-amount-label">实付金额</span>
-                <span class="app-actual-amount-value">¥70.86</span>
+                <span class="app-actual-amount-value">¥68.50</span>
                 <i class="bi bi-chevron-down"></i>
             </div>
         </div>
@@ -141,7 +129,7 @@
             <div class="app-order-info-section">
                 <div class="app-order-info-row">
                     <span class="app-order-info-label">订单编号</span>
-                    <span class="app-order-info-value">7626947514866919123 <button class="app-btn-copy">复制</button></span>
+                    <span class="app-order-info-value">7625847514866919456 <button class="app-btn-copy">复制</button></span>
                 </div>
                 <div class="app-order-info-row">
                     <span class="app-order-info-label">支付方式</span>
@@ -149,18 +137,14 @@
                 </div>
                 <div class="app-order-info-row">
                     <span class="app-order-info-label">下单时间</span>
-                    <span class="app-order-info-value">2026-04-10 10:09:44</span>
+                    <span class="app-order-info-value">2026-03-25 14:20:10</span>
                 </div>
                 <div class="app-order-info-row">
                     <span class="app-order-info-label">交易流水</span>
-                    <span class="app-order-info-value">7626947020942475505</span>
+                    <span class="app-order-info-value">7625847020942475890</span>
                 </div>
             </div>
             <div class="app-btn-more">查看更多 <i class="bi bi-chevron-down"></i></div>
-            <div class="app-contact-service">
-                <i class="bi bi-headset"></i>
-                <span>联系客服</span>
-            </div>
         </div>
     </div>
     <script>
@@ -183,7 +167,7 @@
             });
         });
         // 通知父窗口页面加载完成
-        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'app_my_order_details_out.html' }, '*');
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'app_my_order_details_completed.html' }, '*');
     </script>
 </body>
 </html>

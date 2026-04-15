@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>快闪店预售商品回填单 PRD v1.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="../../assets/mermaid.min.js"></script>
   <style>
     :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
     body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
@@ -53,6 +53,12 @@
         <tr><td>v1.0</td><td>2026-03-30</td><td>初版需求确认，H5 回填单 + 运营后台功能定义</td><td>产品经理</td></tr>
         <tr><td>v1.1</td><td>2026-03-30</td><td>增加用户注册登录逻辑，优化产品细节</td><td>林长宇</td></tr>
         <tr><td>v1.2</td><td>2026-04-06</td><td>新增 App 端快闪店订单列表展示页</td><td>林长宇</td></tr>
+      </table>
+      
+      <h3 style="margin-top:20px;">参考文档</h3>
+      <table>
+        <tr><th>项目</th><th>地址</th><th>备注</th></tr>
+        <tr><td>普通/虚拟商品及订单流程</td><td><a href="https://wiki.imgo.tv/pages/viewpage.action?pageId=48202759" target="_blank">https://wiki.imgo.tv/pages/viewpage.action?pageId=48202759</a></td><td>商品类型=28</td></tr>
       </table>
     </div>
 
@@ -126,7 +132,7 @@
         <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
         <tr><td>快闪店订单列表</td><td>展示快闪店订单列表，包含商品列表和物流信息</td><td>P0</td><td>app_my_order_list</td></tr>
         <tr><td>快闪店订单详情 - 待发货</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_waiting_out</td></tr>
-        <tr><td>快闪店订单详情 - 出库中</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_out</td></tr>
+        <tr><td>快闪店订单详情 - 已完成</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_completed</td></tr>
         <tr><td>快闪店订单详情 - 待收货</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_waiting_receive</td></tr>
         <tr><td>快闪店订单详情 - 售后处理</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_after_sale</td></tr>
       </table>
@@ -135,9 +141,11 @@
       <table>
         <tr><th>订单状态</th><th>列表卡片功能点</th><th>订单详情底部操作栏</th><th>售后服务功能点</th><th>备注</th></tr>
         <tr><td>待付款</td><td>-</td><td>-</td><td>不适用</td><td></td></tr>
-        <tr><td>待发货</td><td>提醒发货、查看订单</td><td>无</td><td>申请补寄</td><td></td></tr>
-        <tr><td>出库中</td><td>查看订单</td><td>无</td><td>申请补寄</td><td></td></tr>
-        <tr><td>待收货</td><td>查看物流、确认收货</td><td>无</td><td>申请补寄</td><td></td></tr>
+        <tr><td>待发货</td><td>提醒发货、查看订单</td><td>无</td><td>隐藏"申请售后"入口</td><td></td></tr>
+        <tr><td>出库中</td><td>查看订单</td><td>无</td><td>隐藏"申请售后"入口</td><td></td></tr>
+        <tr><td>待收货</td><td>查看物流、确认收货</td><td>确认收货</td><td>申请补寄</td><td></td></tr>
+        <tr><td>待评价</td><td>删除订单</td><td>无</td><td>申请补寄</td><td></td></tr>
+        <tr><td>已取消</td><td>删除订单</td><td>无</td><td>申请补寄</td><td></td></tr>
         <tr><td>已完成</td><td>删除订单</td><td>无</td><td>申请补寄</td><td></td></tr>
       </table>
 
@@ -424,74 +432,8 @@
         </div>
       </div>
 
-      <div class="feature-module" id="app_my_order_details_out">
-        <h3>5.3.3 快闪店订单详情 - 出库中 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_out')">查看原型</button></h3>
-        <p class="meta"><strong>本次迭代需求（v1.2）</strong>：</p>
-        <table>
-          <tr><th>调整模块</th><th>调整内容</th><th>说明</th></tr>
-          <tr><td>底部操作栏</td><td>不展示任何按钮（隐藏）</td><td>本次调整</td></tr>
-        </table>
-        <p class="meta"><strong>功能描述</strong>：用户点击出库中状态的订单后，进入订单详情页面，查看订单信息和当前出库进度。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>页面顶部直接展示收货地址卡片（<strong>无物流状态区</strong>）：
-              <ul class="list">
-                <li>定位图标 + "送至"前缀 + 完整收货地址</li>
-                <li>收件人姓名 + 手机号</li>
-              </ul>
-            </li>
-            <li>店铺商品区：
-              <ul class="list">
-                <li>店铺名称展示（如：小芒自营1店）</li>
-                <li>商品列表：商品图片、自营标签（黄色背景）、商品标题、SKU 规格</li>
-                <li>单价（左下） + 数量（右下，如 x2）</li>
-                <li>商品总计（右侧对齐，如 ¥24）</li>
-                <li>多商品时依次展示，每个商品独立展示"商品总计"</li>
-                <li>实付金额：右侧展示"实付金额 ¥70.86" + 下拉箭头，支持展开/收起</li>
-              </ul>
-            </li>
-            <li>订单信息区：
-              <ul class="list">
-                <li>订单编号（右侧灰色字体 + "复制"蓝色按钮）</li>
-                <li>支付方式（外渠支付）</li>
-                <li>下单时间</li>
-                <li>交易流水号</li>
-                <li>"查看更多"可展开更多订单信息（带下拉箭头）</li>
-              </ul>
-            </li>
-            <li>底部操作栏：本次迭代不展示任何按钮（隐藏）</li>
-            <li>出库中状态不支持确认收货操作</li>
-            <li>页面加载时调用订单详情接口，获取完整订单数据</li>
-          </ul>
-        </div>
-        <div class="field-group" style="margin-top:12px;">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>页面标题展示"出库中"</li>
-            <li>收货地址卡片置顶，无物流状态区</li>
-            <li>多商品时每个商品独立展示"商品总计"，清晰区分</li>
-            <li>其他交互与待发货状态保持一致</li>
-          </ul>
-        </div>
-        <div class="field-group" style="margin-top:12px;">
-          <div class="field-label">数据流向</div>
-          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
-用户点击出库中订单 → 调用订单详情 API
-→ 渲染地址、商品、订单信息
-→ 用户操作（复制/展开）→ 反馈结果</pre>
-        </div>
-        <div class="field-group" style="margin-top:12px;">
-          <div class="field-label">特殊字段说明</div>
-          <ul class="list">
-            <li><strong>无物流信息</strong>：此阶段商品尚未交付物流，不展示物流追踪信息</li>
-            <li><strong>商品总计</strong>：每个商品独立展示总计（单价 × 数量）</li>
-          </ul>
-        </div>
-      </div>
-
       <div class="feature-module" id="app_my_order_details_waiting_receive">
-        <h3>5.3.4 快闪店订单详情 - 待收货 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_waiting_receive')">查看原型</button></h3>
+        <h3>5.3.3 快闪店订单详情 - 待收货 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_waiting_receive')">查看原型</button></h3>
         <p class="meta"><strong>本次迭代需求（v1.2）</strong>：</p>
         <table>
           <tr><th>调整模块</th><th>调整内容</th><th>说明</th></tr>
@@ -535,7 +477,7 @@
                 <li>"查看更多"可展开更多订单信息</li>
               </ul>
             </li>
-            <li>底部操作栏：本次迭代不展示任何按钮（隐藏）</li>
+            <li>底部操作栏：仅展示"确认收货"按钮，黄底黑字主按钮样式</li>
             <li>点击"确认收货"按钮（通过商品卡片的"申请售后"按钮旁的主操作区触发），弹出二次确认弹窗，确认后更新订单状态</li>
             <li>点击商品下方的"申请售后"按钮，跳转到申请售后页面（5.3.5）</li>
             <li>点击物流信息区下拉箭头，展开物流追踪时间线</li>
@@ -564,6 +506,69 @@
             <li><strong>确认收货</strong>：主操作按钮，黄色高亮，用户确认后订单状态变更为"已完成"</li>
             <li><strong>商品级售后</strong>：支持按单个商品发起售后，而非整单</li>
             <li><strong>物流追踪</strong>：对接物流公司接口，实时展示包裹位置</li>
+            <li><strong>商品总计</strong>：每个商品独立展示总计（单价 × 数量）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_my_order_details_completed">
+        <h3>5.3.4 快闪店订单详情 - 已完成 <button class="highlight-btn" onclick="highlightFeature('app_my_order_details_completed')">查看原型</button></h3>
+        <p class="meta"><strong>本次迭代需求（v1.2）</strong>：</p>
+        <table>
+          <tr><th>调整模块</th><th>调整内容</th><th>说明</th></tr>
+          <tr><td>底部操作栏</td><td>不展示任何按钮（隐藏）</td><td>本次调整</td></tr>
+        </table>
+        <p class="meta"><strong>功能描述</strong>：用户点击已完成状态的订单后，进入订单详情页面，查看订单完整信息。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>页面顶部直接展示收货地址卡片（<strong>无物流状态区</strong>）：
+              <ul class="list">
+                <li>定位图标 + "送至"前缀 + 完整收货地址</li>
+                <li>收件人姓名 + 手机号</li>
+              </ul>
+            </li>
+            <li>店铺商品区：
+              <ul class="list">
+                <li>店铺名称展示（如：小芒自营1店）</li>
+                <li>商品列表：商品图片、自营标签（黄色背景）、商品标题、SKU 规格</li>
+                <li>单价（左下） + 数量（右下，如 x1）</li>
+                <li>商品总计（右侧对齐，如 ¥68）</li>
+                <li>实付金额：右侧展示"实付金额 ¥68.50" + 下拉箭头，支持展开/收起</li>
+              </ul>
+            </li>
+            <li>订单信息区：
+              <ul class="list">
+                <li>订单编号（右侧灰色字体 + "复制"蓝色按钮）</li>
+                <li>支付方式（外渠支付）</li>
+                <li>下单时间</li>
+                <li>交易流水号</li>
+                <li>"查看更多"可展开更多订单信息（带下拉箭头）</li>
+              </ul>
+            </li>
+            <li>底部操作栏：本次迭代不展示任何按钮（隐藏）</li>
+            <li>页面加载时调用订单详情接口，获取完整订单数据</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>页面标题展示"已完成"</li>
+            <li>收货地址卡片置顶，无物流状态区</li>
+            <li>其他交互与待发货状态保持一致</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">数据流向</div>
+          <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;">
+用户点击已完成订单 → 调用订单详情 API
+→ 渲染地址、商品、订单信息
+→ 用户操作（复制/展开）→ 反馈结果</pre>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">特殊字段说明</div>
+          <ul class="list">
+            <li><strong>无物流信息</strong>：已完成订单不展示物流追踪信息</li>
             <li><strong>商品总计</strong>：每个商品独立展示总计（单价 × 数量）</li>
           </ul>
         </div>
