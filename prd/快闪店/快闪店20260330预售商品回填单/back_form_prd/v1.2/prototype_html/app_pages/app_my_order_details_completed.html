@@ -54,6 +54,9 @@
         .app-product-price { font-size: 15px; font-weight: 500; }
         .app-product-quantity { font-size: 13px; color: var(--geist-gray-400); }
         .app-product-total { font-size: 15px; font-weight: 500; text-align: right; margin-top: 8px; }
+        .app-product-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
+        .app-btn-after-sale { font-size: 12px; color: var(--geist-gray-500); background: var(--geist-gray-50); border: var(--shadow-border); padding: 4px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .app-btn-after-sale:hover { background: var(--geist-gray-100); }
         .app-actual-amount { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: var(--shadow-border); cursor: pointer; }
         .app-actual-amount-label { font-size: 14px; color: var(--geist-gray-600); }
         .app-actual-amount-value { font-size: 18px; color: #ff3333; font-weight: 600; }
@@ -113,6 +116,9 @@
                 </div>
             </div>
             <div class="app-product-total">¥68</div>
+            <div class="app-product-actions">
+                <button class="app-btn-after-sale">申请售后</button>
+            </div>
             <div class="app-actual-amount">
                 <span class="app-actual-amount-label">实付金额</span>
                 <span class="app-actual-amount-value">¥68.50</span>

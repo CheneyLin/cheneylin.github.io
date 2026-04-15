@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>快闪店预售商品回填单 PRD v1.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="../../assets/mermaid.min.js"></script>
   <style>
     :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
     body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
@@ -132,7 +132,7 @@
         <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
         <tr><td>快闪店订单列表</td><td>展示快闪店订单列表，包含商品列表和物流信息</td><td>P0</td><td>app_my_order_list</td></tr>
         <tr><td>快闪店订单详情 - 待发货</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_waiting_out</td></tr>
-        <tr><td>快闪店订单详情 - 出库中</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_out</td></tr>
+        <tr><td>快闪店订单详情 - 已完成</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_completed</td></tr>
         <tr><td>快闪店订单详情 - 待收货</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_waiting_receive</td></tr>
         <tr><td>快闪店订单详情 - 售后处理</td><td>展示快闪店订单详情</td><td>P0</td><td>app_my_order_details_after_sale</td></tr>
       </table>
@@ -141,9 +141,11 @@
       <table>
         <tr><th>订单状态</th><th>列表卡片功能点</th><th>订单详情底部操作栏</th><th>售后服务功能点</th><th>备注</th></tr>
         <tr><td>待付款</td><td>-</td><td>-</td><td>不适用</td><td></td></tr>
-        <tr><td>待发货</td><td>提醒发货、查看订单</td><td>无</td><td>申请补寄</td><td></td></tr>
-        <tr><td>出库中</td><td>查看订单</td><td>无</td><td>申请补寄</td><td></td></tr>
-        <tr><td>待收货</td><td>查看物流、确认收货</td><td>无</td><td>申请补寄</td><td></td></tr>
+        <tr><td>待发货</td><td>提醒发货、查看订单</td><td>无</td><td>隐藏"申请售后"入口</td><td></td></tr>
+        <tr><td>出库中</td><td>查看订单</td><td>无</td><td>隐藏"申请售后"入口</td><td></td></tr>
+        <tr><td>待收货</td><td>查看物流、确认收货</td><td>确认收货</td><td>申请补寄</td><td></td></tr>
+        <tr><td>待评价</td><td>删除订单</td><td>无</td><td>申请补寄</td><td></td></tr>
+        <tr><td>已取消</td><td>删除订单</td><td>无</td><td>申请补寄</td><td></td></tr>
         <tr><td>已完成</td><td>删除订单</td><td>无</td><td>申请补寄</td><td></td></tr>
       </table>
 
@@ -475,7 +477,7 @@
                 <li>"查看更多"可展开更多订单信息</li>
               </ul>
             </li>
-            <li>底部操作栏：本次迭代不展示任何按钮（隐藏）</li>
+            <li>底部操作栏：仅展示"确认收货"按钮，黄底黑字主按钮样式</li>
             <li>点击"确认收货"按钮（通过商品卡片的"申请售后"按钮旁的主操作区触发），弹出二次确认弹窗，确认后更新订单状态</li>
             <li>点击商品下方的"申请售后"按钮，跳转到申请售后页面（5.3.5）</li>
             <li>点击物流信息区下拉箭头，展开物流追踪时间线</li>
