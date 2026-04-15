@@ -4,79 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>订单管理 - 电子吧唧 ADMIN</title>
-    <link href="../../assets/bootstrap.main.css" rel="stylesheet">
-    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff;
             min-height: 100vh;
-            padding: 24px;
+            padding: 32px;
+            color: #171717;
         }
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
         .page-title {
             font-size: 24px;
             font-weight: 600;
-            color: #333;
+            color: #171717;
+            letter-spacing: -0.96px;
         }
+        .btn-primary {
+            background: #171717;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-primary:hover { background: #4d4d4d; }
+        .btn-outline {
+            background: #ffffff;
+            color: #171717;
+            border: 1px solid rgba(0,0,0,0.08);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-outline:hover { background: #fafafa; }
         .card {
-            background: white;
+            background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
             margin-bottom: 24px;
         }
         .card-header {
             padding: 16px 20px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
             font-weight: 600;
-            color: #333;
+            font-size: 15px;
+            color: #171717;
         }
         .card-body { padding: 20px; }
-        .table { margin-bottom: 0; }
-        .table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        .table td { vertical-align: middle; }
-        .badge-active { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
-        .btn-action {
-            padding: 4px 12px;
-            font-size: 13px;
-            border-radius: 4px;
-        }
         .filter-bar {
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            align-items: center;
         }
-        .filter-bar select, .filter-bar input {
-            padding: 8px 12px;
-            border: 1px solid #e0e0e0;
+        .filter-bar input, .filter-bar select {
+            padding: 10px 14px;
+            border: none;
             border-radius: 6px;
             font-size: 14px;
+            background: #fafafa;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            outline: none;
+            transition: all 0.15s ease;
         }
         .filter-bar input { width: 200px; }
+        .filter-bar input:focus, .filter-bar select:focus {
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, 2px solid #0072f5;
+        }
+        .table { margin-bottom: 0; width: 100%; border-collapse: collapse; }
+        .table th {
+            background: #fafafa;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4d4d4d;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding: 12px 16px;
+            text-align: left;
+        }
+        .table td { 
+            padding: 16px; 
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-active { background: #ebf5ff; color: #0068d6; }
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #0072f5;
+            font-weight: 500;
+        }
+        .btn-action:hover { background: #ebf5ff; }
         .order-images {
             display: flex;
             gap: 8px;
+            align-items: center;
         }
         .order-image {
-            width: 60px;
-            height: 60px;
+            width: 48px;
+            height: 48px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
+        }
+        .pagination {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        .pagination li a {
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #4d4d4d;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+        }
+        .pagination li a:hover { background: #fafafa; }
+        .pagination li.active a {
+            background: #171717;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -84,7 +162,7 @@
     <!-- 订单管理页面 -->
     <div class="page-header">
         <div class="page-title">订单管理</div>
-        <button class="btn btn-primary">
+        <button class="btn-primary">
             <i class="bi bi-download"></i> 导出 Excel
         </button>
     </div>
@@ -93,22 +171,22 @@
         <div class="card-body">
             <div class="filter-bar">
                 <input type="text" placeholder="搜索订单号/用户手机号">
-                <select class="form-select" style="width: 150px;">
+                <select style="width: 150px;">
                     <option value="">全部 IP 包</option>
                     <option value="1">初音未来 2024</option>
                     <option value="2">原神 雷电将军</option>
                 </select>
-                <select class="form-select" style="width: 150px;">
+                <select style="width: 150px;">
                     <option value="">全部类型</option>
                     <option value="single">单抽</option>
                     <option value="ten">10 连抽</option>
                     <option value="pack">整包购买</option>
                 </select>
-                <input type="date" class="form-control" style="width: 150px;">
-                <span style="color: #999; align-self: center;">至</span>
-                <input type="date" class="form-control" style="width: 150px;">
-                <button class="btn btn-primary">查询</button>
-                <button class="btn btn-outline-secondary">重置</button>
+                <input type="date" style="width: 150px;">
+                <span style="color: #808080; align-self: center;">至</span>
+                <input type="date" style="width: 150px;">
+                <button class="btn-primary">查询</button>
+                <button class="btn-outline">重置</button>
             </div>
         </div>
     </div>
@@ -116,7 +194,7 @@
     <div class="card">
         <div class="card-header">订单列表</div>
         <div class="card-body" style="padding: 0;">
-            <table class="table table-hover">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>订单号</th>
@@ -139,15 +217,15 @@
                         <td>¥99.00</td>
                         <td>
                             <div class="order-images">
-                                <div class="order-image" style="background: #fff1f0; border: 2px solid #ff4d4f;">🌟</div>
-                                <div class="order-image" style="background: #fff7e6;">🎭</div>
-                                <span style="color: #999; font-size: 12px; align-self: center;">+8</span>
+                                <div class="order-image" style="background: #fff1f0;"><i class="bi bi-star-fill" style="color: #ff5b4f;"></i></div>
+                                <div class="order-image" style="background: #fff7e6;"><i class="bi bi-person" style="color: #fa8c16;"></i></div>
+                                <span style="color: #808080; font-size: 12px;">+8</span>
                             </div>
                         </td>
                         <td><span class="badge badge-active">已支付</span></td>
                         <td>2026-04-08 09:30</td>
                         <td>
-                            <button class="btn btn-outline-primary btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                            <button class="btn-action" onclick="showModal('orderDetailModal')">详情</button>
                         </td>
                     </tr>
                     <tr>
@@ -158,13 +236,13 @@
                         <td>¥9.90</td>
                         <td>
                             <div class="order-images">
-                                <div class="order-image" style="background: #fff7e6;">⚡</div>
+                                <div class="order-image" style="background: #fff7e6;"><i class="bi bi-lightning" style="color: #fa8c16;"></i></div>
                             </div>
                         </td>
                         <td><span class="badge badge-active">已支付</span></td>
                         <td>2026-04-08 09:25</td>
                         <td>
-                            <button class="btn btn-outline-primary btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                            <button class="btn-action" onclick="showModal('orderDetailModal')">详情</button>
                         </td>
                     </tr>
                     <tr>
@@ -175,14 +253,14 @@
                         <td>¥150.00</td>
                         <td>
                             <div class="order-images">
-                                <div class="order-image" style="background: #f6ffed;">🎭</div>
-                                <span style="color: #999; font-size: 12px; align-self: center;">20 张</span>
+                                <div class="order-image" style="background: #f6ffed;"><i class="bi bi-person" style="color: #52c41a;"></i></div>
+                                <span style="color: #808080; font-size: 12px;">20 张</span>
                             </div>
                         </td>
                         <td><span class="badge badge-active">已支付</span></td>
                         <td>2026-04-08 09:15</td>
                         <td>
-                            <button class="btn btn-outline-primary btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                            <button class="btn-action" onclick="showModal('orderDetailModal')">详情</button>
                         </td>
                     </tr>
                 </tbody>
@@ -190,18 +268,14 @@
         </div>
     </div>
     
-    <div style="display: flex; justify-content: center; margin-top: 20px;">
-        <nav>
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">上一页</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">下一页</a></li>
-            </ul>
-        </nav>
-    </div>
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
 
     <!-- 订单详情弹窗 -->
     <div class="modal fade" id="orderDetailModal" tabindex="-1">
@@ -239,13 +313,13 @@
                     <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
                         <div style="font-size: 13px; color: #999; margin-bottom: 6px;">获得图片</div>
                         <div class="order-images" style="margin-top: 8px;">
-                            <div class="order-image" style="background: #fff1f0; border: 2px solid #ff4d4f;">🌟</div>
-                            <div class="order-image" style="background: #fff7e6;">🎭</div>
-                            <div class="order-image" style="background: #fff7e6;">🎭</div>
-                            <div class="order-image" style="background: #f6ffed;">🎭</div>
-                            <div class="order-image" style="background: #f6ffed;">🎭</div>
-                            <div class="order-image" style="background: #f6ffed;">🎭</div>
-                            <span style="color: #999; font-size: 12px; align-self: center;">+4</span>
+                            <div class="order-image" style="background: #fff1f0;"><i class="bi bi-star-fill" style="color: #ff5b4f;"></i></div>
+                            <div class="order-image" style="background: #fff7e6;"><i class="bi bi-person" style="color: #fa8c16;"></i></div>
+                            <div class="order-image" style="background: #fff7e6;"><i class="bi bi-person" style="color: #fa8c16;"></i></div>
+                            <div class="order-image" style="background: #f6ffed;"><i class="bi bi-circle" style="color: #52c41a;"></i></div>
+                            <div class="order-image" style="background: #f6ffed;"><i class="bi bi-circle" style="color: #52c41a;"></i></div>
+                            <div class="order-image" style="background: #f6ffed;"><i class="bi bi-circle" style="color: #52c41a;"></i></div>
+                            <span style="color: #808080; font-size: 12px;">+4</span>
                         </div>
                         <div style="margin-top: 8px; font-size: 12px; color: #666;">
                             SSR × 1（保底）, SR × 3, R × 6

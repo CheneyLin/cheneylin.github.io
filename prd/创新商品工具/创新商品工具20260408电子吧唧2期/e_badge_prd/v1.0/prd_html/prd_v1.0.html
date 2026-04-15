@@ -4,39 +4,68 @@
   <meta charset="UTF-8">
   <title>电子吧唧 2 期 PRD v1.0</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="../assets/mermaid.min.js"></script>
+  <script src="../../assets/mermaid.min.js"></script>
   <style>
-    :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
-    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
-    .page { min-width:1024px; margin:0 auto; padding:24px; }
-    h1 { font-size:28px; margin:0 0 12px; border-bottom:3px solid var(--primary); padding-bottom:12px; }
-    h2 { font-size:20px; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
-    h3 { font-size:16px; margin:20px 0 10px; font-weight:600; }
+    :root {
+      --bg:#fff;
+      --fg:#171717;
+      --muted:#4d4d4d;
+      --border:#ebebeb;
+      --primary:#667eea;
+      --link-blue:#0072f5;
+      --focus-blue:hsla(212, 100%, 48%, 1);
+      --shadow-border:rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --shadow-card:rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
+    }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:32px; }
+    h1 { font-size:28px; font-weight:600; letter-spacing:-0.02em; margin:0 0 12px; border-bottom:3px solid var(--fg); padding-bottom:12px; }
+    h2 { font-size:20px; font-weight:600; letter-spacing:-0.02em; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--fg); }
+    h3 { font-size:16px; font-weight:600; margin:20px 0 10px; }
     p { margin:8px 0; color:var(--muted); }
-    .card { border:1px solid var(--border); border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .card { border:none; border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:var(--shadow-card); }
     table { width:100%; border-collapse:collapse; margin:12px 0; }
-    th, td { border:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
-    th { background:#f9fafb; font-weight:600; }
+    th, td { border-bottom:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#fafafa; font-weight:600; font-size:13px; color:var(--muted); }
     .list { margin:0; padding-left:18px; }
-    .btn { display:inline-block; padding:6px 12px; border:1px solid var(--primary); color:#fff; background:var(--primary); border-radius:4px; text-decoration:none; font-size:13px; cursor:pointer; }
-    .btn:hover { opacity:0.9; }
-    .meta { color:#909399; font-size:13px; }
+    .btn { display:inline-block; padding:6px 12px; color:#fff; background:var(--fg); border:none; border-radius:6px; text-decoration:none; font-size:13px; font-weight:500; cursor:pointer; }
+    .btn:hover { opacity:0.85; }
+    .meta { color:#808080; font-size:13px; }
     .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
     .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
-    .field-hint { color:var(--muted); font-size:12px; margin-top:4px; }
-    .feature-id { display:inline-block; background:var(--primary); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .field-hint { color:#808080; font-size:12px; margin-top:4px; }
+    .feature-id { display:inline-block; background:var(--fg); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
     .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
-    .feature-module:hover { border-color:var(--primary); }
-    .mermaid { background:#fff; text-align:center; margin:16px 0; }
-    .highlight-btn { background:var(--primary); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
-    .toc { background:#f9fafb; border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--fg); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; padding:24px; border-radius:8px; box-shadow:var(--shadow-border); }
+    .highlight-btn { background:var(--fg); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+    .toc { background:#fafafa; border-radius:8px; padding:16px; margin:16px 0; }
     .toc ul { list-style:none; padding:0; }
     .toc li { margin:8px 0; }
-    .toc a { color:var(--primary); text-decoration:none; }
+    .toc a { color:var(--link-blue); text-decoration:none; }
     .toc a:hover { text-decoration:underline; }
-    pre { background:#f9fafb; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
-    code { background:#f5f5f5; padding:2px 6px; border-radius:3px; font-size:13px; }
+    pre { background:#fafafa; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
+    code { background:#fafafa; padding:2px 6px; border-radius:3px; font-size:13px; }
     strong { color:var(--fg); }
+    a { color:var(--link-blue); text-decoration:underline; }
+    a:hover { opacity:0.85; }
+    :focus-visible { outline:2px solid var(--focus-blue); outline-offset:2px; }
+
+    /* Mermaid Vercel Theme Overrides */
+    .mermaid svg { font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .mermaid .node { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .node rect { fill:#fff; stroke:#171717; stroke-width:1px; rx:6px; }
+    .mermaid .node circle { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .node polygon { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .edgePath .path { stroke:#171717; stroke-width:1.5px; }
+    .mermaid .edgeLabel { background-color:#fafafa; color:#4d4d4d; font-size:12px; padding:4px 8px; border-radius:4px; border:1px solid #ebebeb; }
+    .mermaid .cluster rect { fill:#fafafa; stroke:#ebebeb; stroke-width:1px; rx:6px; }
+    .mermaid text { fill:#171717; font-size:13px; }
+    .mermaid .label { color:#171717; font-size:13px; }
+    .mermaid .edgeToken { stroke:#ebebeb; }
+    .mermaid .marker { fill:#171717; stroke:#171717; }
+    .mermaid .edgeToken { stroke:#ebebeb; stroke-width:1px; }
+    .mermaid .arrowhead { fill:#171717; }
   </style>
 </head>
 <body>
@@ -733,8 +762,29 @@ flowchart TD
   </div>
 
   <script>
-    // 初始化 Mermaid
-    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    // 初始化 Mermaid - Vercel Theme
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ffffff',
+        primaryTextColor: '#171717',
+        primaryBorderColor: '#171717',
+        lineColor: '#171717',
+        secondaryColor: '#fafafa',
+        tertiaryColor: '#fafafa',
+        fontSize: '13px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      },
+      flowchart: {
+        htmlLabels: true,
+        curve: 'basis',
+        nodeSpacing: 50,
+        rankSpacing: 50,
+        padding: 15
+      },
+      securityLevel: 'loose'
+    });
 
     // 高亮功能
     function highlightFeature(featureId) {

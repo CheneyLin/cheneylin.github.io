@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>电子吧唧 2 期 - ADMIN 运营后台</title>
-    <link href="../assets/bootstrap.main.css" rel="stylesheet">
-    <link href="../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
+            color: #171717;
         }
         
-        /* Sidebar */
         .sidebar {
-            width: 240px;
-            background: #1a1a2e;
+            width: 262px;
+            background: #171717;
             min-height: 100vh;
             position: fixed;
             left: 0;
@@ -29,15 +29,16 @@
         }
         
         .sidebar-logo {
-            height: 60px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 600;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 0 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0 24px;
+            letter-spacing: -0.32px;
         }
         
         .sidebar-menu {
@@ -45,9 +46,9 @@
         }
         
         .menu-group-title {
-            padding: 12px 24px;
-            color: rgba(255,255,255,0.5);
-            font-weight: 600;
+            padding: 10px 24px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 500;
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -61,32 +62,34 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
             font-size: 14px;
+            font-weight: 500;
+            border-left: 2px solid transparent;
         }
         
         .menu-item:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(255,255,255,0.06);
+            color: #ffffff;
         }
         
         .menu-item.active {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border-left: 3px solid #fff;
+            background: rgba(255,255,255,0.08);
+            color: #ffffff;
+            border-left-color: #ffffff;
         }
         
         .menu-item i { 
             font-size: 18px;
             width: 18px;
+            opacity: 0.8;
         }
         
-        /* Main Content */
         .main-content {
-            margin-left: 240px;
+            margin-left: 262px;
             flex: 1;
             min-height: 100vh;
-            background: #f5f7fa;
+            background: #ffffff;
         }
         
         .main-content iframe {
