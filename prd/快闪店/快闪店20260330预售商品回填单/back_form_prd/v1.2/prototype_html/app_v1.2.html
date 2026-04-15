@@ -84,9 +84,9 @@
             <i class="bi bi-box-seam"></i>
             <span>待发货订单</span>
         </div>
-        <div class="page-item-bar" data-page="app_my_order_details_out.html" onclick="loadPage('app_my_order_details_out.html', this)">
-            <i class="bi bi-truck"></i>
-            <span>出库中订单</span>
+        <div class="page-item-bar" data-page="app_my_order_details_completed.html" onclick="loadPage('app_my_order_details_completed.html', this)">
+            <i class="bi bi-check-circle"></i>
+            <span>已完成订单</span>
         </div>
         <div class="page-item-bar" data-page="app_my_order_details_waiting_receive.html" onclick="loadPage('app_my_order_details_waiting_receive.html', this)">
             <i class="bi bi-box-arrow-right"></i>
@@ -114,9 +114,9 @@
                 <i class="bi bi-box-seam"></i>
                 <span>待发货订单</span>
             </div>
-            <div class="dropdown-item" data-page="app_my_order_details_out.html" onclick="loadPage('app_my_order_details_out.html', this)">
-                <i class="bi bi-truck"></i>
-                <span>出库中订单</span>
+            <div class="dropdown-item" data-page="app_my_order_details_completed.html" onclick="loadPage('app_my_order_details_completed.html', this)">
+                <i class="bi bi-check-circle"></i>
+                <span>已完成订单</span>
             </div>
             <div class="dropdown-item" data-page="app_my_order_details_waiting_receive.html" onclick="loadPage('app_my_order_details_waiting_receive.html', this)">
                 <i class="bi bi-box-arrow-right"></i>
@@ -166,10 +166,10 @@
                         <iframe src="app_pages/app_my_order_details_waiting_out.html" frameborder="0"></iframe>
                     </div>
                 </div>
-                <div class="phone-frame-container" data-page-label="出库中订单">
+                <div class="phone-frame-container" data-page-label="已完成订单">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
-                        <iframe src="app_pages/app_my_order_details_out.html" frameborder="0"></iframe>
+                        <iframe src="app_pages/app_my_order_details_completed.html" frameborder="0"></iframe>
                     </div>
                 </div>
                 <div class="phone-frame-container" data-page-label="待收货订单">
@@ -190,7 +190,7 @@
 
     <script>
         let currentView = 'single';
-        let currentPage = 'app_my_order_details_waiting_out.html';
+        let currentPage = 'app_my_order_details_completed.html';
         let dropdownOpen = false;
 
         // Toggle dropdown menu
@@ -260,7 +260,7 @@
             const pageNames = {
                 'app_my_order_list.html': '订单列表',
                 'app_my_order_details_waiting_out.html': '待发货订单',
-                'app_my_order_details_out.html': '出库中订单',
+                'app_my_order_details_completed.html': '已完成订单',
                 'app_my_order_details_waiting_receive.html': '待收货订单',
                 'app_my_order_details_after_sale.html': '申请售后'
             };
