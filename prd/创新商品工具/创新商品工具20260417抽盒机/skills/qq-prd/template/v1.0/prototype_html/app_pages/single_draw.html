@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单抽 - 电子吧唧 2 期</title>
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_single_draw" class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-back cursor-pointer" onclick="navigateToPage('ip_detail.html')"><i class="bi bi-chevron-left"></i></div>
+                <div class="nav-title">单抽</div>
+                <div class="nav-action cursor-pointer">跳过</div>
+            </div>
+            <div class="p-4 content-with-tabbar">
+                <div class="draw-animation">
+                    <div class="draw-result-image">
+                        <i class="bi bi-question-circle"></i>
+                    </div>
+                </div>
+                <div class="mt-6 text-center">
+                    <h3 class="sub-heading">正在抽选中...</h3>
+                    <p class="body-small mt-2">消耗 1 次免费次数</p>
+                </div>
+                <div class="mt-8">
+                    <button class="btn-primary" onclick="showDrawResult('single')">立即抽选</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗: 抽选结算 -->
+    <div id="draw_result_modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="text-center mb-4">
+                <h3 class="sub-heading">恭喜获得！</h3>
+                <p class="body-small mt-1">已获得新吧唧图片</p>
+            </div>
+            <div class="flex justify-center mb-4">
+                <div class="w-32 h-32 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
+                    <i class="bi bi-emoji-smile text-5xl" style="color: var(--geist-white);"></i>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <span class="badge-ssr">SSR</span>
+                <h4 class="card-title mt-2">鸣人</h4>
+                <p class="caption mt-1">火影忍者系列</p>
+            </div>
+            <div class="space-y-2">
+                <button class="btn-primary" onclick="closeModal(); navigateToPage('badge_gallery.html')">去查看</button>
+                <button class="btn-secondary" onclick="closeModal()">继续抽选</button>
+            </div>
+            <div class="mt-4 text-center">
+                <p class="caption">
+                    <i class="bi bi-truck mr-1"></i>
+                    稀有吧唧支持实体配送，<a href="#" onclick="closeModal(); navigateToPage('badge_delivery.html')" style="color: var(--link-blue); text-decoration: underline;">去填写地址</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+
+        function showDrawResult(type) {
+            const modal = document.getElementById('draw_result_modal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('draw_result_modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>

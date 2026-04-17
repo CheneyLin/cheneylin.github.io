@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合并升级功能 - 电子吧唧 2 期</title>
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+    <style>
+        .upgrade-rule-card {
+            background: var(--geist-gray-50);
+            border: 1px solid var(--geist-gray-100);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .upgrade-rule-card.active {
+            border-color: var(--geist-black);
+            background: var(--geist-white);
+            box-shadow: 0 0 0 2px var(--geist-black);
+        }
+
+        .upgrade-rule-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .material-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: var(--geist-gray-50);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .material-item.selected {
+            border-color: var(--geist-black);
+            box-shadow: 0 0 0 2px var(--geist-black);
+        }
+
+        .material-item-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .material-item-check {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--geist-black);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: var(--geist-white);
+            font-size: 14px;
+        }
+
+        .material-item.selected .material-item-check {
+            display: flex;
+        }
+
+        .upgrade-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            color: var(--geist-gray-400);
+        }
+
+        .upgrade-arrow i {
+            font-size: 32px;
+        }
+
+        .upgrade-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 20px;
+            background: var(--geist-gray-50);
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+
+        .upgrade-preview-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .upgrade-preview-arrow {
+            color: var(--geist-gray-400);
+            font-size: 24px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--geist-white);
+            border-radius: 16px;
+            max-width: 350px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--geist-gray-100);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .modal-header p {
+            color: var(--geist-gray-600);
+            font-size: 13px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--geist-gray-100);
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--geist-gray-100);
+            background: var(--geist-white);
+            color: var(--geist-black);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--geist-gray-50);
+        }
+
+        .selection-hint {
+            background: var(--geist-gray-50);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .selection-hint p {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+        }
+
+        .selection-hint p strong {
+            color: var(--geist-black);
+        }
+
+        .tab-bar {
+            display: flex;
+            border-bottom: 1px solid var(--geist-gray-100);
+            margin-bottom: 16px;
+        }
+
+        .tab-item {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-item.active {
+            color: var(--geist-black);
+            border-bottom-color: var(--geist-black);
+        }
+
+        .page-content {
+            padding-top: 44px;
+        }
+
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--geist-gray-100);
+            background: var(--geist-white);
+        }
+
+        .nav-back {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-back:hover {
+            background: var(--geist-gray-50);
+        }
+
+        .nav-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .nav-placeholder {
+            width: 32px;
+        }
+
+        .content-section {
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--geist-black);
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            padding: 16px;
+            background: var(--geist-white);
+            border-top: 1px solid var(--geist-gray-100);
+        }
+
+        .btn-upgrade {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-upgrade:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-upgrade:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_merge_upgrade" class="phone-frame">
+        <div class="phone-notch"></div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <!-- 导航栏 -->
+            <div class="nav-bar">
+                <div class="nav-back" onclick="navigateToPage('badge_gallery.html')">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="nav-title">合并升级</div>
+                <div class="nav-placeholder"></div>
+            </div>
+
+            <!-- 升级规则 Tab -->
+            <div class="content-section">
+                <div class="tab-bar">
+                    <div class="tab-item active" onclick="switchTab(0)">2张相同升级</div>
+                    <div class="tab-item" onclick="switchTab(1)">4张不同升级</div>
+                </div>
+
+                <!-- 规则说明 -->
+                <div class="section-desc">
+                    <strong>规则 1：</strong>消耗 2 张相同吧唧图片，升级为高一级吧唧（随机从高一级的图片中抽取 1 张）
+                </div>
+
+                <!-- 选择提示 -->
+                <div class="selection-hint">
+                    <p>已选择 <strong id="selectedCount">0</strong>/2 张图片</p>
+                </div>
+
+                <!-- 材料选择区域 -->
+                <div class="section-title">选择材料图片</div>
+                <div class="material-grid" id="materialGrid">
+                    <!-- 材料项 1 -->
+                    <div class="material-item" onclick="toggleMaterial(this, 'naruto_r_1')">
+                        <div class="material-item-image" style="background: linear-gradient(135deg, #ff5b4f, #ff9a76);">
+                            <i class="bi bi-fire" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="material-item-check">
+                            <i class="bi bi-check"></i>
+                        </div>
+                    </div>
+
+                    <!-- 材料项 2 -->
+                    <div class="material-item" onclick="toggleMaterial(this, 'naruto_r_1_copy')">
+                        <div class="material-item-image" style="background: linear-gradient(135deg, #ff5b4f, #ff9a76);">
+                            <i class="bi bi-fire" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="material-item-check">
+                            <i class="bi bi-check"></i>
+                        </div>
+                    </div>
+
+                    <!-- 材料项 3 -->
+                    <div class="material-item" onclick="toggleMaterial(this, 'naruto_r_2')">
+                        <div class="material-item-image" style="background: linear-gradient(135deg, #0a72ef, #00c6ff);">
+                            <i class="bi bi-water" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="material-item-check">
+                            <i class="bi bi-check"></i>
+                        </div>
+                    </div>
+
+                    <!-- 材料项 4 -->
+                    <div class="material-item" onclick="toggleMaterial(this, 'naruto_r_3')">
+                        <div class="material-item-image" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                            <i class="bi bi-tree" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="material-item-check">
+                            <i class="bi bi-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 升级预览 -->
+                <div class="section-title" style="margin-top: 24px;">升级预览</div>
+                <div class="upgrade-preview">
+                    <div class="upgrade-preview-item" style="background: linear-gradient(135deg, #ff5b4f, #ff9a76);">
+                        <i class="bi bi-fire" style="color: var(--geist-white);"></i>
+                    </div>
+                    <div class="upgrade-preview-item" style="background: linear-gradient(135deg, #ff5b4f, #ff9a76);">
+                        <i class="bi bi-fire" style="color: var(--geist-white);"></i>
+                    </div>
+                    <div class="upgrade-preview-arrow">
+                        <i class="bi bi-arrow-right"></i>
+                    </div>
+                    <div class="upgrade-preview-item" style="background: linear-gradient(135deg, #a855f7, #7c3aed); border: 2px dashed var(--geist-gray-400);">
+                        <i class="bi bi-question-lg" style="color: var(--geist-gray-400);"></i>
+                    </div>
+                </div>
+                <p class="caption" style="text-align: center; color: var(--geist-gray-600);">
+                    随机获得 SR 级别吧唧 1 张
+                </p>
+            </div>
+
+            <!-- 底部固定按钮 -->
+            <div class="fixed-bottom">
+                <button class="btn-upgrade" id="upgradeBtn" disabled onclick="showUpgradeModal()">
+                    合并升级
+                </button>
+            </div>
+        </div>
+
+        <!-- 确认弹窗 -->
+        <div class="modal-overlay" id="confirmModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>确认升级</h2>
+                    <p>消耗 2 张相同吧唧，随机获得高一级吧唧</p>
+                </div>
+                <div class="modal-body">
+                    <div class="upgrade-preview">
+                        <div class="upgrade-preview-item" style="background: linear-gradient(135deg, #ff5b4f, #ff9a76); position: relative;">
+                            <i class="bi bi-fire" style="color: var(--geist-white);"></i>
+                            <span style="position: absolute; top: 4px; right: 4px; font-size: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 4px; border-radius: 4px;">消耗</span>
+                        </div>
+                        <div class="upgrade-preview-item" style="background: linear-gradient(135deg, #ff5b4f, #ff9a76); position: relative;">
+                            <i class="bi bi-fire" style="color: var(--geist-white);"></i>
+                            <span style="position: absolute; top: 4px; right: 4px; font-size: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 4px; border-radius: 4px;">消耗</span>
+                        </div>
+                        <div class="upgrade-preview-arrow">
+                            <i class="bi bi-arrow-right"></i>
+                        </div>
+                        <div class="upgrade-preview-item" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">
+                            <i class="bi bi-stars" style="color: var(--geist-white);"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeModal()">取消</button>
+                    <button class="btn-primary" onclick="doUpgrade()">确认升级</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 升级成功弹窗 -->
+        <div class="modal-overlay" id="successModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🎉 升级成功！</h2>
+                    <p>恭喜获得 SR 级别吧唧</p>
+                </div>
+                <div class="modal-body">
+                    <div style="display: flex; justify-content: center;">
+                        <div class="upgrade-preview-item" style="width: 120px; height: 120px; background: linear-gradient(135deg, #a855f7, #7c3aed); border-radius: 16px;">
+                            <i class="bi bi-stars" style="font-size: 56px; color: var(--geist-white);"></i>
+                        </div>
+                    </div>
+                    <p class="caption" style="text-align: center; margin-top: 16px; color: var(--geist-gray-600);">
+                        火影忍者 - 卡卡西（SR）
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="closeSuccessModal()">查看图库</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMaterials = [];
+
+        function switchTab(index) {
+            document.querySelectorAll('.tab-item').forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+
+            const desc = document.querySelector('.section-desc');
+            if (index === 0) {
+                desc.innerHTML = '<strong>规则 1：</strong>消耗 2 张相同吧唧图片，升级为高一级吧唧（随机从高一级的图片中抽取 1 张）';
+                document.getElementById('selectedCount').textContent = selectedMaterials.length;
+            } else {
+                desc.innerHTML = '<strong>规则 2：</strong>消耗 4 张不同吧唧图片（同一 IP 包内），随机升级为高一级吧唧（从该 IP 包高一级的图片中抽取 1 张）';
+                document.getElementById('selectedCount').textContent = selectedMaterials.length + '/4';
+            }
+
+            updateUpgradeButton();
+        }
+
+        function toggleMaterial(element, id) {
+            element.classList.toggle('selected');
+
+            if (element.classList.contains('selected')) {
+                selectedMaterials.push(id);
+            } else {
+                selectedMaterials = selectedMaterials.filter(item => item !== id);
+            }
+
+            document.getElementById('selectedCount').textContent = selectedMaterials.length;
+            updateUpgradeButton();
+        }
+
+        function updateUpgradeButton() {
+            const btn = document.getElementById('upgradeBtn');
+            const activeTab = document.querySelector('.tab-item.active');
+            const requiredCount = activeTab.textContent.includes('2张') ? 2 : 4;
+
+            btn.disabled = selectedMaterials.length !== requiredCount;
+        }
+
+        function showUpgradeModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        function doUpgrade() {
+            closeModal();
+            setTimeout(() => {
+                document.getElementById('successModal').style.display = 'flex';
+            }, 300);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+            navigateToPage('badge_gallery.html');
+        }
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            selectedMaterials = [];
+            updateUpgradeButton();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP 主题包列表 - 电子吧唧 2 期</title>
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+    <style>
+        .ip-card-gradient-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .ip-card-gradient-2 { background: linear-gradient(135deg, #0a72ef, #00c6ff); }
+        .ip-card-gradient-3 { background: linear-gradient(135deg, #ff5b4f, #ff9a76); }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_ip_list" class="phone-frame">
+        <div class="phone-notch"></div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <!-- 导航栏 -->
+            <div class="nav-bar">
+                <div class="nav-title">IP 主题包</div>
+                <div class="nav-action">
+                    <i class="bi bi-search"></i>
+                </div>
+            </div>
+
+            <!-- 排序标签 -->
+            <div class="flex gap-2 px-4 py-3 border-b">
+                <button class="px-2 py-1.5 rounded-full text-xs font-medium" style="background: var(--geist-black); color: var(--geist-white);">热门</button>
+                <button class="px-2 py-1.5 rounded-full text-xs font-medium" style="background: var(--geist-gray-100); color: var(--geist-gray-600);">新品</button>
+                <button class="px-2 py-1.5 rounded-full text-xs font-medium" style="background: var(--geist-gray-100); color: var(--geist-gray-600);">即将结束</button>
+            </div>
+
+            <!-- IP 包列表 -->
+            <div class="p-4 content-with-tabbar">
+                <!-- IP 包卡片 1 -->
+                <div class="card mb-3 cursor-pointer" onclick="navigateToPage('ip_detail.html')">
+                    <div class="relative">
+                        <div class="w-full h-40 ip-card-gradient-1 rounded-lg flex items-center justify-center">
+                            <i class="bi bi-emoji-smile text-6xl" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="tag tag-hot">热门</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="card-title">火影忍者</h3>
+                        <p class="caption mt-1">包含 20 张图片</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="body-small" style="color: var(--ship-red); font-weight: 600;">¥9.9 起</span>
+                            <span class="caption">已有 1.2k 人抽选</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IP 包卡片 2 -->
+                <div class="card mb-3 cursor-pointer" onclick="navigateToPage('ip_detail.html')">
+                    <div class="relative">
+                        <div class="w-full h-40 ip-card-gradient-2 rounded-lg flex items-center justify-center">
+                            <i class="bi bi-ghost text-6xl" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="tag tag-new">新品</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="card-title">鬼灭之刃</h3>
+                        <p class="caption mt-1">包含 18 张图片</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="body-small" style="color: var(--ship-red); font-weight: 600;">¥9.9 起</span>
+                            <span class="caption">已有 856 人抽选</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IP 包卡片 3 -->
+                <div class="card mb-3 cursor-pointer" onclick="navigateToPage('ip_detail.html')">
+                    <div class="relative">
+                        <div class="w-full h-40 ip-card-gradient-3 rounded-lg flex items-center justify-center">
+                            <i class="bi bi-fire text-6xl" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="tag tag-ending">即将结束</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="card-title">海贼王</h3>
+                        <p class="caption mt-1">包含 25 张图片</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="body-small" style="color: var(--ship-red); font-weight: 600;">¥9.9 起</span>
+                            <span class="caption">已有 2.3k 人抽选</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部 TabBar -->
+            <div class="tab-bar">
+                <div class="tab-item active">
+                    <i class="bi bi-house-fill"></i>
+                    <span>首页</span>
+                </div>
+                <div class="tab-item" onclick="navigateToPage('badge_gallery.html')">
+                    <i class="bi bi-images"></i>
+                    <span>我的图库</span>
+                </div>
+                <div class="tab-item">
+                    <i class="bi bi-person-fill"></i>
+                    <span>我的</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+    </script>
+</body>
+</html>

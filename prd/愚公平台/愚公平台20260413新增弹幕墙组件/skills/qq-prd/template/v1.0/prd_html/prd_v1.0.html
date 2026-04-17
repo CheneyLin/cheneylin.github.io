@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>电子吧唧 2 期 PRD v1.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../assets/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg:#fff;
+      --fg:#171717;
+      --muted:#4d4d4d;
+      --border:#ebebeb;
+      --primary:#667eea;
+      --link-blue:#0072f5;
+      --focus-blue:hsla(212, 100%, 48%, 1);
+      --shadow-border:rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --shadow-card:rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
+    }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:32px; }
+    h1 { font-size:28px; font-weight:600; letter-spacing:-0.02em; margin:0 0 12px; border-bottom:3px solid var(--fg); padding-bottom:12px; }
+    h2 { font-size:20px; font-weight:600; letter-spacing:-0.02em; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--fg); }
+    h3 { font-size:16px; font-weight:600; margin:20px 0 10px; }
+    p { margin:8px 0; color:var(--muted); }
+    .card { border:none; border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:var(--shadow-card); }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border-bottom:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#fafafa; font-weight:600; font-size:13px; color:var(--muted); }
+    .list { margin:0; padding-left:18px; }
+    .btn { display:inline-block; padding:6px 12px; color:#fff; background:var(--fg); border:none; border-radius:6px; text-decoration:none; font-size:13px; font-weight:500; cursor:pointer; }
+    .btn:hover { opacity:0.85; }
+    .meta { color:#808080; font-size:13px; }
+    .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
+    .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
+    .field-hint { color:#808080; font-size:12px; margin-top:4px; }
+    .feature-id { display:inline-block; background:var(--fg); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--fg); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; padding:24px; border-radius:8px; box-shadow:var(--shadow-border); }
+    .highlight-btn { background:var(--fg); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+    .toc { background:#fafafa; border-radius:8px; padding:16px; margin:16px 0; }
+    .toc ul { list-style:none; padding:0; }
+    .toc li { margin:8px 0; }
+    .toc a { color:var(--link-blue); text-decoration:none; }
+    .toc a:hover { text-decoration:underline; }
+    pre { background:#fafafa; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
+    code { background:#fafafa; padding:2px 6px; border-radius:3px; font-size:13px; }
+    strong { color:var(--fg); }
+    a { color:var(--link-blue); text-decoration:underline; }
+    a:hover { opacity:0.85; }
+    :focus-visible { outline:2px solid var(--focus-blue); outline-offset:2px; }
+
+    /* Mermaid Vercel Theme Overrides */
+    .mermaid svg { font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .mermaid .node { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .node rect { fill:#fff; stroke:#171717; stroke-width:1px; rx:6px; }
+    .mermaid .node circle { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .node polygon { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .edgePath .path { stroke:#171717; stroke-width:1.5px; }
+    .mermaid .edgeLabel { background-color:#fafafa; color:#4d4d4d; font-size:12px; padding:4px 8px; border-radius:4px; border:1px solid #ebebeb; }
+    .mermaid .cluster rect { fill:#fafafa; stroke:#ebebeb; stroke-width:1px; rx:6px; }
+    .mermaid text { fill:#171717; font-size:13px; }
+    .mermaid .label { color:#171717; font-size:13px; }
+    .mermaid .edgeToken { stroke:#ebebeb; }
+    .mermaid .marker { fill:#171717; stroke:#171717; }
+    .mermaid .edgeToken { stroke:#ebebeb; stroke-width:1px; }
+    .mermaid .arrowhead { fill:#171717; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>电子吧唧 2 期 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.0｜状态：需求评审中｜创建时间：2026-04-08｜产品经理：林长宇</p>
+
+    <div class="card" id="section1">
+      <h2>1. 项目信息与版本记录</h2>
+      <table>
+        <tr><th style="width:120px;">产品名称</th><td>电子吧唧 2 期 - 抽选商城功能</td></tr>
+        <tr><th>版本</th><td>v1.0</td></tr>
+        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th>创建时间</th><td>2026-04-08</td></tr>
+        <tr><th>产品范围</th><td>APP 端抽选商城 + ADMIN 运营后台</td></tr>
+        <tr><th>受众角色</th><td>C 端用户、运营人员</td></tr>
+      </table>
+      
+      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <table>
+        <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
+        <tr><td>v1.0</td><td>2026-04-08</td><td>初始版本创建，完成需求收集与PRD文档编写</td><td>林长宇</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section2">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 现状问题与痛点</h3>
+      <p>当前电子吧唧产品存在以下痛点：</p>
+      <ol class="list">
+        <li><strong>内容消费场景单一</strong>：产品仅支持随硬件购买时赠送官方授权吧唧图片，缺乏持续的内容消费和付费场景</li>
+        <li><strong>用户粘性不足</strong>：用户购买设备后，缺少持续参与的动力，产品生命周期价值（LTV）较低</li>
+        <li><strong>商业变现路径有限</strong>：仅靠硬件销售盈利，缺少软件侧的增值服务收入</li>
+        <li><strong>社交分享动力弱</strong>：用户缺少收集和展示稀有吧唧的成就感，不利于病毒式传播</li>
+      </ol>
+      
+      <h3 style="margin-top:16px;">2.2 需求提出的必要性</h3>
+      <p>通过引入"抽选商城"功能，可以：</p>
+      <ul class="list">
+        <li>为用户提供持续的内容获取渠道，增加产品使用频次</li>
+        <li>通过盲盒抽选的趣味性，提升用户体验和付费意愿</li>
+        <li>构建"收集-升级-展示"的完整用户闭环，增强产品粘性</li>
+        <li>为运营提供灵活的营销活动工具（限量发售、概率调整等）</li>
+      </ul>
+      
+      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td><strong>营收增长</strong></td><td>通过付费抽选增加软件侧收入</td><td>月度抽选付费转化率</td><td>≥15%</td></tr>
+        <tr><td><strong>用户活跃</strong></td><td>提升用户日均使用时长和频次</td><td>DAU/MAU 比率</td><td>≥30%</td></tr>
+        <tr><td><strong>用户留存</strong></td><td>通过收集玩法提升长期留存</td><td>30 日留存率</td><td>≥25%</td></tr>
+        <tr><td><strong>客单价提升</strong></td><td>通过 10 连抽和整包购买提升 ARPU</td><td>人均付费金额</td><td>≥50 元/月</td></tr>
+      </table>
+
+      <h3 style="margin-top:16px;">2.4 用户目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th></tr>
+        <tr><td><strong>收集成就感</strong></td><td>用户能够收集到心仪的 IP 图片</td><td>用户平均收集完成率</td></tr>
+        <tr><td><strong>社交展示</strong></td><td>用户愿意分享稀有吧唧到社交平台</td><td>分享转化率</td></tr>
+        <tr><td><strong>设备个性化</strong></td><td>用户能够为设备导入更多个性化图片</td><td>设备导入率</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section3">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>IP 粉丝型用户</strong>：热爱特定动漫/游戏 IP，愿意为周边付费</li>
+        <li><strong>收藏爱好者</strong>：喜欢收集各类虚拟/实体周边，追求稀有度</li>
+        <li><strong>设备玩家</strong>：已购买电子吧唧设备，希望个性化展示</li>
+        <li><strong>价格敏感型用户</strong>：关注性价比，喜欢优惠活动</li>
+      </ul>
+      
+      <h3 style="margin-top:16px;">3.2 典型场景</h3>
+      <ol class="list">
+        <li>用户进入 APP 浏览 IP 主题包列表，查看概率公示</li>
+        <li>用户选择 IP 包，选择单抽/10 连抽/整包购买方式进行抽选</li>
+        <li>用户消耗免费次数或付费进行抽选，观看动效并查看结果</li>
+        <li>用户进入吧唧图库管理已获得的图片，进行合并升级或导入设备</li>
+        <li>用户抽中 SSR/SR 级别吧唧后，填写收货地址等待实体配送</li>
+      </ol>
+      
+      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
+        <tr><td><strong>发现</strong></td><td>小芒吧唧主页</td><td>浏览 IP 主题包列表，查看概率公示</td><td>好奇：有哪些 IP？概率如何？</td><td>突出热门 IP，清晰展示概率，高等级抽取用户展示</td></tr>
+        <tr><td><strong>决策</strong></td><td>IP 包详情页</td><td>选择单抽/10 连抽/整包购买</td><td>犹豫：选哪种更划算？</td><td>提供价格对比，突出 10 连抽必中指定等级优势</td></tr>
+        <tr><td><strong>抽选</strong></td><td>抽选页面</td><td>消耗免费次数或付费，观看动效</td><td>期待/紧张：会抽到 SSR 吗？</td><td>优化动效体验，增强仪式感</td></tr>
+        <tr><td><strong>结果</strong></td><td>抽选结算弹窗</td><td>查看获得结果，选择去查看或继续抽</td><td>兴奋/失落：结果如何？</td><td>中奖 SSR 时强化庆祝效果，并提示实体吧唧可领取，有重复图片时提示用户去合成</td></tr>
+        <tr><td><strong>管理</strong></td><td>我的吧唧图库</td><td>浏览已拥有/待解锁，进行合并升级</td><td>满足/规划：还差哪些？如何升级？</td><td>清晰展示收集进度，便捷升级操作</td></tr>
+        <tr><td><strong>升级</strong></td><td>升级弹窗</td><td>查看当前IP包重复图片，选择去升级</td><td>兴奋/失落：结果如何？</td><td>升级强化随机抽选效果</td></tr>
+        <tr><td><strong>使用</strong></td><td>设备连接页</td><td>选择图片导入设备</td><td>期待：设备展示效果如何？</td><td>简化导入流程，预览设备效果</td></tr>
+        <tr><td><strong>实体配送</strong></td><td>地址填写页（SSR/SR 中奖后）</td><td>填写收货地址，等待物流</td><td>期待：实体吧唧什么时候到？</td><td>提供物流跟踪，增强期待感</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section4">
+      <h2>4. 需求功能清单</h2>
+      <h3>4.1 APP 端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>IP 主题包列表</td><td>展示所有可抽选的 IP 包，支持上下架筛选</td><td>P0</td><td><code>app_ip_list</code></td></tr>
+        <tr><td>IP 包详情页</td><td>展示 IP 包详情、概率公示、购买选项</td><td>P0</td><td><code>app_ip_detail</code></td></tr>
+        <tr><td>单抽功能</td><td>9.9 元/次，带动效展示，即时出结果</td><td>P0</td><td><code>app_single_draw</code></td></tr>
+        <tr><td>10 连抽功能</td><td>99 元/次，必中 1 张指定等级</td><td>P0</td><td><code>app_ten_draw</code></td></tr>
+        <tr><td>整包购买功能</td><td>根据配置价格购买整包，直接跳转图库</td><td>P0</td><td><code>app_pack_purchase</code></td></tr>
+        <tr><td>抽选结算弹窗</td><td>展示获得结果，提供"去查看"和"继续抽选"按钮</td><td>P0</td><td><code>app_draw_result</code></td></tr>
+        <tr><td>我的吧唧图库</td><td>"已拥有"和"待解锁"Tab，展示收集进度</td><td>P0</td><td><code>app_badge_gallery</code></td></tr>
+        <tr><td>合并升级功能</td><td>2 个相同或 4 个不同吧唧升级到高一级</td><td>P0</td><td><code>app_merge_upgrade</code></td></tr>
+        <tr><td>SSR/SR 实体吧唧申请邮寄</td><td>SSR/SR 中奖后引导填写收货地址并生成0元订单</td><td>P1</td><td><code>app_badge_delivery</code></td></tr>
+        <tr><td>物流跟踪功能</td><td>查看实体吧唧发货和物流状态</td><td>P1</td><td><code>app_logistics_track</code></td></tr>
+      </table>
+      
+      <h3 style="margin-top:20px;">4.2 运营后台端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>IP 包管理</td><td>上下架时间、库存、概率、价格配置</td><td>P0</td><td><code>admin_ip_manage</code></td></tr>
+        <tr><td>订单管理</td><td>查看抽选记录、付费订单</td><td>P0</td><td><code>admin_order_manage</code></td></tr>
+      </table>
+
+      <h3 style="margin-top:20px;">4.3 功能依赖关系</h3>
+      <div class="mermaid">
+graph TD
+    A[IP 主题包列表页] --> B[IP 包详情页]
+    B --> C[单抽功能]
+    B --> D[10 连抽功能]
+    B --> E[整包购买功能]
+    C --> F[抽选结算弹窗]
+    D --> F
+    E --> G[我的吧唧图库]
+    F --> G
+    G --> H[合并升级功能]
+    G --> I[设备导入 - 1 期已实现]
+    F --> J[实体配送地址填写]
+    J --> K[物流跟踪功能]
+      </div>
+    </div>
+
+    <div class="card" id="section5">
+      <h2>5. 详细方案</h2>
+      
+      <h3>5.1 APP 端功能</h3>
+      
+      <div class="feature-module" id="app_ip_list" data-feature="app_ip_list">
+        <h3>5.1.1 IP 主题包列表页 <button class="highlight-btn" onclick="highlightFeature('app_ip_list')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：展示所有可抽选的 IP 主题包，用户可浏览并选择感兴趣的 IP 包进入详情页。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>展示所有已上架的 IP 主题包卡片</li>
+            <li>每个卡片包含：IP 封面图、IP 名称、包含图片数量、价格区间</li>
+            <li>支持按"热门"、"新品"、"即将结束"排序</li>
+            <li>点击卡片进入 IP 包详情页</li>
+            <li>仅展示运营后台配置为"已上架"且当前时间在上下架时间范围内的 IP 包</li>
+            <li>"即将结束"标签：距离下架时间 < 24 小时的 IP 包</li>
+            <li>"新品"标签：上架时间 < 7 天的 IP 包</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>卡片式布局，每行展示 2 个 IP 包</li>
+            <li>标签使用不同颜色区分（热门-红色、新品-蓝色、即将结束-橙色）</li>
+            <li>支持下拉刷新和上拉加载更多</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>前端加载页面 → 获取 IP 包列表数据 → 展示 IP 包卡片
+→ 用户点击卡片 → 跳转 IP 包详情页</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_ip_detail" data-feature="app_ip_detail">
+        <h3>5.1.2 IP 包详情页 <button class="highlight-btn" onclick="highlightFeature('app_ip_detail')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：展示 IP 包完整信息，包括概率公示和购买选项，用户可在此选择抽选方式。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>展示 IP 包完整信息：封面大图、IP 名称、简介、包含图片数量</li>
+            <li>概率公示表格（强制合规要求）：</li>
+          </ul>
+          <table>
+            <tr><th>等级</th><th>说明</th><th>抽取概率</th><th>库存状态</th></tr>
+            <tr><td>SSR</td><td>超稀有</td><td>2%</td><td>限量 XXX 张</td></tr>
+            <tr><td>SR</td><td>稀有</td><td>18%</td><td>限量 XXX 张</td></tr>
+            <tr><td>R</td><td>普通</td><td>80%</td><td>不限量</td></tr>
+          </table>
+          <ul class="list">
+            <li>购买选项区域：
+              <ul>
+                <li><strong>单抽</strong>：9.9 元/次，显示用户当前免费次数</li>
+                <li><strong>10 连抽</strong>：99 元/次，标注"必中 1 张 SR 及以上"</li>
+                <li><strong>整包购买</strong>：显示配置价格（如"50 元/包，含 10 张"）</li>
+              </ul>
+            </li>
+            <li>用户已收集进度：已拥有 X/总 Y 张</li>
+            <li>优先消耗免费次数，免费次数用完后引导付费</li>
+            <li>10 连抽必中等级由运营后台配置（SSR 或 SR）</li>
+            <li>库存为 0 的等级，在概率表中显示"已售罄"，但概率重新分配到其他等级</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>概率公示表格必须清晰可见，不可折叠或隐藏</li>
+            <li>购买选项使用卡片式布局，突出价格信息</li>
+            <li>免费次数使用高亮标识，引导用户优先使用</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>前端加载页面 → 获取 IP 包详情和概率配置 → 展示页面
+→ 用户选择购买选项 → 进入对应抽选流程</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_single_draw" data-feature="app_single_draw">
+        <h3>5.1.3 单抽功能 <button class="highlight-btn" onclick="highlightFeature('app_single_draw')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户进行单次抽选，展示抽选动效后即时出结果。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>展示抽选动效（类似扭蛋机/开盲盒动画，持续约 3-5 秒）</li>
+            <li>动效结束后，展示获得的吧唧图片</li>
+            <li>自动触发抽选结算弹窗</li>
+            <li>根据 IP 包配置的各等级概率，随机抽取一张图片</li>
+            <li>若抽到 SSR/SR 且库存 > 0，则扣除对应库存</li>
+            <li>若库存为 0，则重新抽取（降级到下一等级）</li>
+            <li>记录抽选流水（用户 ID、IP 包 ID、获得图片 ID、时间戳）</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>动效需有"悬念感"，在揭晓结果前有光影/粒子特效</li>
+            <li>SSR 级别图片需有特殊动效（如金色光芒、全屏特效）</li>
+            <li>支持跳过动效（右上角"跳过"按钮）</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户触发单抽 → 扣费或消耗免费次数 → 服务端随机抽取
+→ 返回结果 → 展示动效 → 展示结算弹窗</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_ten_draw" data-feature="app_ten_draw">
+        <h3>5.1.4 10 连抽功能 <button class="highlight-btn" onclick="highlightFeature('app_ten_draw')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户进行 10 次连续抽选，必中 1 张指定等级图片。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>不展示抽选动效（区别于单抽），直接展示 10 张结果列表</li>
+            <li>结果列表按等级降序排列（SSR > SR > R）</li>
+            <li>自动触发抽选结算弹窗</li>
+            <li>10 张中必须有 1 张达到运营配置的必中等级（SSR 或 SR）</li>
+            <li>其余 9 张按正常概率抽取</li>
+            <li>若必中等级库存为 0，则降级到下一等级</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>结果列表支持左右滑动查看</li>
+            <li>突出显示必中的那张图片（标注"保底"）</li>
+            <li>使用网格布局展示 10 张图片</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户触发 10 连抽 → 扣费 99 元 → 服务端抽取 10 张图片
+→ 必中逻辑处理 → 返回结果 → 展示结果列表 → 展示结算弹窗</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_pack_purchase" data-feature="app_pack_purchase">
+        <h3>5.1.5 整包购买功能 <button class="highlight-btn" onclick="highlightFeature('app_pack_purchase')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户购买整包图片，直接获得确定性图片集合。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>不展示抽选动效</li>
+            <li>付费成功后，直接跳转"我的吧唧图库"页面</li>
+            <li>在图库页面顶部展示 Toast 提示："恭喜获得 X 张吧唧图片，已存入您的图库"</li>
+            <li>整包购买的图片是确定性的（非随机），包含该 IP 包的所有图片（或配置的部分图片）</li>
+            <li>扣除对应库存，记录订单流水</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>付费成功后展示加载动画</li>
+            <li>跳转图库时展示平滑过渡动画</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户触发整包购买 → 扣费 → 服务端发放整包图片
+→ 跳转图库页面 → 展示 Toast 提示</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_draw_result" data-feature="app_draw_result">
+        <h3>5.1.6 抽选结算弹窗 <button class="highlight-btn" onclick="highlightFeature('app_draw_result')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：展示抽选结果，提供后续操作入口。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>弹窗展示本次抽选获得的所有图片</li>
+            <li>展示图片的等级标识（SSR/SR/R）</li>
+            <li>若抽到 SSR/SR，展示"恭喜获得稀有吧唧！"庆祝文案</li>
+            <li>提供两个操作按钮：
+              <ul>
+                <li><strong>"去查看"</strong>：跳转"我的吧唧图库"页面</li>
+                <li><strong>"继续抽选"</strong>：关闭弹窗，返回 IP 包详情页继续抽选</li>
+              </ul>
+            </li>
+            <li>弹窗不可通过点击外部区域关闭（强制用户做出选择）</li>
+            <li>若抽到 SSR/SR 且用户未填写过收货地址，弹窗底部增加提示："稀有吧唧支持实体配送，请填写收货地址"，并提供"去填写"链接</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>弹窗支持左右滑动查看所有获得图片（10 连抽时）</li>
+            <li>SSR 图片展示时增加粒子动效</li>
+            <li>按钮使用主次按钮区分（"去查看"为主按钮，"继续抽选"为次按钮）</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>抽选完成 → 触发结算弹窗 → 用户选择操作
+→ 跳转图库 或 返回详情页</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_badge_gallery" data-feature="app_badge_gallery">
+        <h3>5.1.7 我的吧唧图库 <button class="highlight-btn" onclick="highlightFeature('app_badge_gallery')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户管理已获得的吧唧图片，查看收集进度，进行合并升级或导入设备。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>顶部展示用户设备连接状态（复用 1 期功能）</li>
+            <li>Tab 切换：
+              <ul>
+                <li><strong>已拥有</strong>：展示用户已获得的所有吧唧图片，按 IP 分组或时间倒序</li>
+                <li><strong>待解锁</strong>：展示用户尚未获得的该 IP 包内的图片（灰色遮罩）</li>
+              </ul>
+            </li>
+            <li>每张图片展示：吧唧图片、名称、等级标识</li>
+            <li>点击已拥有图片：进入图片详情页，提供"导入设备"、"合并升级"、"分享"按钮</li>
+            <li>点击待解锁图片：展示"去抽选"按钮，跳转对应 IP 包详情页</li>
+            <li>已拥有图片按"获得时间"倒序排列</li>
+            <li>支持按 IP 筛选和按等级筛选</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>图片卡片采用网格布局（每行 2 张）</li>
+            <li>底部展示收集进度："已拥有 123/200 张"</li>
+            <li>待解锁图片使用灰色遮罩和锁图标</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户进入图库 → 加载已拥有/待解锁图片列表 → 展示图片卡片
+→ 用户点击图片 → 进入详情页或抽选页</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_merge_upgrade" data-feature="app_merge_upgrade">
+        <h3>5.1.8 合并升级功能 <button class="highlight-btn" onclick="highlightFeature('app_merge_upgrade')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户将多张低等级吧唧图片合并升级为高等级图片。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>升级规则：
+              <ul>
+                <li><strong>规则 1</strong>：消耗 2 张相同吧唧图片 → 升级为高一级吧唧（随机从高一级的图片中抽取 1 张）</li>
+                <li><strong>规则 2</strong>：消耗 4 张不同吧唧图片（同一 IP 包内）→ 随机升级为高一级吧唧（从该 IP 包高一级的图片中抽取 1 张）</li>
+              </ul>
+            </li>
+            <li>升级前展示确认弹窗，列出消耗图片和可能获得的图片范围</li>
+            <li>升级过程展示动效（类似抽选动效，但更简短）</li>
+            <li>升级完成后展示结果弹窗</li>
+            <li>R 级可升级为 SR 级，SR 级可升级为 SSR 级，SSR 级不可升级</li>
+            <li>升级不消耗库存（因为是用户已拥有的图片合成）</li>
+            <li>升级后的图片记录新的获得时间</li>
+            <li>被消耗的图片从"已拥有"中移除，但保留抽选记录</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>在图库页面，用户长按某张图片进入"多选模式"</li>
+            <li>选择 2 张相同或 4 张不同图片后，底部出现"合并升级"按钮</li>
+            <li>若选择的图片不符合规则，按钮置灰并提示原因</li>
+            <li>升级动效展示材料消耗和新图片生成过程</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户选择图片 → 触发合并升级 → 校验规则
+→ 消耗材料图片 → 抽取高一级图片 → 添加新图片到图库</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_badge_delivery" data-feature="app_badge_delivery">
+        <h3>5.1.9 SSR/SR 实体吧唧申请邮寄 <button class="highlight-btn" onclick="highlightFeature('app_badge_delivery')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：SSR/SR 实体吧唧申请邮寄</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>用户选择未邮寄的实体吧唧项目，选择收件人地址后二次确认，递交生成0元订单，成功后提示用户在我的订单里查看物流信息。</li>
+            <li>选择地址、新建地址、订单后续处理为已有功能。</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>使用表单形式，必填项使用红色星号标识</li>
+            <li>提交按钮固定在底部</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户中奖 SSR/SR → 用户选择未邮寄的实体吧唧项目 → 用户选择收件人地址 → 用户提交表单
+→ 服务端保存地址 → 展示成功提示</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="app_logistics_track" data-feature="app_logistics_track">
+        <h3>5.1.10 物流跟踪功能 <button class="highlight-btn" onclick="highlightFeature('app_logistics_track')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：用户查看实体吧唧的发货和物流状态。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>略，已有商城订单系统</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:32px;">5.2 运营后台端功能</h3>
+
+      <div class="feature-module" id="admin_ip_manage" data-feature="admin_ip_manage">
+        <h3>5.2.1 IP 包管理 <button class="highlight-btn" onclick="highlightFeature('admin_ip_manage')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：运营人员在后台配置和管理 IP 主题包的上下架、库存、概率等信息。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>IP 包列表：展示所有 IP 包，支持按状态（上架/下架）筛选</li>
+            <li>新增/编辑 IP 包：
+              <ul>
+                <li>基本信息：IP 名称、封面图、简介</li>
+                <li>上下架时间：开始时间、结束时间</li>
+                <li>图片库管理：上传该 IP 包包含的所有吧唧图片，设置每张图片的等级（SSR/SR/R）</li>
+                <li>库存配置：为每个等级设置库存总量（R 级可设置为"不限量"）</li>
+                <li>概率配置：设置各等级的抽取概率（总和必须为 100%）</li>
+                <li>10 连抽必中等级：选择 SSR 或 SR</li>
+                <li>整包配置：整包包含的图片列表、整包价格</li>
+              </ul>
+            </li>
+            <li>上下架操作：手动上下架 IP 包，或到达配置时间自动上下架</li>
+            <li>概率配置必须进行总和校验（SSR% + SR% + R% = 100%）</li>
+            <li>库存扣减实时同步，库存为 0 时前端自动显示"已售罄"</li>
+            <li>已上架的 IP 包，修改概率和库存需二次确认</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>使用表格展示 IP 包列表，支持快速编辑</li>
+            <li>概率配置使用输入框 + 实时校验提示</li>
+            <li>图片上传支持拖拽和批量上传</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>运营配置 IP 包信息 → 后台保存配置 → 前端同步更新
+→ 用户端展示最新配置</pre>
+        </div>
+      </div>
+
+      <div class="feature-module" id="admin_order_manage" data-feature="admin_order_manage">
+        <h3>5.2.2 订单管理 <button class="highlight-btn" onclick="highlightFeature('admin_order_manage')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：运营人员查看和管理用户的抽选订单记录。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>订单列表：展示所有抽选订单，支持按用户、IP 包、时间、订单状态筛选</li>
+            <li>订单详情：
+              <ul>
+                <li>用户信息、订单号、支付金额</li>
+                <li>抽选类型（单抽/10 连抽/整包）</li>
+                <li>获得图片列表</li>
+                <li>支付状态、支付时间</li>
+              </ul>
+            </li>
+            <li>支持导出订单数据为 Excel</li>
+            <li>订单数据不可删除，仅支持查询和导出</li>
+            <li>支持按日期范围统计订单数量和金额</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>列表支持多条件筛选和排序</li>
+            <li>订单详情使用弹窗或抽屉展示</li>
+            <li>导出按钮固定在列表右上角</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>用户产生订单 → 订单入库 → 运营后台查询
+→ 运营查看详情 或 导出数据</pre>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="card" id="section6">
+      <h2>6. 业务流程图</h2>
+      
+      <h3>6.1 用户抽选主流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[用户进入 APP] --> B[浏览 IP 主题包列表]
+    B --> C[选择 IP 包进入详情页]
+    C --> D[查看概率公示]
+    D --> E{选择抽选方式}
+    
+    E -->|单抽 9.9 元| F[消耗免费次数或付费]
+    E -->|10 连抽 99 元| G[付费 99 元]
+    E -->|整包购买| H[付费整包价格]
+    
+    F --> I[展示抽选动效]
+    I --> J[随机抽取 1 张图片]
+    J --> K[展示抽选结算弹窗]
+    
+    G --> L[随机抽取 10 张图片<br/>必中 1 张指定等级]
+    L --> K
+    
+    H --> M[直接获得整包图片]
+    M --> N[跳转我的吧唧图库]
+    
+    K --> O{用户选择}
+    O -->|去查看| N
+    O -->|继续抽选| C
+    
+    N --> P[浏览已拥有/待解锁]
+    P --> Q{是否进行合并升级?}
+    Q -->|是| R[选择 2 张相同或 4 张不同]
+    R --> S[升级为高一级图片]
+    S --> P
+    Q -->|否| T[导入设备<br/>1 期已实现]
+    
+    J --> U{是否抽中 SSR/SR?}
+    U -->|是| V{是否已填写地址?}
+    V -->|否| W[引导填写收货地址]
+    V -->|是| K
+    U -->|否| K
+      </div>
+
+      <h3>6.2 库存扣减与概率分配流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[用户触发抽选] --> B[读取 IP 包概率配置]
+    B --> C[生成随机数]
+    C --> D{随机数落在哪个等级区间?}
+    
+    D -->|SSR 区间| E[检查 SSR 库存]
+    D -->|SR 区间| F[检查 SR 库存]
+    D -->|R 区间| G[直接分配 R 级图片]
+    
+    E --> H{库存 > 0?}
+    H -->|是| I[扣除 SSR 库存]
+    H -->|否| J[降级到 SR]
+    
+    F --> K{库存 > 0?}
+    K -->|是| L[扣除 SR 库存]
+    K -->|否| M[降级到 R]
+    
+    I --> N[从 SSR 图片库随机抽取 1 张]
+    L --> O[从 SR 图片库随机抽取 1 张]
+    G --> P[从 R 图片库随机抽取 1 张]
+    J --> F
+    M --> G
+    
+    N --> Q[返回抽选结果]
+    O --> Q
+    P --> Q
+      </div>
+
+      <h3>6.3 合并升级流程</h3>
+      <div class="mermaid">
+flowchart TD
+    A[用户进入图库] --> B[选择图片]
+    B --> C{选择了几张?}
+    
+    C -->|2 张相同| D[校验是否同等级]
+    C -->|4 张不同| E[校验是否同 IP 包]
+    
+    D --> F{等级是否为 SSR?}
+    F -->|是| G[提示不可升级]
+    F -->|否| H[消耗 2 张图片]
+    
+    E --> I[消耗 4 张图片]
+    
+    H --> J[从高一级图片库随机抽取 1 张]
+    I --> J
+    
+    J --> K[添加新图片到图库]
+    K --> L[展示升级结果]
+      </div>
+    </div>
+
+    <div class="card" id="section7">
+      <h2>7. 异常与边界处理</h2>
+      <ul class="list">
+        <li><strong>网络异常</strong>：抽选过程中网络中断，保留抽选请求，网络恢复后展示结果；若支付成功但未收到结果，自动重试或退款</li>
+        <li><strong>库存异常</strong>：抽选瞬间库存为 0，自动降级到下一等级，弹窗提示"该等级已售罄，已为您升级抽取"</li>
+        <li><strong>支付异常</strong>：支付成功但未发放图片，后台定时任务核对订单与发放记录，自动补发；支付失败提示"支付失败，请重试"，不扣除免费次数</li>
+        <li><strong>升级异常</strong>：升级过程中网络中断，升级操作为原子事务，要么成功要么失败；失败时不消耗材料图片</li>
+        <li><strong>高一级图片库存为 0</strong>：升级失败，提示"该等级暂无可升级图片，请稍后再试"，不消耗材料</li>
+        <li><strong>空状态处理</strong>：
+          <ul>
+            <li>IP 包列表页（无上架 IP）：展示"暂无可抽选的 IP 包，敬请期待"</li>
+            <li>我的吧唧图库（未获得图片）：展示"您还没有吧唧图片，快去抽选吧！"</li>
+            <li>待解锁 Tab（已全部解锁）：展示"恭喜！您已集全该 IP 包所有图片"</li>
+          </ul>
+        </li>
+        <li><strong>权限限制</strong>：未登录用户点击抽选，跳转登录页，登录后返回原页面；未绑定设备用户允许抽选和收集，但导入设备时引导绑定设备</li>
+        <li><strong>并发抽选导致超卖</strong>：数据库层面加锁，确保库存扣减原子性；超卖时自动退款</li>
+      </ul>
+    </div>
+
+    <div class="card" id="section8">
+      <h2>8. 数据追踪与埋点</h2>
+      <table style="table-layout: auto;">
+        <tr><th>页面标识/page_name</th><th>页面上报细节</th><th>模块标识/mod_type</th><th>模块上报细节</th><th>备注</th></tr>
+        <tr><td>IP包列表页/<code>e_badge_home</code></td><td>-</td><td>主页推荐列表/<code>e_badge_recommend</code></td><td>title= {IP 包名称}</td><td></td></tr>
+        <tr><td>IP包详情页/<code>e_badge_pack</code></td><td>biz_type = "e_badge_pack";biz_id = {IP 包 ID}</td><td>IP 包列表/<code>e_badge_packlist</code></td><td>title= {IP 包名称}</td><td></td></tr>
+        <tr><td>IP包详情页/<code>e_badge_pack</code></td><td>biz_type = "e_badge_pack";biz_id = {IP 包 ID}</td><td>搜索框确认按钮/<code>e_badge_search</code></td><td></td><td></td></tr>
+        <tr><td>我的吧唧图库/<code>e_badge_storage</code></td><td>-</td><td>我的吧唧图库列表/<code>e_badge_storage_list</code></td><td></td><td></td></tr>
+        <tr><td>我的吧唧图库/<code>e_badge_storage</code></td><td>-</td><td>继续购买按钮/<code>e_badge_buy_more</code></td><td></td><td></td></tr>
+        <tr><td>我的吧唧图库IP包详情/<code>e_badge_storage_pack</code></td><td>biz_type = "e_badge_storage_pack";biz_id = {IP 包 ID}</td><td>我的吧唧图库IP包详情页图片列表/<code>e_badge_image_list</code></td><td></td><td></td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section9">
+      <h2>9. 未来演进规划</h2>
+      <table>
+        <tr><th>阶段</th><th>功能</th><th>描述</th></tr>
+        <tr><td>v1.1</td><td>社交分享</td><td>支持将稀有吧唧分享到微信/微博</td></tr>
+        <tr><td>v1.2</td><td>排行榜</td><td>展示收集完成度排行榜，增强竞争感</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section10">
+      <h2>10. 附件</h2>
+      <h3>10.1 数据字典</h3>
+      <table>
+        <tr><th>表名</th><th>字段</th><th>类型</th><th>说明</th></tr>
+        <tr><td rowspan="5"><code>ip_pack</code></td><td>id</td><td>INT</td><td>IP 包 ID</td></tr>
+        <tr><td>name</td><td>VARCHAR</td><td>IP 包名称</td></tr>
+        <tr><td>start_time</td><td>DATETIME</td><td>上架时间</td></tr>
+        <tr><td>end_time</td><td>DATETIME</td><td>下架时间</td></tr>
+        <tr><td>status</td><td>TINYINT</td><td>状态（0 下架/1 上架）</td></tr>
+        <tr><td rowspan="5"><code>badge_image</code></td><td>id</td><td>INT</td><td>图片 ID</td></tr>
+        <tr><td>ip_pack_id</td><td>INT</td><td>所属 IP 包 ID</td></tr>
+        <tr><td>level</td><td>TINYINT</td><td>等级（1-R/2-SR/3-SSR）</td></tr>
+        <tr><td>stock</td><td>INT</td><td>库存（-1 表示不限量）</td></tr>
+        <tr><td>probability</td><td>DECIMAL</td><td>抽取概率（%）</td></tr>
+        <tr><td rowspan="5"><code>user_gallery</code></td><td>id</td><td>INT</td><td>记录 ID</td></tr>
+        <tr><td>user_id</td><td>INT</td><td>用户 ID</td></tr>
+        <tr><td>image_id</td><td>INT</td><td>图片 ID</td></tr>
+        <tr><td>obtain_time</td><td>DATETIME</td><td>获得时间</td></tr>
+        <tr><td>obtain_type</td><td>TINYINT</td><td>获得方式（1-单抽/2-10 连抽/3-整包/4-升级）</td></tr>
+        <tr><td rowspan="8"><code>delivery_address</code></td><td>id</td><td>INT</td><td>地址 ID</td></tr>
+        <tr><td>user_id</td><td>INT</td><td>用户 ID</td></tr>
+        <tr><td>ip_pack_id</td><td>INT</td><td>IP 包 ID</td></tr>
+        <tr><td>receiver_name</td><td>VARCHAR</td><td>收货人</td></tr>
+        <tr><td>phone</td><td>VARCHAR</td><td>手机号</td></tr>
+        <tr><td>province</td><td>VARCHAR</td><td>省</td></tr>
+        <tr><td>city</td><td>VARCHAR</td><td>市</td></tr>
+        <tr><td>district</td><td>VARCHAR</td><td>区</td></tr>
+        <tr><td>detail</td><td>VARCHAR</td><td>详细地址</td></tr>
+      </table>
+
+    </div>
+  </div>
+
+  <script>
+    // 初始化 Mermaid - Vercel Theme
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ffffff',
+        primaryTextColor: '#171717',
+        primaryBorderColor: '#171717',
+        lineColor: '#171717',
+        secondaryColor: '#fafafa',
+        tertiaryColor: '#fafafa',
+        fontSize: '13px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      },
+      flowchart: {
+        htmlLabels: true,
+        curve: 'basis',
+        nodeSpacing: 50,
+        rankSpacing: 50,
+        padding: 15
+      },
+      securityLevel: 'loose'
+    });
+
+    // 高亮功能
+    function highlightFeature(featureId) {
+      // 向父窗口发送消息
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          action: 'highlight',
+          featureId: featureId
+        }, '*');
+      }
+    }
+  </script>
+</body>
+</html>

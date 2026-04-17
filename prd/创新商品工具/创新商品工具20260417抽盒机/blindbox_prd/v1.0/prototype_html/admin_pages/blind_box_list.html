@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽盒机活动列表</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 32px;
+            color: #171717;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #171717;
+            letter-spacing: -0.96px;
+        }
+        .btn-primary {
+            background: #171717;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-primary:hover { background: #4d4d4d; }
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
+            margin-bottom: 24px;
+        }
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            font-weight: 600;
+            font-size: 15px;
+            color: #171717;
+        }
+        .card-body { padding: 20px; }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar input, .filter-bar select {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fafafa;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+        .filter-bar input { width: 200px; }
+        .filter-bar input:focus, .filter-bar select:focus {
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, 2px solid #0072f5;
+        }
+        .table { 
+            margin-bottom: 0; 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        .table th {
+            background: #fafafa;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4d4d4d;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding: 12px 16px;
+            text-align: left;
+        }
+        .table td { 
+            padding: 16px; 
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-online { background: #ebf5ff; color: #0068d6; }
+        .badge-offline { background: #fafafa; color: #4d4d4d; }
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #0072f5;
+            font-weight: 500;
+        }
+        .btn-action:hover { background: #ebf5ff; }
+        .btn-action.danger { color: #ff5b4f; }
+        .btn-action.danger:hover { background: #fff1f0; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: flex-end;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 8px 0 0 8px;
+            width: 90%;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: -4px 0 16px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .modal-content h2 {
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .sku-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .sku-id {
+            font-weight: 600;
+            min-width: 80px;
+            color: #171717;
+        }
+        .sku-type {
+            flex: 1;
+        }
+        .sku-type select {
+            width: 100%;
+        }
+        .sku-stock {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 150px;
+        }
+        .sku-stock input {
+            width: 100px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+        .form-actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-actions button.cancel {
+            background: #6c757d;
+            color: white;
+        }
+        .form-actions button.save {
+            background: #171717;
+            color: white;
+        }
+        .form-actions button.pack {
+            background: #0072f5;
+            color: white;
+        }
+        .pack-result {
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.08);
+            max-height: 640px;
+            overflow-y: auto;
+        }
+        .pack-result h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #171717;
+        }
+        .pack-step {
+            margin-bottom: 12px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .pack-step-title {
+            font-weight: 600;
+            color: #0072f5;
+            margin-bottom: 4px;
+        }
+        .validation-result {
+            margin-top: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #0072f5;
+        }
+        .validation-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .validation-item:last-child {
+            margin-bottom: 0;
+        }
+        .validation-success {
+            color: #10b981;
+        }
+        .validation-error {
+            color: #ef4444;
+        }
+        .box-visual {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 2px;
+            background: #ebf5ff;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .box-grid-container {
+            margin-top: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .big-box-section {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 2px solid rgba(0,0,0,0.08);
+        }
+        .big-box-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: #171717;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .hidden-indicator {
+            color: #ff5b4f;
+            font-size: 14px;
+        }
+        .small-boxes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 6px;
+        }
+        .small-box {
+            padding: 6px;
+            background: white;
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 4px;
+            font-size: 10px;
+            transition: all 0.2s ease;
+        }
+        .small-box.has-hidden {
+            border-color: #ff5b4f;
+            background: #fff5f5;
+            box-shadow: 0 0 0 1px rgba(255, 91, 79, 0.2);
+        }
+        .small-box-label {
+            font-weight: 600;
+            color: #4d4d4d;
+            margin-bottom: 3px;
+            font-size: 9px;
+        }
+        .small-box-products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
+        }
+        .product-tag {
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: 500;
+            color: white;
+            margin: 0;
+            line-height: 1.2;
+            opacity: 0.5;
+        }
+        .product-tag.hidden {
+            border: 1px solid rgba(0,0,0,0.2);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            opacity: 1;
+        }
+        .product-tag.normal {
+            opacity: 0.5;
+        }
+        .step-visualization {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="page-title">抽盒机活动列表</div>
+        <button class="btn-primary" onclick="openModal()">
+            <i class="bi bi-plus-lg"></i> 新增活动
+        </button>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="filter-bar">
+                <input type="text" placeholder="搜索活动名称">
+                <select style="width: 150px;">
+                    <option value="">全部状态</option>
+                    <option value="online">已上线</option>
+                    <option value="offline">未上线</option>
+                </select>
+                <button class="btn-primary">查询</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">活动列表</div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>活动名称</th>
+                        <th>配置信息</th>
+                        <th>状态</th>
+                        <th>上线时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>测试活动1</td>
+                        <td>3箱 x 5盒 x 10商品</td>
+                        <td><span class="badge badge-online">已上线</span></td>
+                        <td>2026-04-15 10:00</td>
+                        <td>
+                            <button class="btn-action" onclick="openModal()">编辑</button>
+                            <button class="btn-action danger">删除</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>测试活动2</td>
+                        <td>2箱 x 3盒 x 8商品</td>
+                        <td><span class="badge badge-offline">未上线</span></td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn-action" onclick="openModal()">编辑</button>
+                            <button class="btn-action danger">删除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">新增活动</h2>
+            <form>
+                <div class="form-group">
+                    <label>活动名称</label>
+                    <input type="text" id="activityName" value="测试">
+                </div>
+                <div class="form-group">
+                    <label>指定商品</label>
+                    <select id="productSelect">
+                        <option value="">请选择商品</option>
+                        <option value="product1">商品1（6普通款+1隐藏款）</option>
+                        <option value="product2">商品2（8普通款+2隐藏款）</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>SKU配置</label>
+                    <div id="skuConfig">
+                        <!-- 示例7个SKU -->
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>活动配置（箱数 × 每箱盒数 × 单盒商品数）</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="activityBoxes" placeholder="箱数" min="1" style="flex: 1;" value="8">
+                        <span style="align-self: center;">×</span>
+                        <input type="number" id="boxesPerActivity" placeholder="每箱盒数" min="1" style="flex: 1;" value="10">
+                        <span style="align-self: center;">×</span>
+                        <input type="number" id="productsPerBox" placeholder="单盒商品数" min="1" style="flex: 1;" value="6">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>配置模式</label>
+                    <select id="configMode">
+                        <option value="simple">简单模式</option>
+                        <option value="advanced">高级模式</option>
+                    </select>
+                </div>
+                <div class="form-group" id="packResultSection">
+                    <label>装盒结果</label>
+                    <div class="pack-result" id="packResult">
+                        <!-- 装盒过程和结果将在这里展示 -->
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel" onclick="closeModal()">取消</button>
+                    <button type="button" class="pack" id="packButton" onclick="packBoxes()">装盒</button>
+                    <button type="button" class="save" onclick="saveActivity()">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        function saveActivity() {
+            // 保存活动的逻辑
+            closeModal();
+        }
+        
+        // 示例：简单模式下调用装盒逻辑
+        document.getElementById('configMode').addEventListener('change', function() {
+            if (this.value === 'simple') {
+                // 调用装盒逻辑的示例代码
+                console.log('调用装盒逻辑');
+                // 这里应该调用实际的装盒逻辑API
+            }
+        });
+
+        // 示例：根据选择商品动态更新SKU配置
+        document.getElementById('productSelect').addEventListener('change', function() {
+            const skuConfigDiv = document.getElementById('skuConfig');
+            const selectedProduct = this.value;
+            
+            // 示例数据
+            const skuData = {
+                'product1': [
+                    { id: 'A', type: '隐藏款', stock: 8 },
+                    { id: 'B', type: '普通款', stock: 72 },
+                    { id: 'C', type: '普通款', stock: 80 },
+                    { id: 'D', type: '普通款', stock: 80 },
+                    { id: 'E', type: '普通款', stock: 80 },
+                    { id: 'F', type: '普通款', stock: 80 },
+                    { id: 'G', type: '普通款', stock: 80 }
+                ],
+                'product2': [
+                    { id: 'A', type: '隐藏款', stock: 5 },
+                    { id: 'B', type: '隐藏款', stock: 5 },
+                    { id: 'C', type: '普通款', stock: 90 },
+                    { id: 'D', type: '普通款', stock: 100 },
+                    { id: 'E', type: '普通款', stock: 100 },
+                    { id: 'F', type: '普通款', stock: 100 },
+                    { id: 'G', type: '普通款', stock: 100 },
+                    { id: 'H', type: '普通款', stock: 100 },
+                    { id: 'I', type: '普通款', stock: 100 },
+                    { id: 'J', type: '普通款', stock: 100 }
+                ]
+            };
+
+            if (selectedProduct && skuData[selectedProduct]) {
+                skuConfigDiv.innerHTML = '';
+                skuData[selectedProduct].forEach(sku => {
+                    const skuDiv = document.createElement('div');
+                    skuDiv.className = 'sku-item';
+                    skuDiv.innerHTML = `
+                        <span class="sku-id">${sku.id}</span>
+                        <div class="sku-type">
+                            <select>
+                                <option value="hidden" ${sku.type === '隐藏款' ? 'selected' : ''}>隐藏款</option>
+                                <option value="normal" ${sku.type === '普通款' ? 'selected' : ''}>普通款</option>
+                            </select>
+                        </div>
+                        <div class="sku-stock">
+                            <span>库存:</span>
+                            <input type="number" value="${sku.stock}" min="0">
+                        </div>
+                    `;
+                    skuConfigDiv.appendChild(skuDiv);
+                });
+            } else {
+                skuConfigDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: #4d4d4d;">请选择商品</div>';
+            }
+        });
+
+        // 配置模式切换时显示/隐藏装盒按钮
+        document.getElementById('configMode').addEventListener('change', function() {
+            const packButton = document.getElementById('packButton');
+            const packResultSection = document.getElementById('packResultSection');
+            
+            // if (this.value === 'simple') {
+            //     packButton.style.display = 'inline-block';
+            //     packResultSection.style.display = 'block';
+            // } else {
+            //     packButton.style.display = 'none';
+            //     packResultSection.style.display = 'none';
+            // }
+        });
+
+        // 装盒逻辑
+        function packBoxes() {
+            const configMode = document.getElementById('configMode').value;
+            
+            if (configMode !== 'simple') {
+                alert('原逻辑');
+                return;
+            }
+
+            // 获取配置参数
+            const boxes = parseInt(document.getElementById('activityBoxes').value) || 0;
+            const itemsPerBox = parseInt(document.getElementById('boxesPerActivity').value) || 0;
+            const productsPerItem = parseInt(document.getElementById('productsPerBox').value) || 0;
+
+            if (!boxes || !itemsPerBox || !productsPerItem) {
+                alert('请先填写活动配置参数');
+                return;
+            }
+
+            // 获取SKU配置
+            const skuItems = document.querySelectorAll('.sku-item');
+            const skus = [];
+            skuItems.forEach(item => {
+                const id = item.querySelector('.sku-id').textContent;
+                const type = item.querySelector('.sku-type select').value;
+                const stock = parseInt(item.querySelector('.sku-stock input').value) || 0;
+                skus.push({ id, type, stock, remaining: stock });
+            });
+
+            if (skus.length === 0) {
+                alert('请先配置SKU');
+                return;
+            }
+
+            const resultDiv = document.getElementById('packResult');
+            let html = '';
+
+            // 步骤1: 初始化盒子结构
+            html += '<div class="pack-step">';
+            html += '<div class="pack-step-title">步骤1: 初始化盒子结构</div>';
+            html += `<div>总箱数: ${boxes}, 每箱盒数: ${itemsPerBox}, 每盒商品数: ${productsPerItem}</div>`;
+            html += `<div>总盒数: ${boxes * itemsPerBox}, 总商品数: ${boxes * itemsPerBox * productsPerItem}</div>`;
+            html += '</div>';
+
+            // 创建所有盒子
+            const allBoxes = [];
+            for (let b = 0; b < boxes; b++) {
+                for (let i = 0; i < itemsPerBox; i++) {
+                    allBoxes.push({
+                        boxIndex: b,
+                        itemIndex: i,
+                        products: [],
+                        hasHidden: false
+                    });
+                }
+            }
+
+            // 显示初始状态
+            html += '<div class="box-grid-container">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; color: #4d4d4d;">初始状态（空盒子）</div>';
+            html += renderBoxGrid(allBoxes, boxes, skus);
+            html += '</div>';
+
+            // 步骤2: 按库存最多的SKU优先填充商品数最少的盒子
+            html += '<div class="pack-step">';
+            html += '<div class="pack-step-title">步骤2: SKU分配装盒</div>';
+            html += '<div>策略: 将库存最多的SKU优先放入商品数量最少的单盒</div>';
+            html += '</div>';
+
+            // 按库存降序排序SKU
+            const sortedSkus = [...skus].sort((a, b) => b.remaining - a.remaining);
+
+            // 分配SKU到盒子
+            while (sortedSkus.some(sku => sku.remaining > 0)) {
+                // 找到商品数最少的盒子
+                let minBox = null;
+                let minCount = Infinity;
+                
+                for (const box of allBoxes) {
+                    if (box.products.length < productsPerItem && box.products.length < minCount) {
+                        minCount = box.products.length;
+                        minBox = box;
+                    }
+                }
+
+                if (!minBox) break;
+
+                // 找到库存最多的SKU
+                const maxSku = sortedSkus.find(sku => sku.remaining > 0);
+                if (!maxSku) break;
+
+                // 将SKU放入盒子
+                minBox.products.push(maxSku.id);
+                maxSku.remaining--;
+                if (maxSku.type === 'hidden') {
+                    minBox.hasHidden = true;
+                }
+            }
+
+            // 显示分配结果
+            html += '<div class="box-grid-container">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; color: #4d4d4d;">SKU分配完成后</div>';
+            html += renderBoxGrid(allBoxes, boxes, skus);
+            html += '</div>';
+
+            // 步骤3: 调剂隐藏款到每个大箱
+            html += '<div class="pack-step">';
+            html += '<div class="pack-step-title">步骤3: 隐藏款调剂</div>';
+            html += '<div>策略: 确保每个大箱至少有一个隐藏款，每次从拥有最多隐藏款的大箱向最少隐藏款的大箱调剂</div>';
+            html += '</div>';
+
+            // 循环调剂直到所有大箱都有至少一个隐藏款或无法继续调剂
+            let adjustmentMade = true;
+            let adjustmentCount = 0;
+            
+            while (adjustmentMade) {
+                adjustmentMade = false;
+                
+                // 统计每个大箱的隐藏款数量
+                const boxHiddenCounts = [];
+                for (let b = 0; b < boxes; b++) {
+                    const boxItems = allBoxes.filter(box => box.boxIndex === b);
+                    const hiddenCount = boxItems.filter(item => item.hasHidden).length;
+                    boxHiddenCounts.push({ boxIndex: b, hiddenCount });
+                }
+                
+                // 找到隐藏款最多和最少的大箱
+                boxHiddenCounts.sort((a, b) => b.hiddenCount - a.hiddenCount);
+                const maxBox = boxHiddenCounts[0];
+                const minBox = boxHiddenCounts[boxHiddenCounts.length - 1];
+                
+                // 如果最多的大箱有2个或以上隐藏款，且最少的大箱没有隐藏款，则进行调剂
+                if (maxBox.hiddenCount >= 2 && minBox.hiddenCount === 0) {
+                    // 找到源大箱中的一个有隐藏款的盒子
+                    const sourceItem = allBoxes.find(box => 
+                        box.boxIndex === maxBox.boxIndex && box.hasHidden
+                    );
+                    
+                    // 找到目标大箱中的一个没有隐藏款的盒子
+                    const targetItem = allBoxes.find(box => 
+                        box.boxIndex === minBox.boxIndex && !box.hasHidden
+                    );
+                    
+                    if (sourceItem && targetItem) {
+                        // 交换两个盒子的内容
+                        const tempProducts = sourceItem.products;
+                        const tempHasHidden = sourceItem.hasHidden;
+                        
+                        sourceItem.products = targetItem.products;
+                        sourceItem.hasHidden = targetItem.hasHidden;
+                        
+                        targetItem.products = tempProducts;
+                        targetItem.hasHidden = tempHasHidden;
+                        
+                        adjustmentCount++;
+                        html += `<div style="padding: 4px 8px; color: #4d4d4d; font-size: 12px;">→ 第${adjustmentCount}次调剂: 将大箱${maxBox.boxIndex + 1}(${maxBox.hiddenCount}个隐藏款)的隐藏款盒子与大箱${minBox.boxIndex + 1}(0个隐藏款)的普通盒子交换</div>`;
+                        
+                        adjustmentMade = true;
+                    }
+                }
+            }
+            
+            if (adjustmentCount > 0) {
+                html += `<div style="color: #10b981; padding: 8px;">✓ 调剂完成，共进行了${adjustmentCount}次交换</div>`;
+            } else {
+                html += '<div style="color: #10b981; padding: 8px;">✓ 所有大箱已有隐藏款，无需调剂</div>';
+            }
+
+            // 显示调剂后结果
+            html += '<div class="box-grid-container">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; color: #4d4d4d;">隐藏款调剂后</div>';
+            html += renderBoxGrid(allBoxes, boxes, skus);
+            html += '</div>';
+
+            // 步骤4: 随机打乱每个大箱的盒子顺序
+            html += '<div class="pack-step">';
+            html += '<div class="pack-step-title">步骤4: 随机打乱盒子顺序</div>';
+            html += '<div>策略: 将每个大箱内的盒子顺序随机打乱</div>';
+            html += '</div>';
+
+            for (let b = 0; b < boxes; b++) {
+                const boxItems = allBoxes.filter(box => box.boxIndex === b);
+                // Fisher-Yates 洗牌算法
+                for (let i = boxItems.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    // 交换products和hasHidden
+                    const tempProducts = boxItems[i].products;
+                    const tempHasHidden = boxItems[i].hasHidden;
+                    boxItems[i].products = boxItems[j].products;
+                    boxItems[i].hasHidden = boxItems[j].hasHidden;
+                    boxItems[j].products = tempProducts;
+                    boxItems[j].hasHidden = tempHasHidden;
+                }
+            }
+            html += '<div style="color: #10b981; padding: 8px;">✓ 所有大箱的盒子顺序已随机打乱</div>';
+
+            // 显示打乱后结果
+            html += '<div class="box-grid-container">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; color: #4d4d4d;">大箱盒子顺序打乱后</div>';
+            html += renderBoxGrid(allBoxes, boxes, skus);
+            html += '</div>';
+
+            // 步骤5: 随机打乱每个单盒中的商品SKU顺序
+            html += '<div class="pack-step">';
+            html += '<div class="pack-step-title">步骤5: 随机打乱单盒内商品顺序</div>';
+            html += '<div>策略: 将每个单盒内的商品SKU顺序随机打乱</div>';
+            html += '</div>';
+
+            for (const box of allBoxes) {
+                if (box.products.length > 1) {
+                    // Fisher-Yates 洗牌算法
+                    for (let i = box.products.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        // 交换两个商品的位置
+                        const temp = box.products[i];
+                        box.products[i] = box.products[j];
+                        box.products[j] = temp;
+                    }
+                }
+            }
+            html += '<div style="color: #10b981; padding: 8px;">✓ 所有单盒内的商品顺序已随机打乱</div>';
+
+            // 显示打乱后结果
+            html += '<div class="box-grid-container">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; color: #4d4d4d;">单盒内商品顺序打乱后</div>';
+            html += renderBoxGrid(allBoxes, boxes, skus);
+            html += '</div>';
+
+            // 步骤6: 随机打乱大箱的顺序
+            html += '<div class="pack-step">';
+            html += '<div class="pack-step-title">步骤6: 随机打乱大箱顺序</div>';
+            html += '<div>策略: 将所有大箱的整体顺序随机打乱</div>';
+            html += '</div>';
+
+            // 收集所有大箱的索引
+            const bigBoxIndices = [];
+            for (let b = 0; b < boxes; b++) {
+                bigBoxIndices.push(b);
+            }
+
+            // Fisher-Yates 洗牌算法打乱大箱顺序
+            for (let i = bigBoxIndices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                // 交换索引
+                const temp = bigBoxIndices[i];
+                bigBoxIndices[i] = bigBoxIndices[j];
+                bigBoxIndices[j] = temp;
+            }
+
+            // 根据新的顺序重新分配boxIndex
+            const oldToNewIndexMap = {};
+            bigBoxIndices.forEach((oldIndex, newIndex) => {
+                oldToNewIndexMap[oldIndex] = newIndex;
+            });
+
+            // 更新所有盒子的boxIndex
+            for (const box of allBoxes) {
+                box.boxIndex = oldToNewIndexMap[box.boxIndex];
+            }
+
+            html += '<div style="color: #10b981; padding: 8px;">✓ 所有大箱的顺序已随机打乱</div>';
+            html += '<div style="padding: 4px 8px; color: #4d4d4d; font-size: 12px;">原顺序: ' + Array.from({length: boxes}, (_, i) => i + 1).join(' → ') + '</div>';
+            html += '<div style="padding: 4px 8px; color: #4d4d4d; font-size: 12px;">新顺序: ' + bigBoxIndices.map(i => i + 1).join(' → ') + '</div>';
+
+            // 显示最终结果
+            html += '<div class="box-grid-container">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; color: #4d4d4d;">最终结果（完全随机后）</div>';
+            html += renderBoxGrid(allBoxes, boxes, skus);
+            html += '</div>';
+
+            // 步骤5: 验证结果
+            html += '<div class="validation-result">';
+            html += '<div class="pack-step-title">验证结果</div>';
+            
+            // 验证1: 是否每个大箱至少有一个隐藏款
+            let allBoxesHaveHidden = true;
+            for (let b = 0; b < boxes; b++) {
+                const boxItems = allBoxes.filter(box => box.boxIndex === b);
+                const hasHidden = boxItems.some(item => item.hasHidden);
+                if (!hasHidden) {
+                    allBoxesHaveHidden = false;
+                    break;
+                }
+            }
+            html += `<div class="validation-item ${allBoxesHaveHidden ? 'validation-success' : 'validation-error'}">`;
+            html += allBoxesHaveHidden ? '✓' : '✗';
+            html += ` 每个大箱至少有一个隐藏款: ${allBoxesHaveHidden ? '是' : '否'}`;
+            html += '</div>';
+
+            // 验证2: 每个单盒里是否有重复的SKU
+            let hasDuplicateInBox = false;
+            let duplicateBoxInfo = '';
+            for (let i = 0; i < allBoxes.length; i++) {
+                const box = allBoxes[i];
+                const productCounts = {};
+                
+                for (const productId of box.products) {
+                    productCounts[productId] = (productCounts[productId] || 0) + 1;
+                }
+                
+                // 检查是否有任何SKU出现超过1次
+                for (const [productId, count] of Object.entries(productCounts)) {
+                    if (count > 1) {
+                        hasDuplicateInBox = true;
+                        duplicateBoxInfo = `大箱${box.boxIndex + 1}-盒${box.itemIndex + 1}中有${count}个${productId}`;
+                        break;
+                    }
+                }
+                
+                if (hasDuplicateInBox) break;
+            }
+            
+            html += `<div class="validation-item ${!hasDuplicateInBox ? 'validation-success' : 'validation-error'}">`;
+            html += !hasDuplicateInBox ? '✓' : '✗';
+            html += ` 每个单盒里没有重复的SKU: ${!hasDuplicateInBox ? '是' : '否'}`;
+            if (hasDuplicateInBox) {
+                html += ` (${duplicateBoxInfo})`;
+            }
+            html += '</div>';
+
+            // 验证3: 全部SKU库存数量与装盒商品数量是否相等
+            const totalStock = skus.reduce((sum, sku) => sum + sku.stock, 0);
+            const totalAllocated = allBoxes.reduce((sum, box) => sum + box.products.length, 0);
+            const allAllocated = totalAllocated === totalStock;
+            
+            html += `<div class="validation-item ${allAllocated ? 'validation-success' : 'validation-error'}">`;
+            html += allAllocated ? '✓' : '✗';
+            html += ` 全部库存已分配: ${allAllocated ? '是' : '否'}`;
+            if (!allAllocated) {
+                html += ` (库存:${totalStock}, 已分配:${totalAllocated}, 差异:${totalStock - totalAllocated})`;
+            }
+            html += '</div>';
+
+            // 验证4: 每个单盒的分配数量是否等于设定的单盒商品数
+            let allBoxesCorrectCount = true;
+            let incorrectBoxInfo = '';
+            for (const box of allBoxes) {
+                if (box.products.length !== productsPerItem) {
+                    allBoxesCorrectCount = false;
+                    incorrectBoxInfo = `大箱${box.boxIndex + 1}-盒${box.itemIndex + 1}有${box.products.length}个商品(应为${productsPerItem}个)`;
+                    break;
+                }
+            }
+            
+            html += `<div class="validation-item ${allBoxesCorrectCount ? 'validation-success' : 'validation-error'}">`;
+            html += allBoxesCorrectCount ? '✓' : '✗';
+            html += ` 每个单盒商品数正确: ${allBoxesCorrectCount ? '是' : '否'}`;
+            if (!allBoxesCorrectCount) {
+                html += ` (${incorrectBoxInfo})`;
+            }
+            html += '</div>';
+            html += '</div>';
+
+            resultDiv.innerHTML = html;
+        }
+
+        // 渲染盒子网格可视化
+        function renderBoxGrid(allBoxes, totalBoxes, skus) {
+            let html = '';
+            
+            // 为每个SKU分配不同的颜色
+            const skuColors = {};
+            const baseColors = [
+                '#0072f5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+                '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
+            ];
+            
+            skus.forEach((sku, index) => {
+                if (sku.type === 'hidden') {
+                    // 隐藏款使用红色系
+                    skuColors[sku.id] = '#ff5b4f';
+                } else {
+                    // 普通款使用不同颜色
+                    skuColors[sku.id] = baseColors[index % baseColors.length];
+                }
+            });
+            
+            for (let b = 0; b < totalBoxes; b++) {
+                const boxItems = allBoxes.filter(box => box.boxIndex === b);
+                const hasHidden = boxItems.some(item => item.hasHidden);
+                
+                html += '<div class="big-box-section">';
+                html += `<div class="big-box-title">`;
+                html += `大箱 ${b + 1}`;
+                if (hasHidden) {
+                    html += '<span class="hidden-indicator" title="包含隐藏款">★</span>';
+                }
+                html += '</div>';
+                
+                html += '<div class="small-boxes-grid">';
+                boxItems.forEach((item, idx) => {
+                    html += '<div class="small-box' + (item.hasHidden ? ' has-hidden' : '') + '">';
+                    html += `<div class="small-box-label">盒${idx + 1}${item.hasHidden ? ' ★' : ''}</div>`;
+                    html += '<div class="small-box-products">';
+                    
+                    if (item.products.length === 0) {
+                        html += '<span style="color: #999; font-size: 10px;">空</span>';
+                    } else {
+                        item.products.forEach(productId => {
+                            const sku = skus.find(s => s.id === productId);
+                            const isHidden = sku && sku.type === 'hidden';
+                            const color = skuColors[productId] || '#999';
+                            html += `<span class="product-tag${isHidden ? ' hidden' : ''}" style="background-color: ${color};" title="${productId}${isHidden ? ' (隐藏款)' : ''}">${productId}</span>`;
+                        });
+                    }
+                    
+                    html += '</div></div>';
+                });
+                html += '</div></div>';
+            }
+            
+            return html;
+        }
+    </script>
+</body>
+</html>

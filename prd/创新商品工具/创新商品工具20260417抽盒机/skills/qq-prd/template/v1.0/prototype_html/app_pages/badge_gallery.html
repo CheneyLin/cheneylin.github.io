@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的吧唧图库 - 电子吧唧 2 期</title>
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_badge_gallery" class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-title">我的吧唧图库</div>
+                <div class="nav-action cursor-pointer"><i class="bi bi-funnel"></i></div>
+            </div>
+            <div class="flex gap-2 px-4 py-3 border-b bg-white">
+                <button class="px-2 py-1.5 rounded-full text-xs font-medium" style="background: var(--geist-black); color: var(--geist-white);">已拥有 (12)</button>
+                <button class="px-2 py-1.5 rounded-full text-xs font-medium" style="background: var(--geist-gray-100); color: var(--geist-gray-600);">待解锁 (8)</button>
+            </div>
+            <div class="p-4 content-with-tabbar">
+                <div class="mb-4">
+                    <div class="flex justify-between caption mb-1">
+                        <span style="color: var(--geist-gray-600);">收集进度</span>
+                        <span style="color: var(--geist-black); font-weight: 600;">12/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="image-grid">
+                    <div class="image-card relative cursor-pointer" onclick="showMergeUpgrade()">
+                        <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
+                            <i class="bi bi-emoji-smile text-4xl" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-ssr">SSR</span></div>
+                    </div>
+                    <div class="image-card relative cursor-pointer">
+                        <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #c0c0c0, #e8e8e8);">
+                            <i class="bi bi-fire text-4xl" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-sr">SR</span></div>
+                    </div>
+                    <div class="image-card relative cursor-pointer">
+                        <div class="w-full h-full flex items-center justify-center" style="background: var(--geist-gray-100);">
+                            <i class="bi bi-image text-4xl" style="color: var(--geist-gray-400);"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative cursor-pointer">
+                        <div class="w-full h-full flex items-center justify-center" style="background: var(--geist-gray-100);">
+                            <i class="bi bi-image text-4xl" style="color: var(--geist-gray-400);"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative cursor-pointer">
+                        <div class="w-full h-full flex items-center justify-center" style="background: var(--geist-gray-100);">
+                            <i class="bi bi-image text-4xl" style="color: var(--geist-gray-400);"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                    <div class="image-card relative cursor-pointer">
+                        <div class="w-full h-full flex items-center justify-center" style="background: var(--geist-gray-100);">
+                            <i class="bi bi-image text-4xl" style="color: var(--geist-gray-400);"></i>
+                        </div>
+                        <div class="image-level-tag"><span class="badge-r">R</span></div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button class="btn-primary" onclick="navigateToPage('ip_list.html')">继续购买</button>
+                </div>
+            </div>
+            <div class="tab-bar">
+                <div class="tab-item" onclick="navigateToPage('ip_list.html')">
+                    <i class="bi bi-house-fill"></i>
+                    <span>首页</span>
+                </div>
+                <div class="tab-item active">
+                    <i class="bi bi-images"></i>
+                    <span>我的图库</span>
+                </div>
+                <div class="tab-item">
+                    <i class="bi bi-person-fill"></i>
+                    <span>我的</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗: 合并升级 -->
+    <div id="merge_upgrade_modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="text-center mb-4">
+                <h3 class="sub-heading">合并升级</h3>
+                <p class="body-small mt-1">消耗材料升级为高等级</p>
+            </div>
+            <div class="mb-4">
+                <p class="body-small mb-2">消耗材料：</p>
+                <div class="flex gap-2 justify-center">
+                    <div class="w-16 h-16 rounded-lg flex items-center justify-center" style="background: var(--geist-gray-100);">
+                        <i class="bi bi-image text-2xl" style="color: var(--geist-gray-400);"></i>
+                    </div>
+                    <div class="w-16 h-16 rounded-lg flex items-center justify-center" style="background: var(--geist-gray-100);">
+                        <i class="bi bi-image text-2xl" style="color: var(--geist-gray-400);"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <i class="bi bi-arrow-down text-2xl mb-2" style="color: var(--geist-black);"></i>
+                <p class="body-small">可能获得：</p>
+                <div class="w-20 h-20 rounded-lg flex items-center justify-center mx-auto mt-2" style="background: linear-gradient(135deg, #c0c0c0, #e8e8e8);">
+                    <i class="bi bi-star-fill text-3xl" style="color: var(--geist-white);"></i>
+                </div>
+                <span class="badge-sr mt-2 inline-block">SR</span>
+            </div>
+            <div class="space-y-2">
+                <button class="btn-primary" onclick="closeModal()">确认升级</button>
+                <button class="btn-secondary" onclick="closeModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+
+        function showMergeUpgrade() {
+            const modal = document.getElementById('merge_upgrade_modal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.classList.remove('show');
+            });
+        }
+    </script>
+</body>
+</html>

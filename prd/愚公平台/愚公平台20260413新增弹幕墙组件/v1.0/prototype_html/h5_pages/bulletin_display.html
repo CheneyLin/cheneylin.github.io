@@ -8,23 +8,23 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-feature-settings: "liga";
-        }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-feature-settings: "liga";
+}
 
-        .activity-page {
-            width: 375px;
-            height: 812px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-        }
+.activity-page {
+    width: 375px;
+    height: 812px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+}
 
         /* TV Frame */
         .tv-frame {
@@ -312,47 +312,13 @@
 </head>
 <body>
     <div class="activity-page prototype-module" data-prototype="h5_bulletin">
-        <!-- Header -->
-        <div class="activity-header">
-            <div class="activity-title">✨ 明星应援活动</div>
-            <div class="activity-subtitle">一起为哥哥打call吧！</div>
-        </div>
-
         <!-- TV Frame -->
         <div class="tv-frame">
             <!-- TV Screen -->
             <div class="tv-screen">
                 <div class="bulletin-container" id="bulletinContainer"></div>
-                
-                <!-- Empty State -->
-                <div class="empty-state" id="emptyState">
-                    <i class="bi bi-chat-square-text empty-state-icon"></i>
-                    <div class="empty-state-text">暂无话题内容</div>
-                    <div class="empty-state-hint">快来参与讨论吧！</div>
-                </div>
-            </div>
-
-            <!-- TV Bottom -->
-            <div class="tv-bottom">
-                <div class="tv-title">
-                    <i class="bi bi-heart-fill" style="color: #ff5b4f; font-size: 16px;"></i>
-                    <span>生日祝福弹幕墙</span>
-                </div>
-                <div class="tv-controls">
-                    <div class="tv-speaker"></div>
-                    <div class="tv-knob"></div>
-                </div>
             </div>
         </div>
-
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item"><i class="bi bi-fire"></i> <span>128条讨论</span></div>
-            <div class="stat-item"><i class="bi bi-people"></i> <span>56人参与</span></div>
-        </div>
-
-        <!-- CTA -->
-        <a href="#" class="activity-cta">立即参与话题讨论</a>
     </div>
 
     <script>

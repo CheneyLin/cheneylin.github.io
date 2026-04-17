@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请邮寄 - 电子吧唧 2 期</title>
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_badge_delivery" class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-back cursor-pointer" onclick="navigateToPage('badge_gallery.html')"><i class="bi bi-chevron-left"></i></div>
+                <div class="nav-title">申请邮寄</div>
+                <div class="nav-action"></div>
+            </div>
+            <div class="p-4 content-with-tabbar">
+                <div class="card mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-16 h-16 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
+                            <i class="bi bi-emoji-smile text-2xl" style="color: var(--geist-white);"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">鸣人 SSR</h3>
+                            <p class="caption mt-1">火影忍者系列</p>
+                            <span class="badge-ssr mt-2" style="display: inline-block;">SSR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">收货人姓名</label>
+                    <input type="text" class="form-input" placeholder="请输入收货人姓名">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">手机号码</label>
+                    <input type="tel" class="form-input" placeholder="请输入手机号码">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">所在地区</label>
+                    <input type="text" class="form-input" placeholder="省 / 市 / 区">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">详细地址</label>
+                    <textarea class="form-textarea" rows="3" placeholder="街道、楼牌号等详细信息"></textarea>
+                </div>
+
+                <div class="mt-6">
+                    <button class="btn-primary" onclick="submitDelivery()">提交申请</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 提示 -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+
+        function submitDelivery() {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = '申请提交成功！';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

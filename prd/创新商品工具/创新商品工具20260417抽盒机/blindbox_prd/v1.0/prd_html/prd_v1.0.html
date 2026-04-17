@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>抽盒机 PRD v1.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../assets/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg:#fff;
+      --fg:#171717;
+      --muted:#4d4d4d;
+      --border:#ebebeb;
+      --primary:#667eea;
+      --link-blue:#0072f5;
+      --focus-blue:hsla(212, 100%, 48%, 1);
+      --shadow-border:rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --shadow-card:rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
+    }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:32px; }
+    h1 { font-size:28px; font-weight:600; letter-spacing:-0.02em; margin:0 0 12px; border-bottom:3px solid var(--fg); padding-bottom:12px; }
+    h2 { font-size:20px; font-weight:600; letter-spacing:-0.02em; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--fg); }
+    h3 { font-size:16px; font-weight:600; margin:20px 0 10px; }
+    p { margin:8px 0; color:var(--muted); }
+    .card { border:none; border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:var(--shadow-card); }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border-bottom:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#fafafa; font-weight:600; font-size:13px; color:var(--muted); }
+    .list { margin:0; padding-left:18px; }
+    .btn { display:inline-block; padding:6px 12px; color:#fff; background:var(--fg); border:none; border-radius:6px; text-decoration:none; font-size:13px; font-weight:500; cursor:pointer; }
+    .btn:hover { opacity:0.85; }
+    .meta { color:#808080; font-size:13px; }
+    .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
+    .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
+    .field-hint { color:#808080; font-size:12px; margin-top:4px; }
+    .feature-id { display:inline-block; background:var(--fg); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--fg); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; padding:24px; border-radius:8px; box-shadow:var(--shadow-border); }
+    .highlight-btn { background:var(--fg); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+    .toc { background:#fafafa; border-radius:8px; padding:16px; margin:16px 0; }
+    .toc ul { list-style:none; padding:0; }
+    .toc li { margin:8px 0; }
+    .toc a { color:var(--link-blue); text-decoration:none; }
+    .toc a:hover { text-decoration:underline; }
+    pre { background:#fafafa; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
+    code { background:#fafafa; padding:2px 6px; border-radius:3px; font-size:13px; }
+    strong { color:var(--fg); }
+    a { color:var(--link-blue); text-decoration:underline; }
+    a:hover { opacity:0.85; }
+    :focus-visible { outline:2px solid var(--focus-blue); outline-offset:2px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>抽盒机 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.0｜状态：需求评审中｜创建时间：2026-04-17｜产品经理：林长宇</p>
+
+    <div class="card" id="section1">
+      <h2>1. 项目信息与版本记录</h2>
+      <table>
+        <tr><th style="width:120px;">产品名称</th><td>抽盒机</td></tr>
+        <tr><th>版本</th><td>v1.0</td></tr>
+        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th>创建时间</th><td>2026-04-17</td></tr>
+        <tr><th>产品范围</th><td>运营后台-抽盒机配置功能</td></tr>
+        <tr><th>受众角色</th><td>运营人员</td></tr>
+      </table>
+      
+      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <table>
+        <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
+        <tr><td>v1.0</td><td>2026-04-17</td><td>初始版本创建，完成需求收集与PRD文档编写</td><td>林长宇</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section2">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 现状问题与痛点</h3>
+      <p>当前抽盒机产品存在以下痛点：</p>
+      <ol class="list">
+        <li><strong>配置复杂</strong>：运营人员需要进行复杂配置，增加了使用难度。</li>
+        <li><strong>缺乏简单模式</strong>：没有简单的配置模式，不利于快速上线活动。</li>
+      </ol>
+      
+      <h3 style="margin-top:16px;">2.2 需求提出的必要性</h3>
+      <p>通过引入"简单配置模式"，可以：</p>
+      <ul class="list">
+        <li>简化运营人员的配置流程</li>
+        <li>快速实现1:1指定商品数量的配置</li>
+        <li>提高活动上线的效率</li>
+      </ul>
+      
+      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td><strong>配置效率</strong></td><td>提高配置效率，减少配置时间</td><td>平均配置时间</td><td>≤30分钟</td></tr>
+        <tr><td><strong>活动上线率</strong></td><td>提高活动上线成功率</td><td>活动上线成功率</td><td>≥90%</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section3">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>运营人员</strong>：负责在运营后台配置抽盒机活动。</li>
+      </ul>
+      
+          <h3 style="margin-top:16px;">3.2 典型场景</h3>
+          <ol class="list">
+            <li>运营人员进入运营后台抽盒机配置菜单。</li>
+            <li>选择指定商品</li>
+            <li>展示全部SKU，并配置是隐藏款还是普通款，并指定库存数量。</li>
+            <li>指定活动箱数x盒数x单盒商品数。</li>
+            <li>选择简单模式还是高级模式（高级模式为原有逻辑，仅展示）</li>
+            <li>点击装盒完成装盒逻辑，并展示装盒结果</li>
+            <li>确认后保存活动，并将活动上线。</li>
+          </ol>
+      
+      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
+        <tr><td><strong>配置</strong></td><td>运营后台配置菜单</td><td>选择商品、SKU、数量</td><td>复杂配置导致效率低</td><td>简化配置流程</td></tr>
+        <tr><td><strong>上线</strong></td><td>活动上线按钮</td><td>一键完成装盒逻辑</td><td>手动配置易出错</td><td>自动化装盒逻辑</td></tr>
+      </table>
+    </div>
+
+<div class="card" id="section4">
+  <h2>4. 需求功能清单</h2>
+  <h3>4.1 运营后台端功能</h3>
+  <table>
+    <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+    <tr><td>商品选择</td><td>选择指定商品</td><td>P0</td><td><code>admin_product_select</code></td></tr>
+    <tr><td>SKU配置</td><td>配置SKU及数量</td><td>P0</td><td><code>admin_sku_config</code></td></tr>
+    <tr><td>活动配置</td><td>配置活动箱数x盒数x单盒商品数</td><td>P0</td><td><code>admin_activity_config</code></td></tr>
+    <tr><td>简单模式/高级模式</td><td>快速配置抽盒机活动</td><td>P0</td><td><code>admin_simple_config</code></td></tr>
+    <tr><td>装盒逻辑</td><td>一键完成装盒逻辑</td><td>P0</td><td><code>admin_box_logic</code></td></tr>
+  </table>
+</div>
+
+    <div class="card" id="section5">
+      <h2>5. 详细方案</h2>
+      <h3>5.1 简单配置模式（admin_simple_config）</h3>
+      <div class="feature-module" id="admin_simple_config" data-feature="admin_simple_config">
+        <h3>简单配置模式 <button class="highlight-btn" onclick="highlightFeature('admin_simple_config')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：运营人员通过简单配置模式快速配置抽盒机活动。</p>
+        <div class="field-group">
+          <div class="field-label">详细逻辑</div>
+          <ul class="list">
+            <li>展示营销工具-抽盒机活动列表功能模块，包含搜索、新增、活动列表（支持编辑、上线/下线）</li>
+            <li>活动列表展示字段
+              <ul>
+                <li>活动名称</li>
+                <li>配置活动箱数x盒数x单盒商品数</li>
+                <li>活动状态</li>
+                <li>上线时间</li>
+              </ul>
+            </li>
+            <li>点击新增或编辑时，弹出编辑弹窗
+              <ul>
+                <li>活动名称</li>
+                <li>指定商品</li>
+                <li>联动展示SKU，并支持配置为隐藏款或普通款，展示库存数量</li>
+                <li>配置活动箱数x盒数x单盒商品数</li>
+                <li>选择简单模式/高级模式</li>
+                <li>点击装盒按钮，调用装盒逻辑，返回装盒结果</li>
+                <li>保存活动，并返回活动详情</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">交互设计</div>
+          <ul class="list">
+            <li>简洁的配置界面，突出提示需要配置的关键信息。</li>
+            <li>提供一键完成装盒逻辑的按钮。</li>
+          </ul>
+        </div>
+        <div class="field-group">
+          <div class="field-label">数据流向</div>
+          <pre>运营人员配置商品、SKU、数量 → 系统自动完成装盒逻辑 → 活动上线</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="section6">
+      <h2>6. 业务流程图</h2>
+      <h3>6.1 简单配置模式流程</h3>
+      <div class="mermaid">
+        flowchart TD
+          A[运营人员进入配置页面] --> B[选择商品、SKU、数量]
+          B --> C[配置活动箱数x盒数x单盒商品数]
+          C --> D[一键完成装盒逻辑]
+          D --> E[活动上线]
+      </div>
+    </div>
+
+    <div class="card" id="section7">
+      <h2>7. 异常与边界处理</h2>
+      <ul class="list">
+        <li><strong>配置异常</strong>：配置不完整或错误，提示错误信息并引导修正。</li>
+        <li><strong>装盒逻辑异常</strong>：装盒逻辑执行失败，记录日志并通知运营人员。</li>
+      </ul>
+    </div>
+
+    <div class="card" id="section8">
+      <h2>8. 数据追踪与埋点</h2>
+      <p>略</p>
+    </div>
+
+    <div class="card" id="section9">
+      <h2>9. 未来演进规划</h2>
+      <p>略</p>
+    </div>
+
+    <div class="card" id="section10">
+      <h2>10. 附件</h2>
+      <p>略</p>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ffffff',
+        primaryTextColor: '#171717',
+        primaryBorderColor: '#171717',
+        lineColor: '#171717',
+        secondaryColor: '#fafafa',
+        tertiaryColor: '#fafafa',
+        fontSize: '13px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      }
+    });
+
+    function highlightFeature(featureId) {
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          action: 'highlight',
+          featureId: featureId
+        }, '*');
+      }
+    }
+  </script>
+</body>
+</html>

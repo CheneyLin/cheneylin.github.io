@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP 包管理 - 电子吧唧 ADMIN</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 32px;
+            color: #171717;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #171717;
+            letter-spacing: -0.96px;
+        }
+        .btn-primary {
+            background: #171717;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-primary:hover { background: #4d4d4d; }
+        .btn-outline {
+            background: #ffffff;
+            color: #171717;
+            border: 1px solid rgba(0,0,0,0.08);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-outline:hover { background: #fafafa; }
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
+            margin-bottom: 24px;
+        }
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            font-weight: 600;
+            font-size: 15px;
+            color: #171717;
+        }
+        .card-body { padding: 20px; }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar input, .filter-bar select {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fafafa;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+        .filter-bar input { width: 200px; }
+        .filter-bar input:focus, .filter-bar select:focus {
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, 2px solid #0072f5;
+        }
+        .table { margin-bottom: 0; width: 100%; border-collapse: collapse; }
+        .table th {
+            background: #fafafa;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4d4d4d;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding: 12px 16px;
+            text-align: left;
+        }
+        .table td { 
+            padding: 16px; 
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-active { background: #ebf5ff; color: #0068d6; }
+        .badge-inactive { background: #fafafa; color: #4d4d4d; }
+        .badge-soldout { background: #fff1f0; color: #ff5b4f; }
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #0072f5;
+            font-weight: 500;
+        }
+        .btn-action:hover { background: #ebf5ff; }
+        .btn-action.danger { color: #ff5b4f; }
+        .btn-action.danger:hover { background: #fff1f0; }
+        .pagination {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        .pagination li a {
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #4d4d4d;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+        }
+        .pagination li a:hover { background: #fafafa; }
+        .pagination li.active a {
+            background: #171717;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- IP 包管理页面 -->
+    <div class="page-header">
+        <div class="page-title">IP 包管理</div>
+        <button class="btn-primary" onclick="navigateToPage('ip_edit.html')">
+            <i class="bi bi-plus-lg"></i> 新增 IP 包
+        </button>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="filter-bar">
+                <input type="text" placeholder="搜索 IP 包名称">
+                <select style="width: 150px;">
+                    <option value="">全部状态</option>
+                    <option value="1">已上架</option>
+                    <option value="0">已下架</option>
+                </select>
+                <button class="btn-primary">查询</button>
+                <button class="btn-outline">重置</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">IP 包列表</div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>IP 包 ID</th>
+                        <th>IP 名称</th>
+                        <th>图片数量</th>
+                        <th>SSR 库存</th>
+                        <th>SR 库存</th>
+                        <th>状态</th>
+                        <th>上架时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1001</td>
+                        <td>初音未来 2024</td>
+                        <td>20</td>
+                        <td>85/100</td>
+                        <td>320/500</td>
+                        <td><span class="badge badge-active">已上架</span></td>
+                        <td>2026-04-01</td>
+                        <td>
+                            <button class="btn-action" onclick="navigateToPage('ip_edit.html')">编辑</button>
+                            <button class="btn-action danger">下架</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1002</td>
+                        <td>原神 雷电将军</td>
+                        <td>15</td>
+                        <td>100/100</td>
+                        <td>500/500</td>
+                        <td><span class="badge badge-active">已上架</span></td>
+                        <td>2026-04-05</td>
+                        <td>
+                            <button class="btn-action" onclick="navigateToPage('ip_edit.html')">编辑</button>
+                            <button class="btn-action danger">下架</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1003</td>
+                        <td>鬼灭之刃 限定</td>
+                        <td>25</td>
+                        <td>0/50</td>
+                        <td>0/300</td>
+                        <td><span class="badge badge-soldout">已售罄</span></td>
+                        <td>2026-03-20</td>
+                        <td>
+                            <button class="btn-action" onclick="navigateToPage('ip_edit.html')">编辑</button>
+                            <button class="btn-action">下架</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1004</td>
+                        <td>咒术回战 五条悟</td>
+                        <td>18</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><span class="badge badge-inactive">已下架</span></td>
+                        <td>2026-03-01</td>
+                        <td>
+                            <button class="btn-action" onclick="navigateToPage('ip_edit.html')">编辑</button>
+                            <button class="btn-action">上架</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
+
+    <script>
+        // 页面导航函数
+        function navigateToPage(pageUrl) {
+            window.parent.postMessage({
+                type: 'PAGE_NAVIGATION',
+                page: pageUrl
+            }, '*');
+        }
+    </script>
+</body>
+</html>
