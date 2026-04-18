@@ -74,6 +74,20 @@
         .filter-bar input:focus, .filter-bar select:focus {
             box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, 2px solid #0072f5;
         }
+        .btn-rule {
+            background: transparent;
+            color: #0072f5;
+            border: 1px solid #0072f5;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-rule:hover { 
+            background: #ebf5ff; 
+        }
         .table { 
             margin-bottom: 0; 
             width: 100%; 
@@ -347,6 +361,131 @@
         .step-visualization {
             margin-top: 8px;
         }
+        /* Rule Panel Styles */
+        .rule-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 90%;
+            height: 100%;
+            background: white;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+            z-index: 1001;
+            overflow-y: auto;
+            animation: slideInRight 0.3s ease;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .rule-panel-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .rule-panel-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 24px 32px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        .rule-panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #171717;
+        }
+        .rule-panel-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4d4d4d;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+        .rule-panel-close:hover {
+            background: #fafafa;
+            color: #171717;
+        }
+        .rule-panel-content {
+            padding: 32px;
+            line-height: 1.8;
+        }
+        .rule-panel-content h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0072f5;
+        }
+        .rule-panel-content h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #171717;
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+        .rule-panel-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #171717;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        .rule-panel-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4d4d4d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        .rule-panel-content p {
+            margin-bottom: 12px;
+            color: #171717;
+        }
+        .rule-panel-content ul, .rule-panel-content ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+        .rule-panel-content li {
+            margin-bottom: 8px;
+            color: #171717;
+        }
+        .rule-panel-content strong {
+            font-weight: 600;
+            color: #171717;
+        }
+        .rule-panel-content code {
+            background: #fafafa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #ef4444;
+        }
+        .rule-panel-content hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin: 24px 0;
+        }
     </style>
 </head>
 <body>
@@ -367,6 +506,9 @@
                     <option value="offline">未上线</option>
                 </select>
                 <button class="btn-primary">查询</button>
+                <button class="btn-rule" onclick="openRulePanel()">
+                    <i class="bi bi-book"></i> 规则
+                </button>
             </div>
         </div>
     </div>
@@ -971,6 +1113,251 @@
             
             return html;
         }
+    </script>
+
+    <!-- Rule Panel Overlay -->
+    <div class="rule-panel-overlay" id="rulePanelOverlay" onclick="closeRulePanel()"></div>
+
+    <!-- Rule Panel -->
+    <div class="rule-panel" id="rulePanel">
+        <div class="rule-panel-header">
+            <div class="rule-panel-title">
+                <i class="bi bi-book"></i> 抽盒机装盒算法规范
+            </div>
+            <button class="rule-panel-close" onclick="closeRulePanel()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="rule-panel-content">
+            <h1>抽盒机装盒算法规范</h1>
+
+            <h2>一、装盒策略（6步完整流程）</h2>
+
+            <h3>步骤1: 初始化盒子结构</h3>
+            <ul>
+                <li><strong>输入参数</strong>：
+                    <ul>
+                        <li>活动箱数（大箱数量）</li>
+                        <li>每箱盒数（每个大箱内的小盒数量）</li>
+                        <li>单盒商品数（每个小盒内的商品数量）</li>
+                    </ul>
+                </li>
+                <li><strong>计算</strong>：
+                    <ul>
+                        <li>总盒数 = 活动箱数 × 每箱盒数</li>
+                        <li>总商品数 = 活动箱数 × 每箱盒数 × 单盒商品数</li>
+                    </ul>
+                </li>
+                <li><strong>输出</strong>：创建所有空盒子结构</li>
+            </ul>
+
+            <h3>步骤2: SKU分配装盒</h3>
+            <ul>
+                <li><strong>策略</strong>：将库存最多的SKU优先放入商品数量最少的单盒</li>
+                <li><strong>算法</strong>：
+                    <ol>
+                        <li>按库存数量降序排序所有SKU</li>
+                        <li>找到当前商品数最少且未满的小盒</li>
+                        <li>从库存最多的SKU中取出一个放入该小盒</li>
+                        <li>重复直到所有库存分配完毕</li>
+                    </ol>
+                </li>
+                <li><strong>目标</strong>：均匀分布库存，避免某些盒子过早填满</li>
+            </ul>
+
+            <h3>步骤3: 隐藏款调剂</h3>
+            <ul>
+                <li><strong>策略</strong>：确保每个大箱至少有一个隐藏款，采用动态平衡原则</li>
+                <li><strong>算法</strong>：
+                    <ol>
+                        <li>统计每个大箱的隐藏款数量</li>
+                        <li>找出拥有最多隐藏款的大箱（MaxBox）和拥有最少隐藏款的大箱（MinBox）</li>
+                        <li><strong>调剂条件</strong>：仅当 MaxBox 隐藏款数量 ≥ 2 且 MinBox 隐藏款数量 = 0 时执行</li>
+                        <li><strong>执行动作</strong>：将 MaxBox 中的一个隐藏款盒子与 MinBox 中的一个普通盒子交换</li>
+                        <li><strong>迭代执行</strong>：重复上述过程，直到无法找到满足条件的调剂对象</li>
+                    </ol>
+                </li>
+                <li><strong>目标</strong>：保证每个大箱都有隐藏款，提升用户体验</li>
+            </ul>
+
+            <h3>步骤4: 随机打乱大箱内盒子顺序</h3>
+            <ul>
+                <li><strong>策略</strong>：将每个大箱内的小盒顺序随机打乱</li>
+                <li><strong>算法</strong>：对每个大箱内的小盒使用 Fisher-Yates 洗牌算法</li>
+                <li><strong>目标</strong>：增加不确定性，避免隐藏款位置可预测</li>
+            </ul>
+
+            <h3>步骤5: 随机打乱单盒内商品顺序</h3>
+            <ul>
+                <li><strong>策略</strong>：将每个小盒内的商品SKU顺序随机打乱</li>
+                <li><strong>算法</strong>：对每个小盒内的商品使用 Fisher-Yates 洗牌算法</li>
+                <li><strong>目标</strong>：在微观层面增加随机性</li>
+            </ul>
+
+            <h3>步骤6: 随机打乱大箱顺序</h3>
+            <ul>
+                <li><strong>策略</strong>：将所有大箱的整体顺序随机打乱</li>
+                <li><strong>算法</strong>：
+                    <ol>
+                        <li>收集所有大箱的索引</li>
+                        <li>使用 Fisher-Yates 洗牌算法打乱索引顺序</li>
+                        <li>根据新顺序重新分配所有小盒的 boxIndex</li>
+                    </ol>
+                </li>
+                <li><strong>目标</strong>：在宏观层面增加随机性，完全打乱大箱排列</li>
+            </ul>
+
+            <hr>
+
+            <h2>二、验证规则（4项必检）</h2>
+            <p>装盒完成后，必须通过以下四项验证以确保结果正确：</p>
+
+            <h3>验证1: 隐藏款分布</h3>
+            <ul>
+                <li><strong>检查项</strong>：每个大箱至少包含一个隐藏款</li>
+                <li><strong>验证方法</strong>：遍历所有大箱，检查是否每个大箱内至少有一个小盒包含隐藏款SKU</li>
+                <li><strong>失败示例</strong>：大箱3没有任何隐藏款</li>
+                <li><strong>重要性</strong>：⭐⭐⭐⭐⭐ 核心业务规则</li>
+            </ul>
+
+            <h3>验证2: 单盒唯一性</h3>
+            <ul>
+                <li><strong>检查项</strong>：同一个单盒内不能包含重复的SKU</li>
+                <li><strong>验证方法</strong>：检查每个小盒内的商品列表，确保没有重复的SKU ID</li>
+                <li><strong>失败示例</strong>：大箱1-盒2中有2个SKU_A</li>
+                <li><strong>重要性</strong>：⭐⭐⭐⭐⭐ 防止同一盒内出现相同商品</li>
+            </ul>
+
+            <h3>验证3: 库存全分配</h3>
+            <ul>
+                <li><strong>检查项</strong>：所有SKU的库存必须全部分配完毕，无剩余</li>
+                <li><strong>验证方法</strong>：
+                    <ul>
+                        <li>计算总库存 = 所有SKU的stock字段之和</li>
+                        <li>计算已分配 = 所有小盒内商品数量之和</li>
+                        <li>验证：总库存 === 已分配</li>
+                    </ul>
+                </li>
+                <li><strong>失败示例</strong>：库存150个，已分配148个，差异2个</li>
+                <li><strong>重要性</strong>：⭐⭐⭐⭐⭐ 确保无库存浪费</li>
+            </ul>
+
+            <h3>验证4: 数量一致性</h3>
+            <ul>
+                <li><strong>检查项</strong>：每个单盒内的商品数量必须严格等于设定的单盒商品数</li>
+                <li><strong>验证方法</strong>：遍历所有小盒，检查 <code>box.products.length === productsPerItem</code></li>
+                <li><strong>失败示例</strong>：大箱2-盒3有8个商品（应为10个）</li>
+                <li><strong>重要性</strong>：⭐⭐⭐⭐⭐ 保证产品规格一致</li>
+            </ul>
+
+            <hr>
+
+            <h2>三、可视化展示规范</h2>
+
+            <h3>网格布局</h3>
+            <ul>
+                <li><strong>大箱展示</strong>：每个大箱独立显示，带边框和标题</li>
+                <li><strong>小盒网格</strong>：使用 CSS Grid 布局，响应式列宽（minmax(100px, 1fr)）</li>
+                <li><strong>紧凑设计</strong>：间距2px，最大化信息密度</li>
+            </ul>
+
+            <h3>SKU颜色编码</h3>
+            <ul>
+                <li><strong>隐藏款</strong>：红色 (#ff5b4f)，不透明度 1.0，带边框和阴影</li>
+                <li><strong>普通款</strong>：不同SKU使用不同颜色，不透明度 0.5
+                    <ul>
+                        <li>SKU_A: #0072f5 (蓝)</li>
+                        <li>SKU_B: #10b981 (绿)</li>
+                        <li>SKU_C: #f59e0b (琥珀)</li>
+                        <li>SKU_D: #ef4444 (红)</li>
+                        <li>SKU_E: #8b5cf6 (紫)</li>
+                        <li>SKU_F: #ec4899 (粉)</li>
+                        <li>SKU_G: #06b6d4 (青)</li>
+                        <li>SKU_H: #84cc16 (lime)</li>
+                        <li>SKU_I: #f97316 (橙)</li>
+                        <li>SKU_J: #6366f1 (靛蓝)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>状态标识</h3>
+            <ul>
+                <li><strong>隐藏款指示器</strong>：★ 符号（红色）</li>
+                <li><strong>含隐藏款的小盒</strong>：红色边框 + 浅红背景</li>
+                <li><strong>空盒</strong>：显示"空"文字（灰色）</li>
+            </ul>
+
+            <h3>分步展示</h3>
+            <p>每一步操作后都展示当前状态的可视化结果：</p>
+            <ol>
+                <li>初始状态（空盒子）</li>
+                <li>SKU分配完成后</li>
+                <li>隐藏款调剂后</li>
+                <li>大箱盒子顺序打乱后</li>
+                <li>单盒内商品顺序打乱后</li>
+                <li>最终结果（完全随机后）</li>
+            </ol>
+
+            <hr>
+
+            <h2>四、算法复杂度</h2>
+            <ul>
+                <li><strong>时间复杂度</strong>：O(n × m × k)，其中 n=大箱数，m=每箱盒数，k=单盒商品数</li>
+                <li><strong>空间复杂度</strong>：O(n × m)，存储所有盒子状态</li>
+                <li><strong>洗牌算法</strong>：Fisher-Yates，时间复杂度 O(n)，保证均匀随机</li>
+            </ul>
+
+            <hr>
+
+            <h2>五、边界情况处理</h2>
+            <ol>
+                <li><strong>库存不足</strong>：如果总库存 &lt; 总商品数，验证3会失败</li>
+                <li><strong>隐藏款过少</strong>：如果隐藏款总数 &lt; 大箱数，无法通过验证1</li>
+                <li><strong>单盒容量</strong>：如果某SKU库存 &gt; 总盒数，会导致验证2失败（同盒重复）</li>
+                <li><strong>调剂失败</strong>：如果没有大箱有≥2个隐藏款，但有0隐藏款的大箱，调剂无法完成</li>
+            </ol>
+
+            <hr>
+
+            <h2>六、配置模式</h2>
+
+            <h3>简单模式</h3>
+            <ul>
+                <li>自动执行完整的6步装盒策略</li>
+                <li>实时展示每步结果</li>
+                <li>自动进行4项验证</li>
+                <li>提供可视化反馈</li>
+            </ul>
+
+            <h3>高级模式</h3>
+            <ul>
+                <li>仅提示"原逻辑"</li>
+                <li>可由开发者自定义装盒算法</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Rule Panel Functions
+        function openRulePanel() {
+            document.getElementById('rulePanel').style.display = 'block';
+            document.getElementById('rulePanelOverlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRulePanel() {
+            document.getElementById('rulePanel').style.display = 'none';
+            document.getElementById('rulePanelOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close panel with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeRulePanel();
+            }
+        });
+
     </script>
 </body>
 </html>
