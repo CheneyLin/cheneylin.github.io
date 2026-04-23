@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单详情页</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            max-width: 375px;
+            margin: 0 auto;
+        }
+        .header {
+            background: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .header-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #171717;
+        }
+        .header-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #171717;
+        }
+        .order-status {
+            background: #fff;
+            padding: 20px 16px;
+            margin-bottom: 8px;
+        }
+        .status-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .status-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #171717;
+        }
+        .status-desc {
+            font-size: 14px;
+            color: #8c8c8c;
+            margin-top: 4px;
+        }
+        .address-section {
+            background: #fff;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .address-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .address-icon {
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .address-info {
+            flex: 1;
+        }
+        .address-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 4px;
+        }
+        .address-detail {
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+        .product-section {
+            background: #fff;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .product-row {
+            display: flex;
+            gap: 12px;
+        }
+        .product-img {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+        }
+        .product-info {
+            flex: 1;
+        }
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 4px;
+        }
+        .product-sku {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+        }
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #171717;
+        }
+        .product-qty {
+            font-size: 14px;
+            color: #8c8c8c;
+        }
+        .shipping-section {
+            background: #fff;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 12px;
+        }
+        .shipping-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .shipping-label {
+            font-size: 14px;
+            color: #4d4d4d;
+        }
+        .shipping-value {
+            font-size: 14px;
+            color: #171717;
+        }
+        .tax-section {
+            background: #fff;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .tax-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .tax-row:last-child {
+            margin-bottom: 0;
+        }
+        .tax-label {
+            font-size: 14px;
+            color: #4d4d4d;
+        }
+        .tax-value {
+            font-size: 14px;
+            color: #171717;
+        }
+        .order-summary {
+            background: #fff;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 8px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .summary-label {
+            font-size: 14px;
+            color: #4d4d4d;
+        }
+        .summary-value {
+            font-size: 14px;
+            color: #171717;
+        }
+        .summary-total {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ff5b4f;
+        }
+        .feature-highlight {
+            animation: highlightPulse 3s ease-out;
+        }
+        @keyframes highlightPulse {
+            0% { box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.3); }
+            100% { box-shadow: 0 0 0 4px rgba(0, 112, 243, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-btn">←</div>
+        <div class="header-title">订单详情</div>
+        <div class="header-btn">⋮</div>
+    </div>
+
+    <div class="order-status">
+        <div class="status-icon">📦</div>
+        <div class="status-text">商品运输中</div>
+        <div class="status-desc">预计3天后送达</div>
+    </div>
+
+    <div class="address-section">
+        <div class="address-row">
+            <div class="address-icon">📍</div>
+            <div class="address-info">
+                <div class="address-name">张三 13800138000</div>
+                <div class="address-detail">北京市朝阳区建国路88号SOHO现代城</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-section" data-prototype="app_order_detail">
+        <div class="section-title">商品信息</div>
+        <div class="product-row">
+            <div class="product-img">🎁</div>
+            <div class="product-info">
+                <div class="product-name">海外直邮限定款手办</div>
+                <div class="product-sku">SKU: OVERSEAS-001</div>
+                <div class="product-price">¥299.00</div>
+            </div>
+            <div class="product-qty">x1</div>
+        </div>
+    </div>
+
+    <div class="shipping-section">
+        <div class="section-title">配送信息</div>
+        <div class="shipping-row">
+            <span class="shipping-label">配送方式</span>
+            <span class="shipping-value">美国专线 · 空运</span>
+        </div>
+        <div class="shipping-row">
+            <span class="shipping-label">运费</span>
+            <span class="shipping-value">¥50.00</span>
+        </div>
+        <div class="shipping-row">
+            <span class="shipping-label">运单号</span>
+            <span class="shipping-value" style="color: #0070f3;">SF1234567890</span>
+        </div>
+    </div>
+
+    <div class="tax-section">
+        <div class="section-title">海外税费明细</div>
+        <div class="tax-row">
+            <span class="tax-label">海外运费</span>
+            <span class="tax-value">¥8.00</span>
+        </div>
+        <div class="tax-row">
+            <span class="tax-label">关税与清关费</span>
+            <span class="tax-value">¥15.00</span>
+        </div>
+        <div class="tax-row">
+            <span class="tax-label">保险费</span>
+            <span class="tax-value">¥5.00</span>
+        </div>
+    </div>
+
+    <div class="order-summary">
+        <div class="section-title">订单信息</div>
+        <div class="summary-row">
+            <span class="summary-label">订单编号</span>
+            <span class="summary-value">2026042312345678</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">下单时间</span>
+            <span class="summary-value">2026-04-23 14:30:25</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">商品金额</span>
+            <span class="summary-value">¥299.00</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">运费</span>
+            <span class="summary-value">¥50.00</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">海外税费</span>
+            <span class="summary-value">¥28.00</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">实付金额</span>
+            <span class="summary-value summary-total">¥377.00</span>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                const featureId = e.data.featureId;
+                document.querySelectorAll('[data-prototype]').forEach(el => {
+                    el.classList.remove('feature-highlight');
+                    if (el.dataset.prototype === featureId) {
+                        el.classList.add('feature-highlight');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

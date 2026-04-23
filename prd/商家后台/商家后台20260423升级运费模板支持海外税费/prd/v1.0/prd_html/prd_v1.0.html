@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>商家后台 - 升级运费模板支持海外税费 PRD v1.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../assets/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg:#fff;
+      --fg:#171717;
+      --muted:#4d4d4d;
+      --border:#ebebeb;
+      --primary:#667eea;
+      --link-blue:#0072f5;
+      --focus-blue:hsla(212, 100%, 48%, 1);
+      --shadow-border:rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --shadow-card:rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px;
+    }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:32px; }
+    h1 { font-size:28px; font-weight:600; letter-spacing:-0.02em; margin:0 0 12px; border-bottom:3px solid var(--fg); padding-bottom:12px; }
+    h2 { font-size:20px; font-weight:600; letter-spacing:-0.02em; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--fg); }
+    h3 { font-size:16px; font-weight:600; margin:20px 0 10px; }
+    p { margin:8px 0; color:var(--muted); }
+    .card { border:none; border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:var(--shadow-card); }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border-bottom:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#fafafa; font-weight:600; font-size:13px; color:var(--muted); }
+    .list { margin:0; padding-left:18px; }
+    .btn { display:inline-block; padding:6px 12px; color:#fff; background:var(--fg); border:none; border-radius:6px; text-decoration:none; font-size:13px; font-weight:500; cursor:pointer; }
+    .btn:hover { opacity:0.85; }
+    .meta { color:#808080; font-size:13px; }
+    .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
+    .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
+    .field-hint { color:#808080; font-size:12px; margin-top:4px; }
+    .feature-id { display:inline-block; background:var(--fg); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--fg); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; padding:24px; border-radius:8px; box-shadow:var(--shadow-border); }
+    .highlight-btn { background:var(--fg); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+    .toc { background:#fafafa; border-radius:8px; padding:16px; margin:16px 0; }
+    .toc ul { list-style:none; padding:0; }
+    .toc li { margin:8px 0; }
+    .toc a { color:var(--link-blue); text-decoration:none; }
+    .toc a:hover { text-decoration:underline; }
+    pre { background:#fafafa; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
+    code { background:#fafafa; padding:2px 6px; border-radius:3px; font-size:13px; }
+    strong { color:var(--fg); }
+    a { color:var(--link-blue); text-decoration:underline; }
+    a:hover { opacity:0.85; }
+    :focus-visible { outline:2px solid var(--focus-blue); outline-offset:2px; }
+    .mermaid svg { font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .mermaid .node { fill:#fff; stroke:#171717; stroke-width:1px; }
+    .mermaid .node rect { fill:#fff; stroke:#171717; stroke-width:1px; rx:6px; }
+    .mermaid .edgePath .path { stroke:#171717; stroke-width:1.5px; }
+    .mermaid .edgeLabel { background-color:#fafafa; color:#4d4d4d; font-size:12px; padding:4px 8px; border-radius:4px; border:1px solid #ebebeb; }
+    .mermaid text { fill:#171717; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>商家后台 - 升级运费模板支持海外税费 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.0｜状态：需求评审中｜创建时间：2026-04-23｜产品经理：林长宇</p>
+
+    <div class="card" id="section1">
+      <h2>1. 项目信息与版本记录</h2>
+      <table>
+        <tr><th style="width:120px;">产品名称</th><td>商家后台 - 升级运费模板支持海外税费</td></tr>
+        <tr><th>版本</th><td>v1.0</td></tr>
+        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th>创建时间</th><td>2026-04-23</td></tr>
+        <tr><th>产品范围</th><td>商家后台 + APP端</td></tr>
+        <tr><th>受众角色</th><td>商家后台用户、C端用户</td></tr>
+        <tr><th>原型链接</th><td>
+          <a href="../prototype_html/admin_prototype_v1.0.html" target="_blank" class="btn">商家后台原型</a>
+          <a href="../prototype_html/app_prototype_v1.0.html" target="_blank" class="btn" style="margin-left: 8px;">APP端原型</a>
+        </td></tr>
+      </table>
+
+      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <table>
+        <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
+        <tr><td>v1.0</td><td>2026-04-23</td><td>初始版本创建，完成需求收集与PRD文档编写</td><td>林长宇</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section2">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 现状问题与痛点</h3>
+      <p>目前运营团队希望在商家后台升级运费模板支持海外税费，以满足进口商品的不同运费计算需求。</p>
+      <p>现状痛点：</p>
+      <ol class="list">
+        <li><strong>税费无法独立计算</strong>：目前海外税费直接加到商品价格里，无法单独管理和展示</li>
+        <li><strong>商家配置不灵活</strong>：无法针对不同商品类目设置不同的海外税费规则</li>
+        <li><strong>用户看不到税费明细</strong>：APP端用户无法清晰了解所支付的税费构成</li>
+      </ol>
+
+      <h3 style="margin-top:16px;">2.2 需求提出的必要性</h3>
+      <p>通过升级运费模板支持海外税费，可以：</p>
+      <ul class="list">
+        <li>实现税费与运费独立计算，提升配置灵活性</li>
+        <li>支持按商品类目设置不同税费规则，满足进口商品多样化需求</li>
+        <li>APP端逐项展示税费明细，提升价格透明度和用户信任</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td><strong>功能扩展</strong></td><td>支持海外税费独立配置</td><td>海外税费模板配置率</td><td>≥80%</td></tr>
+        <tr><td><strong>用户体验</strong></td><td>提升价格透明度</td><td>税费明细展示完整率</td><td>100%</td></tr>
+      </table>
+
+      <h3 style="margin-top:16px;">2.4 用户目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th></tr>
+        <tr><td><strong>便捷配置</strong></td><td>商家可快速配置海外税费</td><td>平均配置时长</td></tr>
+        <tr><td><strong>清晰展示</strong></td><td>用户可清晰查看税费构成</td><td>税费相关咨询率</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section3">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>商家后台用户</strong>：设置和管理运费模板，配置海外税费规则</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">3.2 典型场景</h3>
+      <ol class="list">
+        <li>商家进入运费模板管理列表，查看现有模板</li>
+        <li>商家编辑运费模板，展开高级配置添加海外税费项</li>
+        <li>商家为每项税费设置名称、计费方式（按件/按重量）、首件/续件费用</li>
+        <li>用户在APP商品详情页查看税费明细</li>
+        <li>用户在APP下单确认页核对税费总额</li>
+        <li>用户在APP订单详情页查看税费构成</li>
+      </ol>
+
+      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
+        <tr><td>配置</td><td>运费模板编辑页</td><td>展开高级配置，添加海外税费项</td><td>困惑：税费如何设置？</td><td>提供清晰的配置引导</td></tr>
+        <tr><td>下单</td><td>APP商品详情页</td><td>查看运费和税费明细</td><td>疑虑：税费怎么这么高？</td><td>清晰展示税费构成</td></tr>
+        <tr><td>支付</td><td>APP下单确认页</td><td>核对总费用包含税费</td><td>不解：税费包含哪些？</td><td>分项展示运费和各项税费</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section4">
+      <h2>4. 需求功能清单</h2>
+      <h3 style="margin-top:20px;">4.1 商家后台端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th></tr>
+        <tr><td>运费模板管理</td><td>展示运费模板列表，支持新建、编辑、启用/禁用</td><td>P0</td></tr>
+        <tr><td>运费模板编辑</td><td>配置基础运费和海外税费规则</td><td>P0</td></tr>
+        <tr><td>海外税费配置</td><td>支持添加多项税费，配置计费方式和费用</td><td>P0</td></tr>
+      </table>
+
+      <h3 style="margin-top:20px;">4.2 APP端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th></tr>
+        <tr><td>商品详情页</td><td>展示运费和税费明细</td><td>P0</td></tr>
+        <tr><td>下单确认页</td><td>展示运费和税费明细</td><td>P0</td></tr>
+        <tr><td>订单详情页</td><td>展示运费和税费明细</td><td>P0</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section5">
+      <h2>5. 详细方案</h2>
+
+      <div class="feature-module">
+        <h3>5.1 商家后台端</h3>
+
+        <h4>5.1.1 运费模板管理 <button class="highlight-btn" onclick="highlightPrototype('admin_shipping_template_list')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：展示运费模板列表，支持商家新建模板、编辑现有模板。</p>
+
+        <p><strong>页面结构</strong>：</p>
+        <table>
+          <tr><th>区域</th><th>内容</th></tr>
+          <tr><td>操作区</td><td>新建模板按钮</td></tr>
+          <tr><td>搜索筛选区</td><td>模板名称搜索、筛选按钮</td></tr>
+          <tr><td>数据表格区</td><td>模板列表展示</td></tr>
+        </table>
+
+        <p><strong>数据表格字段</strong>：</p>
+        <table>
+          <tr><th>字段</th><th>说明</th></tr>
+          <tr><td>模板名称</td><td>运费模板的名称</td></tr>
+          <tr><td>计费方式</td><td>按件 / 按重量</td></tr>
+          <tr><td>是否独立计费</td><td>是 / 否</td></tr>
+          <tr><td>海外税费</td><td>已配置 / 未配置</td></tr>
+          <tr><td>关联类目</td><td>关联的商品类目数量</td></tr>
+          <tr><td>状态</td><td>启用 / 禁用</td></tr>
+          <tr><td>操作</td><td>编辑 / 禁用或启用</td></tr>
+        </table>
+
+        <h4>5.1.2 运费模板编辑 <button class="highlight-btn" onclick="highlightPrototype('admin_shipping_template_edit')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：新建或编辑运费模板，配置基础运费和海外税费。</p>
+
+        <p><strong>交互说明</strong>：点击列表中的"编辑"按钮，右侧滑出编辑面板。</p>
+
+        <p><strong>编辑面板（右侧滑出，宽度90%）</strong>：</p>
+
+        <p><strong>基本信息区块</strong>：</p>
+        <table>
+          <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+          <tr><td>模板名称</td><td>输入框</td><td>模板名称</td></tr>
+          <tr><td>是否独立计费</td><td>下拉选择</td><td>是 / 否</td></tr>
+        </table>
+
+        <p><strong>基础运费配置区块</strong>：</p>
+        <table>
+          <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+          <tr><td>计费方式</td><td>下拉选择</td><td>按件 / 按重量</td></tr>
+          <tr><td>首件/首重数量</td><td>数字输入</td><td>首件/首重的起始数量</td></tr>
+          <tr><td>首件/首重费用（元）</td><td>数字输入</td><td>首件/首重的费用金额</td></tr>
+          <tr><td>续件/续重数量</td><td>数字输入</td><td>每续一批次的数量</td></tr>
+          <tr><td>续件/续重费用（元）</td><td>数字输入</td><td>每续一批次的费用金额</td></tr>
+        </table>
+
+        <p><strong>海外税费配置（高级）区块</strong>：</p>
+        <table>
+          <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+          <tr><td>税费项列表</td><td>折叠区域</td><td>默认折叠，点击展开</td></tr>
+          <tr><td>添加税费项按钮</td><td>按钮</td><td>打开税费类型选择下拉</td></tr>
+        </table>
+
+        <p><strong>每项税费项配置</strong>：</p>
+        <table>
+          <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+          <tr><td>税费名称</td><td>下拉选择/输入</td><td>海外运费、关税与清关费、保险费、附加费、自定义</td></tr>
+          <tr><td>计费方式</td><td>按钮选择</td><td>按件 / 按重量</td></tr>
+          <tr><td>首件/首重费用（元）</td><td>数字输入</td><td>首件/首重的费用金额</td></tr>
+          <tr><td>续件/续重费用（元）</td><td>数字输入</td><td>每续一件/一公斤的费用金额</td></tr>
+        </table>
+
+        <p><strong>税费项配置规则</strong>：</p>
+        <ul class="list">
+          <li>同一模板内最多配置5项税费项</li>
+          <li>同一模板内不允许重复添加相同名称的税费项</li>
+          <li>选择"自定义"时需弹出输入框让商家输入自定义名称</li>
+        </ul>
+
+        <h4>5.1.3 海外税费配置 <button class="highlight-btn" onclick="highlightPrototype('admin_overseas_tax_config')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：采用高级配置模式，默认折叠，有需要时展开添加。支持最多配置5项税费项。</p>
+
+        <p><strong>每项税费项配置</strong>：</p>
+        <table>
+          <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+          <tr><td>税费名称</td><td>下拉选择/输入</td><td>海外运费、关税与清关费、保险费、附加费、自定义</td></tr>
+          <tr><td>计费方式</td><td>按钮选择</td><td>按件 / 按重量</td></tr>
+          <tr><td>首件/首重费用（元）</td><td>数字输入</td><td>首件/首重的费用金额</td></tr>
+          <tr><td>续件/续重费用（元）</td><td>数字输入</td><td>每续一件/一公斤的费用金额</td></tr>
+        </table>
+      </div>
+
+      <div class="feature-module">
+        <h3>5.2 APP端</h3>
+
+        <h4>5.2.1 商品详情页 <button class="highlight-btn" onclick="highlightPrototype('app_product_detail')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：展示商品详情，包含配送信息和海外税费明细。</p>
+
+        <h4>5.2.2 下单确认页 <button class="highlight-btn" onclick="highlightPrototype('app_checkout')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：展示订单确认信息，包含商品、运费和海外税费明细。</p>
+
+        <p><strong>交互说明</strong>：从商品详情页点击"立即购买"或"加入购物车"后进入此页面。</p>
+
+        <h4>5.2.3 订单详情页 <button class="highlight-btn" onclick="highlightPrototype('app_order_detail')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：展示已完成订单的详细信息，包含税费明细。</p>
+
+        <p><strong>交互说明</strong>：支付成功后自动跳转到订单详情页，或从订单列表点击进入。</p>
+      </div>
+    </div>
+
+    <div class="card" id="section6">
+      <h2>6. 业务流程图</h2>
+      <div class="mermaid">
+flowchart TD
+    A[商家登录后台] --> B[进入运费模板管理列表]
+    B --> C[点击新建/编辑模板]
+    C --> D[填写基本信息]
+    D --> E[配置基础运费]
+    E --> F[展开海外税费配置]
+    F --> G[添加税费项]
+    G --> H{是否继续添加?}
+    H -->|是| G
+    H -->|否| I[保存模板]
+    I --> J[模板关联商品类目]
+    J --> K[用户在APP浏览商品]
+    K --> L[查看商品详情-税费展示]
+    L --> M[下单确认-税费明细]
+    M --> N[支付成功]
+    N --> O[订单详情-税费明细]
+      </div>
+    </div>
+
+    <div class="card" id="section7">
+      <h2>7. 异常与边界处理</h2>
+
+      <h3>7.1 税费未配置场景</h3>
+      <div class="field-group">
+        <div class="field-label">场景</div>
+        <p>商家未配置任何海外税费项</p>
+        <div class="field-label">处理</div>
+        <p>APP端完全不显示税费区块，仅展示运费</p>
+      </div>
+
+      <h3>7.2 税费项重复配置</h3>
+      <div class="field-group">
+        <div class="field-label">场景</div>
+        <p>商家尝试添加相同名称的税费项</p>
+        <div class="field-label">处理</div>
+        <p>系统提示"该税费项已存在"，不允许重复添加</p>
+      </div>
+
+      <h3>7.3 多商品订单计算</h3>
+      <div class="field-group">
+        <div class="field-label">场景</div>
+        <p>订单包含多个商品，且商品关联不同运费模板</p>
+        <div class="field-label">处理</div>
+        <p>同SPU可选择单独/合并计算；不同模板单独计算后合并</p>
+      </div>
+
+      <h3>7.4 包邮场景</h3>
+      <div class="field-group">
+        <div class="field-label">场景</div>
+        <p>订单满足包邮条件</p>
+        <div class="field-label">处理</div>
+        <p>国内运费免收，但海外税费正常收取</p>
+      </div>
+    </div>
+
+    <div class="card" id="section8">
+      <h2>8. 附件</h2>
+      <ul class="list">
+        <li>参考截图：document/admin.1.运费模板管理.png</li>
+        <li>参考截图：document/admin.2.运费模板编辑.png</li>
+        <li>参考截图：document/app.1.商品详情页.PNG</li>
+        <li>参考截图：document/app.2.下单确认页.PNG</li>
+        <li>参考截图：document/app.3.订单详情页.PNG</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+
+    // Function to highlight features in prototype iframes
+    function highlightPrototype(featureId) {
+      // Send message to parent window (index.html) which will forward to prototype iframe
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          action: 'highlight',
+          featureId: featureId
+        }, '*');
+      } else {
+        // Fallback: try to find iframe directly (for standalone viewing)
+        let targetFrame = null;
+        
+        if (featureId.startsWith('admin_')) {
+          targetFrame = document.getElementById('adminPrototypeFrame');
+        } else if (featureId.startsWith('app_')) {
+          targetFrame = document.getElementById('appPrototypeFrame');
+        }
+        
+        if (targetFrame && targetFrame.contentWindow) {
+          targetFrame.contentWindow.postMessage({
+            action: 'highlight',
+            featureId: featureId
+          }, '*');
+        } else {
+          // If iframe not found, open the prototype in a new window
+          let prototypeUrl = '';
+          if (featureId.startsWith('admin_')) {
+            prototypeUrl = '../prototype_html/admin_prototype_v1.0.html';
+          } else if (featureId.startsWith('app_')) {
+            prototypeUrl = '../prototype_html/app_prototype_v1.0.html';
+          }
+          
+          if (prototypeUrl) {
+            const newWindow = window.open(prototypeUrl, '_blank');
+            // Send highlight message after a delay to allow page load
+            setTimeout(() => {
+              if (newWindow) {
+                newWindow.postMessage({
+                  action: 'highlight',
+                  featureId: featureId
+                }, '*');
+              }
+            }, 1000);
+          }
+        }
+      }
+    }
+
+    // Listen for highlight messages from parent window (when PRD is embedded in iframe)
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+        const featureId = e.data.featureId;
+        document.querySelectorAll('[data-feature]').forEach(el => {
+          el.style.borderColor = '';
+          el.style.boxShadow = '';
+          if (el.dataset.feature === featureId) {
+            el.style.borderColor = '#0072f5';
+            el.style.boxShadow = '0 0 0 2px rgba(0, 114, 245, 0.2)';
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
