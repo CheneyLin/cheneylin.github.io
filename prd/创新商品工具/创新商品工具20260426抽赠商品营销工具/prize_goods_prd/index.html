@@ -418,14 +418,19 @@
       }
     }
 
-    function setRightWidth(percent) {
-      percent = Math.max(30, Math.min(70, percent));
-      rightWidthLabel.textContent = percent + '%';
-      rightPane.style.width = percent + '%';
-      leftPane.style.width = (100 - percent) + '%';
-    }
-    rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
-    setRightWidth(parseInt(rightWidthRange.value, 10));
+function setRightWidth(percent) {
+    percent = Math.max(30, Math.min(70, percent));
+    rightWidthLabel.textContent = percent + '%';
+    rightPane.style.width = percent + '%';
+    leftPane.style.width = (100 - percent) + '%';
+    localStorage.setItem('rightWidth', percent);
+}
+rightWidthRange.addEventListener('input', (e) => setRightWidth(parseInt(e.target.value, 10)));
+
+const savedWidth = localStorage.getItem('rightWidth');
+const initialWidth = savedWidth ? parseInt(savedWidth, 10) : parseInt(rightWidthRange.value, 10);
+rightWidthRange.value = initialWidth;
+setRightWidth(initialWidth);
 
     let dragging = false;
     splitter.addEventListener('mousedown', () => { dragging = true; });

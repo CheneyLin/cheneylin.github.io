@@ -690,7 +690,7 @@
                         <div class="radio-group">
                             <label class="radio-item">
                                 <input type="radio" name="feeStrategy" value="free_sale_price" checked>
-                                <span>0元赠送-按销售价计算营销费用（默认项目）</span>
+                                <span>0元赠送-按销售价计算营销费用</span>
                             </label>
                             <label class="radio-item">
                                 <input type="radio" name="feeStrategy" value="virtual_order_merge">
@@ -857,7 +857,7 @@
             renderTags();
             
             // Reset radio buttons
-            document.querySelector('input[name="feeStrategy"][value="free"]').checked = true;
+            document.querySelector('input[name="feeStrategy"][value="free_sale_price"]').checked = true;
             
             // Reset switch
             document.getElementById('alertSwitch').classList.add('active');
