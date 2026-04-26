@@ -463,9 +463,23 @@
             font-weight: 500;
             cursor: pointer;
         }
-        .btn-save:hover {
-            background: #404040;
-        }
+.btn-save:hover {
+  background: #404040;
+}
+.quick-btn {
+  padding: 6px 12px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #4d4d4d;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.quick-btn:hover {
+  background: #e8e8e8;
+  border-color: #bfbfbf;
+}
         .feature-highlight {
             animation: highlightPulse 3s ease-out;
         }
@@ -579,13 +593,13 @@
                         <label class="form-label">模板名称</label>
                         <input type="text" class="form-input" id="templateName" placeholder="请输入模板名称">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">是否独立计费</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
+        <div class="form-group">
+          <label class="form-label">是否独立计费</label>
+          <select class="form-input">
+            <option value="yes">是</option>
+            <option value="no">否</option>
+          </select>
+        </div>
                 </div>
             </div>
 
@@ -638,19 +652,10 @@
                 <div class="collapse-content" id="overseasTaxSection">
                     <div id="taxItemsContainer">
                     </div>
-                    <div class="tax-options-dropdown" id="taxDropdownWrapper">
-                        <button class="add-tax-btn" onclick="toggleTaxDropdown()">
-                            <i class="bi bi-plus"></i>
-                            添加税费项
-                        </button>
-                        <div class="dropdown-content" id="taxDropdownContent">
-                            <div class="tax-option-item" onclick="selectTaxType('海外运费')">海外运费</div>
-                            <div class="tax-option-item" onclick="selectTaxType('关税与清关费')">关税与清关费</div>
-                            <div class="tax-option-item" onclick="selectTaxType('保险费')">保险费</div>
-                            <div class="tax-option-item" onclick="selectTaxType('附加费')">附加费</div>
-                            <div class="tax-option-item" onclick="selectTaxType('custom')">自定义</div>
-                        </div>
-                    </div>
+<button class="add-tax-btn" onclick="addTaxItem('')">
+  <i class="bi bi-plus"></i>
+  添加税费项
+</button>
                 </div>
             </div>
         </div>
@@ -679,20 +684,19 @@
             }
         }
 
-        function onBillingTypeChange() {
-            const type = document.querySelector('input[name="billingType"]:checked').value;
-            const isWeight = type === 'per_weight';
-            document.getElementById('tieredLabel1').textContent = isWeight ? '首重重量（公斤）' : '首件数量';
-            document.getElementById('tieredLabel2').textContent = isWeight ? '首重费用（元）' : '首件费用（元）';
-            document.getElementById('tieredLabel3').textContent = isWeight ? '续重重量（公斤）' : '续件数量';
-            document.getElementById('tieredLabel4').textContent = isWeight ? '续重费用（元）' : '续件费用（元）';
-        }
+function onBillingTypeChange() {
+  const type = document.querySelector('input[name="billingType"]:checked').value;
+  const isWeight = type === 'per_weight';
+  document.getElementById('tieredLabel1').textContent = isWeight ? '首重重量（公斤）' : '首件数量';
+  document.getElementById('tieredLabel2').textContent = isWeight ? '首重费用（元）' : '首件费用（元）';
+  document.getElementById('tieredLabel3').textContent = isWeight ? '续重重量（公斤）' : '续件数量';
+  document.getElementById('tieredLabel4').textContent = isWeight ? '续重费用（元）' : '续件费用（元）';
+}
 
-        function closePanel() {
-            document.getElementById('overlay').classList.remove('open');
-            document.getElementById('slidePanel').classList.remove('open');
-            document.getElementById('taxDropdownContent').classList.remove('open');
-        }
+function closePanel() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slidePanel').classList.remove('open');
+}
 
         function toggleCollapse(header) {
             const content = header.nextElementSibling;
@@ -728,18 +732,31 @@
             addTaxItem(type);
         }
 
-        function addTaxItem(type) {
-            taxItemCount++;
-            const container = document.getElementById('taxItemsContainer');
-            const taxItem = document.createElement('div');
-            taxItem.className = 'tax-item';
-            taxItem.id = `taxItem_${taxItemCount}`;
-            taxItem.dataset.prototype = `admin_tax_billing_setting`;
-            taxItem.innerHTML = `
-                <div class="tax-item-header">
-                    <span class="tax-item-title">${type}</span>
-                    <span class="tax-item-delete" onclick="removeTaxItem(${taxItemCount}, '${type}')">&times;</span>
-                </div>
+function addTaxItem(type) {
+  if (taxItemCount >= maxTaxItems) {
+    alert('最多只能添加5项税费');
+    return;
+  }
+  taxItemCount++;
+  const container = document.getElementById('taxItemsContainer');
+  const taxItem = document.createElement('div');
+  taxItem.className = 'tax-item';
+  taxItem.id = `taxItem_${taxItemCount}`;
+  taxItem.dataset.prototype = `admin_tax_billing_setting`;
+  const safeType = type ? type.replace(/'/g, "\\'") : '';
+  taxItem.innerHTML = `
+    <div class="tax-item-header" style="align-items: flex-start;">
+      <div style="flex: 1;">
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label class="form-label">税费名称</label>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" class="form-input tax-name-input" id="taxName_${taxItemCount}" value="${type || ''}" placeholder="请输入税费名称" style="flex: 1;" onchange="updateTaxName(${taxItemCount})">
+            <button type="button" class="quick-btn" onclick="setTaxName(${taxItemCount}, '海外运费')">海外运费</button>
+            <button type="button" class="quick-btn" onclick="setTaxName(${taxItemCount}, '关税与清关费')">关税与清关费</button>
+          </div>
+        </div>
+      </div>
+    </div>
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label class="form-label">计费方式</label>
                     <div class="radio-group">
@@ -751,40 +768,88 @@
                             <input type="radio" name="billing_${taxItemCount}" value="per_weight" onchange="updateBillingLabels(${taxItemCount}, 'per_weight')">
                             <span>按重量</span>
                         </label>
-                    </div>
-                </div>
-                <div class="form-row" style="gap: 12px;">
-                    <div class="form-group">
-                        <label class="form-label" id="firstLabel_${taxItemCount}">首件数量</label>
-                        <input type="number" class="form-input" placeholder="请输入数量" value="1" min="1">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" id="firstFeeLabel_${taxItemCount}">首件费用（元）</label>
-                        <input type="number" class="form-input" placeholder="0.00" value="8.00" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" id="continueLabel_${taxItemCount}">续件数量</label>
-                        <input type="number" class="form-input" placeholder="请输入数量" value="1" min="1">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" id="continueFeeLabel_${taxItemCount}">续件费用（元）</label>
-                        <input type="number" class="form-input" placeholder="0.00" value="3.00" step="0.01">
-                    </div>
-                </div>
-            `;
+    </div>
+  </div>
+  <div class="form-row" style="gap: 12px;">
+    <div class="form-group">
+      <label class="form-label" id="firstLabel_${taxItemCount}">首件数量</label>
+      <input type="number" class="form-input" placeholder="请输入数量" value="1" min="1">
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="firstFeeLabel_${taxItemCount}">首件费用（元）</label>
+      <input type="number" class="form-input" placeholder="0.00" value="8.00" step="0.01">
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="continueLabel_${taxItemCount}">续件数量</label>
+      <input type="number" class="form-input" placeholder="请输入数量" value="1" min="1">
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="continueFeeLabel_${taxItemCount}">续件费用（元）</label>
+      <input type="number" class="form-input" placeholder="0.00" value="3.00" step="0.01">
+    </div>
+  </div>
+  <div style="display: flex; justify-content: flex-end; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e5e5;">
+    <button type="button" class="delete-tax-btn" onclick="removeTaxItem(${taxItemCount}, '${safeType}')" style="background: transparent; border: none; color: #ff4d4f; font-size: 14px; cursor: pointer; padding: 4px 8px; display: flex; align-items: center; gap: 4px;">
+      <i class="bi bi-trash" style="font-size: 14px;"></i>
+      删除此税费项
+    </button>
+  </div>
+`;
             container.appendChild(taxItem);
         }
 
-        function removeTaxItem(id, type) {
-            const item = document.getElementById(`taxItem_${id}`);
-            if (item) {
-                item.remove();
-                const index = usedTaxTypes.indexOf(type);
-                if (index > -1) {
-                    usedTaxTypes.splice(index, 1);
-                }
-            }
-        }
+function removeTaxItem(id, type) {
+  const item = document.getElementById(`taxItem_${id}`);
+  if (item) {
+    item.remove();
+    const index = usedTaxTypes.indexOf(type);
+    if (index > -1) {
+      usedTaxTypes.splice(index, 1);
+    }
+  }
+}
+
+function setTaxName(id, name) {
+  const input = document.getElementById(`taxName_${id}`);
+  if (input) {
+    // 检查新名称是否已存在（除了当前项）
+    const currentItem = document.getElementById(`taxItem_${id}`);
+    const oldName = input.value;
+    
+    // 如果新名称与当前项不同，且已存在于其他项中
+    if (oldName !== name && usedTaxTypes.includes(name)) {
+      alert('该税费项已存在，请选择其他名称');
+      return;
+    }
+    
+    // 更新 usedTaxTypes 数组
+    const oldIndex = usedTaxTypes.indexOf(oldName);
+    if (oldIndex > -1) {
+      usedTaxTypes.splice(oldIndex, 1);
+    }
+    usedTaxTypes.push(name);
+    
+    input.value = name;
+  }
+}
+
+function updateTaxName(id) {
+  const input = document.getElementById(`taxName_${id}`);
+  if (input) {
+    const newName = input.value.trim();
+    if (!newName) {
+      alert('税费名称不能为空');
+      return;
+    }
+    
+    // 检查是否重复（排除自身）
+    const count = usedTaxTypes.filter(name => name === newName).length;
+    if (count > 1) {
+      alert('该税费项已存在，请使用其他名称');
+      return;
+    }
+  }
+}
 
         function toggleBillingFields(id) {
             // This function is no longer needed as we removed the independent billing toggle

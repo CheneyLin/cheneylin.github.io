@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽赠商品管理列表</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            color: #171717;
+            padding: 24px;
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.32px;
+        }
+        
+        .page-description {
+            color: #4d4d4d;
+            font-size: 14px;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            color: #4d4d4d;
+            font-weight: 500;
+        }
+        
+        .filter-input {
+            padding: 6px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.15s;
+            min-width: 180px;
+        }
+        
+        .filter-input:focus {
+            border-color: #171717;
+            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
+        }
+        
+        .btn {
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+            color: #171717;
+            transition: all 0.15s;
+        }
+        
+        .btn:hover {
+            border-color: #171717;
+        }
+        
+        .btn-primary {
+            background: #171717;
+            color: #ffffff;
+            border-color: #171717;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #fafafa;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4d4d4d;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 14px;
+        }
+        
+        tr:hover td {
+            background: #fafafa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            color: #0072f5;
+            cursor: pointer;
+            font-size: 13px;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        
+        .action-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            padding: 4px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            border-color: #171717;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination span {
+            font-size: 13px;
+            color: #4d4d4d;
+        }
+        
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        .modal-panel {
+            position: fixed;
+            top: 0;
+            right: -90%;
+            width: 90%;
+            height: 100vh;
+            background: #fafafa;
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-panel.show {
+            right: 0;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #171717;
+            z-index: 10;
+            transition: all 0.15s;
+        }
+        
+        .modal-close:hover {
+            background: #f0f0f0;
+            transform: rotate(90deg);
+        }
+        
+        .modal-content {
+            padding: 24px;
+            padding-top: 60px;
+        }
+        
+        /* Edit Form Styles */
+        .edit-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .edit-page-header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .edit-page-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.32px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #171717;
+        }
+        
+        .form-label .required {
+            color: #ff4d4f;
+            margin-left: 4px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.15s;
+        }
+        
+        .form-input:focus {
+            border-color: #171717;
+            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.15s;
+            background: #ffffff;
+        }
+        
+        .form-select:focus {
+            border-color: #171717;
+            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .radio-item input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        .tag-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            min-height: 40px;
+            align-items: center;
+        }
+        
+        .tag-input-container:focus-within {
+            border-color: #171717;
+            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            color: #666;
+        }
+        
+        .tag-remove:hover {
+            color: #ff4d4f;
+        }
+        
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 120px;
+            font-size: 14px;
+        }
+        
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: #d9d9d9;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .switch.active {
+            background: #171717;
+        }
+        
+        .switch-handle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .switch.active .switch-handle {
+            left: 22px;
+        }
+        
+        .import-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .batch-ops {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .action-btn.delete {
+            color: #ff4d4f;
+        }
+    </style>
+</head>
+<body>
+    <!-- List Page -->
+    <div class="page-container" id="listPage">
+        <div class="page-header">
+            <h1 class="page-title">抽赠商品管理</h1>
+            <p class="page-description">管理抽赠商品的配置、审核和状态</p>
+        </div>
+        
+        <div class="card">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-item">
+                    <span class="filter-label">项目:</span>
+                    <input type="text" class="filter-input" placeholder="请输入项目名称">
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">玩法:</span>
+                    <select class="filter-input">
+                        <option value="">全部</option>
+                        <option value="chou_baji">抽吧唧</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">虚拟商品ID:</span>
+                    <input type="text" class="filter-input" placeholder="请输入虚拟商品ID">
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">状态:</span>
+                    <select class="filter-input">
+                        <option value="">全部</option>
+                        <option value="pending">待审核</option>
+                        <option value="approved">已通过</option>
+                        <option value="rejected">已拒绝</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">查询</button>
+                <button class="btn">重置</button>
+            </div>
+            
+            <!-- Action Bar -->
+            <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="bi bi-plus-lg"></i> 新增抽赠商品
+                    </button>
+                </div>
+                <div style="color: #4d4d4d; font-size: 13px;">
+                    共 <strong>5</strong> 条记录
+                </div>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">
+                                <input type="checkbox">
+                            </th>
+                            <th>活动名称</th>
+                            <th>玩法</th>
+                            <th>虚拟商品ID</th>
+                            <th>费用策略</th>
+                            <th>提报人</th>
+                            <th>审核状态</th>
+                            <th>创建时间</th>
+                            <th style="width: 200px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>春节限定抽吧唧活动</td>
+                            <td>抽吧唧</td>
+                            <td>VC20260001</td>
+                            <td>0元赠送-按销售价计算营销费用</td>
+                            <td>张三</td>
+                            <td><span class="badge badge-success">已通过</span></td>
+                            <td>2026-04-20 10:30</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="openEditModal('春节限定抽吧唧活动')">编辑</button>
+                                    <button class="action-btn">查看</button>
+                                    <button class="action-btn">复制</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>夏日祭特别活动</td>
+                            <td>抽吧唧</td>
+                            <td>VC20260002</td>
+                            <td>关联虚拟订单合并计算营销费用</td>
+                            <td>李四</td>
+                            <td><span class="badge badge-warning">待审核</span></td>
+                            <td>2026-04-22 14:20</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="openEditModal('夏日祭特别活动')">编辑</button>
+                                    <button class="action-btn">审核</button>
+                                    <button class="action-btn">查看</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>周年庆庆典活动</td>
+                            <td>抽吧唧</td>
+                            <td>VC20260003</td>
+                            <td>0元赠送-按销售价计算营销费用</td>
+                            <td>王五</td>
+                            <td><span class="badge badge-success">已通过</span></td>
+                            <td>2026-04-18 09:15</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="openEditModal('周年庆庆典活动')">编辑</button>
+                                    <button class="action-btn">查看</button>
+                                    <button class="action-btn">复制</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>双十一促销活动</td>
+                            <td>抽吧唧</td>
+                            <td>VC20260004</td>
+                            <td>关联虚拟订单合并计算营销费用</td>
+                            <td>赵六</td>
+                            <td><span class="badge badge-error">已拒绝</span></td>
+                            <td>2026-04-15 16:45</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="openEditModal('双十一促销活动')">编辑</button>
+                                    <button class="action-btn">查看</button>
+                                    <button class="action-btn">重新提交</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>元旦新年活动</td>
+                            <td>抽吧唧</td>
+                            <td>VC20260005</td>
+                            <td>0元赠送-按销售价计算营销费用</td>
+                            <td>孙七</td>
+                            <td><span class="badge badge-warning">待审核</span></td>
+                            <td>2026-04-25 11:00</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="openEditModal('元旦新年活动')">编辑</button>
+                                    <button class="action-btn">审核</button>
+                                    <button class="action-btn">查看</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <button disabled>上一页</button>
+                <span>第 1 / 1 页</span>
+                <button disabled>下一页</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+    
+    <!-- Modal Panel with Edit Form -->
+    <div class="modal-panel" id="modalPanel">
+        <button class="modal-close" onclick="closeModal()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="modal-content">
+            <div class="edit-page-container">
+                <div class="edit-page-header">
+                    <h1 class="edit-page-title" id="modalTitle">新增抽赠商品配置</h1>
+                </div>
+                
+                <!-- Basic Configuration Section -->
+                <div class="card">
+                    <h2 class="section-title">基本配置</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            活动名称 <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="activityName" placeholder="请输入活动名称" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            玩法绑定 <span class="required">*</span>
+                        </label>
+                        <select class="form-select">
+                            <option value="chou_baji" selected>抽吧唧活动</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            虚拟商品ID <span class="required">*</span>
+                        </label>
+                        <div class="tag-input-container" id="tagContainer">
+                            <input type="text" class="tag-input" id="tagInput" placeholder="输入ID后按回车添加">
+                        </div>
+                        <p style="font-size: 12px; color: #808080; margin-top: 4px;">支持多个虚拟商品ID，按回车键快速添加</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            费用策略 <span class="required">*</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="feeStrategy" value="free_sale_price" checked>
+                                <span>0元赠送-按销售价计算营销费用（默认项目）</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="feeStrategy" value="virtual_order_merge">
+                                <span>关联虚拟订单合并计算营销费用</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">告警设置</label>
+                        <div class="switch-container">
+                            <div class="switch active" id="alertSwitch" onclick="toggleSwitch()">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span style="font-size: 14px; color: #4d4d4d;">开启后可为商品设置告警库存</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Information Section -->
+                <div class="card">
+                    <h2 class="section-title">商品信息</h2>
+                    
+                    <div class="import-section">
+                        <div class="batch-ops">
+                            <button class="btn" onclick="batchSetStock()">
+                                <i class="bi bi-gear"></i> 批量设置库存
+                            </button>
+                            <button class="btn" onclick="batchSetAlert()">
+                                <i class="bi bi-bell"></i> 批量设置告警
+                            </button>
+                        </div>
+                        <button class="btn btn-primary" onclick="importProducts()">
+                            <i class="bi bi-upload"></i> 导入商品
+                        </button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                    </th>
+                                    <th>商品ID</th>
+                                    <th>SKU</th>
+                                    <th>商品名称</th>
+                                    <th>成本价</th>
+                                    <th>活动库存</th>
+                                    <th>告警库存</th>
+                                    <th>告警状态</th>
+                                    <th style="width: 120px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody">
+                                <tr>
+                                    <td><input type="checkbox" class="product-checkbox"></td>
+                                    <td>P20260001</td>
+                                    <td>SKU001</td>
+                                    <td>春节限定吧唧-龙年款</td>
+                                    <td>¥15.00</td>
+                                    <td><input type="number" class="form-input" style="width: 100px;" value="1000"></td>
+                                    <td><input type="number" class="form-input" style="width: 100px;" value="100"></td>
+                                    <td><span style="color: #52c41a;">正常</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="product-checkbox"></td>
+                                    <td>P20260002</td>
+                                    <td>SKU002</td>
+                                    <td>春节限定吧唧-福字款</td>
+                                    <td>¥15.00</td>
+                                    <td><input type="number" class="form-input" style="width: 100px;" value="1000"></td>
+                                    <td><input type="number" class="form-input" style="width: 100px;" value="100"></td>
+                                    <td><span style="color: #52c41a;">正常</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="product-checkbox"></td>
+                                    <td>P20260003</td>
+                                    <td>SKU003</td>
+                                    <td>夏日祭吧唧-樱花款</td>
+                                    <td>¥18.00</td>
+                                    <td><input type="number" class="form-input" style="width: 100px;" value="800"></td>
+                                    <td><input type="number" class="form-input" style="width: 100px;" value="80"></td>
+                                    <td><span style="color: #52c41a;">正常</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button class="btn" onclick="cancel()">取消</button>
+                    <button class="btn btn-primary" onclick="saveDraft()">保存草稿</button>
+                    <button class="btn btn-primary" onclick="submitAudit()">提交审核</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'add'; // 'add' or 'edit'
+        let tags = [];
+        
+        // Modal functions
+        function openAddModal() {
+            currentMode = 'add';
+            document.getElementById('modalTitle').textContent = '新增抽赠商品配置';
+            resetForm();
+            showModal();
+        }
+        
+        function openEditModal(activityName) {
+            currentMode = 'edit';
+            document.getElementById('modalTitle').textContent = '编辑抽赠商品配置 - ' + activityName;
+            // In real scenario, load existing data here
+            resetForm();
+            showModal();
+        }
+        
+        function showModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const panel = document.getElementById('modalPanel');
+            
+            overlay.classList.add('show');
+            setTimeout(() => {
+                panel.classList.add('show');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const panel = document.getElementById('modalPanel');
+            
+            panel.classList.remove('show');
+            setTimeout(() => {
+                overlay.classList.remove('show');
+            }, 300);
+            
+            document.body.style.overflow = '';
+        }
+        
+        function resetForm() {
+            // Reset form fields
+            document.getElementById('activityName').value = '';
+            tags = [];
+            renderTags();
+            
+            // Reset radio buttons
+            document.querySelector('input[name="feeStrategy"][value="free"]').checked = true;
+            
+            // Reset switch
+            document.getElementById('alertSwitch').classList.add('active');
+            
+            // Reset product table (in real scenario, would load from data)
+            // For demo, keep the sample data
+        }
+        
+        // Tag input functionality
+        const tagInput = document.getElementById('tagInput');
+        const tagContainer = document.getElementById('tagContainer');
+        
+        tagInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                e.preventDefault();
+                addTag(this.value.trim());
+                this.value = '';
+            }
+        });
+        
+        function addTag(value) {
+            if (tags.includes(value)) {
+                alert('该虚拟商品ID已存在');
+                return;
+            }
+            tags.push(value);
+            renderTags();
+        }
+        
+        function removeTag(index) {
+            tags.splice(index, 1);
+            renderTags();
+        }
+        
+        function renderTags() {
+            const existingTags = tagContainer.querySelectorAll('.tag');
+            existingTags.forEach(tag => tag.remove());
+            
+            tags.forEach((tag, index) => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'tag';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag(${index})">×</span>
+                `;
+                tagContainer.insertBefore(tagElement, tagInput);
+            });
+        }
+        
+        // Switch toggle
+        function toggleSwitch() {
+            const switchEl = document.getElementById('alertSwitch');
+            switchEl.classList.toggle('active');
+        }
+        
+        // Select all checkboxes
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        }
+        
+        // Delete product row
+        function deleteProduct(btn) {
+            if (confirm('确定要删除这个商品吗？')) {
+                const row = btn.closest('tr');
+                row.remove();
+            }
+        }
+        
+        // Batch operations
+        function batchSetStock() {
+            const stock = prompt('请输入要设置的活动库存：');
+            if (stock && !isNaN(stock)) {
+                const inputs = document.querySelectorAll('#productTableBody input[type="number"]');
+                inputs.forEach((input, index) => {
+                    if (index % 2 === 0) {
+                        input.value = stock;
+                    }
+                });
+                alert('批量设置成功');
+            }
+        }
+        
+        function batchSetAlert() {
+            const alert = prompt('请输入要设置的告警库存：');
+            if (alert && !isNaN(alert)) {
+                const inputs = document.querySelectorAll('#productTableBody input[type="number"]');
+                inputs.forEach((input, index) => {
+                    if (index % 2 === 1) {
+                        input.value = alert;
+                    }
+                });
+                alert('批量设置成功');
+            }
+        }
+        
+        function importProducts() {
+            alert('打开文件选择对话框（原型演示）\n支持Excel格式导入商品数据');
+        }
+        
+        function cancel() {
+            if (confirm('确定要取消吗？未保存的数据将丢失。')) {
+                closeModal();
+            }
+        }
+        
+        function saveDraft() {
+            if (validateForm()) {
+                alert('草稿保存成功！');
+                setTimeout(closeModal, 1000);
+            }
+        }
+        
+        function submitAudit() {
+            if (validateForm()) {
+                if (confirm('确定要提交审核吗？')) {
+                    alert('提交审核成功！');
+                    setTimeout(closeModal, 1000);
+                }
+            }
+        }
+        
+        function validateForm() {
+            const activityName = document.getElementById('activityName');
+            if (!activityName.value.trim()) {
+                alert('请填写活动名称');
+                activityName.focus();
+                return false;
+            }
+            
+            if (tags.length === 0) {
+                alert('请至少添加一个虚拟商品ID');
+                tagInput.focus();
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Listen for highlight messages from parent
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'highlight') {
+                const featureId = event.data.featureId;
+                console.log('[抽赠商品列表] 收到高亮请求:', featureId);
+                
+                const element = document.querySelector(`[data-feature="${featureId}"]`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    element.style.boxShadow = '0 0 0 3px #0070f3';
+                    setTimeout(() => {
+                        element.style.boxShadow = '';
+                    }, 2000);
+                }
+            }
+        });
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

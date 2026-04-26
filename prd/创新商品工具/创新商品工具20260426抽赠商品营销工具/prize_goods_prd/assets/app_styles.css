@@ -1,0 +1,913 @@
+/* ============================================
+   电子吧唧 2 期 - APP 端原型共享样式
+   Design System: Vercel (Geist-inspired)
+   ============================================ */
+
+/* === Vercel Design Tokens === */
+:root {
+    /* Colors */
+    --geist-black: #171717;
+    --geist-white: #ffffff;
+    --geist-gray-900: #171717;
+    --geist-gray-600: #4d4d4d;
+    --geist-gray-500: #666666;
+    --geist-gray-400: #808080;
+    --geist-gray-100: #ebebeb;
+    --geist-gray-50: #fafafa;
+
+    /* Accent Colors */
+    --ship-red: #ff5b4f;
+    --preview-pink: #de1d8d;
+    --develop-blue: #0a72ef;
+    --focus-blue: hsla(212, 100%, 48%, 1);
+    --link-blue: #0072f5;
+
+    /* Badge Colors */
+    --badge-blue-bg: #ebf5ff;
+    --badge-blue-text: #0068d6;
+
+    /* Shadows (Vercel's signature shadow-as-border) */
+    --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    --shadow-border-light: rgb(235, 235, 235) 0px 0px 0px 1px;
+    --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px 0px;
+    --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px, rgb(250,250,250) 0px 0px 0px 1px;
+    --shadow-card-full: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px, rgba(0,0,0,0.04) 0px 8px 8px -8px, rgb(250,250,250) 0px 0px 0px 1px;
+
+    /* Phone Dimensions */
+    --phone-width: 375px;
+    --phone-height: 812px;
+
+    /* Spacing (8px base) */
+    --space-2: 2px;
+    --space-4: 4px;
+    --space-6: 6px;
+    --space-8: 8px;
+    --space-10: 10px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-20: 20px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-40: 40px;
+
+    /* Border Radius */
+    --radius-micro: 2px;
+    --radius-subtle: 4px;
+    --radius-standard: 6px;
+    --radius-comfortable: 8px;
+    --radius-image: 12px;
+    --radius-pill: 9999px;
+}
+
+/* === Reset & Base === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    font-feature-settings: "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--geist-white);
+    color: var(--geist-black);
+    min-height: 100vh;
+}
+
+/* === Typography (Vercel Hierarchy) === */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--geist-black);
+}
+
+.display-hero {
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -2.4px;
+    line-height: 1.0;
+}
+
+.section-heading {
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -2.4px;
+    line-height: 1.2;
+}
+
+.sub-heading {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -1.28px;
+    line-height: 1.25;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.96px;
+    line-height: 1.33;
+}
+
+.body-large {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--geist-gray-600);
+}
+
+.body {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.56;
+    color: var(--geist-gray-600);
+}
+
+.body-small {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--geist-gray-600);
+}
+
+.caption {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.33;
+    color: var(--geist-gray-500);
+}
+
+.mono-label {
+    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, 'Roboto Mono', Menlo, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--geist-gray-400);
+}
+
+/* === Fixed Control Buttons (Top Right) === */
+.fixed-controls {
+    position: fixed;
+    top: var(--space-20);
+    right: var(--space-20);
+    z-index: 1000;
+    display: flex;
+    gap: var(--space-12);
+}
+
+.control-btn {
+    background: var(--geist-white);
+    color: var(--geist-black);
+    border: none;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-standard);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    box-shadow: var(--shadow-card);
+    font-family: inherit;
+}
+
+.control-btn:hover {
+    background: var(--geist-gray-50);
+    transform: translateY(-1px);
+}
+
+.control-btn.active {
+    background: var(--geist-black);
+    color: var(--geist-white);
+}
+
+.control-btn:focus {
+    outline: 2px solid var(--focus-blue);
+    outline-offset: 2px;
+}
+
+/* === Phone Frame === */
+.phone-frame {
+    width: var(--phone-width) !important;
+    height: var(--phone-height) !important;
+    background: var(--geist-white);
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.phone-frame.highlighted {
+    border-color: var(--develop-blue);
+    box-shadow: 0 0 0 3px var(--focus-blue), var(--shadow-card-full);
+}
+
+.phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 30px;
+    background: var(--geist-black);
+    border-radius: 0 0 20px 20px;
+    z-index: 50;
+}
+
+/* === Status Bar === */
+.status-bar {
+    height: 44px;
+    background: var(--geist-white);
+    position: relative;
+    padding: 0 var(--space-16);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--geist-black);
+    box-shadow: var(--shadow-border-light);
+}
+
+/* === Page Content === */
+.page-content {
+    height: calc(var(--phone-height) - 44px);
+    overflow-y: auto;
+    position: relative;
+    background: var(--geist-white);
+    padding-bottom: 0; /* Reset - TabBar handles bottom spacing */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.page-content::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+/* === Navigation Bar === */
+.nav-bar {
+    height: 44px;
+    background: var(--geist-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-16);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+
+.nav-back {
+    font-size: 20px;
+    color: var(--geist-black);
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.nav-back:hover {
+    color: var(--geist-gray-600);
+}
+
+.nav-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.34px;
+    color: var(--geist-black);
+}
+
+.nav-action {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--link-blue);
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.nav-action:hover {
+    opacity: 0.85;
+}
+
+/* === TabBar (Fixed Bottom) === */
+/* 
+ * 关键修复：使用 position: fixed 相对于视口底部
+ * 父容器 .phone-screen 必须有 position: relative 和 overflow: hidden
+ * 这样 TabBar 会被限制在手机屏幕内
+ */
+.tab-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 83px; /* 包含安全区域 */
+    background: var(--geist-white);
+    border-top: none;
+    box-shadow: 0 -1px 0 0 var(--geist-gray-100);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-24); /* 为 iPhone 底部安全区域留出空间 */
+    z-index: 30;
+}
+
+.tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: var(--space-4) 0;
+}
+
+.tab-item i {
+    font-size: 22px;
+    color: var(--geist-gray-400);
+    transition: color 0.15s;
+}
+
+.tab-item span {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--geist-gray-400);
+    transition: color 0.15s;
+}
+
+.tab-item.active i,
+.tab-item.active span {
+    color: var(--geist-black);
+}
+
+.tab-item:hover i,
+.tab-item:hover span {
+    color: var(--geist-gray-600);
+}
+
+/* === Cards (Vercel Style) === */
+.card {
+    background: var(--geist-white);
+    border-radius: var(--radius-comfortable);
+    padding: var(--space-16);
+    margin-bottom: var(--space-12);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-card-full);
+}
+
+/* === Badges / Tags === */
+.badge-ssr {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: var(--geist-black);
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.badge-sr {
+    background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+    color: var(--geist-black);
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.badge-r {
+    background: var(--geist-gray-100);
+    color: var(--geist-gray-600);
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+    font-size: 12px;
+}
+
+/* === Buttons (Vercel Style) === */
+.btn-primary {
+    background: var(--geist-black);
+    color: var(--geist-white);
+    border: none;
+    padding: var(--space-10) var(--space-20);
+    border-radius: var(--radius-standard);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    width: 100%;
+    font-family: inherit;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+}
+
+.btn-primary:focus {
+    outline: 2px solid var(--focus-blue);
+    outline-offset: 2px;
+}
+
+.btn-secondary {
+    background: var(--geist-white);
+    color: var(--geist-black);
+    border: none;
+    padding: var(--space-10) var(--space-20);
+    border-radius: var(--radius-standard);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    width: 100%;
+    font-family: inherit;
+    box-shadow: var(--shadow-border-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-border);
+}
+
+.btn-secondary:focus {
+    outline: 2px solid var(--focus-blue);
+    outline-offset: 2px;
+}
+
+/* === Pill Badge === */
+.pill-badge {
+    display: inline-block;
+    padding: var(--space-4) var(--space-10);
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--badge-blue-bg);
+    color: var(--badge-blue-text);
+}
+
+/* === Modal Overlay === */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--geist-white);
+    border-radius: var(--radius-comfortable);
+    padding: var(--space-24);
+    width: 85%;
+    max-height: 70%;
+    overflow-y: auto;
+    box-shadow: var(--shadow-card-full);
+    transform: scale(0.9);
+    transition: all 0.3s;
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1);
+}
+
+/* === Image Grid === */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-12);
+}
+
+.image-card {
+    aspect-ratio: 1;
+    background: var(--geist-gray-50);
+    border-radius: var(--radius-image);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-border-light);
+}
+
+.image-card:hover {
+    box-shadow: var(--shadow-border);
+}
+
+.image-card.locked {
+    opacity: 0.5;
+}
+
+.image-card.locked::after {
+    content: '\f023';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    color: var(--geist-gray-400);
+}
+
+.image-level-tag {
+    position: absolute;
+    top: var(--space-8);
+    right: var(--space-8);
+}
+
+/* === Draw Animation === */
+.draw-animation {
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(135deg, var(--geist-gray-900), var(--geist-gray-600));
+    border-radius: var(--radius-image);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.draw-animation::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.draw-result-image {
+    width: 200px;
+    height: 200px;
+    background: var(--geist-white);
+    border-radius: var(--radius-image);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: var(--geist-black);
+    z-index: 1;
+    box-shadow: var(--shadow-card-full);
+}
+
+/* === Probability Table === */
+.probability-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--space-12);
+}
+
+.probability-table th,
+.probability-table td {
+    padding: var(--space-12);
+    text-align: center;
+    border: none;
+    box-shadow: inset 0 0 0 1px var(--geist-gray-100);
+}
+
+.probability-table th {
+    background: var(--geist-gray-50);
+    font-weight: 600;
+    color: var(--geist-black);
+    letter-spacing: -0.24px;
+}
+
+.probability-table td {
+    color: var(--geist-gray-600);
+}
+
+/* === Purchase Options === */
+.purchase-option {
+    background: var(--geist-white);
+    border: none;
+    border-radius: var(--radius-comfortable);
+    padding: var(--space-16);
+    margin-bottom: var(--space-12);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-card);
+}
+
+.purchase-option:hover {
+    box-shadow: var(--shadow-card-full);
+}
+
+.purchase-option.recommended {
+    box-shadow: var(--shadow-card-full);
+    background: var(--geist-gray-50);
+}
+
+.purchase-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-8);
+}
+
+.purchase-option-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--geist-black);
+    letter-spacing: -0.32px;
+}
+
+.purchase-option-price {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--geist-black);
+    letter-spacing: -0.4px;
+}
+
+.purchase-option-desc {
+    font-size: 13px;
+    color: var(--geist-gray-500);
+}
+
+/* === Progress Bar === */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--geist-gray-100);
+    border-radius: var(--radius-subtle);
+    overflow: hidden;
+    margin-top: var(--space-8);
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--geist-black);
+    border-radius: var(--radius-subtle);
+    transition: width 0.3s;
+}
+
+/* === Form Elements === */
+.form-group {
+    margin-bottom: var(--space-16);
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--geist-black);
+    margin-bottom: var(--space-6);
+}
+
+.form-label.required::after {
+    content: '*';
+    color: var(--ship-red);
+    margin-left: var(--space-4);
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--space-10) var(--space-12);
+    border: none;
+    border-radius: var(--radius-standard);
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--geist-white);
+    color: var(--geist-black);
+    transition: all 0.15s;
+    box-shadow: var(--shadow-border);
+}
+
+.form-input::placeholder {
+    color: var(--geist-gray-400);
+}
+
+.form-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--focus-blue);
+}
+
+.form-input.error {
+    box-shadow: 0 0 0 2px var(--ship-red);
+}
+
+.form-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: var(--space-10) var(--space-12);
+    border: none;
+    border-radius: var(--radius-standard);
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--geist-white);
+    color: var(--geist-black);
+    resize: vertical;
+    box-shadow: var(--shadow-border);
+    transition: all 0.15s;
+}
+
+.form-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--focus-blue);
+}
+
+.form-state-label {
+    font-size: 11px;
+    color: var(--geist-gray-400);
+    margin-top: var(--space-4);
+}
+
+/* === Page Sections === */
+.page-section {
+    display: none;
+}
+
+/* === Tags === */
+.tag {
+    display: inline-block;
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-subtle);
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: var(--space-6);
+}
+
+.tag-hot {
+    background: rgba(255, 91, 79, 0.1);
+    color: var(--ship-red);
+}
+
+.tag-new {
+    background: var(--badge-blue-bg);
+    color: var(--badge-blue-text);
+}
+
+.tag-ending {
+    background: rgba(255, 191, 0, 0.1);
+    color: #b8860b;
+}
+
+/* === Toast === */
+.toast {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--geist-black);
+    color: var(--geist-white);
+    padding: var(--space-12) var(--space-24);
+    border-radius: var(--radius-comfortable);
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 200;
+    opacity: 0;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-card-full);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* === Workflow Pills === */
+.workflow-pill {
+    display: inline-block;
+    padding: var(--space-4) var(--space-10);
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--geist-white);
+}
+
+.workflow-develop {
+    background: var(--develop-blue);
+}
+
+.workflow-preview {
+    background: var(--preview-pink);
+}
+
+.workflow-ship {
+    background: var(--ship-red);
+}
+
+/* === Content Padding for TabBar === */
+/* 页面内容需要为底部 TabBar 留出空间 */
+.content-with-tabbar {
+    padding-bottom: 100px;
+}
+
+/* === Utility Classes === */
+/* Flexbox */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.flex-1 { flex: 1; }
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+
+/* Grid */
+.grid { display: grid; }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* Spacing - Padding */
+.p-4 { padding: 16px; }
+.px-4 { padding-left: 16px; padding-right: 16px; }
+.py-3 { padding-top: 12px; padding-bottom: 12px; }
+.px-2 { padding-left: 8px; padding-right: 8px; }
+.py-1\.5 { padding-top: 6px; padding-bottom: 6px; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mt-8 { margin-top: 32px; }
+.mr-1 { margin-right: 4px; }
+.mr-2 { margin-right: 8px; }
+.ml-2 { margin-left: 8px; }
+
+/* Sizing */
+.w-full { width: 100%; }
+.h-40 { height: 160px; }
+.h-48 { height: 192px; }
+.w-16 { width: 64px; }
+.h-16 { height: 64px; }
+.w-20 { width: 80px; }
+.h-20 { height: 80px; }
+.w-32 { width: 128px; }
+.h-32 { height: 128px; }
+
+/* Text */
+.text-center { text-align: center; }
+.text-sm { font-size: 14px; }
+.text-xs { font-size: 12px; }
+.text-lg { font-size: 18px; }
+.text-xl { font-size: 20px; }
+.text-2xl { font-size: 24px; }
+.text-4xl { font-size: 36px; }
+.text-6xl { font-size: 64px; }
+.text-8xl { font-size: 96px; }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 600; }
+
+/* Borders */
+.border-b { border-bottom: 1px solid var(--geist-gray-100); }
+.rounded { border-radius: 4px; }
+.rounded-lg { border-radius: var(--radius-image); }
+.rounded-full { border-radius: var(--radius-pill); }
+
+/* Position */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.top-2 { top: 8px; }
+.left-2 { left: 8px; }
+.bottom-2 { bottom: 8px; }
+
+/* Overflow */
+.overflow-hidden { overflow: hidden; }
+
+/* Backgrounds */
+.bg-white { background: var(--geist-white); }
+
+/* Cursor */
+.cursor-pointer { cursor: pointer; }
+
+/* Transitions */
+.transition { transition: all 0.2s ease; }
+
+/* Space between children */
+.space-y-2 > * + * { margin-top: 8px; }
