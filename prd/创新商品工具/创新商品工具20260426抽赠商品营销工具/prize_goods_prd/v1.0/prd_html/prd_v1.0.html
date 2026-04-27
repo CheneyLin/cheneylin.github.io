@@ -512,8 +512,8 @@ flowchart TD
         <tr><th>表名</th><th>字段</th><th>类型</th><th>说明</th></tr>
         <tr><td rowspan="6"><code>prize_goods_config</code></td><td>id</td><td>INT</td><td>配置ID</td></tr>
         <tr><td>activity_name</td><td>VARCHAR</td><td>活动名称</td></tr>
-        <tr><td>virtual_product_id</td><td>VARCHAR</td><td>虚拟商品ID（支持多个，逗号分隔）</td></tr>
-        <tr><td>fee_strategy</td><td>TINYINT</td><td>费用策略（0-0元赠送-按销售价计算营销费用/1-关联虚拟订单合并计算营销费用）</td></tr>
+        <tr><td>virtual_product_id</td><td>VARCHAR</td><td>虚拟商品ID</td></tr>
+        <tr><td>fee_strategy</td><td>TINYINT</td><td>费用策略（0-0元赠送/1-按销售价）</td></tr>
         <tr><td>status</td><td>TINYINT</td><td>状态（0-待审核/1-已通过/2-已拒绝）</td></tr>
         <tr><td>creator</td><td>VARCHAR</td><td>提报人</td></tr>
         <tr><td rowspan="7"><code>prize_goods_item</code></td><td>id</td><td>INT</td><td>商品ID</td></tr>
