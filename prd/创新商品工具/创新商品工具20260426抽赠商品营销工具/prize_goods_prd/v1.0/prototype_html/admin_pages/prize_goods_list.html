@@ -303,6 +303,17 @@
             margin-bottom: 16px;
         }
         
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+        
         .form-label {
             display: block;
             font-size: 12px;
@@ -360,6 +371,24 @@
         }
         
         .radio-item input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
             width: 16px;
             height: 16px;
             cursor: pointer;
@@ -492,23 +521,24 @@
                     <select class="filter-input">
                         <option value="">全部</option>
                         <option value="chou_baji">抽吧唧</option>
+                        <option value="chou_fudai">抽福袋</option>
                     </select>
-                </div>
-                <div class="filter-item">
-                    <span class="filter-label">虚拟商品ID:</span>
-                    <input type="text" class="filter-input" placeholder="请输入虚拟商品ID">
                 </div>
                 <div class="filter-item">
                     <span class="filter-label">状态:</span>
                     <select class="filter-input">
                         <option value="">全部</option>
-                        <option value="pending">待审核</option>
+                        <option value="pending_review">待审核</option>
                         <option value="approved">已通过</option>
                         <option value="rejected">已拒绝</option>
+                        <option value="active">启用</option>
+                        <option value="inactive">停用</option>
                     </select>
                 </div>
-                <button class="btn btn-primary">查询</button>
-                <button class="btn">重置</button>
+                <div class="filter-actions">
+                    <button class="btn btn-primary">查询</button>
+                    <button class="btn btn-default">重置</button>
+                </div>
             </div>
             
             <!-- Action Bar -->
@@ -533,97 +563,164 @@
                             </th>
                             <th>活动名称</th>
                             <th>玩法</th>
-                            <th>虚拟商品ID</th>
                             <th>费用策略</th>
+                            <th>归属部门</th>
+                            <th>归属营销活动</th>
                             <th>提报人</th>
-                            <th>审核状态</th>
-                            <th>创建时间</th>
-                            <th style="width: 200px;">操作</th>
+                            <th>活动审核</th>
+                            <th>商品审核</th>
+                            <th>活动时间</th>
+                            <th style="width: 150px;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- 第一行：已通过状态 -->
                         <tr>
                             <td><input type="checkbox"></td>
                             <td>春节限定抽吧唧活动</td>
                             <td>抽吧唧</td>
-                            <td>VC20260001</td>
-                            <td>0元赠送</td>
+                            <td>0元赠送-按销售价计算营销费用</td>
+                            <td>市场部</td>
+                            <td>春节营销活动</td>
                             <td>张三</td>
                             <td><span class="badge badge-success">已通过</span></td>
-                            <td>2026-04-20 10:30</td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div style="color: #52c41a;">已上线: 3</div>
+                                    <div style="color: #faad14;">待审核: 0</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div>2026-01-20 00:00:00</div>
+                                    <div>2026-02-20 23:59:59</div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="action-btns">
                                     <button class="action-btn" onclick="openEditModal('春节限定抽吧唧活动')">编辑</button>
-                                    <button class="action-btn">查看</button>
+                                    <button class="action-btn">停用</button>
                                     <button class="action-btn">复制</button>
                                 </div>
                             </td>
                         </tr>
+                        <!-- 第二行：待审核状态 -->
                         <tr>
                             <td><input type="checkbox"></td>
                             <td>夏日祭特别活动</td>
                             <td>抽吧唧</td>
-                            <td>VC20260002</td>
-                            <td>按销售价计算</td>
+                            <td>关联虚拟订单合并计算营销费用</td>
+                            <td>运营部</td>
+                            <td>夏日促销活动</td>
                             <td>李四</td>
                             <td><span class="badge badge-warning">待审核</span></td>
-                            <td>2026-04-22 14:20</td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div style="color: #52c41a;">已上线: 0</div>
+                                    <div style="color: #faad14;">待审核: 3</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div>2026-07-01 00:00:00</div>
+                                    <div>2026-08-31 23:59:59</div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="action-btns">
                                     <button class="action-btn" onclick="openEditModal('夏日祭特别活动')">编辑</button>
-                                    <button class="action-btn">审核</button>
-                                    <button class="action-btn">查看</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>周年庆庆典活动</td>
-                            <td>抽吧唧</td>
-                            <td>VC20260003</td>
-                            <td>0元赠送</td>
-                            <td>王五</td>
-                            <td><span class="badge badge-success">已通过</span></td>
-                            <td>2026-04-18 09:15</td>
-                            <td>
-                                <div class="action-btns">
-                                    <button class="action-btn" onclick="openEditModal('周年庆庆典活动')">编辑</button>
-                                    <button class="action-btn">查看</button>
+                                    <button class="action-btn">撤回审核</button>
                                     <button class="action-btn">复制</button>
                                 </div>
                             </td>
                         </tr>
+                        <!-- 第三行：已拒绝状态 -->
                         <tr>
                             <td><input type="checkbox"></td>
-                            <td>双十一促销活动</td>
+                            <td>周年庆庆典活动</td>
                             <td>抽吧唧</td>
-                            <td>VC20260004</td>
-                            <td>按销售价计算</td>
-                            <td>赵六</td>
+                            <td>0元赠送-按销售价计算营销费用</td>
+                            <td>产品部</td>
+                            <td>周年庆活动</td>
+                            <td>王五</td>
                             <td><span class="badge badge-error">已拒绝</span></td>
-                            <td>2026-04-15 16:45</td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div style="color: #52c41a;">已上线: 2</div>
+                                    <div style="color: #faad14;">待审核: 1</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div>2026-03-15 00:00:00</div>
+                                    <div>2026-04-30 23:59:59</div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn" onclick="openEditModal('双十一促销活动')">编辑</button>
-                                    <button class="action-btn">查看</button>
-                                    <button class="action-btn">重新提交</button>
+                                    <button class="action-btn" onclick="openEditModal('周年庆庆典活动')">编辑</button>
+                                    <button class="action-btn">递交审核</button>
+                                    <button class="action-btn">复制</button>
                                 </div>
                             </td>
                         </tr>
+                        <!-- 第四行：启用状态（已通过且正在运行） -->
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>双十一促销活动</td>
+                            <td>抽福袋</td>
+                            <td>关联虚拟订单合并计算营销费用</td>
+                            <td>销售部</td>
+                            <td>双十一促销</td>
+                            <td>赵六</td>
+                            <td><span class="badge badge-success">已通过</span></td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div style="color: #52c41a;">已上线: 5</div>
+                                    <div style="color: #faad14;">待审核: 0</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div>2025-11-01 00:00:00</div>
+                                    <div>2025-11-30 23:59:59</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="openEditModal('双十一促销活动')">编辑</button>
+                                    <button class="action-btn">停用</button>
+                                    <button class="action-btn">复制</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 第五行：停用状态（已通过但已停用） -->
                         <tr>
                             <td><input type="checkbox"></td>
                             <td>元旦新年活动</td>
                             <td>抽吧唧</td>
-                            <td>VC20260005</td>
-                            <td>0元赠送</td>
+                            <td>0元赠送-按销售价计算营销费用</td>
+                            <td>市场部</td>
+                            <td>元旦新年活动</td>
                             <td>孙七</td>
-                            <td><span class="badge badge-warning">待审核</span></td>
-                            <td>2026-04-25 11:00</td>
+                            <td><span class="badge badge-success">已通过</span></td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div style="color: #52c41a;">已上线: 0</div>
+                                    <div style="color: #faad14;">待审核: 2</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    <div>2026-12-25 00:00:00</div>
+                                    <div>2027-01-10 23:59:59</div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="action-btns">
                                     <button class="action-btn" onclick="openEditModal('元旦新年活动')">编辑</button>
-                                    <button class="action-btn">审核</button>
-                                    <button class="action-btn">查看</button>
+                                    <button class="action-btn">启用</button>
+                                    <button class="action-btn">复制</button>
                                 </div>
                             </td>
                         </tr>
@@ -658,22 +755,26 @@
                 <div class="card">
                     <h2 class="section-title">基本配置</h2>
                     
-                    <div class="form-group">
-                        <label class="form-label">
-                            活动名称 <span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="activityName" placeholder="请输入活动名称" value="">
+                    <!-- 第一行：活动名称 + 玩法绑定 -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                活动名称 <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="activityName" placeholder="请输入活动名称" value="">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                玩法绑定 <span class="required">*</span>
+                            </label>
+                            <select class="form-select">
+                                <option value="chou_baji" selected>抽吧唧活动</option>
+                            </select>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="form-label">
-                            玩法绑定 <span class="required">*</span>
-                        </label>
-                        <select class="form-select">
-                            <option value="chou_baji" selected>抽吧唧活动</option>
-                        </select>
-                    </div>
-                    
+                    <!-- 第二行：虚拟商品ID（独占一行） -->
                     <div class="form-group">
                         <label class="form-label">
                             虚拟商品ID <span class="required">*</span>
@@ -684,29 +785,90 @@
                         <p style="font-size: 12px; color: #808080; margin-top: 4px;">支持多个虚拟商品ID，按回车键快速添加</p>
                     </div>
                     
+                    <!-- 第三行：费用策略（独占一行） -->
                     <div class="form-group">
                         <label class="form-label">
                             费用策略 <span class="required">*</span>
                         </label>
                         <div class="radio-group">
                             <label class="radio-item">
-                                <input type="radio" name="feeStrategy" value="free" checked>
-                                <span>0元赠送（按销售价计算营销费用）</span>
+                                <input type="radio" name="feeStrategy" value="free_sale_price" checked>
+                                <span>0元赠送-按销售价计算营销费用</span>
                             </label>
                             <label class="radio-item">
-                                <input type="radio" name="feeStrategy" value="price">
-                                <span>按销售价计算</span>
+                                <input type="radio" name="feeStrategy" value="virtual_order_merge">
+                                <span>关联虚拟订单合并计算营销费用</span>
                             </label>
                         </div>
                     </div>
                     
+                    <!-- 第四行：归属部门 + 归属营销活动 -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                归属部门 <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="department">
+                                <option value="">请选择归属部门</option>
+                                <option value="marketing">市场部</option>
+                                <option value="operation">运营部</option>
+                                <option value="product">产品部</option>
+                                <option value="sales">销售部</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                归属营销活动 <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="marketingCampaign">
+                                <option value="">请选择归属营销活动</option>
+                                <option value="spring_festival">春节营销活动</option>
+                                <option value="summer_promotion">夏日促销活动</option>
+                                <option value="anniversary">周年庆活动</option>
+                                <option value="double11">双十一促销</option>
+                                <option value="new_year">元旦新年活动</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 第五行：活动起止时间（独占一行） -->
                     <div class="form-group">
-                        <label class="form-label">告警设置</label>
-                        <div class="switch-container">
-                            <div class="switch active" id="alertSwitch" onclick="toggleSwitch()">
-                                <div class="switch-handle"></div>
+                        <label class="form-label">
+                            活动起止时间 <span class="required">*</span>
+                        </label>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <input type="datetime-local" class="form-input" id="startTime" style="flex: 1;">
+                            <span style="color: #4d4d4d;">至</span>
+                            <input type="datetime-local" class="form-input" id="endTime" style="flex: 1;">
+                        </div>
+                    </div>
+                    
+                    <!-- 第六行：可叠加营销工具 + 告警设置 -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">可叠加营销工具</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="marketingTools" value="coupon">
+                                    <span>优惠券</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="marketingTools" value="payment_gift">
+                                    <span>支付有礼</span>
+                                </label>
                             </div>
-                            <span>开启后可为商品设置告警库存</span>
+                            <p style="font-size: 12px; color: #808080; margin-top: 4px;">选择此活动可以与其他营销工具叠加使用</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">告警设置</label>
+                            <div class="switch-container">
+                                <div class="switch" id="alertSwitch" onclick="toggleSwitch()">
+                                    <div class="switch-handle"></div>
+                                </div>
+                                <span style="font-size: 12px; color: #4d4d4d;">开启后可为商品设置告警库存</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -854,14 +1016,25 @@
         function resetForm() {
             // Reset form fields
             document.getElementById('activityName').value = '';
+            document.getElementById('department').value = '';
+            document.getElementById('marketingCampaign').value = '';
+            document.getElementById('startTime').value = '';
+            document.getElementById('endTime').value = '';
             tags = [];
             renderTags();
             
             // Reset radio buttons
-            document.querySelector('input[name="feeStrategy"][value="free"]').checked = true;
+            document.querySelector('input[name="feeStrategy"][value="free_sale_price"]').checked = true;
             
-            // Reset switch
-            document.getElementById('alertSwitch').classList.add('active');
+            // Reset checkboxes - 默认都不选中
+            const checkboxes = document.querySelectorAll('input[name="marketingTools"]');
+            checkboxes.forEach(cb => cb.checked = false);
+            
+            // Reset switch - 默认关闭
+            const alertSwitch = document.getElementById('alertSwitch');
+            if (alertSwitch.classList.contains('active')) {
+                alertSwitch.classList.remove('active');
+            }
             
             // Reset product table (in real scenario, would load from data)
             // For demo, keep the sample data

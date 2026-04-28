@@ -229,194 +229,149 @@ graph TD
       <h3>5.1 运营后台端功能</h3>
       
       <div class="feature-module" id="admin_prize_goods_list" data-feature="admin_prize_goods_list">
-        <h3>5.1.1 抽赠商品管理列表页 <button class="highlight-btn" onclick="highlightFeature('admin_prize_goods_list')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：展示所有抽赠商品配置，支持多维度筛选和查询。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>展示所有抽赠商品配置列表</li>
-            <li>支持按项目、玩法、虚拟商品ID、状态筛选</li>
-            <li>表格列包括：活动名称、玩法、虚拟商品ID、费用策略、提报人、审核状态、创建时间、操作</li>
-            <li>操作按钮：编辑、查看、复制、审核（仅待审核状态显示）</li>
-            <li>支持批量选择和批量操作</li>
-            <li>分页展示，默认每页20条</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>筛选条件支持实时搜索</li>
-            <li>状态徽章使用颜色区分（已通过-绿色、待审核-橙色、已拒绝-红色）</li>
-            <li>悬停行高亮显示</li>
-            <li>操作按钮根据状态动态显示</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>前端加载页面 → 获取抽赠商品列表 → 展示数据表格
+        <h3>5.1.1 运营后台-营销管理-抽赠商品管理模块</h3>
+        
+        <div class="feature-module" id="admin_prize_goods_list_page" data-feature="admin_prize_goods_list_page">
+          <h4>5.1.1.1 抽赠商品管理列表页 <button class="highlight-btn" onclick="highlightFeature('admin_prize_goods_list')">查看原型</button></h4>
+          <p class="meta"><strong>入口位置</strong>：运营后台 > 营销管理 > 抽赠商品管理</p>
+          <p class="meta"><strong>功能描述</strong>：展示所有抽赠商品配置，支持多维度筛选和查询。</p>
+          <div class="field-group">
+            <div class="field-label">页面模块</div>
+            <ul class="list">
+              <li><strong>抽赠商品列表展示</strong>：活动名称、玩法、费用策略、归属部门、归属营销活动、提报人、活动时间、活动审核、商品审核、操作等关键信息
+                <ul>
+                  <li>活动时间：上面是开始时间，下面是结束时间，时分秒级展示</li>
+                  <li>商品审核：展示已上线商品数量，待审核商品数量</li>
+                </ul>
+              </li>
+              <li><strong>操作按钮</strong>：
+                <ul>
+                  <li>单独的新增按钮</li>
+                  <li>列表中的编辑、递交审核/撤回审核/审核/启用/停用、复制</li>
+                </ul>
+              </li>
+              <li><strong>筛选条件</strong>：项目、玩法、状态</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">交互设计</div>
+            <ul class="list">
+              <li>筛选条件支持实时搜索</li>
+              <li>状态徽章使用颜色区分（已通过-绿色、待审核-橙色、已拒绝-红色）</li>
+              <li>悬停行高亮显示</li>
+              <li>操作按钮根据状态动态显示</li>
+              <li>分页展示，默认每页20条</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">数据流向</div>
+            <pre>前端加载页面 → 获取抽赠商品列表 → 展示数据表格
 → 用户筛选/操作 → 更新列表或跳转详情页</pre>
+          </div>
         </div>
-      </div>
 
-      <div class="feature-module" id="admin_prize_goods_edit" data-feature="admin_prize_goods_edit">
-        <h3>5.1.2 抽赠商品新增/编辑弹层 <button class="highlight-btn" onclick="highlightFeature('admin_prize_goods_edit')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：配置抽赠商品的基本信息和商品信息。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li><strong>基本配置区（上半区）</strong>：
-              <ul>
-                <li>活动名称：文本输入框，必填</li>
-                <li>玩法绑定：下拉选择，单选，默认"抽吧唧活动"</li>
-                <li>虚拟商品ID：多选搜索框，支持标签式添加，支持多个虚拟商品ID</li>
-                <li>费用策略：单选按钮组，默认"0元赠送-按销售价计算营销费用"
-                  <ul>
-                    <li>0元赠送-按销售价计算营销费用（默认项目）</li>
-                    <li>关联虚拟订单合并计算营销费用</li>
-                  </ul>
-                </li>
-                <li>告警设置：开关按钮，默认关闭，开启后可设置告警库存</li>
-              </ul>
-            </li>
-            <li><strong>商品信息区（下半区）</strong>：
-              <ul>
-                <li>商品列表表格：商品ID、SKU、商品名称、成本价、活动库存、告警库存、告警状态</li>
-                <li>支持批量设置库存和告警库存</li>
-                <li>支持导入商品（Excel上传）</li>
-                <li>支持删除商品</li>
-              </ul>
-            </li>
-            <li>保存时进行表单验证，必填项不能为空</li>
-            <li>保存成功后返回列表页并提示成功</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>弹层分为上下两个区域，清晰区分基本配置和商品信息</li>
-            <li>虚拟商品ID支持回车快速添加标签</li>
-            <li>商品表格支持滚动查看</li>
-            <li>保存按钮固定在底部</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>用户打开弹层 → 填写配置信息 → 添加商品
+        <div class="feature-module" id="admin_prize_goods_add_modal" data-feature="admin_prize_goods_add_modal">
+          <h4>5.1.1.2 抽赠商品管理添加弹层 <button class="highlight-btn" onclick="highlightFeature('admin_prize_goods_edit')">查看原型</button></h4>
+          <p class="meta"><strong>入口位置</strong>：运营后台 > 营销管理 > 抽赠商品管理 - 新增</p>
+          <p class="meta"><strong>目标</strong>：支持运营完成玩法绑定与项目级费用、告警的基础配置</p>
+          <div class="field-group">
+            <div class="field-label">页面模块</div>
+            <ul class="list">
+              <li><strong>基本配置（上半区）</strong>：
+                <ul>
+                  <li>活动名称：输入活动名称</li>
+                  <li>玩法绑定：选择活动玩法，单选
+                    <ul>
+                      <li>默认项目：抽吧唧活动</li>
+                    </ul>
+                  </li>
+                  <li>虚拟商品ID：支持多个虚拟商品ID，支持输入ID下拉搜索选择框添加</li>
+                  <li>费用策略：选择活动使用的策略，单选
+                    <ul>
+                      <li>0元赠送-按销售价计算营销费用（默认项目）</li>
+                      <li>关联虚拟订单合并计算营销费用</li>
+                    </ul>
+                  </li>
+                  <li>归属部门：选择活动归属部门，单选</li>
+                  <li>归属营销活动：选择活动归属营销活动，单选</li>
+                  <li>活动起止时间：选择活动开始时间和结束时间</li>
+                  <li>可叠加营销工具：选择活动可叠加的营销工具，多选
+                    <ul>
+                      <li>优惠券</li>
+                      <li>支付有礼</li>
+                    </ul>
+                  </li>
+                  <li>告警设置：是否启用告警开关，默认关闭</li>
+                </ul>
+              </li>
+              <li><strong>商品信息（下半区）</strong>：
+                <ul>
+                  <li>商品列表：支持输入商品ID下拉搜索选择框添加，展示已添加的商品ID、SKU、商品名称、成本价、活动库存、告警库存、告警状态等信息</li>
+                  <li>批量操作：批量设置活动库存和告警库存，批量启用/关闭告警</li>
+                  <li>导入操作：支持批量导入/Excel导入方式添加商品（本方案中仅示意）</li>
+                </ul>
+              </li>
+              <li>保存与取消按钮</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">交互设计</div>
+            <ul class="list">
+              <li>弹层分为上下两个区域，清晰区分基本配置和商品信息</li>
+              <li>虚拟商品ID支持回车快速添加标签</li>
+              <li>商品表格支持滚动查看</li>
+              <li>保存按钮固定在底部</li>
+              <li>表单验证：必填项不能为空</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">数据流向</div>
+            <pre>用户打开弹层 → 填写配置信息 → 添加商品
 → 表单验证 → 保存数据 → 返回列表页</pre>
+          </div>
         </div>
       </div>
 
-      <div class="feature-module" id="admin_prize_goods_audit" data-feature="admin_prize_goods_audit">
-        <h3>5.1.3 抽赠商品审核 <button class="highlight-btn" onclick="highlightFeature('admin_prize_goods_audit')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：审核人员对待审核的抽赠商品配置进行审核操作。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>审核人员在列表页点击"审核"按钮</li>
-            <li>弹出审核对话框，展示配置详情</li>
-            <li>审核人员可以选择"通过"或"拒绝"</li>
-            <li>拒绝时需要填写拒绝原因</li>
-            <li>审核通过后，配置生效并可关联到活动</li>
-            <li>审核拒绝后，提报人可以修改后重新提交</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>审核对话框清晰展示配置详情</li>
-            <li>通过和拒绝按钮使用主次按钮区分</li>
-            <li>拒绝原因输入框在点击"拒绝"后展开</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>审核人员点击审核 → 查看详情 → 选择通过/拒绝
-→ 更新审核状态 → 通知提报人</pre>
-        </div>
-      </div>
-
-      <div class="feature-module" id="admin_activity_list" data-feature="admin_activity_list">
-        <h3>5.1.4 抽吧唧活动管理列表页 <button class="highlight-btn" onclick="highlightFeature('admin_activity_list')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：展示所有抽吧唧活动，支持筛选和状态管理。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>展示所有抽吧唧活动列表</li>
-            <li>支持按活动名称、虚拟商品ID、状态筛选</li>
-            <li>表格列包括：活动名称、虚拟商品ID、活动状态、开始时间、结束时间、操作</li>
-            <li>操作按钮：编辑、启用/禁用、查看</li>
-            <li>支持展开查看详情（库存统计、参与人数、发放数量）</li>
-            <li>分页展示，默认每页20条</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>状态徽章使用颜色区分（进行中-绿色、未开始-橙色、已结束-灰色）</li>
-            <li>展开图标点击后旋转90度</li>
-            <li>详情行展示库存和统计数据</li>
-            <li>已结束的活动不可编辑和禁用</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>前端加载页面 → 获取活动列表 → 展示数据表格
+      <div class="feature-module" id="admin_activity_management" data-feature="admin_activity_management">
+        <h3>5.1.2 运营后台-营销管理-抽吧唧活动管理模块</h3>
+        
+        <div class="feature-module" id="admin_activity_list_page" data-feature="admin_activity_list_page">
+          <h4>5.1.2.1 抽吧唧活动列表页 <button class="highlight-btn" onclick="highlightFeature('admin_activity_list')">查看原型</button></h4>
+          <p class="meta"><strong>入口位置</strong>：运营后台 > 营销管理 > 抽吧唧活动</p>
+          <p class="meta"><strong>目标</strong>：支持运营查看玩法活动列表</p>
+          <div class="field-group">
+            <div class="field-label">页面模块</div>
+            <ul class="list">
+              <li><strong>活动列表展示</strong>：活动名称、虚拟商品ID、活动状态、开始时间、结束时间、操作等关键信息展示</li>
+              <li><strong>操作按钮</strong>：编辑、启用/禁用</li>
+              <li><strong>筛选条件</strong>：活动名称、虚拟商品ID、状态</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">详细逻辑</div>
+            <ul class="list">
+              <li>展示所有抽吧唧活动列表</li>
+              <li>支持按活动名称、虚拟商品ID、状态筛选</li>
+              <li>表格列包括：活动名称、虚拟商品ID、活动状态、开始时间、结束时间、操作</li>
+              <li>操作按钮：编辑、启用/禁用、查看</li>
+              <li>支持展开查看详情（库存统计、参与人数、发放数量）</li>
+              <li>分页展示，默认每页20条</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">交互设计</div>
+            <ul class="list">
+              <li>状态徽章使用颜色区分（进行中-绿色、未开始-橙色、已结束-灰色）</li>
+              <li>展开图标点击后旋转90度</li>
+              <li>详情行展示库存和统计数据</li>
+              <li>已结束的活动不可编辑和禁用</li>
+            </ul>
+          </div>
+          <div class="field-group">
+            <div class="field-label">数据流向</div>
+            <pre>前端加载页面 → 获取活动列表 → 展示数据表格
 → 用户筛选/展开/操作 → 更新列表或跳转详情页</pre>
-        </div>
-      </div>
-
-      <div class="feature-module" id="admin_activity_detail" data-feature="admin_activity_detail">
-        <h3>5.1.5 活动详情查看 <button class="highlight-btn" onclick="highlightFeature('admin_activity_detail')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：查看活动的完整配置和详细数据统计。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>展示活动基本信息（名称、ID、时间、状态）</li>
-            <li>展示关联的抽赠商品配置</li>
-            <li>展示库存统计（总库存、已使用、剩余）</li>
-            <li>展示参与数据（参与人数、发放数量）</li>
-            <li>展示费用统计（营销费用、实际支出）</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>使用卡片式布局展示不同维度的数据</li>
-            <li>关键数据使用大字号突出显示</li>
-            <li>支持导出详细数据报表</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>用户点击查看详情 → 加载活动详情 → 展示配置和数据</pre>
-        </div>
-      </div>
-
-      <div class="feature-module" id="admin_activity_toggle" data-feature="admin_activity_toggle">
-        <h3>5.1.6 活动启用/禁用 <button class="highlight-btn" onclick="highlightFeature('admin_activity_toggle')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：控制活动的启用和禁用状态。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>运营可以在列表页点击"启用"或"禁用"按钮</li>
-            <li>启用活动后，用户可以参与活动</li>
-            <li>禁用活动后，用户无法继续参与，但已参与的数据保留</li>
-            <li>已结束的活动不可再次启用</li>
-            <li>操作前需要二次确认</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>启用和禁用按钮根据当前状态动态显示</li>
-            <li>点击后弹出确认对话框</li>
-            <li>操作成功后刷新列表状态</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>用户点击启用/禁用 → 二次确认 → 更新活动状态
-→ 刷新列表 → 通知相关人员</pre>
+          </div>
         </div>
       </div>
     </div>
