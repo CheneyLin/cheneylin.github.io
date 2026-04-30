@@ -48,10 +48,14 @@ function formatBytes(bytes) {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
-
 // 生成JSON (API模块)
 function generateJSON() {
-    const modType = document.getElementById('modTypeInput').value.trim();
+    var modType = document.getElementById('modTypeInput').value.trim();
+
+// 支持用户输入的modTypeInput 格式 为 mod_description/mod_type 时，自动提取 mod_type
+    if (modType.includes('/')) {
+        modType = modType.split('/')[1];
+    }
 
     if (!modType) {
         updateStatus('请输入模块英文标识 (mod_type)', 'warning');
@@ -72,8 +76,13 @@ function generateJSON() {
 
 // 生成DEV模块JSON
 function generateDevJSON() {
-    const modType = document.getElementById('modTypeInput').value.trim();
-
+    var modType = document.getElementById('modTypeInput').value.trim();
+    var modDesc = '待补充中文描述'
+// 支持用户输入的modTypeInput 格式 为 mod_description/mod_type 时，自动提取 mod_type
+    if (modType.includes('/')) {
+        modDesc = modType.split('/')[0];
+        modType = modType.split('/')[1];
+    }
     if (!modType) {
         updateStatus('请输入模块英文标识 (mod_type)', 'warning');
         document.getElementById('modTypeInput').focus();
@@ -83,7 +92,7 @@ function generateDevJSON() {
     const jsonData = {
         "mod_type": modType,
         "mod_id": "dev",
-        "$slot_content": "待补充中文描述",
+        "$slot_content": modDesc,
         "$element_id": modType
     };
 
