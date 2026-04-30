@@ -178,13 +178,14 @@ input:checked + .toggle-slider:before { transform: translateX(18px); }
 <label class="form-label">模板名称</label>
 <input type="text" class="form-input" id="templateName" placeholder="请输入模板名称">
 </div>
-<div class="form-group" style="flex-shrink: 0;">
+<div class="form-group"  style="flex: 1;">
 <label class="form-label" style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-独立计费
+独立计费</label>
 <label class="toggle-switch">
 <input type="checkbox" id="independentBilling">
 <span class="toggle-slider"></span>
-</label>
+<span style="font-weight: 400; color: #8c8c8c; font-size: 12px;">相同运费模板的商品，是否独立计费</span>
+
 </label>
 </div>
 </div>
