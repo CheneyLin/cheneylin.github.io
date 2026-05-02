@@ -94,6 +94,7 @@
 // Page Content
 .page-content {
   padding: 0;
+
 }
 
 .wrapper {
@@ -153,12 +154,11 @@
     linear-gradient(
       rgba(0, 0, 0, 0.6),
       rgba(0, 0, 0, 0.7)
-    ),
-    url('/images/hero.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll; // Background scrolls with the section
+    );
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   background-attachment: scroll; // Background scrolls with the section
   
   .hero-title {
     font-size: $apple-display-hero-size;
