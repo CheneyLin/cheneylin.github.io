@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>运费模板管理</title>
+<link href="../../../assets/admin_styles.css" rel="stylesheet">
+<link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+<link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+<div class="admin-header">
+<h1>运费模板管理</h1>
+<button class="admin-btn-primary" onclick="openPanel('new')"><i class="bi bi-plus"></i> 新建模板</button>
+</div>
+<div class="admin-content">
+<div class="admin-search-bar">
+<input type="text" class="admin-search-input" placeholder="搜索模板名称">
+<button class="admin-btn-primary" style="background: #fff; color: #171717; border: 1px solid #e5e5e5;">筛选</button>
+</div>
+<div class="admin-table-card">
+<table class="admin-table">
+<thead>
+<tr>
+<th>模板名称</th>
+<th>配送方式</th>
+<th>计费方式</th>
+<th>海外税费</th>
+<th>关联类目</th>
+<th>状态</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr data-prototype="admin_shipping_template_list">
+<td>美国专线</td>
+<td>空运</td>
+<td>按件</td>
+<td><span class="admin-tax-badge admin-tax-configured">已配置</span></td>
+<td>3 个类目</td>
+<td><span class="admin-status-badge admin-status-active">启用</span></td>
+<td>
+<span class="admin-action-btn" onclick="openPanel('edit')">编辑</span>
+<span class="admin-action-btn">禁用</span>
+</td>
+</tr>
+<tr>
+<td>欧洲专线</td>
+<td>海运</td>
+<td>按重量</td>
+<td><span class="admin-tax-badge admin-tax-not-configured">未配置</span></td>
+<td>5 个类目</td>
+<td><span class="admin-status-badge admin-status-active">启用</span></td>
+<td>
+<span class="admin-action-btn" onclick="openPanel('edit')">编辑</span>
+<span class="admin-action-btn">禁用</span>
+</td>
+</tr>
+<tr>
+<td>日本专线</td>
+<td>空运</td>
+<td>按件</td>
+<td><span class="admin-tax-badge admin-tax-configured">已配置</span></td>
+<td>2 个类目</td>
+<td><span class="admin-status-badge admin-status-inactive">禁用</span></td>
+<td>
+<span class="admin-action-btn" onclick="openPanel('edit')">编辑</span>
+<span class="admin-action-btn">启用</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admin-pagination">
+<button class="admin-page-btn"><</button>
+<button class="admin-page-btn active">1</button>
+<button class="admin-page-btn">2</button>
+<button class="admin-page-btn">3</button>
+<button class="admin-page-btn">></button>
+</div>
+</div>
+</div>
+<div class="admin-overlay" id="overlay" onclick="closePanel()"></div>
+<div class="admin-slide-panel" id="slidePanel">
+<div class="admin-slide-panel-header">
+<h2 id="panelTitle">新建运费模板</h2>
+<div class="admin-close-btn" onclick="closePanel()">&times;</div>
+</div>
+<div class="admin-slide-panel-body">
+<div class="admin-panel-section" data-prototype="admin_shipping_template_edit">
+<div class="admin-panel-section-header">基本信息</div>
+<div class="admin-panel-section-body">
+<div class="admin-form-row admin-align-end" style="gap: 16px;">
+<div class="admin-form-group admin-flex-1">
+<label class="admin-form-label">模板名称</label>
+<input type="text" class="admin-form-input" id="templateName" placeholder="请输入模板名称">
+</div>
+<div class="admin-form-group admin-flex-1">
+<label class="admin-form-label admin-toggle-label">
+独立计费</label>
+<label class="admin-toggle-switch">
+<input type="checkbox" id="independentBilling">
+<span class="admin-toggle-slider"></span>
+</label>
+<span class="admin-toggle-sublabel">相同运费模板的商品，是否独立计费</span>
+</div>
+</div>
+</div>
+</div>
+<div class="admin-panel-section">
+<div class="admin-panel-section-header">基础运费配置</div>
+<div class="admin-panel-section-body">
+<div class="admin-form-group">
+<label class="admin-form-label">计费方式</label>
+<div class="admin-radio-group">
+<label class="admin-radio-option">
+<input type="radio" name="billingType" value="per_item" checked onchange="onBillingTypeChange()">
+<span>按件</span>
+</label>
+<label class="admin-radio-option">
+<input type="radio" name="billingType" value="per_weight" onchange="onBillingTypeChange()">
+<span>按重量</span>
+</label>
+</div>
+</div>
+<div class="admin-form-row gap-12">
+<div class="admin-form-group">
+<label class="admin-form-label" id="tieredLabel1">首件数量</label>
+<input type="number" class="admin-form-input" placeholder="请输入数量" value="1" min="1">
+</div>
+<div class="admin-form-group">
+<label class="admin-form-label" id="tieredLabel2">首件费用（元）</label>
+<input type="number" class="admin-form-input" placeholder="0.00" value="10.00" step="0.01">
+</div>
+<div class="admin-form-group">
+<label class="admin-form-label" id="tieredLabel3">续件数量</label>
+<input type="number" class="admin-form-input" placeholder="请输入数量" value="1" min="1">
+</div>
+<div class="admin-form-group">
+<label class="admin-form-label" id="tieredLabel4">续件费用（元）</label>
+<input type="number" class="admin-form-input" placeholder="0.00" value="5.00" step="0.01">
+</div>
+</div>
+</div>
+</div>
+<div class="admin-panel-section" data-prototype="admin_overseas_tax_config">
+<div class="admin-collapse-header" onclick="toggleCollapse(this)">
+<div class="admin-collapse-title">
+<i class="bi bi-globe"></i> 海外税费配置（高级）
+<span class="admin-toggle-sublabel">（有需要时展开添加）</span>
+</div>
+<i class="bi bi-chevron-down admin-collapse-icon"></i>
+</div>
+<div class="admin-collapse-content" id="overseasTaxSection">
+<div id="taxItemsContainer"></div>
+<button class="admin-add-tax-btn" onclick="addTaxItem('')"><i class="bi bi-plus"></i> 添加税费项</button>
+</div>
+</div>
+</div>
+<div class="admin-btn-group">
+<button class="admin-btn-secondary" onclick="closePanel()">取消</button>
+<button class="admin-btn-save" onclick="closePanel()">保存</button>
+</div>
+</div>
+<script>
+let taxItemCount = 0;
+const maxTaxItems = 5;
+const usedTaxTypes = [];
+
+function openPanel(mode) {
+document.getElementById('overlay').classList.add('open');
+document.getElementById('slidePanel').classList.add('open');
+document.getElementById('panelTitle').textContent = mode === 'new' ? '新建运费模板' : '编辑运费模板';
+if (mode === 'new') {
+document.getElementById('templateName').value = '';
+document.getElementById('taxItemsContainer').innerHTML = '';
+taxItemCount = 0;
+usedTaxTypes.length = 0;
+document.querySelector('input[name="billingType"][value="per_item"]').checked = true;
+onBillingTypeChange();
+}
+}
+
+function onBillingTypeChange() {
+const type = document.querySelector('input[name="billingType"]:checked').value;
+const isWeight = type === 'per_weight';
+document.getElementById('tieredLabel1').textContent = isWeight ? '首重重量（公斤）' : '首件数量';
+document.getElementById('tieredLabel2').textContent = isWeight ? '首重费用（元）' : '首件费用（元）';
+document.getElementById('tieredLabel3').textContent = isWeight ? '续重重量（公斤）' : '续件数量';
+document.getElementById('tieredLabel4').textContent = isWeight ? '续重费用（元）' : '续件费用（元）';
+}
+
+function closePanel() {
+document.getElementById('overlay').classList.remove('open');
+document.getElementById('slidePanel').classList.remove('open');
+}
+
+function toggleCollapse(header) {
+const content = header.nextElementSibling;
+const icon = header.querySelector('.collapse-icon');
+content.classList.toggle('open');
+icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function toggleTaxDropdown() {
+const dropdown = document.getElementById('taxDropdownContent');
+dropdown.classList.toggle('open');
+}
+
+function selectTaxType(type) {
+document.getElementById('taxDropdownContent').classList.remove('open');
+if (type === 'custom') {
+type = prompt('请输入自定义税费名称：');
+if (!type) return;
+}
+if (usedTaxTypes.includes(type)) {
+alert('该税费项已存在，请选择其他类型');
+return;
+}
+if (taxItemCount >= maxTaxItems) {
+alert('最多只能添加 5 项税费');
+return;
+}
+usedTaxTypes.push(type);
+addTaxItem(type);
+}
+
+function addTaxItem(type) {
+if (taxItemCount >= maxTaxItems) {
+alert('最多只能添加 5 项税费');
+return;
+}
+taxItemCount++;
+const container = document.getElementById('taxItemsContainer');
+const taxItem = document.createElement('div');
+taxItem.className = 'admin-tax-item';
+taxItem.id = `taxItem_${taxItemCount}`;
+taxItem.dataset.prototype = `admin_tax_billing_setting`;
+const safeType = type ? type.replace(/'/g, "\\'") : '';
+taxItem.innerHTML = `
+<div class="admin-tax-item-header admin-align-start">
+<div class="admin-flex-1">
+<div class="admin-form-group" style="margin-bottom: 8px;">
+<label class="admin-form-label">税费名称</label>
+<div class="admin-form-row admin-gap-8" style="align-items: center;">
+<input type="text" class="admin-form-input admin-tax-name-input" id="taxName_${taxItemCount}" value="${type || ''}" placeholder="请输入税费名称" onchange="updateTaxName(${taxItemCount})">
+<button type="button" class="admin-quick-btn" onclick="setTaxName(${taxItemCount}, '海外运费')">海外运费</button>
+<button type="button" class="admin-quick-btn" onclick="setTaxName(${taxItemCount}, '关税与清关费')">关税与清关费</button>
+</div>
+</div>
+</div>
+</div>
+<div class="admin-form-group" style="margin-bottom: 10px;">
+<label class="admin-form-label">计费方式</label>
+<div class="admin-radio-group">
+<label class="admin-radio-option">
+<input type="radio" name="billing_${taxItemCount}" value="per_item" checked onchange="updateBillingLabels(${taxItemCount}, 'per_item')">
+<span>按件</span>
+</label>
+<label class="admin-radio-option">
+<input type="radio" name="billing_${taxItemCount}" value="per_weight" onchange="updateBillingLabels(${taxItemCount}, 'per_weight')">
+<span>按重量</span>
+</label>
+</div>
+</div>
+<div class="admin-form-row gap-12">
+<div class="admin-form-group">
+<label class="admin-form-label" id="firstLabel_${taxItemCount}">首件数量</label>
+<input type="number" class="admin-form-input" placeholder="请输入数量" value="1" min="1">
+</div>
+<div class="admin-form-group">
+<label class="admin-form-label" id="firstFeeLabel_${taxItemCount}">首件费用（元）</label>
+<input type="number" class="admin-form-input" placeholder="0.00" value="8.00" step="0.01">
+</div>
+<div class="admin-form-group">
+<label class="admin-form-label" id="continueLabel_${taxItemCount}">续件数量</label>
+<input type="number" class="admin-form-input" placeholder="请输入数量" value="1" min="1">
+</div>
+<div class="admin-form-group">
+<label class="admin-form-label" id="continueFeeLabel_${taxItemCount}">续件费用（元）</label>
+<input type="number" class="admin-form-input" placeholder="0.00" value="3.00" step="0.01">
+</div>
+</div>
+<div class="admin-form-row admin-justify-end admin-mt-12 admin-pt-12 admin-border-top">
+<button type="button" class="admin-delete-tax-btn" onclick="removeTaxItem(${taxItemCount}, '${safeType}')">
+<i class="bi bi-trash"></i> 删除此税费项
+</button>
+</div>
+`;
+container.appendChild(taxItem);
+}
+
+function removeTaxItem(id, type) {
+const item = document.getElementById(`taxItem_${id}`);
+if (item) {
+item.remove();
+const index = usedTaxTypes.indexOf(type);
+if (index > -1) {
+usedTaxTypes.splice(index, 1);
+}
+}
+}
+
+function setTaxName(id, name) {
+const input = document.getElementById(`taxName_${id}`);
+if (input) {
+const currentItem = document.getElementById(`taxItem_${id}`);
+const oldName = input.value;
+if (oldName !== name && usedTaxTypes.includes(name)) {
+alert('该税费项已存在，请选择其他名称');
+return;
+}
+const oldIndex = usedTaxTypes.indexOf(oldName);
+if (oldIndex > -1) {
+usedTaxTypes.splice(oldIndex, 1);
+}
+usedTaxTypes.push(name);
+input.value = name;
+}
+}
+
+function updateTaxName(id) {
+const input = document.getElementById(`taxName_${id}`);
+if (input) {
+const newName = input.value.trim();
+if (!newName) {
+alert('税费名称不能为空');
+return;
+}
+const count = usedTaxTypes.filter(name => name === newName).length;
+if (count > 1) {
+alert('该税费项已存在，请使用其他名称');
+return;
+}
+}
+}
+
+function toggleBillingFields(id) {}
+
+function updateBillingLabels(id, type) {
+const firstLabel = document.getElementById(`firstLabel_${id}`);
+const firstFeeLabel = document.getElementById(`firstFeeLabel_${id}`);
+const continueLabel = document.getElementById(`continueLabel_${id}`);
+const continueFeeLabel = document.getElementById(`continueFeeLabel_${id}`);
+if (type === 'per_item') {
+firstLabel.textContent = '首件数量';
+firstFeeLabel.textContent = '首件费用（元）';
+continueLabel.textContent = '续件数量';
+continueFeeLabel.textContent = '续件费用（元）';
+} else {
+firstLabel.textContent = '首重重量（公斤）';
+firstFeeLabel.textContent = '首重费用（元）';
+continueLabel.textContent = '续重重量（公斤）';
+continueFeeLabel.textContent = '续重费用（元）';
+}
+}
+
+window.addEventListener('message', function(e) {
+if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+const featureId = e.data.featureId;
+document.querySelectorAll('[data-prototype]').forEach(el => {
+el.classList.remove('admin-feature-highlight');
+if (el.dataset.prototype === featureId) {
+el.classList.add('admin-feature-highlight');
+el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+});
+}
+});
+
+document.addEventListener('click', function(e) {
+if (!e.target.closest('.tax-options-dropdown')) {
+const dropdown = document.getElementById('taxDropdownContent');
+if (dropdown) {
+dropdown.classList.remove('open');
+}
+}
+});
+</script>
+</body>
+</html>

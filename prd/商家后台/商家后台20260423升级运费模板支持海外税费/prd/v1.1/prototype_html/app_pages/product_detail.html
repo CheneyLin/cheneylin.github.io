@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+    <title>商品详情页</title>
+</head>
+<body class="app-page-body">
+    <div class="app-header sticky">
+        <div class="app-header-btn">←</div>
+        <div class="app-header-title">商品详情</div>
+        <div class="app-header-btn">⋮</div>
+    </div>
+
+    <div class="app-product-image">商品图片</div>
+
+    <div class="app-product-info-detail" data-prototype="app_product_detail">
+        <div class="app-product-price-large">¥299.00</div>
+        <div class="app-product-name-large">海外直邮限定款手办</div>
+        <div class="app-product-desc">预计7-14个工作日送达</div>
+    </div>
+
+    <div class="app-info-section">
+        <div class="app-info-title">服务</div>
+        <div class="app-info-content">
+            <span class="app-info-item">* 7天无理由退货</span>
+            <span class="app-info-item">* 正品保障</span>
+        </div>
+    </div>
+
+    <div class="app-info-section">
+        <div class="app-info-title">配送</div>
+        <div class="app-info-content">
+            <span class="app-info-label">现货，长沙市运费 0 元，海外税费 10.00 元</span>
+        </div>
+    </div>
+
+    <div class="app-content-padding"></div>
+
+    <div class="app-footer">
+        <div class="app-btn-group">
+            <button class="app-btn-cart">加入购物车</button>
+            <button class="app-btn-buy">立即购买</button>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                const featureId = e.data.featureId;
+                document.querySelectorAll('[data-prototype]').forEach(el => {
+                    el.classList.remove('feature-highlight');
+                    if (el.dataset.prototype === featureId) {
+                        el.classList.add('feature-highlight');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家后台 - APP端原型 - 升级运费模板支持海外税费</title>
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+            --ship-red: #ff5b4f;
+            --preview-pink: #de1d8d;
+            --develop-blue: #0a72ef;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+            --shadow-focus: 0 0 0 2px var(--focus-blue);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-feature-settings: "liga" 1;
+            -webkit-font-smoothing: antialiased;
+            background: var(--geist-white);
+            color: var(--geist-black);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0 0 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 2;
+        }
+
+        #prototypeContainer {
+            width: 100%;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .global-view {
+            padding: 40px;
+            max-width: 1800px;
+            margin: 0 auto;
+            background: var(--geist-white);
+        }
+
+        .global-view-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .global-view-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
+            gap: 32px;
+            justify-content: center;
+            align-items: start;
+        }
+
+        .global-view .phone-frame-container {
+            width: 375px !important;
+            height: 812px !important;
+            margin: 0 auto;
+        }
+
+        .global-view .phone-frame-container::after {
+            content: attr(data-page-label);
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            letter-spacing: -0.28px;
+        }
+
+        .single-view {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+            background: var(--geist-white);
+        }
+
+        .phone-frame-container {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            background: var(--geist-white);
+            border-radius: 8px;
+            padding: 0;
+            box-shadow: 0 0 0 1px var(--geist-gray-100), 0 4px 12px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+        }
+
+        .phone-frame-container:hover {
+            box-shadow: 0 0 0 1px var(--geist-gray-400), 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .phone-notch {
+            display: none;
+        }
+
+        .phone-screen {
+            width: 375px;
+            height: 812px;
+            background: var(--geist-white);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-screen iframe {
+            width: 375px;
+            height: 812px;
+            border: none;
+            display: block;
+        }
+
+        .controls-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            background: var(--geist-white);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .control-btn {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-border);
+            font-family: inherit;
+            min-height: 38px;
+            line-height: 1.5;
+        }
+
+        .control-btn:hover {
+            background: var(--geist-gray-50);
+            transform: translateY(-1px);
+        }
+
+        .control-btn.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+
+        .page-selector-bar {
+            position: fixed;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--geist-white);
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: var(--shadow-card);
+            z-index: 1000;
+            display: flex;
+            gap: 6px;
+            max-width: 90vw;
+            overflow-x: auto;
+        }
+
+        .page-item-bar {
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            box-shadow: var(--shadow-border);
+            min-height: 38px;
+            line-height: 1.5;
+        }
+
+        .page-item-bar:hover {
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+        }
+
+        .page-item-bar.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+
+        .global-view .single-only,
+        .single-view .global-only {
+            display: none !important;
+        }
+
+        @media (max-width: 1024px) {
+            .page-selector-bar {
+                display: none !important;
+            }
+
+            .global-view {
+                padding: 24px 16px;
+            }
+
+            .global-view-grid {
+                grid-template-columns: repeat(auto-fill, minmax(343px, 1fr));
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>商家后台 - APP端原型设计</h1>
+
+    <div class="page-selector-bar single-only">
+        <div class="page-item-bar active" data-page="product_detail.html" onclick="loadPage('product_detail.html', this)">
+            <i class="bi bi-box"></i>
+            <span>商品详情</span>
+        </div>
+        <div class="page-item-bar" data-page="checkout.html" onclick="loadPage('checkout.html', this)">
+            <i class="bi bi-cart-check"></i>
+            <span>下单确认</span>
+        </div>
+        <div class="page-item-bar" data-page="order_detail.html" onclick="loadPage('order_detail.html', this)">
+            <i class="bi bi-receipt"></i>
+            <span>订单详情</span>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+            <i class="bi bi-phone"></i>
+            <span>单独界面</span>
+        </button>
+        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+            <i class="bi bi-grid-3x3"></i>
+            <span>全局视图</span>
+        </button>
+    </div>
+
+    <div id="prototypeContainer" class="single-view">
+        <div class="phone-frame-container single-only">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <iframe id="prototypeFrame" src="app_pages/product_detail.html" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <div class="global-view global-only" style="display: none;">
+            <div class="global-view-grid">
+                <div class="phone-frame-container" data-page-label="商品详情页">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/product_detail.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="下单确认页">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/checkout.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="订单详情页">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="app_pages/order_detail.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 'product_detail.html';
+
+        function loadPage(pageUrl, element) {
+            currentPage = pageUrl;
+            document.getElementById('prototypeFrame').src = `app_pages/${pageUrl}`;
+
+            document.querySelectorAll('.page-item-bar').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+
+            window.location.hash = pageUrl;
+        }
+
+        function switchView(view) {
+            const container = document.getElementById('prototypeContainer');
+            const btnSingle = document.getElementById('btnSingleView');
+            const btnGlobal = document.getElementById('btnGlobalView');
+            const singleElements = document.querySelectorAll('.single-only');
+            const globalElements = document.querySelectorAll('.global-only');
+
+            if (view === 'single') {
+                container.classList.remove('global-view');
+                container.classList.add('single-view');
+                btnSingle.classList.add('active');
+                btnGlobal.classList.remove('active');
+                singleElements.forEach(el => el.style.display = '');
+                globalElements.forEach(el => el.style.display = 'none');
+            } else {
+                container.classList.remove('single-view');
+                container.classList.add('global-view');
+                btnGlobal.classList.add('active');
+                btnSingle.classList.remove('active');
+                singleElements.forEach(el => el.style.display = 'none');
+                globalElements.forEach(el => el.style.display = '');
+            }
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'highlight' && event.data.featureId) {
+                const featureId = event.data.featureId;
+                
+                // Determine which page to load based on feature ID
+                let targetPage = null;
+                if (featureId === 'app_product_detail') {
+                    targetPage = 'product_detail.html';
+                } else if (featureId === 'app_checkout') {
+                    targetPage = 'checkout.html';
+                } else if (featureId === 'app_order_detail') {
+                    targetPage = 'order_detail.html';
+                }
+
+                if (targetPage) {
+                    // Switch to single view first
+                    switchView('single');
+                    
+                    // Load the target page
+                    const menuItem = document.querySelector(`[data-page="${targetPage}"]`);
+                    if (menuItem) {
+                        loadPage(targetPage, menuItem);
+                    }
+
+                    // Forward highlight message to the iframe after a short delay
+                    setTimeout(() => {
+                        const frame = document.getElementById('prototypeFrame');
+                        if (frame && frame.contentWindow) {
+                            frame.contentWindow.postMessage({
+                                action: 'highlight',
+                                featureId: featureId
+                            }, '*');
+                        }
+                    }, 300);
+                }
+            }
+        });
+
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const item = document.querySelector(`[data-page="${hash}"]`);
+                if (item) {
+                    loadPage(hash, item);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
