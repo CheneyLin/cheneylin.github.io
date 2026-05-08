@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小芒团团营销工具 - APP 端原型 v1.1</title>
+    <link href="../style/main.css" rel="stylesheet" />
+    <link href="../style/index-app-styles.css" rel="stylesheet" />
+    <link href="../assets/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div id="prototypeContainer">
+        <div class="global-view-header">
+            <h1>小芒团团营销工具 APP 原型设计</h1>
+        </div>
+        
+        <div class="controls-bar">
+            <button class="control-btn active" id="btnSingle" onclick="switchView('single')">
+                <i class="bi bi-phone"></i> 单独界面
+            </button>
+            <button class="control-btn" id="btnGlobal" onclick="switchView('global')">
+                <i class="bi bi-grid-3x3"></i> 全局视图
+            </button>
+        </div>
+
+        <div class="page-selector-bar" id="pageSelector">
+            <button class="page-item-bar" data-page="app_pages/goods_details_status_before.html" onclick="loadPage('app_pages/goods_details_status_before.html', this)">
+                <i class="bi bi-clock"></i> 开始前
+            </button>
+            <button class="page-item-bar active" data-page="app_pages/goods_details_status_running.html" onclick="loadPage('app_pages/goods_details_status_running.html', this)">
+                <i class="bi bi-bullseye"></i> 进行中
+            </button>
+            <button class="page-item-bar" data-page="app_pages/goods_details_status_success.html" onclick="loadPage('app_pages/goods_details_status_success.html', this)">
+                <i class="bi bi-check-circle"></i> 成功
+            </button>
+            <button class="page-item-bar" data-page="app_pages/goods_details_status_fail.html" onclick="loadPage('app_pages/goods_details_status_fail.html', this)">
+                <i class="bi bi-x-circle"></i> 失败
+            </button>
+            <button class="page-item-bar" data-page="app_pages/goods_details_status_continue.html" onclick="loadPage('app_pages/goods_details_status_continue.html', this)">
+                <i class="bi bi-arrow-up-circle"></i> 达标继续售
+            </button>
+        </div>
+
+        <div id="singleView" class="single-view">
+            <div class="phone-frame-container" id="singlePhoneFrame">
+                <div class="phone-screen">
+                    <iframe id="mainFrame" src="app_pages/goods_details_status_running.html" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div id="globalView" class="global-view hidden">
+            <div class="global-view-grid">
+                <div class="phone-frame-container" data-page-label="开始前" data-prototype="app_goods_details_status_before">
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_before.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="进行中" data-prototype="app_goods_details_status_running">
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_running.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="成功" data-prototype="app_goods_details_status_success">
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_success.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="失败" data-prototype="app_goods_details_status_fail">
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_fail.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="达标继续售" data-prototype="app_goods_details_status_continue">
+                    <div class="phone-screen">
+                        <iframe src="app_pages/goods_details_status_continue.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentView = 'single';
+        const pageSelectorBar = document.getElementById('pageSelector');
+
+        function switchView(view) {
+            currentView = view;
+            const singleView = document.getElementById('singleView');
+            const globalView = document.getElementById('globalView');
+            const btnSingle = document.getElementById('btnSingle');
+            const btnGlobal = document.getElementById('btnGlobal');
+
+            if (view === 'single') {
+                singleView.classList.remove('hidden');
+                globalView.classList.add('hidden');
+                btnSingle.classList.add('active');
+                btnGlobal.classList.remove('active');
+                pageSelectorBar.style.display = '';
+            } else {
+                singleView.classList.add('hidden');
+                globalView.classList.remove('hidden');
+                btnSingle.classList.remove('active');
+                btnGlobal.classList.add('active');
+                pageSelectorBar.style.display = 'none';
+            }
+        }
+
+        function loadPage(pageUrl, element) {
+            document.getElementById('mainFrame').src = pageUrl;
+            document.querySelectorAll('.page-item-bar').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                const featureId = e.data.featureId;
+
+                document.querySelectorAll('.phone-frame-container').forEach(frame => {
+                    frame.classList.remove('highlight');
+                });
+
+                const target = document.querySelector(`.phone-frame-container[data-prototype="${featureId}"]`);
+                if (target) {
+                    target.classList.add('highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => target.classList.remove('highlight'), 3000);
+                }
+
+                const pageMap = {
+                    'app_goods_details_status_before': 'app_pages/goods_details_status_before.html',
+                    'app_goods_details_status_running': 'app_pages/goods_details_status_running.html',
+                    'app_goods_details_status_success': 'app_pages/goods_details_status_success.html',
+                    'app_goods_details_status_fail': 'app_pages/goods_details_status_fail.html',
+                    'app_goods_details_status_continue': 'app_pages/goods_details_status_continue.html'
+                };
+
+                if (pageMap[featureId]) {
+                    const pageUrl = pageMap[featureId];
+                    document.getElementById('mainFrame').src = pageUrl;
+                    document.querySelectorAll('.page-item-bar').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.page === pageUrl) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+            }
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const focus = urlParams.get('focus');
+        if (focus) {
+            setTimeout(() => {
+                const target = document.querySelector(`.phone-frame-container[data-prototype="${focus}"]`);
+                if (target) {
+                    target.classList.add('highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
