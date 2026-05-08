@@ -760,22 +760,22 @@
 .stats-target-label {
     font-size: 14px;
     font-weight: 500;
-    color: var(--geist-black);
+    color: #FFF;
 }
 
 .stats-target-value {
     font-family: "DIN Alternate", -apple-system, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: #F92121;
+    color: #FFF;
 }
 
 .stats-target-value.success {
-    color: #16A34A;
+    color: #FFF;
 }
 
 .stats-target-value.muted {
-    color: var(--geist-gray-500);
+    color: #FFF;
 }
 
 .stats-rule {

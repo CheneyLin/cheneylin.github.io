@@ -110,12 +110,38 @@
         <tr><td>众筹信息展示 - 已结束</td><td>活动截止类型为 A/B 时的已结束状态展示</td><td>P0</td><td><code>app_goods_details_status_end</code></td></tr>
       </table>
 
-      <h3 style="margin-top:20px;">4.3 交易系统模块</h3>
-      <table>
-        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
-        <tr><td>实时状态切换</td><td>截止时实时根据进度判定活动状态</td><td>P0</td><td><code>system_status_switch</code></td></tr>
-        <tr><td>未达标退款逻辑</td><td>众筹未达标自动触发退款</td><td>P0</td><td><code>system_refund_logic</code></td></tr>
-      </table>
+      <h3 style="margin-top:20px;">4.3 产品确认事项</h3>
+
+      <h4>4.3.1 本次产品确认事项</h4>
+      <ul class="list">
+        <li>本期需求仅前端优化</li>
+        <li>实现众筹氛围配置下，进度条各端统一样式</li>
+        <li><strong>单目标模式</strong>
+          <ul>
+            <li>隐藏里程碑</li>
+            <li>进度条进度计算以最右侧为100%</li>
+            <li>进度超过100%时，进度条宽度为100%</li>
+            <li>成功状态添加成功标识</li>
+            <li>失败状态添加失败标识</li>
+          </ul>
+        </li>
+        <li><strong>多目标模式</strong>
+          <ul>
+            <li>展示里程碑</li>
+            <li>进度条进度计算以最大目标值为100%，最右侧为100%</li>
+            <li>进度超过100%时，进度条宽度为100%</li>
+            <li>以最小目标值为众筹目标值计算成功/失败状态</li>
+            <li>成功状态添加成功标识</li>
+            <li>失败状态添加失败标识</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>4.3.2 本次产品确认不处理的事项</h4>
+      <ul class="list">
+        <li>本期需求不涉及后端逻辑</li>
+      </ul>
+
     </div>
 
     <div class="prd-section" id="section5">
@@ -414,115 +440,30 @@
         </div>
       </div>
 
-      <h3>5.5 系统功能</h3>
-
-      <div class="feature-module" id="system_status_switch" data-feature="system_status_switch">
-        <h3>5.5.1 实时状态切换 <button class="highlight-btn" onclick="highlightFeature('system_status_switch')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：活动截止时间到达时，系统实时触发状态判定</p>
-        <div class="field-group">
-          <div class="field-label">核心逻辑</div>
-          <pre>if (当前进度 >= 目标) {
-  状态变更为 "众筹成功"
-  商品变为可售状态
-  订单正常流转
-} else {
-  状态变更为 "众筹失败"
-  触发退款流程
-}</pre>
-        </div>
-      </div>
-
-      <div class="feature-module" id="system_refund_logic" data-feature="system_refund_logic">
-        <h3>5.5.2 未达标退款逻辑 <button class="highlight-btn" onclick="highlightFeature('system_refund_logic')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：众筹失败后，系统自动触发退款</p>
-        <div class="field-group">
-          <div class="field-label">核心逻辑</div>
-          <ul class="list">
-            <li>众筹失败后，系统<strong>自动</strong>触发退款</li>
-            <li>退款路径：原路退回用户支付账户</li>
-            <li>退款时效：T+1 个工作日内到账</li>
-            <li>通知推送：向参与用户推送"众筹失败，已发起退款"通知</li>
-            <li>订单状态：变更为"已关闭-众筹未达标"</li>
-          </ul>
-        </div>
-      </div>
-    </div>
 
     <div class="prd-section" id="section6">
       <h2>6. 业务流程图</h2>
 
-      <h3>6.1 众筹活动主流程</h3>
-      <div class="mermaid">
-flowchart TD
-    A[商家进入小芒团团项目列表] --> B[点击创建活动/编辑]
-    B --> C[配置基本信息<br/>活动名称/时间/目标]
-    C --> D[配置氛围选项<br/>时间样式/前缀/后缀<br/>进度条样式/说明]
-    D --> E{选择截止类型}
-    E -->|A: 截止后下线| F[保存配置]
-    E -->|B: 截止后展示不可售| F
-    E -->|C: 截止后判定| F
-    F --> G[发布众筹活动]
-    G --> H{活动是否开始}
-    H -->|未开始| I[App展示开始前状态<br/>按钮：待开启]
-    H -->|已开始| J[App端展示众筹信息]
-    J --> K[用户浏览商品]
-    K --> L{活动是否截止}
-    L -->|未截止| M{是否达标}
-    M -->|未达标| N[继续进行中<br/>按钮：去支持]
-    M -->|已达标| O[达标后继续售卖<br/>按钮：去支持]
-    L -->|已截止| P{是否达标}
-    P -->|达标| Q[众筹成功<br/>✅成功标识<br/>按钮：已成功]
-    P -->|未达标| R[众筹失败<br/>❌失败标识<br/>按钮：已结束]
-    Q --> S[订单正常流转]
-    R --> T[原路退款，通知用户]
-      </div>
+      <p>略</p>
     </div>
 
     <div class="prd-section" id="section7">
       <h2>7. 异常与边界处理</h2>
-      <table>
-        <tr><th>异常场景</th><th>处理逻辑</th></tr>
-        <tr><td>进度超额完成</td><td>进度条按100%显示，文案显示具体件数/金额，大额数字缩略显示</td></tr>
-        <tr><td>数据位数过长</td><td>缩略显示（如"100万"）</td></tr>
-        <tr><td>活动开始前点击按钮</td><td>按钮不可点击，提示"活动还未开始"</td></tr>
-        <tr><td>网络中断（商家提交配置时）</td><td>提示"网络异常，请重试"，保留已填配置数据</td></tr>
-        <tr><td>网络中断（用户支付时）</td><td>支付状态查询，未完成则取消订单，已完成则保留</td></tr>
-        <tr><td>空数据状态（App 端无众筹商品）</td><td>展示"暂无众筹活动"空状态页，推荐普通团购商品</td></tr>
-        <tr><td>权限不足（商家无小芒团团权限）</td><td>提示"您暂无权限使用此功能，请联系客服开通"</td></tr>
-        <tr><td>库存不足（用户参与时）</td><td>提示"库存不足"，禁止参与</td></tr>
-      </table>
+      <p>略</p>
     </div>
 
     <div class="prd-section" id="section8">
       <h2>8. 数据追踪与埋点（可选）</h2>
-      <table>
-        <tr><th>埋点事件</th><th>触发时机</th><th>埋点参数</th></tr>
-        <tr><td>crowd_config_create</td><td>商家创建众筹活动</td><td>activity_id, deadline_type, progress_style</td></tr>
-        <tr><td>crowd_page_view</td><td>用户浏览众筹商品详情页</td><td>product_id, current_progress, target, status</td></tr>
-        <tr><td>crowd_join_click</td><td>用户点击"去支持"</td><td>product_id, user_id, status</td></tr>
-        <tr><td>crowd_payment_success</td><td>用户众筹支付成功</td><td>order_id, amount, product_id</td></tr>
-        <tr><td>crowd_status_change</td><td>活动状态变更（成功/失败/继续售卖）</td><td>activity_id, status, final_progress</td></tr>
-      </table>
+      <p>略</p>
     </div>
 
     <div class="prd-section" id="section9">
       <h2>9. 未来演进规划（可选）</h2>
-      <table>
-        <tr><th>版本</th><th>规划内容</th></tr>
-        <tr><td>v1.2</td><td>支持阶梯目标（不同金额/件数触发不同权益）</td></tr>
-        <tr><td>v1.3</td><td>支持众筹活动审核流程</td></tr>
-        <tr><td>v1.4</td><td>支持"延长冲刺期"功能</td></tr>
-        <tr><td>v2.0</td><td>支持多人拼团 + 众筹混合玩法</td></tr>
-      </table>
+      <p>略</p>
     </div>
 
     <div class="prd-section" id="section10">
-      <h2>10. 附件</h2>
-      <table>
-        <tr><th>附件名称</th><th>说明</th></tr>
-        <tr><td>app_prototype_v1.1.html</td><td>App端原型 - 包含5个阶段的众筹信息展示</td></tr>
-        <tr><td>admin_prototype_v1.0.html</td><td>商家后台原型 - 保持v1.0版本</td></tr>
-      </table>
+      <p>略</p>
     </div>
   </div>
 
