@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>众筹 - APP 端原型</title>
+    <link href="../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-900: #171717;
+            --geist-gray-600: #4d4d4d;
+            --geist-gray-500: #666666;
+            --geist-gray-400: #808080;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-50: #fafafa;
+            --focus-blue: hsla(212, 100%, 48%, 1);
+            --ship-red: #ff5b4f;
+            --preview-pink: #de1d8d;
+            --develop-blue: #0a72ef;
+            --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--geist-white);
+            color: var(--geist-black);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+        .display-hero { font-size: 48px; font-weight: 600; letter-spacing: -2.4px; line-height: 1.0; }
+        .section-heading { font-size: 40px; font-weight: 600; letter-spacing: -2.4px; line-height: 1.2; }
+        .sub-heading { font-size: 32px; font-weight: 600; letter-spacing: -1.28px; line-height: 1.25; }
+        .card-title { font-size: 24px; font-weight: 600; letter-spacing: -0.96px; line-height: 1.33; }
+        .body-large { font-size: 20px; font-weight: 400; line-height: 1.8; color: var(--geist-gray-600); }
+        .body { font-size: 18px; font-weight: 400; line-height: 1.56; color: var(--geist-gray-600); }
+        .body-small { font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--geist-gray-600); }
+        .caption { font-size: 12px; font-weight: 500; line-height: 1.33; color: var(--geist-gray-500); }
+        #prototypeContainer { width: 100%; min-height: 100vh; transition: all 0.3s ease; }
+        .global-view { padding: 60px 40px; max-width: 1800px; margin: 0 auto; background: var(--geist-white); }
+        .global-view-header { text-align: center; margin-bottom: 50px; }
+        .global-view-header h1 { color: var(--geist-black); margin-bottom: 12px; }
+        .global-view-header p { color: var(--geist-gray-600); }
+        .global-view-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(399px, 1fr)); gap: 48px; justify-content: center; }
+        .global-view .phone-frame-container { width: 399px !important; height: 836px !important; margin: 0 auto; }
+        .global-view .phone-frame-container::after {
+            content: attr(data-page-label);
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            letter-spacing: -0.28px;
+        }
+        .single-view { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; background: var(--geist-white); }
+        .phone-frame-container {
+            position: relative;
+            width: 399px;
+            height: 836px;
+            background: var(--geist-black);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: var(--shadow-card);
+            transition: box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+        .phone-frame-container:hover {
+            box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px, rgba(0,0,0,0.06) 0px 12px 12px -6px, var(--geist-gray-50) 0px 0px 0px 1px;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--geist-black);
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+        .phone-screen { width: 375px; height: 812px; background: var(--geist-white); border-radius: 40px; overflow: hidden; position: relative; }
+        .phone-screen iframe { width: 375px; height: 812px; border: none; display: block; }
+        .controls-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            background: var(--geist-white);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+        }
+        .control-btn {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-border);
+        }
+        .control-btn:hover { background: var(--geist-gray-50); transform: translateY(-1px); }
+        .control-btn.active { background: var(--geist-black); color: var(--geist-white); }
+        .control-btn:focus { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
+        .page-selector-bar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--geist-white);
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: var(--shadow-card);
+            z-index: 1000;
+            display: flex;
+            gap: 6px;
+            max-width: 90vw;
+            overflow-x: auto;
+        }
+        .page-selector-bar::-webkit-scrollbar { height: 4px; }
+        .page-selector-bar::-webkit-scrollbar-thumb { background: var(--geist-gray-100); border-radius: 2px; }
+        .page-item-bar {
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            box-shadow: var(--shadow-border);
+        }
+        .page-item-bar:hover { background: var(--geist-gray-50); color: var(--geist-black); }
+        .page-item-bar.active { background: var(--geist-black); color: var(--geist-white); }
+        .page-item-bar i { font-size: 14px; width: 14px; }
+        .page-dropdown { display: none; position: fixed; top: 20px; left: 20px; z-index: 1000; }
+        .dropdown-toggle {
+            background: var(--geist-white);
+            color: var(--geist-black);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s;
+        }
+        .dropdown-toggle:hover { background: var(--geist-gray-50); }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: var(--geist-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+            padding: 8px;
+            min-width: 200px;
+            display: none;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item {
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dropdown-item:hover { background: var(--geist-gray-50); color: var(--geist-black); }
+        .dropdown-item.active { background: var(--geist-black); color: var(--geist-white); }
+        .dropdown-item i { font-size: 14px; width: 14px; }
+        .pill-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #ebf5ff;
+            color: #0068d6;
+        }
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+        @media (max-width: 1024px) {
+            .page-selector-bar { display: none !important; }
+            .page-dropdown { display: block; }
+            .global-view { padding: 40px 20px; }
+            .global-view-grid { grid-template-columns: repeat(auto-fill, minmax(375px, 1fr)); gap: 30px; }
+        }
+        @media (max-width: 768px) {
+            .global-view { padding: 30px 16px; }
+            .global-view-grid { grid-template-columns: 1fr; gap: 24px; }
+            .controls-bar { top: 10px; right: 10px; }
+            .page-dropdown { top: 10px; left: 10px; }
+        }
+        .global-view .single-only { display: none !important; }
+        .single-view .global-only { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="page-selector-bar single-only">
+        <div class="page-item-bar active" data-page="detail.html" onclick="loadPage('detail.html', this)">
+            <i class="bi bi-star"></i><span>项目详情</span>
+        </div>
+        <div class="page-item-bar" data-page="sku.html" onclick="loadPage('sku.html', this)">
+            <i class="bi bi-list-ul"></i><span>SKU选择</span>
+        </div>
+        <div class="page-item-bar" data-page="order.html" onclick="loadPage('order.html', this)">
+            <i class="bi bi-file-earmark-text"></i><span>确认订单</span>
+        </div>
+        <div class="page-item-bar" data-page="success.html" onclick="loadPage('success.html', this)">
+            <i class="bi bi-check-circle"></i><span>支付成功</span>
+        </div>
+        <div class="page-item-bar" data-page="myorders.html" onclick="loadPage('myorders.html', this)">
+            <i class="bi bi-box-seam"></i><span>我的订单</span>
+        </div>
+    </div>
+
+    <div class="page-dropdown single-only">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            <i class="bi bi-list"></i>
+            <span id="currentPageLabel">项目详情</span>
+            <i class="bi bi-chevron-down" style="margin-left:4px;"></i>
+        </button>
+        <div class="dropdown-menu" id="pageDropdownMenu">
+            <div class="dropdown-item active" data-page="detail.html" onclick="loadPage('detail.html', this)">
+                <i class="bi bi-star"></i><span>项目详情</span>
+            </div>
+            <div class="dropdown-item" data-page="sku.html" onclick="loadPage('sku.html', this)">
+                <i class="bi bi-list-ul"></i><span>SKU选择</span>
+            </div>
+            <div class="dropdown-item" data-page="order.html" onclick="loadPage('order.html', this)">
+                <i class="bi bi-file-earmark-text"></i><span>确认订单</span>
+            </div>
+            <div class="dropdown-item" data-page="success.html" onclick="loadPage('success.html', this)">
+                <i class="bi bi-check-circle"></i><span>支付成功</span>
+            </div>
+            <div class="dropdown-item" data-page="myorders.html" onclick="loadPage('myorders.html', this)">
+                <i class="bi bi-box-seam"></i><span>我的订单</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+            <i class="bi bi-phone"></i><span>单独界面</span>
+        </button>
+        <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+            <i class="bi bi-grid-3x3-gap"></i><span>全局视图</span>
+        </button>
+    </div>
+
+    <div id="prototypeContainer" class="single-view">
+        <div class="phone-frame-container single-only">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <iframe id="prototypeFrame" src="app_pages/detail.html" frameborder="0"></iframe>
+            </div>
+        </div>
+        
+        <!-- iframe 池：预加载所有页面，提高切换性能 -->
+        <div id="iframePool" style="display:none;">
+            <iframe id="pool_detail" src="app_pages/detail.html" frameborder="0"></iframe>
+            <iframe id="pool_sku" src="app_pages/sku.html" frameborder="0"></iframe>
+            <iframe id="pool_order" src="app_pages/order.html" frameborder="0"></iframe>
+            <iframe id="pool_success" src="app_pages/success.html" frameborder="0"></iframe>
+            <iframe id="pool_myorders" src="app_pages/myorders.html" frameborder="0"></iframe>
+        </div>
+        
+        <div class="global-view global-only" style="display:none;">
+            <div class="global-view-header">
+                <h1 class="display-hero mb-4">众筹</h1>
+                <p class="body-large">APP 端原型 - 全部页面预览</p>
+            </div>
+            <div class="global-view-grid">
+                <div class="phone-frame-container" data-page-label="项目详情">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen"><iframe src="app_pages/detail.html" frameborder="0"></iframe></div>
+                </div>
+                <div class="phone-frame-container" data-page-label="SKU选择">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen"><iframe src="app_pages/sku.html" frameborder="0"></iframe></div>
+                </div>
+                <div class="phone-frame-container" data-page-label="确认订单">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen"><iframe src="app_pages/order.html" frameborder="0"></iframe></div>
+                </div>
+                <div class="phone-frame-container" data-page-label="支付成功">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen"><iframe src="app_pages/success.html" frameborder="0"></iframe></div>
+                </div>
+                <div class="phone-frame-container" data-page-label="我的订单">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen"><iframe src="app_pages/myorders.html" frameborder="0"></iframe></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentView = 'single';
+        let currentPage = 'detail.html';
+        let dropdownOpen = false;
+        
+        // iframe 池管理：预加载并缓存页面
+        const pageCache = {
+            'detail.html': 'pool_detail',
+            'sku.html': 'pool_sku',
+            'order.html': 'pool_order',
+            'success.html': 'pool_success',
+            'myorders.html': 'pool_myorders'
+        };
+
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (dropdownOpen) menu.classList.add('show');
+            else menu.classList.remove('show');
+        }
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.page-dropdown');
+            if (dropdown && !dropdown.contains(event.target)) {
+                dropdownOpen = false;
+                const menu = document.getElementById('pageDropdownMenu');
+                if (menu) menu.classList.remove('show');
+            }
+        });
+        function switchView(mode) {
+            currentView = mode;
+            const container = document.getElementById('prototypeContainer');
+            const btnSingle = document.getElementById('btnSingleView');
+            const btnGlobal = document.getElementById('btnGlobalView');
+            if (mode === 'single') {
+                container.className = 'single-view';
+                btnSingle.classList.add('active');
+                btnGlobal.classList.remove('active');
+                document.querySelectorAll('.single-only').forEach(el => el.style.display = '');
+                document.querySelectorAll('.global-only').forEach(el => el.style.display = 'none');
+            } else {
+                container.className = 'global-view';
+                btnGlobal.classList.add('active');
+                btnSingle.classList.remove('active');
+                document.querySelectorAll('.single-only').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.global-only').forEach(el => el.style.display = '');
+            }
+            window.location.hash = mode;
+        }
+        function loadPage(pageUrl, element) {
+            currentPage = pageUrl;
+            const mainFrame = document.getElementById('prototypeFrame');
+            
+            // 使用 iframe 池：如果页面已预加载，直接切换 src
+            if (pageCache[pageUrl]) {
+                const poolFrame = document.getElementById(pageCache[pageUrl]);
+                if (poolFrame) {
+                    mainFrame.src = poolFrame.src;
+                } else {
+                    mainFrame.src = `app_pages/${pageUrl}`;
+                }
+            } else {
+                mainFrame.src = `app_pages/${pageUrl}`;
+            }
+            
+            document.querySelectorAll('.page-item-bar').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
+            if (element) {
+                element.classList.add('active');
+                const pageName = element.getAttribute('data-page');
+                const otherItem = document.querySelector(`[data-page="${pageName}"]:not(.${element.className.split(' ')[0]})`);
+                if (otherItem) otherItem.classList.add('active');
+            }
+            updateDropdownLabel();
+            dropdownOpen = false;
+            const menu = document.getElementById('pageDropdownMenu');
+            if (menu) menu.classList.remove('show');
+            window.location.hash = `single-${pageUrl}`;
+        }
+        function updateDropdownLabel() {
+            const pageNames = {
+                'detail.html': '众筹详情页',
+                'sku.html': 'SKU选择',
+                'order.html': '确认订单',
+                'success.html': '支付成功',
+                'myorders.html': '我的众筹订单'
+            };
+            const label = document.getElementById('currentPageLabel');
+            if (label) label.textContent = pageNames[currentPage] || '页面';
+        }
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            handleHashChange(hash);
+        });
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) handleHashChange(hash);
+            updateDropdownLabel();
+        });
+        function handleHashChange(hash) {
+            if (hash === 'global') switchView('global');
+            else if (hash === 'single') switchView('single');
+            else if (hash.startsWith('single-')) {
+                const pageUrl = hash.substring(7);
+                switchView('single');
+                const pageItem = document.querySelector(`[data-page="${pageUrl}"]`);
+                if (pageItem) loadPage(pageUrl, pageItem);
+            }
+        }
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const target = document.querySelector(`[data-prototype="${e.data.featureId}"]`);
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

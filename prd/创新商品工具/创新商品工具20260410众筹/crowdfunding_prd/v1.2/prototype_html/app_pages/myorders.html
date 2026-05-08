@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的众筹订单</title>
+    <link href="../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #171717; max-width: 375px; margin: 0 auto; }
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 16px; font-weight: 600; border-bottom: 1px solid #f0f0f0; }
+        .tabs { background: #fff; display: flex; border-bottom: 1px solid #f0f0f0; }
+        .tab { flex: 1; text-align: center; padding: 12px; font-size: 14px; font-weight: 500; color: #999; cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab.active { color: #667eea; border-bottom-color: #667eea; }
+        .order-list { padding: 12px 16px; }
+        .order-card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .order-project { font-size: 15px; font-weight: 600; }
+        .order-status { font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+        .status-ongoing { background: #e6f4ff; color: #1677ff; }
+        .status-success { background: #d4edda; color: #155724; }
+        .status-refund { background: #fff7e6; color: #ad6800; }
+        .status-cancelled { background: #f0f0f0; color: #666; }
+        .order-body { display: flex; gap: 10px; align-items: center; }
+        .order-img { width: 56px; height: 56px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; flex-shrink: 0; }
+        .order-info { flex: 1; }
+        .order-sku { font-size: 14px; color: #333; margin-bottom: 4px; }
+        .order-date { font-size: 12px; color: #999; }
+        .order-price { font-size: 16px; font-weight: 700; color: #667eea; }
+        .order-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f5f5f5; }
+        .order-actions { display: flex; gap: 8px; }
+        .btn-outline { border: 1px solid #e4e7ed; background: #fff; color: #666; padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        .btn-cancel { border: 1px solid #ff5b4f; color: #ff5b4f; background: #fff; }
+        .empty-state { text-align: center; padding: 60px 20px; }
+        .empty-icon { font-size: 60px; color: #ddd; margin-bottom: 16px; }
+        .empty-text { font-size: 15px; color: #999; margin-bottom: 20px; }
+        .btn-primary { background: #667eea; border: none; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span><i class="bi bi-chevron-left"></i></span>
+        <span>我的众筹订单</span>
+        <span></span>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(this)">全部</div>
+        <div class="tab" onclick="switchTab(this)">进行中</div>
+        <div class="tab" onclick="switchTab(this)">成功</div>
+        <div class="tab" onclick="switchTab(this)">已退款</div>
+    </div>
+
+    <div class="order-list prototype-module" data-prototype="app_orders">
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-project">星际探险家系列周边</span>
+                <span class="order-status status-ongoing">进行中</span>
+            </div>
+            <div class="order-body">
+                <div class="order-img"><i class="bi bi-rocket-takeoff"></i></div>
+                <div class="order-info">
+                    <div class="order-sku">早鸟档 · 限量金属徽章 x1</div>
+                    <div class="order-date">订单号：CF20260410089</div>
+                    <div class="order-date">2026-04-10 16:30</div>
+                </div>
+                <div class="order-price">¥298</div>
+            </div>
+            <div class="order-footer">
+                <span style="font-size:12px;color:#999;">剩余18天结束</span>
+                <div class="order-actions">
+                    <button class="btn-outline">查看详情</button>
+                    <button class="btn-outline btn-cancel" onclick="alert('取消订单成功，金额将原路退回')">取消订单</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-project">限定二次元手办众筹</span>
+                <span class="order-status status-refund">已退款</span>
+            </div>
+            <div class="order-body">
+                <div class="order-img"><i class="bi bi-box"></i></div>
+                <div class="order-info">
+                    <div class="order-sku">限定档 x1</div>
+                    <div class="order-date">订单号：CF20260408001</div>
+                    <div class="order-date">2026-04-08 10:00</div>
+                </div>
+                <div class="order-price">¥699</div>
+            </div>
+            <div class="order-footer">
+                <span style="font-size:12px;color:#ad6800;">退款完成，原路退回</span>
+                <div class="order-actions">
+                    <button class="btn-outline">查看详情</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-project">设计师联名款众筹</span>
+                <span class="order-status status-success">成功</span>
+            </div>
+            <div class="order-body">
+                <div class="order-img"><i class="bi bi-gift"></i></div>
+                <div class="order-info">
+                    <div class="order-sku">标准档 x2</div>
+                    <div class="order-date">订单号：CF20260315012</div>
+                    <div class="order-date">2026-03-15 14:20</div>
+                </div>
+                <div class="order-price">¥796</div>
+            </div>
+            <div class="order-footer">
+                <span style="font-size:12px;color:#28a745;">项目成功，已安排生产</span>
+                <div class="order-actions">
+                    <button class="btn-outline">查看详情</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(el) {
+            el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight') {
+                document.querySelectorAll('.prototype-module').forEach(m => m.classList.remove('feature-highlight'));
+                const t = document.querySelector(`[data-prototype="${e.data.featureId}"]`);
+                if (t) { t.classList.add('feature-highlight'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }
+        });
+    </script>
+</body>
+</html>

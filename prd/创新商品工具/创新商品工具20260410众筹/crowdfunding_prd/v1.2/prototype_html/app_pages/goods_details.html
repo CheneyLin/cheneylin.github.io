@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - 众筹 v1.2</title>
+    <link href="../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #F6F6F6; color: #171717; max-width: 375px; margin: 0 auto; min-height: 812px; }
+        .status-bar { height: 44px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 16px; font-weight: 600; border-bottom: 1px solid #f0f0f0; }
+        .content { padding-bottom: 100px; }
+        .goods-cover { width: 100%; height: 375px; background: linear-gradient(180deg, rgba(24, 61, 105, 0.7) 0%, rgba(18, 30, 44, 0.9) 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .cover-placeholder { width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .cover-placeholder i { font-size: 48px; color: rgba(255,255,255,0.5); }
+        .cover-nav { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; }
+        .cover-nav-btn { width: 36px; height: 36px; background: rgba(0,0,0,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; cursor: pointer; }
+        .page-indicator { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+        .page-dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+        .page-dot.active { background: #fff; width: 18px; border-radius: 3px; }
+        .card { margin: 12px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .card-header { padding: 12px 16px; display: flex; align-items: center; gap: 12px; position: relative; }
+        .card-header.dark { background: linear-gradient(180deg, #393939 0%, #030303 100%); }
+        .card-header.dark::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(24, 61, 105, 0.7) 0%, rgba(18, 30, 44, 0.9) 100%); pointer-events: none; }
+        .card-header > * { position: relative; z-index: 1; }
+        .price-wrap { display: flex; align-items: baseline; gap: 4px; }
+        .price-currency { font-family: 'DIN Alternate', sans-serif; font-size: 14px; font-weight: bold; color: #fff; }
+        .price-value { font-family: 'DIN Alternate', sans-serif; font-size: 32px; font-weight: bold; color: #fff; text-shadow: 0px 1px 2px rgba(0,0,0,0.3); }
+        .price-original { font-family: 'DIN Alternate', sans-serif; font-size: 14px; color: rgba(255,255,255,0.6); text-decoration: line-through; margin-left: 8px; }
+        .card-body { padding: 12px 16px 16px; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .time-label { font-size: 12px; color: #999; }
+        .time-value { font-family: 'DIN Alternate', sans-serif; font-size: 12px; color: #fff; background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); padding: 2px 8px; border-radius: 4px; }
+        .original-row { display: flex; align-items: center; gap: 6px; }
+        .original-label { font-size: 11px; color: rgba(255,255,255,0.6); }
+        .original-price { font-family: 'DIN Alternate', sans-serif; font-size: 12px; color: rgba(255,255,255,0.6); text-decoration: line-through; }
+        .badge-row { display: flex; gap: 8px; margin-top: 12px; }
+        .badge { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
+        .badge-purple { background: #9174E1; color: #fff; }
+        .badge-orange { background: #FF9F43; color: #fff; }
+        .badge-red { background: linear-gradient(90deg, rgba(255, 88, 105, 0.24) -1%, rgba(255, 145, 162, 0.16) 100%); color: #F92121; }
+        .badge-green { background: #28a745; color: #fff; }
+        .badge-gray { background: #999; color: #fff; }
+        .goods-title { font-size: 17px; font-weight: 600; color: #202020; margin-bottom: 8px; line-height: 1.4; }
+        .goods-desc { font-size: 12px; color: #999; line-height: 1.6; }
+        .promotion-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+        .promo-tag { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: #FFF3F4; border-radius: 4px; font-size: 11px; color: #F92121; }
+        .progress-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .progress-status { display: flex; align-items: center; gap: 8px; }
+        .status-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; }
+        .status-icon.orange { background: #FF9F43; }
+        .status-icon.red { background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); }
+        .status-icon.green { background: #28a745; }
+        .status-icon.gray { background: #999; }
+        .status-icon.purple { background: #9174E1; }
+        .status-text { font-size: 14px; font-weight: 500; color: #202020; }
+        .progress-data { font-size: 12px; color: #999; }
+        .progress-bar-wrap { margin-bottom: 8px; }
+        .progress-bar { height: 8px; background: #F0F0F0; border-radius: 4px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+        .progress-bar-fill.orange { background: #FF9F43; }
+        .progress-bar-fill.red { background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); }
+        .progress-bar-fill.green { background: #28a745; }
+        .progress-bar-fill.gray { background: #999; }
+        .progress-bar-fill.purple { background: linear-gradient(90deg, #9174E1 0%, #6FFFAB 100%); }
+        .progress-percent { font-family: 'DIN Alternate', sans-serif; font-size: 17px; font-weight: bold; color: #202020; margin-bottom: 4px; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: #999; }
+        .tag-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; }
+        .tag-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .tag-icon { width: 24px; height: 24px; background: linear-gradient(135deg, #9174E1 0%, #6FFFAB 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; }
+        .tag-title { font-size: 15px; font-weight: 600; color: #202020; }
+        .tag-list { display: flex; flex-direction: column; gap: 10px; }
+        .tag-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: #fafafa; border-radius: 8px; }
+        .tag-item.unlocked { background: #f0fff4; border: 1px solid #28a745; }
+        .tag-item.locked { opacity: 0.7; }
+        .tag-check { width: 20px; height: 20px; border: 2px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; flex-shrink: 0; }
+        .tag-item.unlocked .tag-check { background: #28a745; border-color: #28a745; }
+        .tag-content { flex: 1; }
+        .tag-name { font-size: 14px; font-weight: 500; color: #202020; margin-bottom: 2px; }
+        .tag-hint { font-size: 11px; color: #999; }
+        .tag-item.unlocked .tag-hint { color: #28a745; }
+        .shop-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .shop-info { display: flex; align-items: center; gap: 12px; }
+        .shop-avatar { width: 44px; height: 44px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
+        .shop-name { font-size: 15px; font-weight: 600; color: #202020; }
+        .shop-label { font-size: 11px; color: #9174E1; background: rgba(145,116,225,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+        .shop-desc { font-size: 12px; color: #999; margin-top: 2px; }
+        .shop-arrow { color: #ccc; font-size: 18px; }
+        .detail-section { margin: 12px; background: #fff; border-radius: 12px; padding: 16px; }
+        .detail-header { font-size: 15px; font-weight: 600; color: #202020; margin-bottom: 12px; }
+        .detail-images { display: flex; flex-direction: column; gap: 8px; }
+        .detail-img-placeholder { width: 100%; height: 200px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 32px; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; max-width: 375px; margin: 0 auto; background: #fff; border-top: 1px solid #f0f0f0; padding: 12px 16px; display: flex; gap: 12px; z-index: 100; }
+        .btn-contact { width: 52px; background: #fff; border: 1px solid #e4e7ed; color: #666; padding: 10px; border-radius: 8px; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+        .btn-contact i { font-size: 18px; }
+        .btn-main { flex: 1; border: none; color: #fff; padding: 14px; border-radius: 24px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; }
+        .btn-main.purple { background: linear-gradient(90deg, #9174E1 0%, #6FFFAB 100%); }
+        .btn-main.red { background: linear-gradient(90deg, #FF5869 0%, #F92121 100%); }
+        .btn-main.green { background: #28a745; }
+        .btn-main.gray { background: #999; }
+        .btn-main:disabled { background: #ccc; cursor: not-allowed; }
+        .bottom-hint { font-size: 11px; color: #999; text-align: center; margin-top: 4px; }
+        .state-switcher { position: fixed; top: 50px; left: 0; right: 0; max-width: 375px; margin: 0 auto; background: #fff; border-bottom: 1px solid #e4e7ed; padding: 8px 12px; z-index: 200; display: flex; gap: 6px; flex-wrap: wrap; }
+        .state-btn { padding: 4px 10px; border-radius: 12px; font-size: 11px; border: 1px solid #e4e7ed; background: #fff; color: #666; cursor: pointer; transition: all 0.2s; }
+        .state-btn:hover { border-color: #667eea; color: #667eea; }
+        .state-btn.active { background: #667eea; border-color: #667eea; color: #fff; }
+        .state-label { position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 11px; z-index: 300; }
+        .prototype-module { border: 2px dashed transparent; transition: all 0.3s; }
+        .prototype-module:hover, .prototype-module.feature-highlight { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span><i class="bi bi-chevron-left"></i></span>
+        <span>商品详情</span>
+        <span><i class="bi bi-share"></i></span>
+    </div>
+
+    <div class="state-switcher">
+        <button class="state-btn active" data-state="preheating">①活动开始前</button>
+        <button class="state-btn" data-state="progressing">②进行中</button>
+        <button class="state-btn" data-state="success">③成功结束</button>
+        <button class="state-btn" data-state="failed">④失败结束</button>
+        <button class="state-btn" data-state="continue">⑤继续售卖</button>
+    </div>
+
+    <div class="content" id="content">
+        <div class="prototype-module" data-prototype="app_project_detail_cover">
+            <div class="goods-cover">
+                <div class="cover-placeholder">
+                    <i class="bi bi-image"></i>
+                </div>
+                <div class="cover-nav">
+                    <div class="cover-nav-btn"><i class="bi bi-chevron-left"></i></div>
+                    <div class="cover-nav-btn"><i class="bi bi-chevron-right"></i></div>
+                </div>
+                <div class="page-indicator">
+                    <div class="page-dot active"></div>
+                    <div class="page-dot"></div>
+                    <div class="page-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="app_project_detail_price_bar" id="priceBar">
+            <div class="card">
+                <div class="card-header dark">
+                    <div class="price-wrap">
+                        <span class="price-currency">¥</span>
+                        <span class="price-value" id="priceValue">399</span>
+                        <span class="price-original" id="priceOriginal">¥460</span>
+                    </div>
+                    <div class="badge" id="priceBadge" style="background: linear-gradient(256deg, #9174E1 0%, #6FFFAB 100%); margin-left: auto;">
+                        <span id="priceBadgeText">实时价格</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="price-row">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="time-label" id="timeLabel">结束时间</span>
+                            <span class="time-value" id="timeValue">12月25日 23:59</span>
+                        </div>
+                        <div class="original-row" id="originalRow" style="display: none;">
+                            <span class="original-label">优惠前</span>
+                            <span class="original-price">¥460</span>
+                        </div>
+                        <div id="priceHint" style="font-size: 12px; color: #28a745;">已省¥61</div>
+                    </div>
+                    <div class="badge-row">
+                        <div class="badge badge-purple" id="badge1">
+                            <i class="bi bi-shield-check"></i>
+                            <span>硬核补贴</span>
+                        </div>
+                        <div class="badge badge-red" id="badge2">
+                            <i class="bi bi-tag"></i>
+                            <span>全网最低价</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="app_project_detail_progress_bar" id="progressBar">
+            <div class="progress-section">
+                <div class="progress-header">
+                    <div class="progress-status">
+                        <div class="status-icon orange" id="statusIcon"><i class="bi bi-clock"></i></div>
+                        <span class="status-text" id="statusText">即将开始</span>
+                    </div>
+                    <span class="progress-data" id="progressData">12,888人预约</span>
+                </div>
+                <div class="progress-percent" id="progressPercent">0%</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill orange" id="progressFill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <span id="progressInfo1">已支持 0 人</span>
+                    <span id="progressInfo2">距目标 ¥100,000</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="prototype-module" data-prototype="app_project_detail">
+            <div class="card" style="margin-top: 0;">
+                <div class="card-body">
+                    <div class="goods-title">呢子抗皱性好，耐磨，PU皮韧性大易打理</div>
+                    <div class="goods-desc">精选优质面料，时尚百搭，经典款式</div>
+                    <div class="promotion-tags">
+                        <div class="promo-tag"><i class="bi bi-check-circle"></i>七天退换</div>
+                        <div class="promo-tag"><i class="bi bi-truck"></i>包邮</div>
+                        <div class="promo-tag"><i class="bi bi-credit-card"></i>先验后付</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tag-section">
+            <div class="tag-header">
+                <div class="tag-icon"><i class="bi bi-check2-all"></i></div>
+                <span class="tag-title">购买条件</span>
+                <span style="margin-left: auto; font-size: 12px; color: #999;">查看详情<i class="bi bi-chevron-right" style="margin-left: 2px;"></i></span>
+            </div>
+            <div class="tag-list">
+                <div class="tag-item unlocked">
+                    <div class="tag-check"><i class="bi bi-check"></i></div>
+                    <div class="tag-content">
+                        <div class="tag-name">参与过众筹项目</div>
+                        <div class="tag-hint">已满足 · 2024年3月21日 12:00</div>
+                    </div>
+                </div>
+                <div class="tag-item unlocked">
+                    <div class="tag-check"><i class="bi bi-check"></i></div>
+                    <div class="tag-content">
+                        <div class="tag-name">完成实名认证</div>
+                        <div class="tag-hint">已满足</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-section">
+            <div class="shop-info">
+                <div class="shop-avatar"><i class="bi bi-shop"></i></div>
+                <div>
+                    <div class="shop-name">官方旗舰店<span class="shop-label">自营</span></div>
+                    <div class="shop-desc">在售商品 128 件 · 好评率 98%</div>
+                </div>
+            </div>
+            <div class="shop-arrow"><i class="bi bi-chevron-right"></i></div>
+        </div>
+
+        <div class="detail-section">
+            <div class="detail-header">商品详情</div>
+            <div class="detail-images">
+                <div class="detail-img-placeholder"><i class="bi bi-image"></i></div>
+                <div class="detail-img-placeholder"><i class="bi bi-image"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-bar prototype-module" data-prototype="app_project_detail_bottom_bar" id="bottomBar">
+        <div class="btn-contact">
+            <i class="bi bi-chat-dots"></i>
+            <span>客服</span>
+        </div>
+        <div style="flex: 1;">
+            <button class="btn-main purple" id="mainBtn">立即预约</button>
+            <div class="bottom-hint" id="bottomHint">12,888人已预约</div>
+        </div>
+    </div>
+
+    <script>
+        const stateConfig = {
+            preheating: {
+                priceValue: '399',
+                priceBadge: { bg: 'linear-gradient(256deg, #FF9F43 0%, #FFC107 100%)', text: '即将开始' },
+                timeLabel: '距离开售',
+                timeValue: '03月25日 10:00',
+                priceHint: '03月21日 12:00开始',
+                priceOriginal: '¥460',
+                originalRow: false,
+                statusIcon: { class: 'orange', icon: 'bi-clock' },
+                statusText: '即将开始',
+                progressData: '12,888人预约',
+                progressPercent: '0%',
+                progressFill: { class: 'orange', width: '0%' },
+                progressInfo1: '已支持 0 人',
+                progressInfo2: '距目标 ¥100,000',
+                mainBtn: { class: 'purple', text: '立即预约' },
+                bottomHint: '12,888人已预约',
+                badges: [
+                    { id: 'badge1', class: 'badge-purple', icon: 'bi-shield-check', text: '硬核补贴' },
+                    { id: 'badge2', class: 'badge-orange', icon: 'bi-bell', text: '预约提醒' }
+                ]
+            },
+            progressing: {
+                priceValue: '399',
+                priceBadge: { bg: 'linear-gradient(256deg, #9174E1 0%, #6FFFAB 100%)', text: '实时价格' },
+                timeLabel: '结束时间',
+                timeValue: '12月25日 23:59',
+                priceHint: '已省¥61',
+                priceOriginal: '¥460',
+                originalRow: false,
+                statusIcon: { class: 'red', icon: 'bi-lightning' },
+                statusText: '已支持X人',
+                progressData: '剩余 18 天',
+                progressPercent: '68.5%',
+                progressFill: { class: 'red', width: '68.5%' },
+                progressInfo1: '已支持 6,850 人',
+                progressInfo2: '距目标 ¥31,500',
+                mainBtn: { class: 'red', text: '立即参与' },
+                bottomHint: '去看看其他档位',
+                badges: [
+                    { id: 'badge1', class: 'badge-purple', icon: 'bi-shield-check', text: '硬核补贴' },
+                    { id: 'badge2', class: 'badge-red', icon: 'bi-tag', text: '全网最低价' }
+                ]
+            },
+            success: {
+                priceValue: '399',
+                priceBadge: { bg: '#999', text: '已结束' },
+                timeLabel: '活动已结束',
+                timeValue: '12月25日 23:59',
+                priceHint: '活动已结束，已达标',
+                priceOriginal: '¥460',
+                originalRow: true,
+                statusIcon: { class: 'green', icon: 'bi-check-circle' },
+                statusText: '已成功',
+                progressData: '最终 15,234 人支持',
+                progressPercent: '100%',
+                progressFill: { class: 'green', width: '100%' },
+                progressInfo1: '已支持 15,234 人',
+                progressInfo2: '已达成 ¥150,000',
+                mainBtn: { class: 'green', text: '查看订单' },
+                bottomHint: '感谢您的参与',
+                badges: [
+                    { id: 'badge1', class: 'badge-green', icon: 'bi-check-circle', text: '已成功' },
+                    { id: 'badge2', class: 'badge-purple', icon: 'bi-gift', text: '奖励已解锁' }
+                ]
+            },
+            failed: {
+                priceValue: '460',
+                priceBadge: { bg: '#999', text: '已结束' },
+                timeLabel: '活动已结束',
+                timeValue: '12月25日 23:59',
+                priceHint: '活动已结束，未达标',
+                priceOriginal: '',
+                originalRow: false,
+                statusIcon: { class: 'gray', icon: 'bi-x-circle' },
+                statusText: '未达标，已退款',
+                progressData: '65% 支持率',
+                progressPercent: '65%',
+                progressFill: { class: 'gray', width: '65%' },
+                progressInfo1: '已支持 9,750 人',
+                progressInfo2: '未达成 ¥100,000',
+                mainBtn: { class: 'gray', text: '查看退款' },
+                bottomHint: '退款已原路返回',
+                badges: [
+                    { id: 'badge1', class: 'badge-gray', icon: 'bi-x-circle', text: '未达标' },
+                    { id: 'badge2', class: 'badge-gray', icon: 'bi-arrow-return-left', text: '已退款' }
+                ]
+            },
+            continue: {
+                priceValue: '429',
+                priceBadge: { bg: 'linear-gradient(90deg, #FF5869 0%, #F92121 100%)', text: '返场特惠' },
+                timeLabel: '限时特惠',
+                timeValue: '还剩 7 天',
+                priceHint: '限时加购',
+                priceOriginal: '¥899',
+                originalRow: true,
+                statusIcon: { class: 'green', icon: 'bi-check-circle' },
+                statusText: '已解锁全部奖励',
+                progressData: '继续加购',
+                progressPercent: '156%',
+                progressFill: { class: 'green', width: '100%' },
+                progressInfo1: '已支持 23,400 人',
+                progressInfo2: '超额完成 56%',
+                mainBtn: { class: 'red', text: '立即加购' },
+                bottomHint: '限时7天特惠价',
+                badges: [
+                    { id: 'badge1', class: 'badge-red', icon: 'bi-lightning-fill', text: '返场特惠' },
+                    { id: 'badge2', class: 'badge-green', icon: 'bi-check-circle', text: '奖励继续有效' }
+                ]
+            }
+        };
+
+        function updateUI(state) {
+            const config = stateConfig[state];
+
+            document.getElementById('priceValue').textContent = config.priceValue;
+            document.getElementById('priceBadge').style.background = config.priceBadge.bg;
+            document.getElementById('priceBadgeText').textContent = config.priceBadge.text;
+            document.getElementById('timeLabel').textContent = config.timeLabel;
+            document.getElementById('timeValue').textContent = config.timeValue;
+            document.getElementById('priceHint').textContent = config.priceHint;
+
+            if (config.priceOriginal) {
+                document.getElementById('priceOriginal').textContent = config.priceOriginal;
+                document.getElementById('priceOriginal').style.display = 'inline';
+            } else {
+                document.getElementById('priceOriginal').style.display = 'none';
+            }
+
+            document.getElementById('originalRow').style.display = config.originalRow ? 'flex' : 'none';
+
+            const statusIcon = document.getElementById('statusIcon');
+            statusIcon.className = 'status-icon ' + config.statusIcon.class;
+            statusIcon.innerHTML = '<i class="bi ' + config.statusIcon.icon + '"></i>';
+
+            document.getElementById('statusText').textContent = config.statusText;
+            document.getElementById('progressData').textContent = config.progressData;
+            document.getElementById('progressPercent').textContent = config.progressPercent;
+
+            const progressFill = document.getElementById('progressFill');
+            progressFill.className = 'progress-bar-fill ' + config.progressFill.class;
+            progressFill.style.width = config.progressFill.width;
+
+            document.getElementById('progressInfo1').textContent = config.progressInfo1;
+            document.getElementById('progressInfo2').textContent = config.progressInfo2;
+
+            const mainBtn = document.getElementById('mainBtn');
+            mainBtn.className = 'btn-main ' + config.mainBtn.class;
+            mainBtn.textContent = config.mainBtn.text;
+
+            document.getElementById('bottomHint').textContent = config.bottomHint;
+
+            config.badges.forEach((badge, index) => {
+                const badgeEl = document.getElementById('badge' + (index + 1));
+                badgeEl.className = 'badge ' + badge.class;
+                badgeEl.innerHTML = '<i class="bi ' + badge.icon + '"></i><span>' + badge.text + '</span>';
+            });
+
+            document.querySelectorAll('.state-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-state="' + state + '"]').classList.add('active');
+        }
+
+        document.querySelectorAll('.state-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const state = this.getAttribute('data-state');
+                updateUI(state);
+            });
+        });
+
+        window.addEventListener('message', function(e) {
+            if (e.origin !== window.location.origin) return;
+            const message = e.data;
+            if (message.action === 'highlight' && message.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => {
+                    module.classList.remove('feature-highlight');
+                });
+                const targetModule = document.querySelector('.prototype-module[data-prototype="' + message.featureId + '"]');
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+
+        updateUI('preheating');
+    </script>
+</body>
+</html>

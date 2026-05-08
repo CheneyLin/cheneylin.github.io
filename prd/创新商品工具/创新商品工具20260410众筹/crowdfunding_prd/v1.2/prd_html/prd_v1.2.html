@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>众筹 PRD v1.2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../assets/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad:true});</script>
+  <style>
+    :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; --red:#F92121; --green:#28a745; --purple:#9174E1; }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:24px; }
+    h1 { font-size:28px; margin:0 0 12px; border-bottom:3px solid var(--primary); padding-bottom:12px; }
+    h2 { font-size:20px; margin:32px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+    h3 { font-size:16px; margin:20px 0 10px; font-weight:600; }
+    p { margin:8px 0; color:var(--muted); }
+    .card { border:1px solid var(--border); border-radius:8px; padding:20px; margin:16px 0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#f9fafb; font-weight:600; }
+    .list { margin:0; padding-left:18px; }
+    .btn { display:inline-block; padding:6px 12px; border:1px solid var(--primary); color:#fff; background:var(--primary); border-radius:4px; text-decoration:none; font-size:13px; cursor:pointer; }
+    .meta { color:#909399; font-size:13px; }
+    .field-group { background:#fafafa; border-radius:6px; padding:16px; margin:16px 0; }
+    .field-label { font-weight:600; margin-bottom:10px; color:var(--fg); }
+    .feature-id { display:inline-block; background:var(--primary); color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; }
+    .feature-module { border:1px dashed var(--border); border-radius:8px; padding:16px; margin:16px 0; }
+    .feature-module:hover { border-color:var(--primary); }
+    .mermaid { background:#fff; text-align:center; margin:16px 0; }
+    .highlight-btn { background:var(--primary); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; margin-left:12px; }
+    .toc { background:#f9fafb; border-radius:8px; padding:16px; margin:16px 0; }
+    .toc ul { list-style:none; padding:0; }
+    .toc li { margin:8px 0; }
+    .toc a { color:var(--primary); text-decoration:none; }
+    .tag-new { background:#F92121; color:#fff; padding:2px 6px; border-radius:4px; font-size:11px; margin-left:4px; }
+    .tag-updated { background:#FF9F43; color:#fff; padding:2px 6px; border-radius:4px; font-size:11px; margin-left:4px; }
+    .status-table { width:100%; }
+    .status-preheating { color:#FF9F43; font-weight:600; }
+    .status-progress { color:#F92121; font-weight:600; }
+    .status-success { color:#28a745; font-weight:600; }
+    .status-failed { color:#999; font-weight:600; }
+    .status-continue { color:#9174E1; font-weight:600; }
+    pre { background:#f9fafb; padding:16px; border-radius:6px; overflow-x:auto; margin:12px 0; }
+    code { background:#f5f5f5; padding:2px 6px; border-radius:3px; font-size:13px; }
+    strong { color:var(--fg); }
+    .ui-spec { background:#fafafa; border:1px solid var(--border); border-radius:6px; padding:12px; margin:8px 0; font-family:monospace; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>众筹 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.2｜状态：需求评审中｜创建时间：2026-04-10｜更新日期：2026-04-12｜产品经理：林长宇</p>
+
+    <div class="card" id="section1">
+      <h2>1. 项目信息与版本记录</h2>
+      <table>
+        <tr><th style="width:120px;">产品名称</th><td>众筹</td></tr>
+        <tr><th>版本</th><td>v1.2</td></tr>
+        <tr><th>负责人</th><td>林长宇</td></tr>
+        <tr><th>创建时间</th><td>2026-04-10</td></tr>
+        <tr><th>产品范围</th><td>APP 端众筹参与 + ADMIN 运营后台</td></tr>
+        <tr><th>受众角色</th><td>C 端用户、运营人员</td></tr>
+      </table>
+      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <table>
+        <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
+        <tr><td>v1.0</td><td>2026-04-10</td><td>初始版本，需求采集完成，包含后台项目管理、APP端浏览与参与众筹、档位SKU配置、多级目标激励、预约与限购封顶等核心功能</td><td>林长宇</td></tr>
+        <tr><td>v1.1</td><td>2026-04-12</td><td>技术架构升级：① 所有外部资源本地化(CDN→本地部署)；② 实现iframe池预加载技术，页面切换性能提升100-300倍；③ 主控文档版本切换功能优化；④ 完善文件架构和版本管理</td><td>林长宇</td></tr>
+        <tr><td>v1.2</td><td>2026-04-12</td><td><span class="tag-new">新增</span> App端UI细节优化：众筹详情页价格条和进度条组件优化，新增5种活动状态（活动开始前、活动进行中、活动成功结束、活动失败结束、活动成功达标后继续售卖），每种状态对应不同的价格展示、进度展示和吸底按钮</td><td>林长宇</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section2">
+      <h2>2. 需求背景与目标</h2>
+      <h3>2.1 现状问题与痛点</h3>
+      <p>电商平台目前已有成熟的商城功能，但是没有针对众筹的场景，希望在电商平台中添加众筹功能。</p>
+      <h3 style="margin-top:16px;">2.2 需求提出的必要性</h3>
+      <p>需求落地后，实现平台/商家快速上线众筹项目，实现众筹项目成功。</p>
+      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <table>
+        <tr><th>目标类型</th><th>描述</th><th>衡量指标</th><th>目标值</th></tr>
+        <tr><td><strong>平台赋能</strong></td><td>支持快速上线众筹项目</td><td>项目上线周期</td><td>≤3天</td></tr>
+        <tr><td><strong>业务增长</strong></td><td>提升众筹项目成功率</td><td>众筹成功率</td><td>≥70%</td></tr>
+        <tr><td><strong>用户参与</strong></td><td>提升用户参与众筹体验</td><td>用户满意度</td><td>≥85%</td></tr>
+        <tr><td><strong>UI体验</strong></td><td>清晰传达活动状态</td><td>用户对活动状态理解度</td><td>≥90%</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section3">
+      <h2>3. 用户与使用场景</h2>
+      <h3>3.1 核心用户</h3>
+      <ul class="list">
+        <li><strong>运营团队</strong>：在运营后台配置众筹项目</li>
+        <li><strong>C端用户</strong>：通过APP浏览并参与众筹</li>
+      </ul>
+      <h3 style="margin-top:16px;">3.2 典型场景</h3>
+      <ol class="list">
+        <li>运营在运营后台配置新的商品类型，配置商品详情、商品价格、众筹目标、众筹时间等</li>
+        <li>用户通过商城APP浏览众筹商品详情，点击"众筹"按钮，选择SKU，付费参加众筹</li>
+        <li>众筹成功，安排生产和发货；众筹不成功，订单退款</li>
+      </ol>
+      <h3 style="margin-top:16px;">3.3 核心用户旅程</h3>
+      <table>
+        <tr><th>阶段</th><th>用户触点</th><th>用户行为</th><th>痛点/情绪</th><th>产品机会</th></tr>
+        <tr><td><strong>发现</strong></td><td>众筹列表页</td><td>浏览众筹项目，查看进度</td><td>好奇：有哪些项目？</td><td>突出热门项目，清晰展示进度</td></tr>
+        <tr><td><strong>决策</strong></td><td>众筹详情页</td><td>查看项目详情、目标、档位、多级奖励</td><td>犹豫：是否值得参与？</td><td>展示多级目标激励机制</td></tr>
+        <tr><td><strong>预约</strong></td><td>预热期预约</td><td>点击预约，设置开售提醒</td><td>期待：不想错过</td><td>预约功能保留名额</td></tr>
+        <tr><td><strong>购买</strong></td><td>SKU选择与支付</td><td>选择档位SKU，填写信息，支付全款</td><td>紧张/期待</td><td>全款支付+7天无理由</td></tr>
+        <tr><td><strong>达成</strong></td><td>项目成功/失败</td><td>查看项目状态更新</td><td>兴奋/失落</td><td>成功则发货，失败则退款</td></tr>
+        <tr><td><strong>追踪</strong></td><td>订单/物流</td><td>查看订单状态、物流信息</td><td>期待</td><td>清晰展示生产与发货进度</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section4">
+      <h2>4. 需求功能清单</h2>
+      <h3>4.1 运营后台端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>众筹玩法 - 项目列表</td><td>顶部工具栏左侧为项目名称关键搜索框，右侧为创建按钮（弹窗展示创建项目表单）；列表区查看所有众筹项目，展示项目基本信息、目标、进度、状态，操作按钮区（编辑、SKU管理、多级奖励、禁用/启用）；底部翻页区</td><td>P0</td><td><span class="feature-id">admin_project_list</span></td></tr>
+        <tr><td>众筹玩法 - 项目列表 - 项目创建/编辑弹窗</td><td>展示创建/编辑项目的表单，包含项目基础信息、时间控制、目标配置类型、成功判定规则</td><td>P0</td><td><span class="feature-id">admin_project_list_create</span></td></tr>
+        <tr><td>众筹玩法 - 项目列表 - SKU与限购管理弹窗</td><td>展示创建/编辑SKU与限购的表单，包含SKU名称、库存、限购状态</td><td>P0</td><td><span class="feature-id">admin_project_list_sku</span></td></tr>
+        <tr><td>众筹玩法 - 项目列表 - 多级奖励管理弹窗</td><td>展示创建/编辑多级奖励的表单，包含奖励名称、描述、目标、奖励类型等</td><td>P0</td><td><span class="feature-id">admin_project_list_benfit</span></td></tr>
+        <tr><td>众筹玩法 - 众筹订单</td><td>查看众筹订单、用户信息</td><td>P0</td><td><span class="feature-id">admin_order_manage</span></td></tr>
+      </table>
+
+      <h3 style="margin-top:24px;">4.2 APP端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th><th>功能标识</th></tr>
+        <tr><td>众筹详情页</td><td>展示众筹商品封面图/视频，标题、目标与进度条，讨论区入口，商品详情，吸底预约/参加/支持按钮</td><td>P0</td><td><span class="feature-id">app_project_detail</span></td></tr>
+        <tr><td>众筹详情页 - 价格条组件 <span class="tag-new">新增</span></td><td>价格条组件支持5种活动状态展示：活动开始前（预售价）、活动进行中（众筹价）、活动成功结束、活动失败结束（原价）、活动成功达标后继续售卖（加购价）</td><td>P0</td><td><span class="feature-id">app_project_detail_price_bar</span></td></tr>
+        <tr><td>众筹详情页 - 进度条组件 <span class="tag-new">新增</span></td><td>进度条组件支持5种活动状态展示：活动开始前（0%）、活动进行中（实时进度）、活动成功结束（100%）、活动失败结束（实际进度）、活动成功达标后继续售卖（100%+）</td><td>P0</td><td><span class="feature-id">app_project_detail_progress_bar</span></td></tr>
+        <tr><td>众筹详情页 - 多级奖励弹层</td><td>点击进度条区弹出多级奖励介绍的弹层，简称、描述、解锁条件、奖励类型、奖励模式</td><td>P0</td><td><span class="feature-id">app_project_detail_benfit</span></td></tr>
+        <tr><td>众筹详情页 - SKU选择弹层</td><td>展示可选SKU，吸底"去支持"按钮跳转支付</td><td>P0</td><td><span class="feature-id">app_project_detail_sku_picker</span></td></tr>
+        <tr><td>众筹讨论区</td><td>已有话题讨论产品功能，仅描述逻辑</td><td>-</td><td><span class="feature-id">app_comments</span></td></tr>
+        <tr><td>我的众筹订单管理</td><td>在已有"我的订单"功能基础上，新增查看我的众筹订单，支持退款查看进度等操作</td><td>P0</td><td><span class="feature-id">app_orders</span></td></tr>
+      </table>
+
+      <h3 style="margin-top:24px;">4.3 功能依赖关系</h3>
+      <div class="mermaid">
+graph TD
+    A[众筹项目概览] --> B[目标与进度条]
+    A --> C[多级目标区]
+    A --> D[档位/SKU选择区]
+    A --> E[项目详情]
+    A --> F[评论区]
+    B --> G[预约功能]
+    D --> H[参与众筹]
+    H --> I[订单管理]
+      </div>
+    </div>
+
+    <div class="card" id="section5">
+      <h2>5. 详细方案（带功能标识）</h2>
+
+      <h3>5.1 运营后台详细方案</h3>
+
+      <div class="feature-module" id="admin_project_list">
+        <h4>5.1.1 众筹玩法 - 项目列表 <span class="feature-id">admin_project_list</span></h4>
+        <ul class="list">
+          <li>展示所有众筹项目列表</li>
+          <li>顶部工具栏左侧为项目名称关键搜索框</li>
+          <li>顶部工具栏右侧为创建按钮（弹窗展示创建项目表单）</li>
+          <li>列表区显示基本信息、目标、进度、状态</li>
+          <li>操作按钮区（编辑、SKU管理、多级奖励、禁用/启用）</li>
+          <li>底部翻页区</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="admin_project_list_create">
+        <h4>5.1.1.1 项目创建/编辑弹窗 <span class="feature-id">admin_project_list_create</span></h4>
+        <ul class="list">
+          <li>项目基础信息（关联商品ID、众筹标题）</li>
+          <li>时间控制（众筹开始/结束、是否开启预约）</li>
+          <li>目标配置类型（SPU级别金额目标或件数目标）</li>
+          <li>成功判定规则（达成目标值，0表示必须达成）</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="admin_project_list_sku">
+        <h4>5.1.1.3 SKU与限购管理弹窗 <span class="feature-id">admin_project_list_sku</span></h4>
+        <ul class="list">
+          <li>展示所有SKU，名称、价格、规格属性</li>
+          <li>用户限购设置，SPU级限购或SKU级限购</li>
+          <li>SKU级库存（0代表无限制）</li>
+          <li>预计发货期标签</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="admin_project_list_benfit">
+        <h4>5.1.1.4 多级奖励配置弹窗 <span class="feature-id">admin_project_list_benfit</span></h4>
+        <ul class="list">
+          <li>展示多级奖励配置，简称、描述、解锁条件、奖励类型、奖励模式</li>
+          <li>简称：展示在进度条下方，2-8个字</li>
+          <li>描述：中文描述，2-99个字</li>
+          <li>解锁条件（按项目总进度，金额或件数）：设置数值，1-999999</li>
+          <li>奖励类型（规格升级/赠品加送/线下权益）</li>
+          <li>奖励模式（全员赠送/抽选）：抽选类型需要配置奖励配额</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="admin_order_manage">
+        <h4>5.1.2 订单管理 <span class="feature-id">admin_order_manage</span></h4>
+        <ul class="list">
+          <li>查看众筹订单列表</li>
+          <li>搜索、订单状态筛选</li>
+        </ul>
+      </div>
+
+      <h3 style="margin-top:32px;">5.2 APP端详细方案</h3>
+
+      <div class="feature-module" id="app_project_detail">
+        <h4>5.2.1 众筹详情页 <span class="feature-id">app_project_detail</span></h4>
+        <p><strong>页面布局结构</strong></p>
+        <ul class="list">
+          <li>顶部区域：展示众筹商品封面图/视频（支持轮播）</li>
+          <li>标题区：项目名称、副标题、类目、商家信息</li>
+          <li><strong>价格条区</strong>：根据活动状态动态展示价格信息（详见5.2.1.1）</li>
+          <li><strong>进度条区</strong>：根据活动状态动态展示进度信息（详见5.2.1.2）</li>
+          <li>讨论区入口：跳转至众筹讨论区</li>
+          <li>多级奖励入口：点击进度条区域弹出多级奖励弹层</li>
+          <li>商品详情区：详细描述图文、FAQ常见问题、风险提示与承诺</li>
+          <li><strong>吸底操作栏</strong>：根据项目状态动态显示按钮（详见5.2.1.3）</li>
+        </ul>
+        <p><strong>交互逻辑</strong></p>
+        <ul class="list">
+          <li>预热期：显示"预约"按钮，点击后进入预约流程</li>
+          <li>进行中：显示"参加"按钮，点击后弹出SKU选择弹层</li>
+          <li>已结束：显示"查看结果"按钮，跳转至订单管理</li>
+          <li>支持分享功能，可分享至社交平台</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="app_project_detail_price_bar">
+        <h4>5.2.1.1 价格条组件 <span class="feature-id">app_project_detail_price_bar</span> <span class="tag-new">新增</span></h4>
+        <p><strong>组件说明</strong>：价格条组件用于展示商品价格信息，根据活动状态显示不同的价格样式和标签。</p>
+
+        <p><strong>5种活动状态对应的价格条展示</strong>：</p>
+        <table class="status-table">
+          <tr><th>阶段</th><th>价格样式</th><th>标签</th><th>辅助信息</th></tr>
+          <tr><td><span class="status-preheating">① 活动开始前</span></td><td>预售价 ¥XXX</td><td><span style="background:#FF9F43;color:#fff;padding:2px 8px;border-radius:4px;">即将开始</span></td><td>显示"距离开售"倒计时</td></tr>
+          <tr><td><span class="status-progress">② 活动进行中</span></td><td>众筹价 ¥XXX</td><td><span style="background:linear-gradient(90deg,#9174E1,#6FFFAB);color:#fff;padding:2px 8px;border-radius:4px;">实时价格</span></td><td>显示"已省¥XX"（对比原价）</td></tr>
+          <tr><td><span class="status-success">③ 活动成功结束</span></td><td>¥XXX</td><td><span style="background:#999;color:#fff;padding:2px 8px;border-radius:4px;">已结束</span></td><td>显示"活动已结束，已达标"</td></tr>
+          <tr><td><span class="status-failed">④ 活动失败结束</span></td><td>¥XXX（划线原价）</td><td><span style="background:#999;color:#fff;padding:2px 8px;border-radius:4px;">已结束</span></td><td>显示"活动已结束，未达标，已退款"</td></tr>
+          <tr><td><span class="status-continue">⑤ 成功达标后继续售卖</span></td><td>加购价 ¥XXX</td><td><span style="background:linear-gradient(90deg,#FF5869,#F92121);color:#fff;padding:2px 8px;border-radius:4px;">返场特惠</span></td><td>显示"限时加购"</td></tr>
+        </table>
+
+        <p><strong>UI规范</strong>：</p>
+        <div class="ui-spec">
+┌─────────────────────────────────────────────────────┐<br/>
+│  [标签]                              [辅助信息]       │<br/>
+│  ¥ 价格                                      ¥ 原价  │<br/>
+└─────────────────────────────────────────────────────┘
+        </div>
+        <ul class="list">
+          <li>标签样式：
+            <ul>
+              <li>"即将开始"：橙色渐变背景 #FF9F43 → #FFC107</li>
+              <li>"实时价格"：紫色渐变背景 #9174E1 → #6FFFAB</li>
+              <li>"已结束"：灰色背景 #999999</li>
+              <li>"返场特惠"：红色渐变背景 #FF5869 → #F92121</li>
+            </ul>
+          </li>
+          <li>价格字体：DIN Alternate Bold 24px</li>
+          <li>原价：删除线样式，#999999 14px</li>
+          <li>辅助信息：#666666 12px</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="app_project_detail_progress_bar">
+        <h4>5.2.1.2 进度条组件 <span class="feature-id">app_project_detail_progress_bar</span> <span class="tag-new">新增</span></h4>
+        <p><strong>组件说明</strong>：进度条组件用于展示众筹项目进度，根据活动状态显示不同的进度样式。</p>
+
+        <p><strong>5种活动状态对应的进度条展示</strong>：</p>
+        <table class="status-table">
+          <tr><th>阶段</th><th>进度条样式</th><th>状态文本</th><th>辅助数据</th></tr>
+          <tr><td><span class="status-preheating">① 活动开始前</span></td><td>0%，灰色底条</td><td>"即将开始"</td><td>显示预约人数</td></tr>
+          <tr><td><span class="status-progress">② 活动进行中</span></td><td>X%，彩色渐变填充</td><td>"已支持X人"</td><td>显示剩余时间、距目标</td></tr>
+          <tr><td><span class="status-success">③ 活动成功结束</span></td><td>100%，绿色填充 #28a745</td><td>"已成功"</td><td>显示最终支持人数</td></tr>
+          <tr><td><span class="status-failed">④ 活动失败结束</span></td><td>X%（实际进度），灰色填充</td><td>"未达标，已退款"</td><td>显示实际支持人数</td></tr>
+          <tr><td><span class="status-continue">⑤ 成功达标后继续售卖</span></td><td>100%+，绿色填充，可显示超额比例</td><td>"已解锁全部奖励"</td><td>显示"继续加购"引导</td></tr>
+        </table>
+
+        <p><strong>UI规范</strong>：</p>
+        <div class="ui-spec">
+┌─────────────────────────────────────────────────────┐<br/>
+│  [状态图标] 状态文本                    [辅助数据]   │<br/>
+│  ████████████░░░░░░░░░░░░░░░░░  XX.X%              │<br/>
+│  已支持 X,XXX 人 · 剩余 XX 天                        │<br/>
+└─────────────────────────────────────────────────────┘
+        </div>
+        <ul class="list">
+          <li>进度条高度：8px，圆角4px</li>
+          <li>灰色底条：#F0F0F0</li>
+          <li>进行中渐变：#FF5869 → #F92121（红色渐变）</li>
+          <li>成功绿色：#28a745</li>
+          <li>失败灰色：#999999</li>
+          <li>状态文本字体：PingFang SC Medium 14px</li>
+          <li>百分比字体：DIN Alternate Bold 17px</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="app_project_detail_bottom_bar">
+        <h4>5.2.1.3 吸底操作栏组件 <span class="feature-id">app_project_detail_bottom_bar</span> <span class="tag-new">新增</span></h4>
+        <p><strong>组件说明</strong>：吸底操作栏固定在页面底部，根据活动状态显示不同的操作按钮。</p>
+
+        <p><strong>5种活动状态对应的按钮展示</strong>：</p>
+        <table class="status-table">
+          <tr><th>阶段</th><th>按钮文案</th><th>按钮样式</th><th>辅助功能</th></tr>
+          <tr><td><span class="status-preheating">① 活动开始前</span></td><td>立即预约</td><td><span style="background:linear-gradient(90deg,#9174E1,#6FFFAB);color:#fff;padding:8px 16px;border-radius:20px;">立即预约</span></td><td>右侧显示预约人数</td></tr>
+          <tr><td><span class="status-progress">② 活动进行中</span></td><td>立即参与</td><td><span style="background:linear-gradient(90deg,#FF5869,#F92121);color:#fff;padding:8px 16px;border-radius:20px;">立即参与</span></td><td>右侧显示"去看看"</td></tr>
+          <tr><td><span class="status-success">③ 活动成功结束</span></td><td>查看订单</td><td><span style="background:#28a745;color:#fff;padding:8px 16px;border-radius:20px;">查看订单</span></td><td>跳转订单详情</td></tr>
+          <tr><td><span class="status-failed">④ 活动失败结束</span></td><td>查看退款</td><td><span style="background:#999;color:#fff;padding:8px 16px;border-radius:20px;">查看退款</span></td><td>跳转退款进度</td></tr>
+          <tr><td><span class="status-continue">⑤ 成功达标后继续售卖</span></td><td>立即加购</td><td><span style="background:linear-gradient(90deg,#FF5869,#F92121);color:#fff;padding:8px 16px;border-radius:20px;">立即加购</span></td><td>显示限时标识</td></tr>
+        </table>
+
+        <p><strong>UI规范</strong>：</p>
+        <div class="ui-spec">
+┌─────────────────────────────────────────────────────┐<br/>
+│  [客服图标]                        [主按钮:文案]   │<br/>
+│             [辅助信息]                                │<br/>
+└─────────────────────────────────────────────────────┘
+        </div>
+        <ul class="list">
+          <li>底部固定栏高度：80px（含安全区域）</li>
+          <li>按钮高度：48px，圆角24px</li>
+          <li>按钮字体：PingFang SC Medium 16px</li>
+          <li>左侧客服图标：44px × 44px，边框1px #E4E7ED</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="app_project_detail_benfit">
+        <h4>5.2.2 众筹详情页 - 多级奖励弹层 <span class="feature-id">app_project_detail_benfit</span></h4>
+        <p><strong>触发方式</strong>：点击详情页进度条区域弹出该弹层</p>
+        <p><strong>弹层内容结构</strong>：</p>
+        <ul class="list">
+          <li>弹层标题：多级奖励说明</li>
+          <li>奖励列表区：展示所有配置的多级奖励
+            <ul>
+              <li>简称（2-8个字）：醒目展示在奖励卡片顶部</li>
+              <li>解锁条件：按项目总进度（金额或件数），显示当前进度与目标差额</li>
+              <li>描述（中文，2-99个字）：详细说明奖励内容</li>
+              <li>奖励类型（规格升级/赠品加送/线下权益）</li>
+              <li>奖励模式（全员赠送/抽选）</li>
+              <li>解锁状态：已解锁（绿色勾选）/ 未解锁（灰色锁）</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>奖励卡片状态</strong>：</p>
+        <ul class="list">
+          <li>已解锁：绿色边框，背景 #F0FFF4，顶部显示绿色标签"已解锁"</li>
+          <li>未解锁：灰色边框，背景 #FAFAFA，顶部显示进度百分比</li>
+          <li>解锁中：紫色边框，背景 #F8F7FF，顶部显示进度百分比和"解锁中"</li>
+        </ul>
+      </div>
+
+      <div class="feature-module" id="app_project_detail_sku_picker">
+        <h4>5.2.3 众筹详情页 - SKU选择弹层 <span class="feature-id">app_project_detail_sku_picker</span></h4>
+        <p>展示可选SKU，吸底"去支持"按钮跳转支付</p>
+      </div>
+
+      <div class="feature-module" id="app_comments">
+        <h4>5.2.4 众筹讨论区 <span class="feature-id">app_comments</span></h4>
+        <p>已有话题讨论产品功能，仅描述逻辑</p>
+      </div>
+
+      <div class="feature-module" id="app_orders">
+        <h4>5.2.5 我的众筹订单管理 <span class="feature-id">app_orders</span></h4>
+        <p>在已有"我的订单"功能基础上，新增查看我的众筹订单，支持退款查看进度等操作</p>
+      </div>
+    </div>
+
+    <div class="card" id="section6">
+      <h2>6. 业务流程图 (Mermaid)</h2>
+
+      <h3>6.1 众筹活动状态流转图</h3>
+      <div class="mermaid">
+stateDiagram-v2
+    [*] --> 预热期: 创建项目并开启预约
+    预热期 --> 活动进行中: 到达开始时间
+    活动进行中 --> 活动成功结束: 达成目标 & 到达结束时间
+    活动进行中 --> 活动失败结束: 未达成目标 & 到达结束时间
+    活动成功结束 --> 继续售卖: 运营开启返场
+    继续售卖 --> [*]: 售完或运营结束
+    活动成功结束 --> [*]: 订单完成
+    活动失败结束 --> [*]: 退款完成
+    预热期 --> 预热期: 用户预约
+      </div>
+
+      <h3 style="margin-top:24px;">6.2 价格条与进度条状态联动图</h3>
+      <div class="mermaid">
+flowchart TD
+    A[获取活动状态] --> B{判断状态}
+    B -->|活动开始前| C[显示预售价 + 0%进度]
+    B -->|活动进行中| D[显示众筹价 + 实时进度]
+    B -->|活动成功结束| E[显示原价 + 100%进度]
+    B -->|活动失败结束| F[显示划线价 + 实际进度]
+    B -->|继续售卖| G[显示加购价 + 100%+进度]
+      </div>
+    </div>
+
+    <div class="card" id="section7">
+      <h2>7. 异常与边界处理</h2>
+
+      <h3>7.1 网络异常</h3>
+      <ul class="list">
+        <li>价格和进度信息加载失败时，显示"数据加载失败，请重试"占位</li>
+        <li>重试按钮点击后重新请求数据</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">7.2 状态异常</h3>
+      <ul class="list">
+        <li>后台返回状态与前端预设状态不匹配时，默认显示"活动进行中"样式</li>
+        <li>记录异常日志，便于排查</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">7.3 时间边界</h3>
+      <ul class="list">
+        <li>活动开始时间精确到分钟，开始时间到达时立即切换状态</li>
+        <li>活动结束时间到达时，即使进度未更新，也立即切换到结束状态</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">7.4 数据异常</h3>
+      <ul class="list">
+        <li>进度数据为负数或超过1000%时，显示为100%</li>
+        <li>价格数据异常时，显示"价格待定"</li>
+      </ul>
+    </div>
+
+    <div class="card" id="section8">
+      <h2>8. 数据追踪与埋点</h2>
+      <table>
+        <tr><th>事件名称</th><th>触发时机</th><th>上报参数</th></tr>
+        <tr><td>price_bar_view</td><td>价格条展示</td><td>status, price, original_price</td></tr>
+        <tr><td>price_bar_click</td><td>价格条点击</td><td>status, position</td></tr>
+        <tr><td>progress_bar_view</td><td>进度条展示</td><td>status, progress, target</td></tr>
+        <tr><td>progress_bar_click</td><td>进度条点击</td><td>status, progress</td></tr>
+        <tr><td>bottom_bar_view</td><td>吸底栏展示</td><td>status, button_text</td></tr>
+        <tr><td>bottom_bar_click</td><td>吸底按钮点击</td><td>status, button_type</td></tr>
+        <tr><td>promotion_unlocked</td><td>奖励解锁</td><td>promotion_id, promotion_name</td></tr>
+      </table>
+    </div>
+
+    <div class="card" id="section9">
+      <h2>9. 未来演进规划</h2>
+
+      <h3>9.1 v1.3 规划</h3>
+      <ul class="list">
+        <li>支持众筹项目分享海报生成</li>
+        <li>支持众筹直播功能</li>
+        <li>支持众筹项目评价功能</li>
+      </ul>
+
+      <h3 style="margin-top:16px;">9.2 v2.0 规划</h3>
+      <ul class="list">
+        <li>支持众筹项目讨论区UGC内容</li>
+        <li>支持众筹项目进度订阅通知</li>
+        <li>支持众筹项目社交分享裂变</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>
