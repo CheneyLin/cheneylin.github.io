@@ -300,10 +300,6 @@
 
 /* === Responsive === */
 @media (max-width: 1024px) {
-    .page-selector-bar {
-        display: none !important;
-    }
-
     .page-dropdown {
         display: block;
     }
