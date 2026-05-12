@@ -859,12 +859,12 @@
 }
 /* 
 .progress-value.success {
-    color: #16A34A;
+    color: ##ff6b99;
 } */
 
-/* .progress-value.muted {
+.progress-value.muted {
     color: var(--geist-gray-400);
-} */
+}
 
 .progress-percent {
     font-family: "DIN Alternate", -apple-system, sans-serif;
@@ -879,9 +879,9 @@
     color: #16A34A;
 } */
 
-/* .progress-percent.muted {
+.progress-percent.muted {
     color: var(--geist-gray-400);
-} */
+}
 
 .progress-bar-bg {
     flex: 1;
@@ -956,17 +956,17 @@
 .crowd-status {
     font-size: 14px;
     font-weight: 600;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     gap: 4px;
 }
 
 .crowd-status.success {
-    color: #16A34A;
+    color: #ff6b99;
 }
 
 .crowd-status.fail {
-    color: #DC2626;
+    color: var(--geist-gray-400);
 }
 
 /* === Product Info === */
