@@ -39,6 +39,9 @@
             <button class="page-item-bar" data-page="app_pages/goods_details_status_continue.html" onclick="loadPage('app_pages/goods_details_status_continue.html', this)">
                 <i class="bi bi-arrow-up-circle"></i> 达标继续售
             </button>
+            <button class="page-item-bar" data-page="app_pages/app_my_order_list.html" onclick="loadPage('app_pages/app_my_order_list.html', this)">
+                <i class="bi bi-receipt"></i> 我的订单
+            </button>
         </div>
 
         <div id="singleView" class="single-view">
@@ -74,6 +77,11 @@
                 <div class="phone-frame-container" data-page-label="达标继续售" data-prototype="app_goods_details_status_continue">
                     <div class="phone-screen">
                         <iframe src="app_pages/goods_details_status_continue.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="phone-frame-container" data-page-label="我的订单" data-prototype="app_my_order_list">
+                    <div class="phone-screen">
+                        <iframe src="app_pages/app_my_order_list.html" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
@@ -132,7 +140,8 @@
                     'app_goods_details_status_running': 'app_pages/goods_details_status_running.html',
                     'app_goods_details_status_success': 'app_pages/goods_details_status_success.html',
                     'app_goods_details_status_fail': 'app_pages/goods_details_status_fail.html',
-                    'app_goods_details_status_continue': 'app_pages/goods_details_status_continue.html'
+                    'app_goods_details_status_continue': 'app_pages/goods_details_status_continue.html',
+                    'app_my_order_list': 'app_pages/app_my_order_list.html'
                 };
 
                 if (pageMap[featureId]) {

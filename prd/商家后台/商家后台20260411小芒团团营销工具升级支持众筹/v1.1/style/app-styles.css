@@ -547,6 +547,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    display: none;
 }
 
 .product-image .badge i {
@@ -565,8 +566,8 @@
 
 /* === Price Bar === */
 .price-bar {
-    margin: 12px 12px 0;
-    border-radius: 8px 8px 0 0;
+    margin: 6px 6px 0;
+    border-radius: 8px;
     overflow: hidden;
     position: relative;
 }
@@ -577,7 +578,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, #393939 0%, #030303 100%);
+    /* background: linear-gradient(180deg, #393939 0%, #030303 100%); */
+    background-image: url('../images/price_bar_background.png');
+    background-size: cover;
+    background-position: center;
 }
 
 .price-bar-bg::after {
@@ -619,15 +623,32 @@
     right: 12px;
     font-size: 16px;
     font-weight: 600;
-    color: #FFD91D;
+    /* color: #FFD91D; */
+    color: transparent;
     z-index: 2;
     display: flex;
     align-items: center;
     gap: 4px;
+
 }
+
+.price-bar-title::after {
+    content: '';
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    background-image: url('../images/price_bar_logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 12px;
+    margin-left: 4px;
+}
+
 
 .price-bar-title i {
     font-size: 18px;
+    display: none;
 }
 
 .price-row {
@@ -708,7 +729,7 @@
 /* === Crowd Section === */
 .crowd-section {
     margin: 0 12px 12px;
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px;
     overflow: hidden;
     position: relative;
 }
@@ -719,28 +740,31 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, #FF6B35 0%, #FFEBEB 97%);
+    /* background: linear-gradient(180deg, #ff6b99 0%, #FFEBEB 97%); */
+    background-image: url('../images/process_bar_background.png');
+    background-size: cover;
+    background-position: center;
     z-index: 0;
 }
-
+/* 
 .crowd-section.success .crowd-bg {
     background: linear-gradient(180deg, #16A34A 0%, #DCFCE7 97%);
 }
 
 .crowd-section.fail .crowd-bg {
     background: linear-gradient(180deg, #9CA3AF 0%, #F3F4F6 97%);
-}
+} */
 
 .crowd-content {
     position: relative;
     z-index: 1;
-    padding: 16px;
+    padding: 4px;
 }
 
 .crowd-stats-card {
     background: rgba(255,255,255,0.94);
     border-radius: 8px;
-    padding: 12px;
+    padding: 8px;
     border: 1px solid var(--geist-white);
 }
 
@@ -748,7 +772,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .stats-target {
@@ -761,6 +786,19 @@
     font-size: 14px;
     font-weight: 500;
     color: #FFF;
+}
+
+.stats-target-label::before {
+    content: '';
+    display: inline-block;
+    width: 80px;
+    height: 24px;
+    background-image: url('../images/process_bar_logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 4px;
+    vertical-align: middle;
 }
 
 .stats-target-value {
@@ -780,14 +818,14 @@
 
 .stats-rule {
     font-size: 12px;
-    color: #0A6E0A;
+    color: #ffffff;
     cursor: pointer;
-    text-decoration: underline;
+    margin-right: 8px;
 }
-
+/* 
 .stats-rule.muted {
     color: var(--geist-gray-400);
-}
+} */
 
 .progress-wrapper {
     margin-bottom: 12px;
@@ -797,7 +835,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 6px;
+    /* margin-bottom: 6px; */
 }
 
 .progress-info {
@@ -817,33 +855,33 @@
     font-family: "DIN Alternate", -apple-system, sans-serif;
     font-size: 18px;
     font-weight: 700;
-    color: #FF6B35;
+    color: #ff6b99;
 }
-
+/* 
 .progress-value.success {
     color: #16A34A;
-}
+} */
 
-.progress-value.muted {
+/* .progress-value.muted {
     color: var(--geist-gray-400);
-}
+} */
 
 .progress-percent {
     font-family: "DIN Alternate", -apple-system, sans-serif;
     font-size: 24px;
     font-weight: 700;
-    color: #FF6B35;
+    color: #ff6b99;
     white-space: nowrap;
     margin-left: auto;
 }
 
-.progress-percent.success {
+/* .progress-percent.success {
     color: #16A34A;
-}
+} */
 
-.progress-percent.muted {
+/* .progress-percent.muted {
     color: var(--geist-gray-400);
-}
+} */
 
 .progress-bar-bg {
     flex: 1;
@@ -857,40 +895,40 @@
 
 .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #FFB080 0%, #FF6B35 100%);
+    background: linear-gradient(90deg, #ff6b99 0%, #f16090 100%);
     border-radius: 5px;
     position: relative;
 }
-
+/* 
 .progress-bar-fill.success {
     background: linear-gradient(90deg, #86EFAC 0%, #16A34A 100%);
 }
 
 .progress-bar-fill.fail {
     background: #9CA3AF;
-}
-
+} */
+/* 
 .progress-bar-fill::after {
     content: '';
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    background: #FF6B35;
+    width: 16px;
+    height: 16px;
+    background: #ff6b99;
     border: 2px solid var(--geist-white);
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+} */
 
-.progress-bar-fill.success::after {
+/* .progress-bar-fill.success::after {
     background: #16A34A;
-}
-
+} */
+/* 
 .progress-bar-fill.fail::after {
     display: none;
-}
+} */
 
 .progress-bar-shine {
     position: absolute;
@@ -934,9 +972,9 @@
 /* === Product Info === */
 .product-info {
     background: var(--geist-white);
-    margin: 12px;
+    margin: 8px;
     border-radius: 12px;
-    padding: 16px;
+    padding: 4px;
 }
 
 .product-name {

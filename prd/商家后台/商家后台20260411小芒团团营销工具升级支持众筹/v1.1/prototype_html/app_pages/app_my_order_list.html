@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的订单列表</title>
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../style/main.css" rel="stylesheet" />
+    <link href="../../style/app-styles.css" rel="stylesheet" />
+    <style>
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--geist-white);
+            border-radius: var(--radius-comfortable);
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            border: 1px solid var(--shadow-border-light);
+        }
+
+        .phone-frame.highlighted {
+            border-color: var(--develop-blue);
+            box-shadow: 0 0 0 3px var(--focus-blue), var(--shadow-card-full);
+        }
+
+        .status-bar {
+            height: 44px;
+            background: var(--geist-white);
+            position: relative;
+            padding: 0 var(--space-16);
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--geist-black);
+            box-shadow: var(--shadow-border-light);
+        }
+
+        .page-content {
+            height: calc(812px - 44px);
+            overflow-y: auto;
+            position: relative;
+            background: var(--geist-white);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .page-content::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+
+        .nav-bar {
+            height: 44px;
+            background: var(--geist-white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-16);
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .nav-back {
+            font-size: 20px;
+            color: var(--geist-black);
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .nav-back:hover {
+            color: var(--geist-gray-600);
+        }
+
+        .nav-title {
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.34px;
+            color: var(--geist-black);
+        }
+
+        .nav-action {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--link-blue);
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        .nav-action:hover {
+            opacity: 0.85;
+        }
+
+        .tabs {
+            height: 44px;
+            background: var(--geist-white);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-16);
+            gap: var(--space-24);
+            border-bottom: var(--shadow-border-light);
+            overflow-x: auto;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            font-size: 14px;
+            color: var(--geist-gray-600);
+            cursor: pointer;
+            white-space: nowrap;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: var(--geist-black);
+            font-weight: 600;
+            border-bottom-color: var(--geist-black);
+        }
+
+        .sub-tabs {
+            height: 40px;
+            background: var(--geist-white);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-16);
+            gap: var(--space-12);
+            border-bottom: var(--shadow-border-light);
+            overflow-x: auto;
+        }
+
+        .sub-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sub-tab {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+            cursor: pointer;
+            white-space: nowrap;
+            padding: 6px 12px;
+            border-radius: 16px;
+            transition: all 0.2s;
+        }
+
+        .sub-tab.active {
+            background: var(--geist-black);
+            color: var(--geist-white);
+        }
+
+        .order-list {
+            padding: var(--space-12);
+        }
+
+        .order-card {
+            background: var(--geist-white);
+            margin-bottom: var(--space-12);
+            padding: var(--space-16);
+            border-radius: var(--radius-medium);
+            box-shadow: var(--shadow-border-light);
+            position: relative;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .shop-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+            font-size: 13px;
+            color: var(--geist-gray-600);
+        }
+
+        .order-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .order-status.fundraising {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .order-status.waiting-out {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .order-status.failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .order-status.refunded {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .order-status.ended {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .product-item {
+            display: flex;
+            gap: var(--space-12);
+            margin-bottom: var(--space-12);
+        }
+
+        .product-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-small);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: white;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-tag {
+            display: inline-block;
+            background: #ffd700;
+            color: var(--geist-black);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .product-sku {
+            font-size: 12px;
+            color: var(--geist-gray-400);
+            margin-bottom: 4px;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .product-quantity {
+            font-size: 13px;
+            color: var(--geist-gray-400);
+        }
+
+        .order-footer {
+            border-top: var(--shadow-border-light);
+            padding-top: var(--space-12);
+            margin-top: var(--space-12);
+        }
+
+        .back-form-no {
+            font-size: 12px;
+            color: var(--geist-gray-400);
+            margin-bottom: 8px;
+        }
+
+        .actual-amount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .actual-amount-label {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+        }
+
+        .actual-amount-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--geist-black);
+        }
+
+        .logistics-info {
+            font-size: 12px;
+            color: var(--geist-gray-400);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .logistics-info i {
+            font-size: 14px;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-8);
+        }
+
+        .btn-action {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: var(--shadow-border-light);
+            background: var(--geist-white);
+            color: var(--geist-black);
+            font-family: inherit;
+        }
+
+        .btn-action:hover {
+            background: var(--geist-gray-50);
+        }
+
+        .btn-action.primary {
+            background: var(--geist-black);
+            color: var(--geist-white);
+            border-color: var(--geist-black);
+        }
+
+        .btn-action.primary:hover {
+            background: var(--geist-gray-900);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: var(--geist-gray-100);
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            margin-bottom: 8px;
+        }
+
+        .empty-desc {
+            font-size: 13px;
+            color: var(--geist-gray-400);
+            margin-bottom: 20px;
+        }
+
+        .empty-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: var(--shadow-border-light);
+            background: var(--geist-white);
+            color: var(--geist-black);
+            font-family: inherit;
+        }
+
+        .empty-btn:hover {
+            background: var(--geist-gray-50);
+        }
+
+        .feature-highlight {
+            border: 2px solid var(--focus-blue) !important;
+            box-shadow: 0 0 0 4px hsla(212, 100%, 48%, 0.2);
+            transition: all 0.3s;
+        }
+
+        .prototype-module {
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span>10:32</span>
+            <div class="flex items-center gap-2">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <div class="nav-back"><i class="bi bi-chevron-left"></i></div>
+            <div class="nav-title">我的订单</div>
+            <div class="nav-action"></div>
+        </div>
+        
+        <div class="page-content">
+            <div class="tabs">
+                <div class="tab active">全部</div>
+                <div class="tab">待支付</div>
+                <div class="tab">待发货</div>
+                <div class="tab">待收货</div>
+                <div class="tab">待评价</div>
+            </div>
+            
+            <div class="sub-tabs">
+                <div class="sub-tab active">全部</div>
+                <div class="sub-tab">众筹</div>
+                <div class="sub-tab">商城</div>
+                <div class="sub-tab">其他</div>
+            </div>
+            
+            <div class="order-list">
+                <div class="prototype-module" data-prototype="app_my_order_list">
+                    
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="shop-info">
+                                <i class="bi bi-shop"></i>
+                                <span>小芒团团 | 春季新品众筹</span>
+                            </div>
+                            <span class="order-status fundraising">众筹中</span>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <div><i class="bi bi-gift" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>众筹</div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-tag">众筹</span>
+                                <div class="product-name">【众筹】春季限定礼盒套装</div>
+                                <div class="product-sku">粉色1号</div>
+                                <div class="product-bottom">
+                                    <span class="product-price">¥128.00</span>
+                                    <span class="product-quantity">x1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <div class="back-form-no">订单号：HT202604120001</div>
+                            <div class="actual-amount">
+                                <span class="actual-amount-label">实付款</span>
+                                <span class="actual-amount-value">¥128.19</span>
+                            </div>
+                            <div class="order-actions">
+                                <button class="btn-action">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="shop-info">
+                                <i class="bi bi-shop"></i>
+                                <span>小芒团团 | 春季新品众筹</span>
+                            </div>
+                            <span class="order-status waiting-out">待发货</span>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                                <div><i class="bi bi-star-fill" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>众筹</div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-tag">众筹</span>
+                                <div class="product-name">【众筹】春季限定礼盒套装</div>
+                                <div class="product-sku">蓝色2号</div>
+                                <div class="product-bottom">
+                                    <span class="product-price">¥128.00</span>
+                                    <span class="product-quantity">x2</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <div class="back-form-no">订单号：HT202604110002</div>
+                            <div class="actual-amount">
+                                <span class="actual-amount-label">实付款</span>
+                                <span class="actual-amount-value">¥256.38</span>
+                            </div>
+                            <div class="order-actions">
+                                <button class="btn-action">提醒发货</button>
+                                <button class="btn-action">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="shop-info">
+                                <i class="bi bi-shop"></i>
+                                <span>小芒团团 | 冬季特惠众筹</span>
+                            </div>
+                            <span class="order-status failed">众筹失败</span>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image" style="background: linear-gradient(135deg, #d1d5db, #9ca3af);">
+                                <div><i class="bi bi-x-circle" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>失败</div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-tag">众筹</span>
+                                <div class="product-name">【众筹】冬季暖心饮品套餐</div>
+                                <div class="product-sku">标准套餐</div>
+                                <div class="product-bottom">
+                                    <span class="product-price">¥68.00</span>
+                                    <span class="product-quantity">x1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <div class="back-form-no">订单号：HT202603250003</div>
+                            <div class="actual-amount">
+                                <span class="actual-amount-label">实付款</span>
+                                <span class="actual-amount-value">¥0.00</span>
+                            </div>
+                            <div class="order-actions">
+                                <button class="btn-action">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="shop-info">
+                                <i class="bi bi-shop"></i>
+                                <span>小芒团团 | 春节特惠众筹</span>
+                            </div>
+                            <span class="order-status refunded">已退款</span>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                                <div><i class="bi bi-arrow-counterclockwise" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>退款</div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-tag">众筹</span>
+                                <div class="product-name">【众筹】春节限定礼盒</div>
+                                <div class="product-sku">红色限定</div>
+                                <div class="product-bottom">
+                                    <span class="product-price">¥199.00</span>
+                                    <span class="product-quantity">x1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <div class="back-form-no">订单号：HT202602140004</div>
+                            <div class="actual-amount">
+                                <span class="actual-amount-label">实付款</span>
+                                <span class="actual-amount-value">¥0.00</span>
+                            </div>
+                            <div class="order-actions">
+                                <button class="btn-action">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="shop-info">
+                                <i class="bi bi-shop"></i>
+                                <span>小芒团团 | 新年倒计时众筹</span>
+                            </div>
+                            <span class="order-status ended">已结束</span>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                                <div><i class="bi bi-check-circle" style="font-size: 20px; display: block; margin-bottom: 2px;"></i>结束</div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-tag">众筹</span>
+                                <div class="product-name">【众筹】新年倒计时礼包</div>
+                                <div class="product-sku">标准版</div>
+                                <div class="product-bottom">
+                                    <span class="product-price">¥88.00</span>
+                                    <span class="product-quantity">x1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <div class="back-form-no">订单号：HT202601010005</div>
+                            <div class="actual-amount">
+                                <span class="actual-amount-label">实付款</span>
+                                <span class="actual-amount-value">¥88.50</span>
+                            </div>
+                            <div class="order-actions">
+                                <button class="btn-action">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.sub-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                document.querySelectorAll('.prototype-module').forEach(module => { 
+                    module.classList.remove('feature-highlight'); 
+                });
+                const targetModule = document.querySelector(`.prototype-module[data-prototype="${e.data.featureId}"]`);
+                if (targetModule) {
+                    targetModule.classList.add('feature-highlight');
+                    targetModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+
+        window.parent.postMessage({ type: 'PAGE_LOADED', page: 'app_my_order_list.html' }, '*');
+    </script>
+</body>
+</html>
