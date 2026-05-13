@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <title>营销工具-新增抽赠商品 PRD v1.1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../style/main.css" rel="stylesheet">
-  <link href="../style/prd-styles.css" rel="stylesheet">
+  <link href="../../assets/main.css" rel="stylesheet">
+  <link href="../../assets/prd-styles.css" rel="stylesheet">
   <script src="../../assets/mermaid.min.js"></script>
 </head>
 <body>
   <div class="page">
-    <h1>营销工具-新增抽赠商品 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <h1>营销工具-新增抽赠商品 <span class="prd-title-tag">产品需求文档</span></h1>
     <p class="meta">版本：v1.1｜状态：需求评审中｜创建时间：2026-04-26｜更新时间：2026-05-13｜产品经理：林长宇</p>
 
     <div class="prd-section" id="section1">
       <h2>1. 项目信息与版本记录</h2>
       <table>
-        <tr><th style="width:120px;">产品名称</th><td>营销工具 - 新增抽赠商品</td></tr>
+        <tr><th class="prd-table-header">产品名称</th><td>营销工具 - 新增抽赠商品</td></tr>
         <tr><th>版本</th><td>v1.1</td></tr>
         <tr><th>负责人</th><td>林长宇</td></tr>
         <tr><th>创建时间</th><td>2026-04-26</td></tr>
@@ -24,7 +24,7 @@
         <tr><th>参考链接</th><td><a href="./prd_v1.1.html" target="_blank" class="btn btn-primary">PRD文档</a> <a href="../prototype_html/admin_prototype_v1.1.html" target="_blank" class="btn btn-primary">运营后台原型</a></td></tr>
       </table>
       
-      <h3 style="margin-top:20px;">版本迭代记录</h3>
+      <h3 class="mt-20">版本迭代记录</h3>
       <table>
         <tr><th>版本</th><th>日期</th><th>变更项</th><th>负责人</th></tr>
         <tr><td>v1.0</td><td>2026-04-26</td><td>初始版本，完成需求确认与设计方案初稿</td><td>林长宇</td></tr>
@@ -42,10 +42,10 @@
         <li>缺少统一的奖品商品池管理和营销费用策略配置入口，导致运营与财务协同成本高</li>
       </ul>
       
-      <h3 style="margin-top:16px;">2.2 目标</h3>
+      <h3 class="mt-16">2.2 目标</h3>
       <p>通过新增抽赠商品管理能力，建立统一的奖品商品池与营销费用策略配置体系，使不同玩法类型共享一套奖品审批与费用配置流程。</p>
       
-      <h3 style="margin-top:16px;">2.3 业务目标</h3>
+      <h3 class="mt-16">2.3 业务目标</h3>
       <ul class="list">
         <li>支持运营快速配置抽赠玩法的奖品商品池</li>
         <li>支持财务针对奖品成本价和抽赠方式进行审核</li>
@@ -63,7 +63,7 @@
         <li><strong>活动产品经理</strong>：负责活动玩法联动与奖品暂存逻辑</li>
       </ul>
       
-      <h3 style="margin-top:16px;">3.2 典型场景</h3>
+      <h3 class="mt-16">3.2 典型场景</h3>
       <ol class="list">
         <li>运营在后台创建活动玩法时，为玩法绑定虚拟商品ID并配置对应奖品商品池</li>
         <li>运营通过输入商品ID或批量导入/Excel导入方式，将奖品商品导入商品库</li>
@@ -72,10 +72,10 @@
         <li>活动类型统一使用本产品配置的奖品商品池与费用策略参数，实现通用流程管理</li>
       </ol>
       
-      <h3 style="margin-top:16px;">3.3 系统架构和流程</h3>
+      <h3 class="mt-16">3.3 系统架构和流程</h3>
       <p>本节说明运营、财务、用户三类角色与三个产品模块之间的关系，明确"抽赠商品管理""抽吧唧活动管理""抽吧唧活动页面（另行规划）"三者的职责与交互边界。</p>
       
-      <h4 style="margin-top:20px;">3.3.1 角色与模块关系表</h4>
+      <h4 class="mt-20">3.3.1 角色与模块关系表</h4>
       <table>
         <tr><th>角色</th><th>抽赠商品管理</th><th>抽吧唧活动管理</th><th>抽吧唧活动页面（另行规划）</th></tr>
         <tr><td><strong>运营</strong></td><td>创建/编辑抽赠商品配置，绑定玩法与虚拟商品ID，导入奖品商品池，配置库存与告警，选择费用策略</td><td>查看活动列表的玩法绑定与费用策略，确认活动状态和关联配置</td><td>无直接访问；使用由活动页面提供的玩法入口和奖品展示，活动内容由另行规划的页面团队设计</td></tr>
@@ -83,7 +83,7 @@
         <tr><td><strong>用户</strong></td><td>无直接访问；其奖品体验依赖抽赠商品池与费用策略配置</td><td>无直接访问；其玩法行为依赖抽吧唧活动管理传递的玩法设置</td><td>访问抽吧唧活动页面参与抽奖，展示玩法与奖品说明；抽奖结果与奖品发放逻辑由活动玩法系统处理</td></tr>
       </table>
 
-      <h4 style="margin-top:20px;">3.3.2 产品模块职责与关系</h4>
+      <h4 class="mt-20">3.3.2 产品模块职责与关系</h4>
       <table>
         <tr><th>产品模块</th><th>主要职责</th><th>对其它模块的依赖</th></tr>
         <tr><td><strong>抽赠商品管理</strong></td><td>统一抽赠奖品商品池配置、商品导入、库存与告警配置、费用策略参数设置</td><td>为抽吧唧活动管理提供玩法绑定、虚拟商品ID、费用策略模板和奖品池数据；为抽吧唧活动页面提供后台奖品数据和费用参数依据</td></tr>
@@ -91,7 +91,7 @@
         <tr><td><strong>抽吧唧活动页面（另行规划）</strong></td><td>提供用户端抽吧唧玩法入口、抽奖交互和结果展示</td><td>依赖抽吧唧活动管理传递的玩法配置及抽赠商品管理的奖品池与费用策略数据</td></tr>
       </table>
 
-      <h4 style="margin-top:20px;">3.3.3 关系流程图</h4>
+      <h4 class="mt-20">3.3.3 关系流程图</h4>
       <div class="mermaid">
 flowchart LR
     subgraph 运营端
@@ -126,7 +126,7 @@ flowchart LR
       <h2>4. 产品范围</h2>
       <h3>4.1 运营后台</h3>
       
-      <h4 style="margin-top:16px;">4.1.1 运营后台-营销管理-抽赠商品管理模块</h4>
+      <h4 class="mt-16">4.1.1 运营后台-营销管理-抽赠商品管理模块</h4>
       <ul class="list">
         <li><strong>基本设置</strong>
           <ul>
@@ -151,7 +151,7 @@ flowchart LR
         </li>
       </ul>
 
-      <h4 style="margin-top:16px;">4.1.2 运营后台-营销管理-抽吧唧活动管理模块</h4>
+      <h4 class="mt-16">4.1.2 运营后台-营销管理-抽吧唧活动管理模块</h4>
       <ul class="list">
         <li><strong>抽吧唧活动管理</strong>
           <ul>
@@ -162,9 +162,9 @@ flowchart LR
         </li>
       </ul>
 
-      <h3 style="margin-top:20px;">4.2 产品确认事项</h3>
+      <h3 class="mt-20">4.2 产品确认事项</h3>
       
-      <h4 style="margin-top:16px;">4.2.1 本次产品确认事项</h4>
+      <h4 class="mt-16">4.2.1 本次产品确认事项</h4>
       <ul class="list">
         <li>本期仅支持策略一（0元赠送-按销售价计算营销费用）用于抽吧唧活动</li>
         <li>玩法维度一套虚拟商品ID对应一组奖品池，保障配置关联清晰</li>
@@ -172,7 +172,7 @@ flowchart LR
         <li>抽吧唧活动同时只能启用一个同一虚拟商品ID</li>
       </ul>
 
-      <h4 style="margin-top:16px;">4.2.2 本次产品确认不处理的事项</h4>
+      <h4 class="mt-16">4.2.2 本次产品确认不处理的事项</h4>
       <ul class="list">
         <li>告警功能暂不处理</li>
         <li>活动玩法本身的抽赠方式分类设计</li>
@@ -186,9 +186,7 @@ flowchart LR
       <h2>5. 功能清单</h2>
       <h3>5.1 页面形态与操作入口</h3>
       
-      <h4 style="margin-top:16px;">5.1.1 运营后台-营销管理-抽赠商品管理模块</h4>
-      
-      <h5 style="margin-top:12px;">5.1.1.1 抽赠商品管理列表页</h5>
+      <h4 class="mt-16">5.1.1.1 抽赠商品管理列表页</h4>
       <p class="meta"><strong>入口位置</strong>：运营后台 > 营销管理 > 抽赠商品管理</p>
       <div class="field-group">
         <div class="field-label">页面模块</div>
@@ -209,7 +207,7 @@ flowchart LR
         </ul>
       </div>
 
-      <h5 style="margin-top:12px;">5.1.1.2 抽赠商品管理添加弹层</h5>
+      <h5 class="mt-12">5.1.1.2 抽赠商品管理添加弹层</h5>
       <p class="meta"><strong>入口位置</strong>：运营后台 > 营销管理 > 抽赠商品管理 - 新增</p>
       <div class="field-group">
         <div class="field-label">页面模块</div>
@@ -253,11 +251,11 @@ flowchart LR
           <li>保存与取消按钮</li>
         </ul>
       </div>
-      <p class="meta"><strong>目标</strong>：支持运营完成玩法绑定与项目级费用、告警的基础配置</p>
+      <p class="meta"><strong>目标</strong>：支持运营完成玩法绑定与项目级费用、告警的基础配置
 
-      <h4 style="margin-top:20px;">5.1.2 运营后台-营销管理-抽吧唧活动管理模块</h4>
+      <h4 class="mt-20">5.1.2 运营后台-营销管理-抽吧唧活动管理模块</h4>
       
-      <h5 style="margin-top:12px;">5.1.2.1 抽吧唧活动列表页</h5>
+      <h5 class="mt-12">5.1.2.1 抽吧唧活动列表页</h5>
       <p class="meta"><strong>入口位置</strong>：运营后台 > 营销管理 > 抽吧唧活动</p>
       <div class="field-group">
         <div class="field-label">页面模块</div>
@@ -283,7 +281,7 @@ flowchart TD
     E --> F[保存后递交审核，进入财务审核环节]
       </div>
 
-      <h3 style="margin-top:20px;">6.2 财务审核流程</h3>
+      <h3 class="mt-20">6.2 财务审核流程</h3>
       <div class="mermaid">
 flowchart TD
     A[财务查看待审核奖品列表] --> B[审核奖品成本价和抽赠方式]
@@ -296,7 +294,7 @@ flowchart TD
     <div class="prd-section" id="section7">
       <h2>7. 异常与边界处理</h2>
       
-      <h3 style="margin-top:16px;">7.1 配置字段校验规则</h3>
+      <h3 class="mt-16">7.1 配置字段校验规则</h3>
       <table>
         <tr><th>字段</th><th>校验规则</th><th>错误提示</th></tr>
         <tr><td>费用策略类型</td><td>必填，枚举值校验</td><td>请选择费用策略类型</td></tr>
@@ -309,7 +307,7 @@ flowchart TD
         <tr><td>安全库存</td><td>实时同步模式下可选，整数且 ≥0</td><td>安全库存必须为非负整数</td></tr>
       </table>
 
-      <h3 style="margin-top:20px;">7.2 边界场景</h3>
+      <h3 class="mt-20">7.2 边界场景</h3>
       <ul class="list">
         <li><strong>费用承担方切换</strong>：当费用承担方从 `split` 切换为其他值时，清空分摊比例字段</li>
         <li><strong>告警开关关闭</strong>：告警开关关闭时，隐藏告警阈值类型和告警阈值字段，已填值保留但不校验</li>

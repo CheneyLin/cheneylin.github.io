@@ -6,500 +6,7 @@
     <title>抽赠商品管理列表</title>
     <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
     <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #fafafa;
-            color: #171717;
-            padding: 24px;
-            font-size: 12px;
-        }
-        
-        .page-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .page-header {
-            margin-bottom: 24px;
-        }
-        
-        .page-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.32px;
-        }
-        
-        .page-description {
-            color: #4d4d4d;
-            font-size: 12px;
-        }
-        
-        .card {
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px;
-            padding: 20px;
-            margin-bottom: 16px;
-        }
-        
-        .filter-section {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .filter-label {
-            font-size: 12px;
-            color: #4d4d4d;
-            font-weight: 500;
-        }
-        
-        .filter-input {
-            padding: 4px 10px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 6px;
-            font-size: 12px;
-            outline: none;
-            transition: all 0.15s;
-            min-width: 160px;
-        }
-        
-        .filter-input:focus {
-            border-color: #171717;
-            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
-        }
-        
-        .btn {
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            background: #ffffff;
-            color: #171717;
-            transition: all 0.15s;
-        }
-        
-        .btn:hover {
-            border-color: #171717;
-        }
-        
-        .btn-primary {
-            background: #171717;
-            color: #ffffff;
-            border-color: #171717;
-        }
-        
-        .btn-primary:hover {
-            opacity: 0.9;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th {
-            background: #fafafa;
-            padding: 8px 12px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 12px;
-            color: #4d4d4d;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        }
-        
-        td {
-            padding: 8px 12px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            font-size: 12px;
-        }
-        
-        tr:hover td {
-            background: #fafafa;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 9999px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-        
-        .badge-success {
-            background: #dcfce7;
-            color: #166534;
-        }
-        
-        .badge-warning {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .badge-error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .action-btns {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .action-btn {
-            color: #0072f5;
-            cursor: pointer;
-            font-size: 12px;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        
-        .action-btn:hover {
-            text-decoration: underline;
-        }
-        
-        .pagination {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 8px;
-            margin-top: 20px;
-        }
-        
-        .pagination button {
-            padding: 4px 12px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            background: #ffffff;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        
-        .pagination button:hover:not(:disabled) {
-            border-color: #171717;
-        }
-        
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .pagination span {
-            font-size: 12px;
-            color: #4d4d4d;
-        }
-        
-        /* Modal Overlay Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal-overlay.show {
-            display: block;
-            opacity: 1;
-        }
-        
-        .modal-panel {
-            position: fixed;
-            top: 0;
-            right: -90%;
-            width: 90%;
-            height: 100vh;
-            background: #fafafa;
-            z-index: 1000;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .modal-panel.show {
-            right: 0;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #171717;
-            z-index: 10;
-            transition: all 0.15s;
-        }
-        
-        .modal-close:hover {
-            background: #f0f0f0;
-            transform: rotate(90deg);
-        }
-        
-        .modal-content {
-            padding: 24px;
-            padding-top: 60px;
-        }
-        
-        /* Edit Form Styles */
-        .edit-page-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .edit-page-header {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .edit-page-title {
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: -0.32px;
-        }
-        
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .form-row .form-group {
-            margin-bottom: 0;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: #171717;
-        }
-        
-        .form-label .required {
-            color: #ff4d4f;
-            margin-left: 4px;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 6px;
-            font-size: 12px;
-            outline: none;
-            transition: all 0.15s;
-        }
-        
-        .form-input:focus {
-            border-color: #171717;
-            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
-        }
-        
-        .form-select {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 6px;
-            font-size: 12px;
-            outline: none;
-            transition: all 0.15s;
-            background: #ffffff;
-        }
-        
-        .form-select:focus {
-            border-color: #171717;
-            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
-        }
-        
-        .radio-group {
-            display: flex;
-            gap: 24px;
-        }
-        
-        .radio-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        
-        .radio-item input[type="radio"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            gap: 24px;
-        }
-        
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        
-        .checkbox-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        
-        .tag-input-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 8px 12px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 6px;
-            min-height: 40px;
-            align-items: center;
-        }
-        
-        .tag-input-container:focus-within {
-            border-color: #171717;
-            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
-        }
-        
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 6px;
-            background: #f0f0f0;
-            border-radius: 4px;
-            font-size: 11px;
-        }
-        
-        .tag-remove {
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 1;
-            color: #666;
-        }
-        
-        .tag-remove:hover {
-            color: #ff4d4f;
-        }
-        
-        .tag-input {
-            border: none;
-            outline: none;
-            flex: 1;
-            min-width: 120px;
-            font-size: 12px;
-        }
-        
-        .switch-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .switch {
-            position: relative;
-            width: 44px;
-            height: 24px;
-            background: #d9d9d9;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .switch.active {
-            background: #171717;
-        }
-        
-        .switch-handle {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 20px;
-            height: 20px;
-            background: #ffffff;
-            border-radius: 50%;
-            transition: all 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .switch.active .switch-handle {
-            left: 22px;
-        }
-        
-        .import-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        
-        .batch-ops {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 2px solid #f0f0f0;
-        }
-        
-        .action-btn.delete {
-            color: #ff4d4f;
-        }
-    </style>
+    <link href="../../../assets/prize-goods-list.css" rel="stylesheet">
 </head>
 <body>
     <!-- List Page -->
@@ -542,13 +49,13 @@
             </div>
             
             <!-- Action Bar -->
-            <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; gap: 8px;">
+            <div class="action-bar">
+                <div class="action-bar-left">
                     <button class="btn btn-primary" onclick="openAddModal()">
                         <i class="bi bi-plus-lg"></i> 新增抽赠商品
                     </button>
                 </div>
-                <div style="color: #4d4d4d; font-size: 13px;">
+                <div class="action-bar-right">
                     共 <strong>5</strong> 条记录
                 </div>
             </div>
@@ -558,7 +65,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50px;">
+                            <th class="table-col-checkbox">
                                 <input type="checkbox">
                             </th>
                             <th>活动名称</th>
@@ -570,7 +77,7 @@
                             <th>活动审核</th>
                             <th>商品审核</th>
                             <th>活动时间</th>
-                            <th style="width: 150px;">操作</th>
+                            <th class="table-col-actions">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -585,13 +92,13 @@
                             <td>张三</td>
                             <td><span class="badge badge-success">已通过</span></td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
-                                    <div style="color: #52c41a;">已上线: 3</div>
-                                    <div style="color: #faad14;">待审核: 0</div>
+                                <div class="activity-info">
+                                    <div class="online">已上线: 3</div>
+                                    <div class="pending">待审核: 0</div>
                                 </div>
                             </td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
+                                <div class="activity-info">
                                     <div>2026-01-20 00:00:00</div>
                                     <div>2026-02-20 23:59:59</div>
                                 </div>
@@ -615,13 +122,13 @@
                             <td>李四</td>
                             <td><span class="badge badge-warning">待审核</span></td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
-                                    <div style="color: #52c41a;">已上线: 0</div>
-                                    <div style="color: #faad14;">待审核: 3</div>
+                                <div class="activity-info">
+                                    <div class="online">已上线: 0</div>
+                                    <div class="pending">待审核: 3</div>
                                 </div>
                             </td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
+                                <div class="activity-info">
                                     <div>2026-07-01 00:00:00</div>
                                     <div>2026-08-31 23:59:59</div>
                                 </div>
@@ -645,13 +152,13 @@
                             <td>王五</td>
                             <td><span class="badge badge-error">已拒绝</span></td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
-                                    <div style="color: #52c41a;">已上线: 2</div>
-                                    <div style="color: #faad14;">待审核: 1</div>
+                                <div class="activity-info">
+                                    <div class="online">已上线: 2</div>
+                                    <div class="pending">待审核: 1</div>
                                 </div>
                             </td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
+                                <div class="activity-info">
                                     <div>2026-03-15 00:00:00</div>
                                     <div>2026-04-30 23:59:59</div>
                                 </div>
@@ -675,13 +182,13 @@
                             <td>赵六</td>
                             <td><span class="badge badge-success">已通过</span></td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
-                                    <div style="color: #52c41a;">已上线: 5</div>
-                                    <div style="color: #faad14;">待审核: 0</div>
+                                <div class="activity-info">
+                                    <div class="online">已上线: 5</div>
+                                    <div class="pending">待审核: 0</div>
                                 </div>
                             </td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
+                                <div class="activity-info">
                                     <div>2025-11-01 00:00:00</div>
                                     <div>2025-11-30 23:59:59</div>
                                 </div>
@@ -705,13 +212,13 @@
                             <td>孙七</td>
                             <td><span class="badge badge-success">已通过</span></td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
-                                    <div style="color: #52c41a;">已上线: 0</div>
-                                    <div style="color: #faad14;">待审核: 2</div>
+                                <div class="activity-info">
+                                    <div class="online">已上线: 0</div>
+                                    <div class="pending">待审核: 2</div>
                                 </div>
                             </td>
                             <td>
-                                <div style="font-size: 11px; line-height: 1.4;">
+                                <div class="activity-info">
                                     <div>2026-12-25 00:00:00</div>
                                     <div>2027-01-10 23:59:59</div>
                                 </div>
@@ -771,9 +278,9 @@
                             </label>
                             <select class="form-select">
                                 <option value="chou_baji" selected>抽吧唧活动</option>
-                                <option value="chou_fudai" disabled style="color: #999;">抽福袋活动</option>
+                                <option value="chou_fudai" disabled class="option-disabled">抽福袋活动</option>
                             </select>
-                            <p style="font-size: 12px; color: #808080; margin-top: 4px;">暂仅支持抽吧唧活动</p>
+                            <p class="form-tip">暂仅支持抽吧唧活动</p>
                         </div>
                         
                         <div class="form-group">
@@ -781,7 +288,7 @@
                                 虚拟商品ID <span class="required">*</span>
                             </label>
                             <input type="text" class="form-input" id="virtualProductId" placeholder="请输入虚拟商品ID">
-                            <p style="font-size: 12px; color: #808080; margin-top: 4px;">支持输入ID下拉搜索选择</p>
+                            <p class="form-tip">支持输入ID下拉搜索选择</p>
                         </div>
                     </div>
                     
@@ -795,12 +302,12 @@
                                 <input type="radio" name="feeStrategy" value="free_sale_price" checked>
                                 <span>0元赠送-按销售价计算营销费用</span>
                             </label>
-                            <label class="radio-item" style="opacity: 0.5; cursor: not-allowed;">
+                            <label class="radio-item radio-item-disabled">
                                 <input type="radio" name="feeStrategy" value="virtual_order_merge" disabled>
                                 <span>关联虚拟订单合并计算营销费用</span>
                             </label>
                         </div>
-                        <p style="font-size: 12px; color: #808080; margin-top: 4px;">暂仅支持0元赠送-按销售价计算营销费用策略</p>
+                        <p class="form-tip">暂仅支持0元赠送-按销售价计算营销费用策略</p>
                     </div>
                     
                     <!-- 第四行：归属部门 + 归属营销活动 -->
@@ -838,10 +345,10 @@
                         <label class="form-label">
                             活动起止时间 <span class="required">*</span>
                         </label>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <input type="datetime-local" class="form-input" id="startTime" style="flex: 1;">
-                            <span style="color: #4d4d4d;">至</span>
-                            <input type="datetime-local" class="form-input" id="endTime" style="flex: 1;">
+                        <div class="datetime-container">
+                            <input type="datetime-local" class="form-input datetime-input" id="startTime">
+                            <span class="datetime-separator">至</span>
+                            <input type="datetime-local" class="form-input datetime-input" id="endTime">
                         </div>
                     </div>
                     
@@ -866,16 +373,16 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 50px;">
-                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
-                                    </th>
-                                    <th>商品ID</th>
-                                    <th>SKU</th>
-                                    <th>商品名称</th>
-                                    <th>成本价</th>
-                                    <th>活动库存</th>
-                                    <th style="width: 120px;">操作</th>
-                                </tr>
+                            <th class="table-col-checkbox">
+                                <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                            </th>
+                            <th>商品ID</th>
+                            <th>SKU</th>
+                            <th>商品名称</th>
+                            <th>成本价</th>
+                            <th>活动库存</th>
+                            <th class="table-col-actions-small">操作</th>
+                        </tr>
                             </thead>
                             <tbody id="productTableBody">
                                 <tr>
@@ -884,7 +391,7 @@
                                     <td>SKU001</td>
                                     <td>春节限定吧唧-龙年款</td>
                                     <td>¥15.00</td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="1000"></td>
+                                    <td><input type="number" class="form-input stock-input" value="1000"></td>
                                     <td>
                                         <div class="action-btns">
                                             <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
@@ -897,7 +404,7 @@
                                     <td>SKU002</td>
                                     <td>春节限定吧唧-福字款</td>
                                     <td>¥15.00</td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="1000"></td>
+                                    <td><input type="number" class="form-input stock-input" value="1000"></td>
                                     <td>
                                         <div class="action-btns">
                                             <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
@@ -910,7 +417,7 @@
                                     <td>SKU003</td>
                                     <td>夏日祭吧唧-樱花款</td>
                                     <td>¥18.00</td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="800"></td>
+                                    <td><input type="number" class="form-input stock-input" value="800"></td>
                                     <td>
                                         <div class="action-btns">
                                             <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
