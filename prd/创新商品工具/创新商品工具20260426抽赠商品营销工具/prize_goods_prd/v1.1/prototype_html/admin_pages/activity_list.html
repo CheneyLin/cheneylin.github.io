@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽吧唧活动管理列表</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            color: #171717;
+            padding: 24px;
+            font-size: 12px;
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.32px;
+        }
+        
+        .page-description {
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 12px;
+            color: #4d4d4d;
+            font-weight: 500;
+        }
+        
+        .filter-input {
+            padding: 4px 10px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+            transition: all 0.15s;
+            min-width: 160px;
+        }
+        
+        .filter-input:focus {
+            border-color: #171717;
+            box-shadow: 0 0 0 3px hsla(212, 100%, 48%, 0.1);
+        }
+        
+        .btn {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+            color: #171717;
+            transition: all 0.15s;
+        }
+        
+        .btn:hover {
+            border-color: #171717;
+        }
+        
+        .btn-primary {
+            background: #171717;
+            color: #ffffff;
+            border-color: #171717;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #fafafa;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: #4d4d4d;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 12px;
+        }
+        
+        tr:hover td {
+            background: #fafafa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            color: #0072f5;
+            cursor: pointer;
+            font-size: 12px;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        
+        .action-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            padding: 4px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            border-color: #171717;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination span {
+            font-size: 12px;
+            color: #4d4d4d;
+        }
+        
+        .expand-icon {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+        
+        .detail-row {
+            display: none;
+            background: #fafafa;
+        }
+        
+        .detail-row.show {
+            display: table-row;
+        }
+        
+        .detail-content {
+            padding: 12px;
+            font-size: 12px;
+            color: #4d4d4d;
+        }
+        
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        .modal-panel {
+            position: fixed;
+            top: 0;
+            right: -90%;
+            width: 90%;
+            height: 100vh;
+            background: #fafafa;
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-panel.show {
+            right: 0;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #171717;
+            z-index: 10;
+            transition: all 0.15s;
+        }
+        
+        .modal-close:hover {
+            background: #f0f0f0;
+            transform: rotate(90deg);
+        }
+        
+        .modal-content {
+            padding: 24px;
+            padding-top: 60px;
+        }
+        
+        /* Detail Page Styles */
+        .detail-page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .detail-page-header {
+            margin-bottom: 20px;
+        }
+        
+        .detail-page-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.32px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: #4d4d4d;
+        }
+        
+        .info-value {
+            font-size: 12px;
+            font-weight: 500;
+            color: #171717;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .stat-card {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #171717;
+            margin-bottom: 6px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #4d4d4d;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .detail-action-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #f0f0f0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+        
+        .timeline-time {
+            font-size: 11px;
+            color: #4d4d4d;
+            margin-bottom: 4px;
+        }
+        
+        .timeline-content {
+            font-size: 12px;
+            color: #171717;
+        }
+    </style>
+</head>
+<body>
+    <!-- List Page -->
+    <div class="page-container" id="listPage">
+        <div class="page-header">
+            <h1 class="page-title">抽吧唧活动管理</h1>
+            <p class="page-description">管理抽吧唧活动的配置和状态</p>
+        </div>
+        
+        <div class="card">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-item">
+                    <span class="filter-label">活动名称:</span>
+                    <input type="text" class="filter-input" placeholder="请输入活动名称">
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">虚拟商品ID:</span>
+                    <input type="text" class="filter-input" placeholder="请输入虚拟商品ID">
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">状态:</span>
+                    <select class="filter-input">
+                        <option value="">全部</option>
+                        <option value="active">进行中</option>
+                        <option value="upcoming">未开始</option>
+                        <option value="ended">已结束</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">查询</button>
+                <button class="btn">重置</button>
+            </div>
+            
+            <!-- Action Bar -->
+            <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> 新增活动
+                    </button>
+                </div>
+                <div style="color: #4d4d4d; font-size: 13px;">
+                    共 <strong>5</strong> 条记录
+                </div>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;"></th>
+                            <th>活动名称</th>
+                            <th>虚拟商品ID</th>
+                            <th>活动状态</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th style="width: 150px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr onclick="toggleDetail('detail1')">
+                            <td><i class="bi bi-chevron-right expand-icon" id="icon-detail1"></i></td>
+                            <td>春节限定抽吧唧活动</td>
+                            <td>VC20260001</td>
+                            <td><span class="badge badge-success">进行中</span></td>
+                            <td>2026-01-20 00:00</td>
+                            <td>2026-02-20 23:59</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="event.stopPropagation(); openActivityDetail('春节限定抽吧唧活动', 'VC20260001')">查看</button>
+                                    <button class="action-btn">编辑</button>
+                                    <button class="action-btn">禁用</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="detail-row" id="detail1">
+                            <td colspan="7">
+                                <div class="detail-content">
+                                    <strong>库存统计：</strong>总库存 10000，已使用 3250，剩余 6750<br>
+                                    <strong>参与人数：</strong>2180 人<br>
+                                    <strong>发放数量：</strong>3250 个吧唧
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr onclick="toggleDetail('detail2')">
+                            <td><i class="bi bi-chevron-right expand-icon" id="icon-detail2"></i></td>
+                            <td>夏日祭特别活动</td>
+                            <td>VC20260002</td>
+                            <td><span class="badge badge-warning">未开始</span></td>
+                            <td>2026-07-01 00:00</td>
+                            <td>2026-08-31 23:59</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="event.stopPropagation(); openActivityDetail('夏日祭特别活动', 'VC20260002')">查看</button>
+                                    <button class="action-btn">编辑</button>
+                                    <button class="action-btn">启用</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="detail-row" id="detail2">
+                            <td colspan="7">
+                                <div class="detail-content">
+                                    <strong>库存统计：</strong>总库存 15000，已使用 0，剩余 15000<br>
+                                    <strong>参与人数：</strong>0 人<br>
+                                    <strong>发放数量：</strong>0 个吧唧
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr onclick="toggleDetail('detail3')">
+                            <td><i class="bi bi-chevron-right expand-icon" id="icon-detail3"></i></td>
+                            <td>周年庆庆典活动</td>
+                            <td>VC20260003</td>
+                            <td><span class="badge badge-success">进行中</span></td>
+                            <td>2026-03-15 00:00</td>
+                            <td>2026-04-30 23:59</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="event.stopPropagation(); openActivityDetail('周年庆庆典活动', 'VC20260003')">查看</button>
+                                    <button class="action-btn">编辑</button>
+                                    <button class="action-btn">禁用</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="detail-row" id="detail3">
+                            <td colspan="7">
+                                <div class="detail-content">
+                                    <strong>库存统计：</strong>总库存 8000，已使用 5420，剩余 2580<br>
+                                    <strong>参与人数：</strong>3890 人<br>
+                                    <strong>发放数量：</strong>5420 个吧唧
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr onclick="toggleDetail('detail4')">
+                            <td><i class="bi bi-chevron-right expand-icon" id="icon-detail4"></i></td>
+                            <td>双十一促销活动</td>
+                            <td>VC20260004</td>
+                            <td><span class="badge badge-error">已结束</span></td>
+                            <td>2025-11-01 00:00</td>
+                            <td>2025-11-30 23:59</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="event.stopPropagation(); openActivityDetail('双十一促销活动', 'VC20260004')">查看</button>
+                                    <button class="action-btn">复制</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="detail-row" id="detail4">
+                            <td colspan="7">
+                                <div class="detail-content">
+                                    <strong>库存统计：</strong>总库存 20000，已使用 18750，剩余 1250<br>
+                                    <strong>参与人数：</strong>12450 人<br>
+                                    <strong>发放数量：</strong>18750 个吧唧
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr onclick="toggleDetail('detail5')">
+                            <td><i class="bi bi-chevron-right expand-icon" id="icon-detail5"></i></td>
+                            <td>元旦新年活动</td>
+                            <td>VC20260005</td>
+                            <td><span class="badge badge-warning">未开始</span></td>
+                            <td>2026-12-25 00:00</td>
+                            <td>2027-01-10 23:59</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="action-btn" onclick="event.stopPropagation(); openActivityDetail('元旦新年活动', 'VC20260005')">查看</button>
+                                    <button class="action-btn">编辑</button>
+                                    <button class="action-btn">启用</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="detail-row" id="detail5">
+                            <td colspan="7">
+                                <div class="detail-content">
+                                    <strong>库存统计：</strong>总库存 12000，已使用 0，剩余 12000<br>
+                                    <strong>参与人数：</strong>0 人<br>
+                                    <strong>发放数量：</strong>0 个吧唧
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <button disabled>上一页</button>
+                <span>第 1 / 1 页</span>
+                <button disabled>下一页</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+    
+    <!-- Modal Panel with Activity Detail -->
+    <div class="modal-panel" id="modalPanel">
+        <button class="modal-close" onclick="closeModal()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="modal-content">
+            <div class="detail-page-container">
+                <div class="detail-page-header">
+                    <h1 class="detail-page-title" id="modalTitle">活动详情</h1>
+                </div>
+                
+                <!-- Basic Information -->
+                <div class="card">
+                    <h2 class="section-title">基本信息</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">活动名称</span>
+                            <span class="info-value" id="detailActivityName">春节限定抽吧唧活动</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">虚拟商品ID</span>
+                            <span class="info-value" id="detailVirtualId">VC20260001</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">活动状态</span>
+                            <span class="info-value"><span class="badge badge-success">进行中</span></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">开始时间</span>
+                            <span class="info-value">2026-01-20 00:00:00</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">结束时间</span>
+                            <span class="info-value">2026-02-20 23:59:59</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">创建人</span>
+                            <span class="info-value">张三</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">创建时间</span>
+                            <span class="info-value">2026-01-15 10:30:00</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">最后更新</span>
+                            <span class="info-value">2026-01-20 00:00:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stock Statistics -->
+                <div class="card">
+                    <h2 class="section-title">库存统计</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">10,000</div>
+                            <div class="stat-label">总库存</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: #ff7a45;">3,250</div>
+                            <div class="stat-label">已使用</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 32.5%;"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: #52c41a;">6,750</div>
+                            <div class="stat-label">剩余库存</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 67.5%; background: linear-gradient(90deg, #52c41a 0%, #73d13d 100%);"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">32.5%</div>
+                            <div class="stat-label">使用率</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Participation Data -->
+                <div class="card">
+                    <h2 class="section-title">参与数据</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">2,180</div>
+                            <div class="stat-label">参与人数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">3,250</div>
+                            <div class="stat-label">发放数量</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">1.49</div>
+                            <div class="stat-label">人均获得</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">¥48,750</div>
+                            <div class="stat-label">营销费用</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Associated Products -->
+                <div class="card">
+                    <h2 class="section-title">关联商品配置</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>商品ID</th>
+                                    <th>SKU</th>
+                                    <th>商品名称</th>
+                                    <th>成本价</th>
+                                    <th>活动库存</th>
+                                    <th>已发放</th>
+                                    <th>剩余</th>
+                                    <th>告警库存</th>
+                                    <th>告警状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>P20260001</td>
+                                    <td>SKU001</td>
+                                    <td>春节限定吧唧-龙年款</td>
+                                    <td>¥15.00</td>
+                                    <td>1,000</td>
+                                    <td>325</td>
+                                    <td>675</td>
+                                    <td>100</td>
+                                    <td><span style="color: #52c41a;">正常</span></td>
+                                </tr>
+                                <tr>
+                                    <td>P20260002</td>
+                                    <td>SKU002</td>
+                                    <td>春节限定吧唧-福字款</td>
+                                    <td>¥15.00</td>
+                                    <td>1,000</td>
+                                    <td>325</td>
+                                    <td>675</td>
+                                    <td>100</td>
+                                    <td><span style="color: #52c41a;">正常</span></td>
+                                </tr>
+                                <tr>
+                                    <td>P20260003</td>
+                                    <td>SKU003</td>
+                                    <td>夏日祭吧唧-樱花款</td>
+                                    <td>¥18.00</td>
+                                    <td>800</td>
+                                    <td>260</td>
+                                    <td>540</td>
+                                    <td>80</td>
+                                    <td><span style="color: #52c41a;">正常</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Operation History -->
+                <div class="card">
+                    <h2 class="section-title">操作记录</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">2026-01-20 00:00:00</div>
+                            <div class="timeline-content">活动正式上线，开始接受用户参与</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">2026-01-19 15:30:00</div>
+                            <div class="timeline-content">审核人员李四审核通过</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">2026-01-18 10:20:00</div>
+                            <div class="timeline-content">运营张三提交审核</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">2026-01-15 10:30:00</div>
+                            <div class="timeline-content">运营张三创建活动</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="detail-action-btns">
+                    <button class="btn btn-primary" onclick="exportData()">
+                        <i class="bi bi-download"></i> 导出数据报表
+                    </button>
+                    <button class="btn" onclick="editActivity()">
+                        <i class="bi bi-pencil"></i> 编辑活动
+                    </button>
+                    <button class="btn" onclick="toggleActivity()">
+                        <i class="bi bi-pause-circle"></i> 禁用活动
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDetail(detailId) {
+            const detailRow = document.getElementById(detailId);
+            const icon = document.getElementById('icon-' + detailId);
+            
+            if (detailRow.classList.contains('show')) {
+                detailRow.classList.remove('show');
+                icon.classList.remove('expanded');
+            } else {
+                // Close all other details first
+                document.querySelectorAll('.detail-row').forEach(row => {
+                    row.classList.remove('show');
+                });
+                document.querySelectorAll('.expand-icon').forEach(ic => {
+                    ic.classList.remove('expanded');
+                });
+                
+                // Open clicked detail
+                detailRow.classList.add('show');
+                icon.classList.add('expanded');
+            }
+        }
+        
+        // Modal functions for activity detail
+        function openActivityDetail(activityName, virtualId) {
+            document.getElementById('modalTitle').textContent = '活动详情 - ' + activityName;
+            document.getElementById('detailActivityName').textContent = activityName;
+            document.getElementById('detailVirtualId').textContent = virtualId;
+            showModal();
+        }
+        
+        function showModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const panel = document.getElementById('modalPanel');
+            
+            overlay.classList.add('show');
+            setTimeout(() => {
+                panel.classList.add('show');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const panel = document.getElementById('modalPanel');
+            
+            panel.classList.remove('show');
+            setTimeout(() => {
+                overlay.classList.remove('show');
+            }, 300);
+            
+            document.body.style.overflow = '';
+        }
+        
+        function exportData() {
+            alert('正在生成数据报表...\n包含：库存统计、参与数据、费用明细等');
+        }
+        
+        function editActivity() {
+            alert('打开活动编辑页面（原型演示）');
+        }
+        
+        function toggleActivity() {
+            if (confirm('确定要禁用此活动吗？\n禁用后用户将无法继续参与。')) {
+                alert('活动已禁用');
+            }
+        }
+        
+        // Listen for highlight messages from parent
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'highlight') {
+                const featureId = event.data.featureId;
+                console.log('[活动列表] 收到高亮请求:', featureId);
+                
+                const element = document.querySelector(`[data-feature="${featureId}"]`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    element.style.boxShadow = '0 0 0 3px #0070f3';
+                    setTimeout(() => {
+                        element.style.boxShadow = '';
+                    }, 2000);
+                }
+            }
+        });
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

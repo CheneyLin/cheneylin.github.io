@@ -5,223 +5,13 @@
   <title>营销工具-新增抽赠商品 PRD</title>
   <meta name="description" content="用于支持抽吧唧等玩法的抽赠商品营销工具产品方案和HTML原型">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root {
-      --bg: #ffffff;
-      --fg: #171717;
-      --muted: #4d4d4d;
-      --border: rgba(0, 0, 0, 0.08);
-      --border-light: rgb(235, 235, 235);
-      --primary: #171717;
-      --primary-text: #ffffff;
-      --accent: #0070f3;
-      --focus: hsla(212, 100%, 48%, 1);
-      --card-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, rgba(0, 0, 0, 0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
-      --card-radius: 8px;
-      --btn-radius: 6px;
-      --pill-radius: 9999px;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html, body { 
-      height: 100%; 
-      font-feature-settings: "liga" 1;
-    }
-    
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
-      color: var(--fg); 
-      background: var(--bg); 
-      line-height: 1.5;
-      letter-spacing: -0.01em;
-    }
-    
-    .header { 
-      display: flex; 
-      align-items: center; 
-      gap: 16px; 
-      padding: 16px 24px; 
-      box-shadow: 0px 0px 0px 1px var(--border);
-      background: var(--bg);
-      position: sticky; 
-      top: 0; 
-      z-index: 10; 
-    }
-    
-    .header-title { 
-      font-size: 16px; 
-      font-weight: 600; 
-      color: var(--fg);
-      letter-spacing: -0.32px;
-    }
-    
-    .version-badge { 
-      background: #f5f5f5; 
-      color: var(--muted); 
-      box-shadow: 0px 0px 0px 1px var(--border-light);
-      padding: 4px 10px; 
-      border-radius: var(--pill-radius); 
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0;
-    }
-    
-    .main { 
-      display: flex; 
-      height: calc(100% - 60px); 
-      background: var(--bg);
-    }
-    
-    .left { 
-      width: 50%; 
-      height: 100%; 
-      box-sizing: border-box; 
-      background: var(--bg);
-    }
-    
-    .right { 
-      width: 50%; 
-      height: 100%; 
-      box-sizing: border-box; 
-      background: #fafafa;
-    }
-    
-    .frame { 
-      width: 100%; 
-      height: 100%; 
-      border: 0; 
-    }
-    
-    .split { 
-      width: 1px; 
-      cursor: col-resize; 
-      background: var(--border-light);
-      position: relative;
-    }
-    
-    .split::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -3px;
-      width: 7px;
-      height: 100%;
-    }
-    
-    .split:hover { 
-      background: var(--accent);
-    }
-    
-    .controls { 
-      margin-left: auto; 
-      display: flex; 
-      align-items: center; 
-      gap: 16px; 
-    }
-    
-    .controls label { 
-      color: var(--muted); 
-      font-size: 14px; 
-      font-weight: 500;
-    }
-    
-    .controls select { 
-      background: var(--bg); 
-      color: var(--fg); 
-      box-shadow: 0px 0px 0px 1px var(--border);
-      padding: 6px 12px; 
-      border-radius: var(--btn-radius); 
-      font-size: 14px; 
-      font-weight: 500;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.15s;
-    }
-    
-    .controls select:hover {
-      box-shadow: 0px 0px 0px 1px var(--fg);
-    }
-    
-    .controls select:focus {
-      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
-    }
-    
-    .controls option { 
-      background: var(--bg); 
-      color: var(--fg); 
-    }
-    
-    .product-btns { 
-      display: flex; 
-      gap: 8px; 
-    }
-    
-    .product-btn { 
-      background: var(--bg); 
-      color: var(--fg); 
-      box-shadow: 0px 0px 0px 1px var(--border);
-      padding: 6px 14px; 
-      border-radius: var(--btn-radius); 
-      font-size: 14px; 
-      font-weight: 500;
-      cursor: pointer; 
-      transition: all 0.15s;
-      outline: none;
-    }
-    
-    .product-btn:hover { 
-      box-shadow: 0px 0px 0px 1px var(--fg);
-    }
-    
-    .product-btn:focus {
-      box-shadow: 0px 0px 0px 1px var(--fg), 0px 0px 0px 3px var(--focus);
-    }
-    
-    .product-btn.active { 
-      background: var(--primary); 
-      color: var(--primary-text); 
-      box-shadow: 0px 0px 0px 1px var(--primary);
-    }
-    
-    .product-btn.active:hover {
-      opacity: 0.9;
-    }
-    
-    .width-control { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      color: var(--muted); 
-      font-size: 14px;
-      font-weight: 500;
-    }
-    
-    .width-control input[type="range"] { 
-      width: 100px; 
-      cursor: pointer;
-      accent-color: var(--fg);
-    }
-    
-    .width-control span {
-      min-width: 36px;
-    }
-    
-    .divider {
-      width: 1px;
-      height: 20px;
-      background: var(--border-light);
-    }
-  </style>
+  <link href="./v1.1/style/main.css" rel="stylesheet">
+  <link href="./v1.1/style/index-styles.css" rel="stylesheet">
 </head>
 <body>
   <div class="header">
     <span class="header-title">抽赠商品营销工具</span>
-    <span class="version-badge">v1.0</span>
+    <span class="version-badge">v1.1</span>
     <div class="divider"></div>
     <div class="controls">
       <div class="product-btns">
@@ -237,18 +27,19 @@
       <div class="width-control">
         <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
-          <option value="1.0" selected>v1.0</option>
+          <option value="1.1" selected>v1.1</option>
+          <option value="1.0">v1.0</option>
         </select>
       </div>
     </div>
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.0/prd_html/prd_v1.0.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.0/prototype_html/admin_prototype_v1.0.html"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/admin_prototype_v1.1.html"></iframe>
     </div>
   </div>
 
@@ -467,7 +258,7 @@ setRightWidth(initialWidth);
     });
 
     window.addEventListener('DOMContentLoaded', () => {
-      const versions = ['1.0'];
+      const versions = ['1.1', '1.0'];
       const products = ['admin'];
       PrototypePreloader.preloadAllPrototypes(versions, products);
     });
