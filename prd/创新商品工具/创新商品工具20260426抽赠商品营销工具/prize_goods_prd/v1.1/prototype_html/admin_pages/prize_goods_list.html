@@ -755,34 +755,34 @@
                 <div class="card">
                     <h2 class="section-title">基本配置</h2>
                     
-                    <!-- 第一行：活动名称 + 玩法绑定 -->
+                    <!-- 第一行：活动名称（独占一行） -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            活动名称 <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="activityName" placeholder="请输入活动名称" value="">
+                    </div>
+                    
+                    <!-- 第二行：玩法绑定 + 虚拟商品ID -->
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">
-                                活动名称 <span class="required">*</span>
+                                玩法绑定 <span class="required">*</span>
                             </label>
-                            <input type="text" class="form-input" id="activityName" placeholder="请输入活动名称" value="">
+                            <select class="form-select">
+                                <option value="chou_baji" selected>抽吧唧活动</option>
+                                <option value="chou_fudai" disabled style="color: #999;">抽福袋活动</option>
+                            </select>
+                            <p style="font-size: 12px; color: #808080; margin-top: 4px;">暂仅支持抽吧唧活动</p>
                         </div>
                         
-                <div class="form-group">
-                  <label class="form-label">
-                    玩法绑定 <span class="required">*</span>
-                  </label>
-                  <select class="form-select">
-                    <option value="chou_baji" selected>抽吧唧活动</option>
-                    <option value="chou_fudai" disabled style="color: #999;">抽福袋活动</option>
-                  </select>
-                  <p style="font-size: 12px; color: #808080; margin-top: 4px;">暂仅支持抽吧唧活动</p>
-                </div>
-                    </div>
-                    
-                    <!-- 第二行：虚拟商品ID（独占一行） -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            虚拟商品ID <span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="virtualProductId" placeholder="请输入虚拟商品ID">
-                        <p style="font-size: 12px; color: #808080; margin-top: 4px;">支持输入ID下拉搜索选择</p>
+                        <div class="form-group">
+                            <label class="form-label">
+                                虚拟商品ID <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="virtualProductId" placeholder="请输入虚拟商品ID">
+                            <p style="font-size: 12px; color: #808080; margin-top: 4px;">支持输入ID下拉搜索选择</p>
+                        </div>
                     </div>
                     
                     <!-- 第三行：费用策略（独占一行） -->
@@ -856,12 +856,6 @@
                             <button class="btn" onclick="batchSetStock()">
                                 <i class="bi bi-gear"></i> 批量设置库存
                             </button>
-                            <button class="btn" onclick="batchSetAlert()">
-                                <i class="bi bi-bell"></i> 批量设置告警
-                            </button>
-                            <button class="btn" onclick="batchSetSyncMode()">
-                                <i class="bi bi-refresh"></i> 批量设置库存同步方式
-                            </button>
                         </div>
                         <button class="btn btn-primary" onclick="importProducts()">
                             <i class="bi bi-upload"></i> 导入商品
@@ -880,10 +874,6 @@
                                     <th>商品名称</th>
                                     <th>成本价</th>
                                     <th>活动库存</th>
-                                    <th>告警库存</th>
-                                    <th>库存同步方式</th>
-                                    <th>安全库存</th>
-                                    <th>告警状态</th>
                                     <th style="width: 120px;">操作</th>
                                 </tr>
                             </thead>
@@ -895,15 +885,6 @@
                                     <td>春节限定吧唧-龙年款</td>
                                     <td>¥15.00</td>
                                     <td><input type="number" class="form-input" style="width: 100px;" value="1000"></td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="100"></td>
-                                    <td>
-                                        <select class="form-select" style="width: 120px;">
-                                            <option value="manual" selected>手动同步</option>
-                                            <option value="realtime">实时同步</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="50"></td>
-                                    <td><span style="color: #52c41a;">正常</span></td>
                                     <td>
                                         <div class="action-btns">
                                             <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
@@ -917,15 +898,6 @@
                                     <td>春节限定吧唧-福字款</td>
                                     <td>¥15.00</td>
                                     <td><input type="number" class="form-input" style="width: 100px;" value="1000"></td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="100"></td>
-                                    <td>
-                                        <select class="form-select" style="width: 120px;">
-                                            <option value="manual">手动同步</option>
-                                            <option value="realtime" selected>实时同步</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="80"></td>
-                                    <td><span style="color: #52c41a;">正常</span></td>
                                     <td>
                                         <div class="action-btns">
                                             <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
@@ -939,15 +911,6 @@
                                     <td>夏日祭吧唧-樱花款</td>
                                     <td>¥18.00</td>
                                     <td><input type="number" class="form-input" style="width: 100px;" value="800"></td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="80"></td>
-                                    <td>
-                                        <select class="form-select" style="width: 120px;">
-                                            <option value="manual" selected>手动同步</option>
-                                            <option value="realtime">实时同步</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="number" class="form-input" style="width: 100px;" value="60"></td>
-                                    <td><span style="color: #52c41a;">正常</span></td>
                                     <td>
                                         <div class="action-btns">
                                             <button class="action-btn delete" onclick="deleteProduct(this)">删除</button>
@@ -1054,32 +1017,6 @@
                     }
                 });
                 alert('批量设置成功');
-            }
-        }
-        
-        function batchSetAlert() {
-            const alert = prompt('请输入要设置的告警库存：');
-            if (alert && !isNaN(alert)) {
-                const inputs = document.querySelectorAll('#productTableBody input[type="number"]');
-                inputs.forEach((input, index) => {
-                    if (index % 2 === 1) {
-                        input.value = alert;
-                    }
-                });
-                alert('批量设置成功');
-            }
-        }
-        
-        function batchSetSyncMode() {
-            const modes = ['manual', 'realtime'];
-            const modeNames = ['手动同步', '实时同步'];
-            const selectedIndex = prompt(`请选择库存同步方式：\n0. 手动同步\n1. 实时同步`);
-            if (selectedIndex !== null && (selectedIndex === '0' || selectedIndex === '1')) {
-                const selects = document.querySelectorAll('#productTableBody select');
-                selects.forEach(select => {
-                    select.value = modes[selectedIndex];
-                });
-                alert(`批量设置为${modeNames[selectedIndex]}成功`);
             }
         }
         
