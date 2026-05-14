@@ -927,9 +927,9 @@
             if (menuEl) menuEl.classList.add('active');
             
             // 更新面包屑导航标题
-            const formTitle = document.querySelector('#page-' + pageId + ' .form-title');
-            if (formTitle && pageId.includes('/create')) {
-                const isCrowd = pageId.startsWith('crowd');
+            const formTitle = document.querySelector('#page-' + menuId + ' .form-title');
+            if (formTitle && menuId.includes('create')) {
+                const isCrowd = menuId.startsWith('crowd');
                 formTitle.textContent = (isCrowd ? '人群包' : '限购策略') + ' 编辑';
             }
         }
