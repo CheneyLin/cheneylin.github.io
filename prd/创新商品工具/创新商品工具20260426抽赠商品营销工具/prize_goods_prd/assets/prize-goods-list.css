@@ -745,3 +745,85 @@ tr:hover td {
 .text-green {
     color: #52c41a;
 }
+
+.virtual-product-input-container {
+    position: relative;
+}
+
+.virtual-product-info {
+    margin-top: 8px;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.virtual-product-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #171717;
+    margin-bottom: 4px;
+}
+
+.virtual-product-price {
+    font-size: 12px;
+    color: #4d4d4d;
+}
+
+.probability-info {
+    font-size: 12px;
+    color: #4d4d4d;
+    line-height: 1.6;
+}
+
+.probability-info div {
+    margin-bottom: 2px;
+}
+
+.probability-info div:last-child {
+    margin-bottom: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.virtual-product-input-container-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.virtual-product-input-container-horizontal .form-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.virtual-product-info-horizontal {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px;
+    background: #f6ffed;
+    border-radius: 6px;
+    border: 1px solid #b7eb8f;
+}
+
+.virtual-product-info-horizontal .virtual-product-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #171717;
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.virtual-product-info-horizontal .virtual-product-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #52c41a;
+}

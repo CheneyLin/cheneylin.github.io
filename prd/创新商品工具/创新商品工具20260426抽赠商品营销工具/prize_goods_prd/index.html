@@ -11,7 +11,7 @@
 <body>
   <div class="header">
     <span class="header-title">抽赠商品营销工具</span>
-    <span class="version-badge">v1.1</span>
+    <span class="version-badge">v1.2</span>
     <div class="divider"></div>
     <div class="controls">
       <div class="product-btns">
@@ -27,7 +27,8 @@
       <div class="width-control">
         <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
-          <option value="1.1" selected>v1.1</option>
+          <option value="1.2" selected>v1.2</option>
+          <option value="1.1">v1.1</option>
           <option value="1.0">v1.0</option>
         </select>
       </div>
@@ -35,11 +36,11 @@
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v1.2/prd_html/prd_v1.2.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/admin_prototype_v1.1.html"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v1.2/prototype_html/admin_prototype_v1.2.html"></iframe>
     </div>
   </div>
 
@@ -258,7 +259,7 @@ setRightWidth(initialWidth);
     });
 
     window.addEventListener('DOMContentLoaded', () => {
-      const versions = ['1.1', '1.0'];
+      const versions = ['1.2', '1.1', '1.0'];
       const products = ['admin'];
       PrototypePreloader.preloadAllPrototypes(versions, products);
     });
