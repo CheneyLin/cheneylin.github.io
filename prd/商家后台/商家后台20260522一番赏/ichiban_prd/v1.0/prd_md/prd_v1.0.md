@@ -237,11 +237,7 @@ flowchart TD
 
 ## 8. 数据追踪与埋点
 
-| 页面标识/page_name | 页面上报细节 | 模块标识/mod_type | 模块上报细节 | 备注 |
-| :--- | :--- | :--- | :--- | :--- |
-| 商品编辑页/product_edit | shop_id={店铺ID}; product_type={商品类型} | 供货价编辑/supply_price_edit | action=edit; value={供货价} | 仅一番赏实物商品 |
-| 商品编辑页/product_edit | shop_id={店铺ID}; product_type={商品类型} | SKU供货价编辑/sku_price_edit | sku_id={SKU ID}; value={供货价} | 仅一番赏实物商品 |
-| 一番赏新建/activity_create | activity_id={活动ID} | 供货价校验/supply_price_validate | result={success/fail}; reason={原因} | 保存时触发 |
+无
 
 ## 9. 未来演进规划
 
