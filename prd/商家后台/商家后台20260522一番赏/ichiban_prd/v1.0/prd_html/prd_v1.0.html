@@ -75,7 +75,7 @@
       <h2>3. 用户与使用场景</h2>
       <h3>3.1 核心用户</h3>
       <ul class="list">
-        <li><strong>小芒自营店运营人员</strong>：负责一番赏活动的商品配置和活动管理（店铺ID=1）</li>
+        <li><strong>自营/一件代发店铺运营人员</strong>：负责一番赏活动的商品配置和活动管理（店铺类型为"自营"或"一件代发"）</li>
         <li><strong>财务审核人员</strong>：负责订单结算和财务数据审核</li>
       </ul>
 
@@ -132,7 +132,7 @@ graph TD
         <div class="field-group">
           <div class="field-label">详细逻辑</div>
           <ul class="list">
-            <li>权限控制：仅当店铺ID=1（小芒自营店）且商品类型为"一番赏实物商品"或"一番赏虚拟商品"时，SKU供货价字段可编辑</li>
+            <li>权限控制：仅当店铺类型为"自营"或"一件代发"且商品类型为"一番赏实物商品"或"一番赏虚拟商品"时，SKU供货价字段可编辑</li>
             <li>其他店铺或其他商品类型，SKU供货价字段保持原有逻辑不变</li>
             <li>供货价输入限制：仅支持正整数</li>
             <li><strong>一番赏实物商品</strong>：
@@ -288,7 +288,7 @@ flowchart TD
     <div class="prd-section" id="section7">
       <h2>7. 异常与边界处理</h2>
       <ul class="list">
-        <li><strong>非目标店铺访问</strong>：非店铺ID=1的用户编辑一番赏实物商品时，供货价字段保持不可编辑状态，不展示任何额外提示</li>
+        <li><strong>非目标店铺访问</strong>：店铺类型非"自营"或"一件代发"的用户编辑一番赏商品时，SKU供货价字段保持不可编辑状态，不展示任何额外提示</li>
         <li><strong>供货价输入非法值</strong>：输入非正整数时，前端实时校验，输入框标红并提示"请输入正整数"</li>
         <li><strong>SKU供货价部分配置</strong>：实物商品部分SKU配置了供货价、部分未配置时，若该商品被选为一番赏活动的成本载体，保存活动时校验失败并提示</li>
         <li><strong>网络异常</strong>：保存商品或活动时网络中断，保留表单数据，提示"保存失败，请重试"</li>
@@ -304,11 +304,7 @@ flowchart TD
 
     <div class="prd-section" id="section9">
       <h2>9. 未来演进规划</h2>
-      <table>
-        <tr><th>阶段</th><th>功能</th><th>描述</th></tr>
-        <tr><td>v1.1</td><td>供货价批量配置</td><td>支持Excel导入/导出SKU供货价，提升批量配置效率</td></tr>
-        <tr><td>v1.2</td><td>供货价审批流程</td><td>增加供货价修改审批环节，确保成本变更可追溯</td></tr>
-      </table>
+      <p>无</p>
     </div>
 
     <div class="prd-section" id="section10">
@@ -316,7 +312,7 @@ flowchart TD
       <h3>10.1 业务规则汇总</h3>
       <table>
         <tr><th>规则编号</th><th>规则名称</th><th>规则描述</th><th>适用场景</th></tr>
-        <tr><td><code>BR-001</code></td><td>供货价编辑权限</td><td>仅店铺ID=1且商品类型为一番赏实物商品时，供货价可编辑</td><td>商品编辑</td></tr>
+        <tr><td><code>BR-001</code></td><td>供货价编辑权限</td><td>仅店铺类型为"自营"或"一件代发"且商品类型为一番赏商品时，SKU供货价可编辑</td><td>商品编辑</td></tr>
         <tr><td><code>BR-002</code></td><td>供货价输入限制</td><td>供货价仅支持正整数</td><td>商品编辑</td></tr>
         <tr><td><code>BR-003</code></td><td>供货价互斥规则</td><td>虚拟商品和实物商品必须且只能有一个设置供货价</td><td>新建活动保存</td></tr>
         <tr><td><code>BR-004</code></td><td>SKU供货价完整性</td><td>实物商品配置供货价时，所有SKU都必须配置大于0的供货价</td><td>新建活动保存</td></tr>
