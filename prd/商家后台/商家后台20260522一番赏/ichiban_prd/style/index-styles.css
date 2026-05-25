@@ -1,0 +1,150 @@
+/* ============================================
+   PRD 分屏视图样式
+   PRD Split View Styles
+   ============================================ */
+
+/* === Controls Bar === */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    box-shadow: var(--shadow-border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.32px;
+}
+
+.version-badge {
+    background: var(--geist-gray-50);
+    color: var(--muted);
+    box-shadow: var(--shadow-border-light);
+    padding: 4px 10px;
+    border-radius: var(--pill-radius);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-light);
+    margin: 0 8px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.product-btns {
+    display: flex;
+    gap: 4px;
+    background: var(--geist-gray-50);
+    padding: 4px;
+    border-radius: var(--radius-standard);
+    box-shadow: var(--shadow-border);
+}
+
+.product-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-subtle);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.product-btn:hover {
+    color: var(--fg);
+}
+
+.product-btn.active {
+    background: var(--fg);
+    color: var(--geist-white);
+}
+
+.width-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.width-control input[type="range"] {
+    width: 80px;
+    cursor: pointer;
+    accent-color: var(--fg);
+}
+
+.width-control select {
+    padding: 6px 10px;
+    border: none;
+    border-radius: var(--radius-standard);
+    font-size: 13px;
+    background: var(--geist-gray-50);
+    box-shadow: var(--shadow-border);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.main {
+    display: flex;
+    height: calc(100% - 60px);
+    background: var(--bg);
+}
+
+.left {
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--bg);
+}
+
+.right {
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--geist-gray-50);
+}
+
+.frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.split {
+    width: 1px;
+    cursor: col-resize;
+    background: var(--border-light);
+    position: relative;
+}
+
+.split::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 40px;
+    background: var(--border-light);
+    border-radius: 2px;
+}

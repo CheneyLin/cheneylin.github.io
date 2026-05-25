@@ -1,0 +1,333 @@
+/* ============================================
+   PRD 文档样式
+   PRD Document Styles
+   ============================================ */
+
+.page {
+    min-width: 1024px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+/* === PRD Section (no border/shadow, distinct from global .card) === */
+.prd-section {
+    padding: 20px;
+    margin: 16px 0;
+}
+
+.prd-section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    padding-left: 12px;
+    border-left: 4px solid var(--fg);
+}
+
+.prd-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 20px 0 10px;
+}
+
+.prd-section p {
+    margin: 8px 0;
+    color: var(--muted);
+}
+
+.prd-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+}
+
+.prd-section th,
+.prd-section td {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.prd-section th {
+    background: var(--geist-gray-50);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--muted);
+    width: 120px;
+}
+
+.prd-section .list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.prd-section .meta {
+    color: var(--geist-gray-400);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.prd-section .field-group {
+    background: var(--geist-gray-50);
+    border-radius: var(--radius-standard);
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.prd-section .field-label {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--fg);
+}
+
+.prd-section .field-hint {
+    color: var(--geist-gray-400);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.prd-section .feature-id {
+    display: inline-block;
+    background: var(--fg);
+    color: var(--geist-white);
+    padding: 2px 8px;
+    border-radius: var(--radius-subtle);
+    font-size: 11px;
+    margin-left: 8px;
+}
+
+.prd-section .feature-module {
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-comfortable);
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.prd-section .feature-module:hover {
+    border-color: var(--fg);
+}
+
+/* === Global Styles (for backward compatibility) === */
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    border-bottom: 3px solid var(--fg);
+    padding-bottom: 12px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 32px 0 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--fg);
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 20px 0 10px;
+}
+
+p {
+    margin: 8px 0;
+    color: var(--muted);
+}
+table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th, td { border-bottom:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
+    th { background:#fafafa; font-weight:600; font-size:13px; color:var(--muted); }
+    
+.list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.meta {
+    color: var(--geist-gray-400);
+    font-size: 13px;
+}
+
+.field-group {
+    background: var(--geist-gray-50);
+    border-radius: var(--radius-standard);
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.field-label {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--fg);
+}
+
+.field-hint {
+    color: var(--geist-gray-400);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.feature-id {
+    display: inline-block;
+    background: var(--fg);
+    color: var(--geist-white);
+    padding: 2px 8px;
+    border-radius: var(--radius-subtle);
+    font-size: 11px;
+    margin-left: 8px;
+}
+
+.feature-module {
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-comfortable);
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.feature-module:hover {
+    border-color: var(--fg);
+}
+
+.toc {
+    background: var(--geist-gray-50);
+    border-radius: var(--radius-comfortable);
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.toc ul {
+    list-style: none;
+    padding: 0;
+}
+
+.toc li {
+    margin: 8px 0;
+}
+
+.toc a {
+    color: var(--link-blue);
+    text-decoration: none;
+}
+
+.toc a:hover {
+    text-decoration: underline;
+}
+
+pre {
+    background: var(--geist-gray-50);
+    padding: 16px;
+    border-radius: var(--radius-standard);
+    overflow-x: auto;
+    margin: 12px 0;
+}
+
+code {
+    background: var(--geist-gray-50);
+    padding: 2px 6px;
+    border-radius: var(--radius-micro);
+    font-size: 13px;
+}
+
+strong {
+    color: var(--fg);
+}
+
+a {
+    color: var(--link-blue);
+    text-decoration: underline;
+}
+
+a:hover {
+    opacity: 0.85;
+}
+
+:focus-visible {
+    outline: 2px solid var(--focus-blue);
+    outline-offset: 2px;
+}
+
+/* === Mermaid Vercel Theme Overrides === */
+.mermaid {
+    background: var(--geist-white);
+    text-align: center;
+    margin: 16px 0;
+    padding: 24px;
+    border-radius: var(--radius-comfortable);
+    box-shadow: var(--shadow-border);
+}
+
+.mermaid svg {
+    font-family: var(--font-sans);
+}
+
+.mermaid .node {
+    fill: var(--geist-white);
+    stroke: var(--geist-black);
+    stroke-width: 1px;
+}
+
+.mermaid .node rect {
+    fill: var(--geist-white);
+    stroke: var(--geist-black);
+    stroke-width: 1px;
+    rx: 6px;
+}
+
+.mermaid .node circle {
+    fill: var(--geist-white);
+    stroke: var(--geist-black);
+    stroke-width: 1px;
+}
+
+.mermaid .node polygon {
+    fill: var(--geist-white);
+    stroke: var(--geist-black);
+    stroke-width: 1px;
+}
+
+.mermaid .edgePath .path {
+    stroke: var(--geist-black);
+    stroke-width: 1.5px;
+}
+
+.mermaid .edgeLabel {
+    background-color: var(--geist-gray-50);
+    color: var(--geist-gray-600);
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: var(--radius-subtle);
+    border: 1px solid var(--geist-gray-100);
+}
+
+.mermaid .cluster rect {
+    fill: var(--geist-gray-50);
+    stroke: var(--geist-gray-100);
+    stroke-width: 1px;
+    rx: 6px;
+}
+
+.mermaid text {
+    fill: var(--geist-black);
+    font-size: 13px;
+}
+
+.mermaid .label {
+    color: var(--geist-black);
+    font-size: 13px;
+}
+
+.mermaid .edgeToken {
+    stroke: var(--geist-gray-100);
+}
+
+.mermaid .marker {
+    fill: var(--geist-black);
+    stroke: var(--geist-black);
+}
+
+.mermaid .arrowhead {
+    fill: var(--geist-black);
+}

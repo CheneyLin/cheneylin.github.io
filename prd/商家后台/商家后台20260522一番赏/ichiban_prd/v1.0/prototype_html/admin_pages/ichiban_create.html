@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建一番赏活动 - 小芒商家后台</title>
+    <link href="../../assets/bootstrap.main.css" rel="stylesheet" />
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../style/main.css" rel="stylesheet" />
+    <link href="../../style/admin-prototype-styles.css" rel="stylesheet" />
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-50: #fafafa;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-400: #808080;
+            --geist-gray-500: #666666;
+            --geist-gray-600: #4d4d4d;
+            --shadow-border: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px, rgb(250,250,250) 0px 0px 0px 1px;
+            --ship-red: #ff5b4f;
+            --link-blue: #0072f5;
+            --radius-standard: 6px;
+            --radius-comfortable: 8px;
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--geist-gray-400);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .breadcrumb a {
+            color: var(--geist-gray-500);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .breadcrumb a:hover { color: var(--link-blue); }
+        .breadcrumb .sep { color: var(--geist-gray-400); }
+        .breadcrumb .current { color: var(--geist-black); font-weight: 500; }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: var(--geist-white);
+            border-radius: var(--radius-comfortable);
+            box-shadow: var(--shadow-card);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            margin-bottom: 6px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            max-width: 480px;
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            color: var(--geist-black);
+            background: var(--geist-white);
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--link-blue);
+            box-shadow: 0 0 0 2px rgba(0,114,245,0.1);
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .form-row .form-input {
+            max-width: 220px;
+        }
+        .form-row .sep-text {
+            font-size: 13px;
+            color: var(--geist-gray-400);
+        }
+
+        /* Product Selector */
+        .product-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--geist-gray-50);
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-comfortable);
+            max-width: 480px;
+        }
+        .product-selector .product-name {
+            flex: 1;
+            font-size: 13px;
+            color: var(--geist-black);
+            font-weight: 500;
+        }
+        .product-selector .product-price {
+            font-size: 12px;
+            color: var(--geist-gray-500);
+        }
+        .product-selector .btn-change {
+            padding: 4px 12px;
+            background: var(--geist-white);
+            color: var(--link-blue);
+            border: 1px solid var(--link-blue);
+            border-radius: var(--radius-standard);
+            font-size: 12px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .product-selector .btn-change:hover {
+            background: var(--link-blue);
+            color: var(--geist-white);
+        }
+
+        /* Config Tip Card */
+        .config-tip-card {
+            background: var(--geist-gray-50);
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-comfortable);
+            padding: 20px;
+            max-width: 600px;
+            margin-top: 8px;
+        }
+        .config-tip-card .config-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .config-tip-card .config-title i {
+            color: var(--link-blue);
+            font-size: 16px;
+        }
+        .config-tip-card .config-content {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+            line-height: 1.6;
+        }
+        .config-tip-card .config-content strong {
+            color: var(--geist-black);
+        }
+
+        /* Bottom Actions */
+        .bottom-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 8px;
+        }
+
+        .btn-primary {
+            height: 40px;
+            padding: 0 28px;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            border: none;
+            border-radius: var(--radius-standard);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        .btn-primary:hover { opacity: 0.85; }
+
+        .btn-secondary {
+            height: 40px;
+            padding: 0 28px;
+            background: var(--geist-white);
+            color: var(--geist-gray-600);
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-standard);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-secondary:hover {
+            border-color: var(--geist-gray-400);
+        }
+
+        .btn-warning {
+            height: 40px;
+            padding: 0 20px;
+            background: var(--geist-white);
+            color: var(--ship-red);
+            border: 1px solid var(--ship-red);
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-warning:hover {
+            background: var(--ship-red);
+            color: var(--geist-white);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--geist-white);
+            border-radius: var(--radius-comfortable);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            padding: 28px;
+            width: 420px;
+            max-width: 90vw;
+            animation: modalIn 0.2s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-title .icon-error {
+            color: var(--ship-red);
+            font-size: 20px;
+        }
+        .modal-body {
+            font-size: 14px;
+            color: var(--geist-gray-600);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .modal-footer .btn-modal-confirm {
+            height: 36px;
+            padding: 0 24px;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            border: none;
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        .modal-footer .btn-modal-confirm:hover { opacity: 0.85; }
+
+        /* Toast */
+        .toast {
+            display: none;
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--geist-black);
+            color: var(--geist-white);
+            padding: 12px 24px;
+            border-radius: var(--radius-comfortable);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            z-index: 2000;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            animation: toastIn 0.3s ease;
+        }
+        .toast.active {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast .toast-icon {
+            color: #22c55e;
+            font-size: 16px;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* Highlight */
+        .feature-highlight {
+            animation: featureFadeIn 0.5s ease;
+            box-shadow: 0 0 0 2px var(--link-blue), var(--shadow-card) !important;
+            border-radius: var(--radius-comfortable);
+        }
+        @keyframes featureFadeIn {
+            from { opacity: 0.5; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body style="background:#fff;padding:24px;font-family:var(--font-sans);">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a onclick="window.parent.postMessage({action:'navigate',page:'ichiban_list.html'},'*')">营销</a>
+        <span class="sep">/</span>
+        <a onclick="window.parent.postMessage({action:'navigate',page:'ichiban_list.html'},'*')">一番赏</a>
+        <span class="sep">/</span>
+        <span class="current">新建活动</span>
+    </div>
+
+    <!-- Page Title -->
+    <div class="page-title">新建设番赏活动</div>
+
+    <!-- Activity Form -->
+    <div class="prototype-module" data-prototype="admin_activity_create_validate">
+        <div class="form-card">
+            <div class="form-group">
+                <label class="form-label">活动名称</label>
+                <input type="text" class="form-input" placeholder="请输入活动名称" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">活动时间</label>
+                <div class="form-row">
+                    <input type="datetime-local" class="form-input" />
+                    <span class="sep-text">至</span>
+                    <input type="datetime-local" class="form-input" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">虚拟商品</label>
+                <div class="product-selector">
+                    <span class="product-name">一番赏-航海王虚拟兑换券</span>
+                    <span class="product-price">供货价: 299</span>
+                    <button class="btn-change">更换</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">实物商品</label>
+                <div class="product-selector">
+                    <span class="product-name">一番赏-航海王实物套装</span>
+                    <span class="product-price">供货价: 0</span>
+                    <button class="btn-change">更换</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supply Price Config Tip -->
+    <div class="prototype-module" data-prototype="admin_activity_create_error_tip">
+        <div class="config-tip-card">
+            <div class="config-title">
+                <i class="bi bi-info-circle"></i>
+                供货价配置状态
+            </div>
+            <div class="config-content">
+                <strong>当前配置：虚拟商品承载成本（供货价: 299元）</strong>
+                <br /><br />
+                请确保有且仅有一个商品配置供货价。若实物商品配置供货价，则所有SKU都必须配置大于0的供货价。
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="bottom-actions" style="margin-top: 24px;">
+        <button class="btn-primary" onclick="saveActivity(false)">保存</button>
+        <button class="btn-secondary" onclick="window.parent.postMessage({action:'navigate',page:'ichiban_list.html'},'*')">取消</button>
+        <button class="btn-warning" onclick="saveActivity(true)">模拟校验失败</button>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal-box">
+            <div class="modal-title">
+                <i class="bi bi-exclamation-triangle-fill icon-error"></i>
+                提示
+            </div>
+            <div class="modal-body">
+                供货价配置错误，请检查，确保有且仅有一个商品正确配置供货价。
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-confirm" onclick="closeModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast" id="successToast">
+        <i class="bi bi-check-circle-fill toast-icon"></i>
+        <span>活动保存成功</span>
+    </div>
+
+    <script>
+        function saveActivity(simulateError) {
+            if (simulateError) {
+                document.getElementById('errorModal').classList.add('active');
+            } else {
+                showToast();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('errorModal').classList.remove('active');
+        }
+
+        function showToast() {
+            var toast = document.getElementById('successToast');
+            toast.classList.add('active');
+            setTimeout(function() {
+                toast.classList.remove('active');
+            }, 2500);
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                var modules = document.querySelectorAll('.prototype-module');
+                modules.forEach(function(m) { m.classList.remove('feature-highlight'); });
+                var target = document.querySelector('.prototype-module[data-prototype="' + e.data.featureId + '"]');
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

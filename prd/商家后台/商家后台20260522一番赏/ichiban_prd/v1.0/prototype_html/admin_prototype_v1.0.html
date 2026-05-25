@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小芒商家后台</title>
+    <link href="../../assets/bootstrap.main.css" rel="stylesheet" />
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../style/main.css" rel="stylesheet" />
+    <link href="../../style/admin-prototype-styles.css" rel="stylesheet" />
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-50: #fafafa;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-400: #808080;
+            --geist-gray-500: #666666;
+            --geist-gray-600: #4d4d4d;
+            --shadow-border: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px, rgb(250,250,250) 0px 0px 0px 1px;
+            --ship-red: #ff5b4f;
+            --link-blue: #0072f5;
+            --radius-standard: 6px;
+            --radius-comfortable: 8px;
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--geist-gray-50);
+            color: var(--geist-black);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .admin-layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 262px;
+            min-width: 262px;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--link-blue);
+            border-radius: var(--radius-standard);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px 0;
+        }
+
+        .nav-group {
+            margin-bottom: 8px;
+        }
+
+        .nav-group-title {
+            padding: 8px 24px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 24px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            gap: 10px;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            color: var(--geist-white);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .nav-item.active {
+            color: var(--geist-white);
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--link-blue);
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            height: 56px;
+            background: var(--geist-white);
+            border-bottom: 1px solid var(--geist-gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            flex-shrink: 0;
+        }
+
+        .top-bar-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--geist-gray-500);
+        }
+
+        .top-bar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--geist-gray-600);
+        }
+
+        .top-bar-user .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--geist-gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--geist-gray-500);
+        }
+
+        .iframe-container {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">M</div>
+                <span>小芒商家后台</span>
+            </div>
+            <nav class="sidebar-nav">
+                <!-- 商品平台 -->
+                <div class="nav-group">
+                    <div class="nav-group-title">商品平台</div>
+                    <a class="nav-item active" data-page="product_list.html" href="#product_list.html">
+                        <i class="bi bi-box-seam"></i>
+                        <span>商品列表</span>
+                    </a>
+                </div>
+                <!-- 营销 -->
+                <div class="nav-group">
+                    <div class="nav-group-title">营销</div>
+                    <a class="nav-item" data-page="ichiban_list.html" href="#ichiban_list.html">
+                        <i class="bi bi-gift"></i>
+                        <span>一番赏</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="top-bar-title">商家管理后台</div>
+                <div class="top-bar-user">
+                    <span>管理员</span>
+                    <div class="avatar">
+                        <i class="bi bi-person"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="iframe-container">
+                <iframe id="contentFrame" src="admin_pages/product_list.html"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // featureId to page mapping
+        var featureIdMap = {
+            'admin_product_edit_supply_price': 'product_edit_physical.html',
+            'admin_product_edit_sku_price': 'product_edit_physical.html',
+            'admin_activity_create_validate': 'ichiban_create.html',
+            'admin_activity_create_error_tip': 'ichiban_create.html'
+        };
+
+        // Load page into iframe
+        function loadPage(page) {
+            var iframe = document.getElementById('contentFrame');
+            iframe.src = 'admin_pages/' + page;
+
+            // Update active nav item
+            var navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(function(item) {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === page) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update hash
+            window.location.hash = page;
+        }
+
+        // Nav item click handlers
+        document.querySelectorAll('.nav-item').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                var page = this.getAttribute('data-page');
+                if (page) {
+                    loadPage(page);
+                }
+            });
+        });
+
+        // Hash routing
+        function handleHash() {
+            var hash = window.location.hash.replace('#', '');
+            if (hash) {
+                loadPage(hash);
+            }
+        }
+
+        window.addEventListener('hashchange', handleHash);
+
+        // Handle messages from child pages (navigate + highlight)
+        window.addEventListener('message', function(e) {
+            if (!e.data || !e.data.action) return;
+
+            if (e.data.action === 'navigate' && e.data.page) {
+                loadPage(e.data.page);
+                return;
+            }
+
+            if (e.data.action === 'highlight' && e.data.featureId) {
+                var targetPage = featureIdMap[e.data.featureId];
+                if (targetPage) {
+                    var currentPage = window.location.hash.replace('#', '') || 'product_list.html';
+                    if (currentPage !== targetPage) {
+                        loadPage(targetPage);
+                        var iframe = document.getElementById('contentFrame');
+                        iframe.onload = function() {
+                            iframe.contentWindow.postMessage({
+                                action: 'highlight',
+                                featureId: e.data.featureId
+                            }, '*');
+                        };
+                    } else {
+                        var iframe = document.getElementById('contentFrame');
+                        iframe.contentWindow.postMessage({
+                            action: 'highlight',
+                            featureId: e.data.featureId
+                        }, '*');
+                    }
+                }
+            }
+        });
+
+        // Initial load
+        handleHash();
+    </script>
+</body>
+</html>

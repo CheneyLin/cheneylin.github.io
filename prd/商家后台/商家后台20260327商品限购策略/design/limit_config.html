@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建/编辑限购策略 - 供应商管理后台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            height: 50px;
+            background-color: #2c2c2c;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: #fff;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 4px;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-icon::before {
+            content: "芒";
+            font-size: 12px;
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+        }
+        
+        .header-right a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .header-right a:hover {
+            color: #fff;
+        }
+        
+        .header-divider {
+            color: #555;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .store-name {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .dropdown-arrow {
+            font-size: 10px;
+        }
+        
+        /* 主体布局 */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 50px);
+        }
+        
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 180px;
+            background-color: #fff;
+            border-right: 1px solid #e8e8e8;
+            padding: 10px 0;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .nav-item.active {
+            background-color: #fff7f0;
+            color: #ff6b35;
+            border-right: 3px solid #ff6b35;
+        }
+        
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-arrow {
+            margin-left: auto;
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .nav-item.expanded .nav-arrow {
+            transform: rotate(90deg);
+        }
+        
+        .sub-nav {
+            background-color: #fafafa;
+        }
+        
+        .sub-nav-item {
+            padding: 10px 20px 10px 48px;
+            cursor: pointer;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .sub-nav-item:hover {
+            color: #ff6b35;
+        }
+        
+        .sub-nav-item.active {
+            color: #ff6b35;
+            background-color: #fff7f0;
+        }
+        
+        /* 内容区域 */
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        /* 面包屑导航 */
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-separator {
+            margin: 0 8px;
+            color: #ccc;
+        }
+        
+        .breadcrumb-current {
+            color: #333;
+        }
+        
+        /* 表单卡片 */
+        .form-card {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 30px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .form-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            width: 100px;
+            text-align: right;
+            padding-right: 12px;
+            padding-top: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-label .required {
+            color: #ff4d4f;
+            margin-right: 4px;
+        }
+        
+        .form-control {
+            flex: 1;
+        }
+        
+        .input {
+            width: 100%;
+            max-width: 400px;
+            height: 32px;
+            padding: 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+        }
+        
+        .input::placeholder {
+            color: #bfbfbf;
+        }
+        
+        .textarea {
+            width: 100%;
+            max-width: 500px;
+            min-height: 80px;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+        }
+        
+        .textarea-hint {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 单选按钮组 */
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            padding-top: 6px;
+        }
+        
+        .radio {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .radio input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #ff6b35;
+            cursor: pointer;
+        }
+        
+        .radio-text {
+            color: #333;
+        }
+        
+        .radio-hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 按钮 */
+        .btn {
+            height: 32px;
+            padding: 0 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #fff;
+        }
+        
+        .btn:hover {
+            border-color: #ff6b35;
+            color: #ff6b35;
+        }
+        
+        .btn-primary {
+            background-color: #ff6b35;
+            border-color: #ff6b35;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff5722;
+            border-color: #ff5722;
+            color: #fff;
+        }
+        
+        .btn-sm {
+            height: 28px;
+            padding: 0 12px;
+            font-size: 13px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-left: 100px;
+        }
+        
+        /* 选择商品区域 */
+        .goods-select-area {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .goods-select-btn {
+            align-self: flex-start;
+        }
+        
+        .goods-hint {
+            font-size: 12px;
+            color: #ff6b35;
+        }
+        
+        /* 下拉选择框 */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .select {
+            width: 100%;
+            height: 32px;
+            padding: 0 30px 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+            appearance: none;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        
+        .select:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+        }
+        
+        .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #999;
+            font-size: 10px;
+        }
+        
+        .select-hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 数量输入 */
+        .number-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .number-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .number-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background-color: #fafafa;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .number-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .number-btn:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .number-field {
+            width: 50px;
+            height: 32px;
+            border: none;
+            border-left: 1px solid #d9d9d9;
+            border-right: 1px solid #d9d9d9;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .number-field:focus {
+            outline: none;
+        }
+        
+        .number-unit {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .number-hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 警告提示 */
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 16px;
+            background-color: #fff7e6;
+            border: 1px solid #ffd591;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .alert-icon {
+            width: 16px;
+            height: 16px;
+            background-color: #faad14;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .alert-text {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        /* 弹窗遮罩 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        /* 弹窗 */
+        .modal {
+            background-color: #fff;
+            border-radius: 4px;
+            width: 800px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .modal-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .modal-close {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #999;
+            font-size: 18px;
+            border: none;
+            background: none;
+        }
+        
+        .modal-close:hover {
+            color: #666;
+        }
+        
+        .modal-body {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #e8e8e8;
+        }
+        
+        /* 搜索区域 */
+        .search-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .search-label {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .search-input {
+            width: 240px;
+            height: 32px;
+            padding: 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+        
+        /* 表格 */
+        .table-wrapper {
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        .table th,
+        .table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .table th {
+            background-color: #fafafa;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .table-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        .goods-name {
+            color: #1890ff;
+            cursor: pointer;
+        }
+        
+        .goods-name:hover {
+            text-decoration: underline;
+        }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 16px;
+            font-size: 13px;
+        }
+        
+        .pagination-total {
+            color: #666;
+        }
+        
+        .pagination-select {
+            height: 28px;
+            padding: 0 8px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .pagination-btn {
+            min-width: 28px;
+            height: 28px;
+            padding: 0 8px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .pagination-btn:hover {
+            border-color: #ff6b35;
+            color: #ff6b35;
+        }
+        
+        .pagination-btn.active {
+            background-color: #ff6b35;
+            border-color: #ff6b35;
+            color: #fff;
+        }
+        
+        .pagination-btn:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #d9d9d9;
+        }
+        
+        .pagination-jump {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        
+        .pagination-input {
+            width: 40px;
+            height: 28px;
+            padding: 0 4px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span>供应商管理后台</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="#">下载手机版</a>
+            <span class="header-divider">|</span>
+            <a href="#">意见反馈</a>
+            <span class="header-divider">|</span>
+            <a href="#">帮助中心</a>
+            <span class="header-divider">|</span>
+            <div class="store-name">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>小芒自营店</span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+            <span class="header-divider">|</span>
+            <span>changyu@mgtv.com</span>
+        </div>
+    </header>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <div class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>店铺首页</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span>订单平台</span>
+                <span class="nav-arrow">▶</span>
+            </div>
+            <div class="nav-item expanded">
+                <span class="nav-icon">📦</span>
+                <span>商品平台</span>
+                <span class="nav-arrow">▼</span>
+            </div>
+            <div class="sub-nav">
+                <div class="sub-nav-item">商品列表</div>
+                <div class="sub-nav-item">新品提报</div>
+                <div class="sub-nav-item">评论管理</div>
+                <div class="sub-nav-item">下单备注管理</div>
+                <div class="sub-nav-item active">限购策略</div>
+                <div class="sub-nav-item">批量文件记录</div>
+                <div class="sub-nav-item">商品购后视频</div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">🎫</span>
+                <span>门票系统</span>
+                <span class="nav-arrow">▶</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>数据平台</span>
+                <span class="nav-arrow">▶</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">🎧</span>
+                <span>售后平台</span>
+                <span class="nav-arrow">▶</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">🎯</span>
+                <span>营销</span>
+                <span class="nav-arrow">▶</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">🚚</span>
+                <span>履约管理</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">📝</span>
+                <span>活动报名</span>
+            </div>
+        </aside>
+
+        <!-- 内容区域 -->
+        <main class="content">
+            <!-- 面包屑导航 -->
+            <nav class="breadcrumb">
+                <a href="#">商品平台</a>
+                <span class="breadcrumb-separator">></span>
+                <a href="#">限购策略</a>
+                <span class="breadcrumb-separator">></span>
+                <span class="breadcrumb-current">创建/编辑限购策略</span>
+            </nav>
+
+            <!-- 表单卡片 -->
+            <div class="form-card">
+                <div class="form-item">
+                    <label class="form-label">
+                        <span class="required">*</span>策略名称：
+                    </label>
+                    <div class="form-control">
+                        <input type="text" class="input" placeholder="请输入策略名称">
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">
+                        <span class="required">*</span>策略类型：
+                    </label>
+                    <div class="form-control">
+                        <div class="radio-group">
+                            <label class="radio">
+                                <input type="radio" name="strategyType" value="spu" checked>
+                                <span class="radio-text">SPU 限购</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="strategyType" value="sku">
+                                <span class="radio-text">SKU 限购</span>
+                            </label>
+                        </div>
+                        <div class="radio-hint">选择类别：SPU 限购</div>
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">
+                        <span class="required">*</span>选择商品：
+                    </label>
+                    <div class="form-control">
+                        <div class="goods-select-area">
+                            <button class="btn btn-primary goods-select-btn" onclick="openModal()">选择商品</button>
+                            <span class="goods-hint">请至少选择一个商品或SKU</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">选择人群包：</label>
+                    <div class="form-control">
+                        <div class="select-wrapper">
+                            <select class="select">
+                                <option>智慧运营-产品经理测试UUID</option>
+                                <option>全部用户</option>
+                                <option>新用户</option>
+                                <option>老用户</option>
+                            </select>
+                            <span class="select-arrow">▼</span>
+                        </div>
+                        <div class="select-hint">精确筛选，默认不指定</div>
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">
+                        <span class="required">*</span>周期类型：
+                    </label>
+                    <div class="form-control">
+                        <div class="radio-group">
+                            <label class="radio">
+                                <input type="radio" name="cycleType" value="1month" checked>
+                                <span class="radio-text">1 月</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="cycleType" value="1year">
+                                <span class="radio-text">1 年</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="cycleType" value="forever">
+                                <span class="radio-text">永久</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="cycleType" value="custom">
+                                <span class="radio-text">自定义</span>
+                            </label>
+                        </div>
+                        <div class="radio-hint" style="color: #ff6b35;">涉及抢购场景商品限购，周期不得超过1个月（31天），否则会严重影响下单性能！！！</div>
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">
+                        <span class="required">*</span>限购数量：
+                    </label>
+                    <div class="form-control">
+                        <div class="number-input">
+                            <div class="number-control">
+                                <button class="number-btn" onclick="decreaseNumber()">-</button>
+                                <input type="text" class="number-field" value="1" id="limitNumber">
+                                <button class="number-btn" onclick="increaseNumber()">+</button>
+                            </div>
+                            <span class="number-unit">件/每用户每周期</span>
+                        </div>
+                        <div class="number-hint">正整数，取值范围：1-9999</div>
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">自定义文案：</label>
+                    <div class="form-control">
+                        <textarea class="textarea" placeholder="例：您已达到购买上限"></textarea>
+                        <div class="textarea-hint">可设置单条自定义文案，用于用户因限购无法下单时的提示，留空提示"您已达到购买上限"</div>
+                    </div>
+                </div>
+
+                <div class="alert">
+                    <span class="alert-icon">!</span>
+                    <div class="alert-content">
+                        <div class="alert-title">冲突策略说明</div>
+                        <div class="alert-text">与当前策略同时命中时将取最小值。若多条策略同时命中，系统将自动取限购数量的最小值作为实际上限。</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" style="width: 80px;">取消</button>
+                    <button class="btn btn-primary" style="width: 80px;">保存</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 选择商品弹窗 -->
+    <div class="modal-overlay" id="goodsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">选择商品</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-area">
+                    <span class="search-label">关键词</span>
+                    <input type="text" class="search-input" placeholder="商品ID或商品名称">
+                    <button class="btn btn-primary btn-sm">查询</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;"><input type="checkbox" class="table-checkbox"></th>
+                                <th>商品ID</th>
+                                <th>商品名称</th>
+                                <th>价格（元）</th>
+                                <th>库存</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269706</td>
+                                <td><span class="goods-name">【小抽数】19.9元抽模寿后羿、孙悟空！（寄存柜满5件包邮）</span></td>
+                                <td>0</td>
+                                <td>3532</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269707</td>
+                                <td><span class="goods-name">【小抽数】19.9元抽模寿后羿、孙悟空（寄存柜满5件包邮）</span></td>
+                                <td>19.9</td>
+                                <td>9999842</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269697</td>
+                                <td><span class="goods-name">【cluebie灵魂出逃】黑胶晴雨伞</span></td>
+                                <td>129</td>
+                                <td>500</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269855</td>
+                                <td><span class="goods-name">【lucky draw】TAEYONG THE FIRST ALBUM 01 (Zine Ver. )</span></td>
+                                <td>89-178</td>
+                                <td>199</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269856</td>
+                                <td><span class="goods-name">【lucky draw】TAEYONG THE FIRST ALBUM 01 (Jewel Case )</span></td>
+                                <td>69</td>
+                                <td>80</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269857</td>
+                                <td><span class="goods-name">【lucky draw】TAEYONG THE FIRST ALBUM 01 (SMini Ver.)</span></td>
+                                <td>69</td>
+                                <td>97</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td>269858</td>
+                                <td><span class="goods-name">【lucky draw】TAEYONG THE FIRST ALBUM 01 [WY LD] (BOOK )</span></td>
+                                <td>149</td>
+                                <td>86</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <span class="pagination-total">共 7395 条</span>
+                    <select class="pagination-select">
+                        <option>10条/页</option>
+                        <option>20条/页</option>
+                        <option>50条/页</option>
+                    </select>
+                    <button class="pagination-btn" disabled>&lt;</button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">4</button>
+                    <button class="pagination-btn">...</button>
+                    <button class="pagination-btn">740</button>
+                    <button class="pagination-btn">&gt;</button>
+                    <div class="pagination-jump">
+                        <span>前往</span>
+                        <input type="text" class="pagination-input" value="1">
+                        <span>页</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('goodsModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('goodsModal').classList.remove('active');
+        }
+
+        function decreaseNumber() {
+            const input = document.getElementById('limitNumber');
+            let value = parseInt(input.value) || 1;
+            if (value > 1) {
+                input.value = value - 1;
+            }
+        }
+
+        function increaseNumber() {
+            const input = document.getElementById('limitNumber');
+            let value = parseInt(input.value) || 1;
+            if (value < 9999) {
+                input.value = value + 1;
+            }
+        }
+
+        // 点击遮罩关闭弹窗
+        document.getElementById('goodsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
