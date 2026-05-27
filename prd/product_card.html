@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品卡片组件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        
+        /* 商品卡片 */
+        .product-card {
+            width: 280px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* 商品图片 */
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-placeholder {
+            font-size: 48px;
+            color: #ccc;
+        }
+        
+        /* 标签 */
+        .product-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff6b35;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .product-tag.hot {
+            background: #ff4d4f;
+        }
+        
+        .product-tag.new {
+            background: #52c41a;
+        }
+        
+        /* 商品信息 */
+        .product-info {
+            padding: 16px;
+        }
+        
+        .product-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 45px;
+        }
+        
+        .product-desc {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        /* 价格区域 */
+        .product-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ff6b35;
+        }
+        
+        .product-price-symbol {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .product-original-price {
+            font-size: 13px;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        /* 销量和评价 */
+        .product-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+        
+        .product-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 操作按钮 */
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            flex: 1;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        
+        .btn-primary {
+            background: #ff6b35;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #ff5722;
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+        
+        /* 图标 */
+        .icon {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 卡片 1: 热销商品 -->
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-tag hot">热销</div>
+            <div class="product-placeholder">📱</div>
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">iPhone 15 Pro Max 256GB 钛金属</h3>
+            <p class="product-desc">A17 Pro芯片 · 钛金属设计 · 5倍光学变焦</p>
+            <div class="product-price-row">
+                <span class="product-price"><span class="product-price-symbol">¥</span>9,999</span>
+                <span class="product-original-price">¥10,999</span>
+            </div>
+            <div class="product-stats">
+                <span>🔥 月销 2.3万+</span>
+                <span>⭐ 4.9分</span>
+            </div>
+            <div class="product-actions">
+                <button class="btn btn-secondary">收藏</button>
+                <button class="btn btn-primary">立即购买</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡片 2: 新品 -->
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-tag new">新品</div>
+            <div class="product-placeholder">🎧</div>
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">AirPods Pro 2 主动降噪无线耳机</h3>
+            <p class="product-desc">H2芯片 · 自适应降噪 · 空间音频</p>
+            <div class="product-price-row">
+                <span class="product-price"><span class="product-price-symbol">¥</span>1,899</span>
+            </div>
+            <div class="product-stats">
+                <span>🔥 月销 5千+</span>
+                <span>⭐ 4.8分</span>
+            </div>
+            <div class="product-actions">
+                <button class="btn btn-secondary">收藏</button>
+                <button class="btn btn-primary">立即购买</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡片 3: 普通商品 -->
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-tag">限时特惠</div>
+            <div class="product-placeholder">⌚</div>
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">Apple Watch Series 9 GPS版 45mm</h3>
+            <p class="product-desc">S9芯片 · 双指互点 · 健康监测</p>
+            <div class="product-price-row">
+                <span class="product-price"><span class="product-price-symbol">¥</span>2,999</span>
+                <span class="product-original-price">¥3,199</span>
+            </div>
+            <div class="product-stats">
+                <span>🔥 月销 8千+</span>
+                <span>⭐ 4.9分</span>
+            </div>
+            <div class="product-actions">
+                <button class="btn btn-secondary">收藏</button>
+                <button class="btn btn-primary">立即购买</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡片 4: 低价商品 -->
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-placeholder">📦</div>
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">小米移动电源3 20000mAh 快充版</h3>
+            <p class="product-desc">双向快充 · 大容量 · 多设备兼容</p>
+            <div class="product-price-row">
+                <span class="product-price"><span class="product-price-symbol">¥</span>129</span>
+                <span class="product-original-price">¥149</span>
+            </div>
+            <div class="product-stats">
+                <span>🔥 月销 10万+</span>
+                <span>⭐ 4.7分</span>
+            </div>
+            <div class="product-actions">
+                <button class="btn btn-secondary">收藏</button>
+                <button class="btn btn-primary">立即购买</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

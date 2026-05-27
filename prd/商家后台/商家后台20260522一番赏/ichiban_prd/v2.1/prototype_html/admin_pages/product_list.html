@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品列表 - 小芒商家后台</title>
+    <link href="../../assets/bootstrap.main.css" rel="stylesheet" />
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../style/main.css" rel="stylesheet" />
+    <link href="../../style/admin-prototype-styles.css" rel="stylesheet" />
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-50: #fafafa;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-400: #808080;
+            --geist-gray-500: #666666;
+            --geist-gray-600: #4d4d4d;
+            --shadow-border: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px, rgb(250,250,250) 0px 0px 0px 1px;
+            --ship-red: #ff5b4f;
+            --link-blue: #0072f5;
+            --radius-standard: 6px;
+            --radius-comfortable: 8px;
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--geist-gray-400);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .breadcrumb a {
+            color: var(--geist-gray-500);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover { color: var(--link-blue); }
+        .breadcrumb .sep { color: var(--geist-gray-400); }
+        .breadcrumb .current { color: var(--geist-black); font-weight: 500; }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-bar label {
+            font-size: 13px;
+            color: var(--geist-gray-600);
+            font-weight: 500;
+        }
+        .filter-bar input,
+        .filter-bar select {
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            color: var(--geist-black);
+            background: var(--geist-white);
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: var(--link-blue);
+            box-shadow: 0 0 0 2px rgba(0,114,245,0.1);
+        }
+        .filter-bar input { width: 200px; }
+        .filter-bar select { min-width: 180px; }
+
+        .btn-search {
+            height: 36px;
+            padding: 0 20px;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            border: none;
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        .btn-search:hover { opacity: 0.85; }
+
+        /* Table */
+        .table-wrapper {
+            background: var(--geist-white);
+            border-radius: var(--radius-comfortable);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-wrapper th {
+            background: var(--geist-gray-50);
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--geist-gray-500);
+            text-align: left;
+            border-bottom: 1px solid var(--geist-gray-100);
+            white-space: nowrap;
+        }
+        .table-wrapper td {
+            padding: 14px 16px;
+            font-size: 13px;
+            color: var(--geist-black);
+            border-bottom: 1px solid var(--geist-gray-100);
+            vertical-align: middle;
+        }
+        .table-wrapper tr:last-child td {
+            border-bottom: none;
+        }
+        .table-wrapper tr:hover td {
+            background: var(--geist-gray-50);
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .tag-blue {
+            background: rgba(0,114,245,0.08);
+            color: var(--link-blue);
+        }
+        .tag-green {
+            background: rgba(34,197,94,0.08);
+            color: #16a34a;
+        }
+        .tag-gray {
+            background: var(--geist-gray-50);
+            color: var(--geist-gray-500);
+        }
+
+        /* Status */
+        .status-online {
+            color: #16a34a;
+            font-weight: 500;
+        }
+        .status-offline {
+            color: var(--geist-gray-400);
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn-edit {
+            padding: 4px 14px;
+            background: var(--geist-white);
+            color: var(--link-blue);
+            border: 1px solid var(--link-blue);
+            border-radius: var(--radius-standard);
+            font-size: 12px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-edit:hover {
+            background: var(--link-blue);
+            color: var(--geist-white);
+        }
+
+        /* Highlight */
+        .feature-highlight {
+            animation: featureFadeIn 0.5s ease;
+            box-shadow: 0 0 0 2px var(--link-blue), var(--shadow-card) !important;
+            border-radius: var(--radius-comfortable);
+        }
+        @keyframes featureFadeIn {
+            from { opacity: 0.5; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body style="background:#fff;padding:24px;font-family:var(--font-sans);">
+
+    <div class="prototype-module" data-prototype="admin_product_edit_supply_price">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="#">商品平台</a>
+            <span class="sep">/</span>
+            <span class="current">商品列表</span>
+        </div>
+
+        <!-- Page Title -->
+        <div class="page-title">商品列表</div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <label>商品名称</label>
+            <input type="text" placeholder="请输入商品名称" />
+            <label>商品类型</label>
+            <select>
+                <option value="">全部</option>
+                <option value="physical">芒芒赏实物商品</option>
+                <option value="virtual">芒芒赏虚拟商品</option>
+            </select>
+            <label>店铺</label>
+            <select>
+                <option value="">全部</option>
+                <option value="self">自营店</option>
+                <option value="dropship">一件代发</option>
+            </select>
+            <button class="btn-search">搜索</button>
+        </div>
+
+        <!-- Product Table -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th>商品名称</th>
+                        <th>商品类型</th>
+                        <th>店铺</th>
+                        <th>供货价</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10001</td>
+                        <td>芒芒赏-航海王实物套装</td>
+                        <td><span class="tag tag-blue">芒芒赏实物商品</span></td>
+                        <td>自营店</td>
+                        <td>0</td>
+                        <td><span class="status-online">上架</span></td>
+                        <td><button class="btn-edit" onclick="editProduct('physical', '10001')">编辑</button></td>
+                    </tr>
+                    <tr>
+                        <td>10002</td>
+                        <td>芒芒赏-航海王虚拟兑换券</td>
+                        <td><span class="tag tag-green">芒芒赏虚拟商品</span></td>
+                        <td>小芒自营店</td>
+                        <td>299</td>
+                        <td><span class="status-online">上架</span></td>
+                        <td><button class="btn-edit" onclick="editProduct('virtual', '10002')">编辑</button></td>
+                    </tr>
+                    <tr>
+                        <td>10003</td>
+                        <td>芒芒赏-火影实物套装</td>
+                        <td><span class="tag tag-blue">芒芒赏实物商品</span></td>
+                        <td>小芒自营店</td>
+                        <td>0</td>
+                        <td><span class="status-online">上架</span></td>
+                        <td><button class="btn-edit" onclick="editProduct('physical', '10003')">编辑</button></td>
+                    </tr>
+                    <tr>
+                        <td>10004</td>
+                        <td>芒芒赏-火影虚拟兑换券</td>
+                        <td><span class="tag tag-green">芒芒赏虚拟商品</span></td>
+                        <td>小芒自营店</td>
+                        <td>199</td>
+                        <td><span class="status-offline">下架</span></td>
+                        <td><button class="btn-edit" onclick="editProduct('virtual', '10004')">编辑</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        function editProduct(type, productId) {
+            var page = type === 'physical' ? 'product_edit_physical.html' : 'product_edit_virtual.html';
+            window.parent.postMessage({
+                action: 'navigate',
+                page: page,
+                productId: productId
+            }, '*');
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                var modules = document.querySelectorAll('.prototype-module');
+                modules.forEach(function(m) { m.classList.remove('feature-highlight'); });
+                var target = document.querySelector('.prototype-module[data-prototype="' + e.data.featureId + '"]');
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

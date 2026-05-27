@@ -2,16 +2,16 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>商家后台一番赏产品优化</title>
+  <title>商家后台芒芒赏产品优化</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="商家后台一番赏产品优化 - PRD 和 HTML原型">
+  <meta name="description" content="商家后台芒芒赏产品优化 - PRD 和 HTML原型">
   <link href="style/main.css" rel="stylesheet">
   <link href="style/index-styles.css" rel="stylesheet">
 </head>
 <body>
   <div class="header">
-    <span class="header-title">商家后台一番赏产品优化</span>
-    <span class="version-badge">v1.0</span>
+    <span class="header-title">商家后台芒芒赏产品优化</span>
+    <span class="version-badge">v2.1</span>
     <div class="divider"></div>
     <div class="controls">
       <div class="product-btns">
@@ -27,18 +27,18 @@
       <div class="width-control">
         <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
-          <option value="1.0" selected>v1.0</option>
+          <option value="2.1" selected>v2.1</option>
         </select>
       </div>
     </div>
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.0/prd_html/prd_v1.0.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v2.1/prd_html/prd_v2.1.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.0/prototype_html/admin_prototype_v1.0.html"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v2.1/prototype_html/admin_prototype_v2.1.html"></iframe>
     </div>
   </div>
 
@@ -56,7 +56,7 @@
     const splitter = document.getElementById('splitter');
     const preloadContainer = document.getElementById('preloadContainer');
     let currentProduct = 'admin';
-    let currentVersion = '1.0';
+    let currentVersion = '2.1';
     let pendingHighlightId = null;
 
     // 原型预加载管理器
@@ -236,7 +236,7 @@
 
     // 页面加载完成后开始预加载
     window.addEventListener('DOMContentLoaded', () => {
-      const versions = ['1.0'];
+      const versions = ['2.1'];
       const products = ['admin'];
       PrototypePreloader.preloadAllPrototypes(versions, products);
     });

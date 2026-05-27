@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑商品 - 小芒商家后台</title>
+    <link href="../../assets/bootstrap.main.css" rel="stylesheet" />
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../style/main.css" rel="stylesheet" />
+    <link href="../../style/admin-prototype-styles.css" rel="stylesheet" />
+    <style>
+        :root {
+            --geist-black: #171717;
+            --geist-white: #ffffff;
+            --geist-gray-50: #fafafa;
+            --geist-gray-100: #ebebeb;
+            --geist-gray-400: #808080;
+            --geist-gray-500: #666666;
+            --geist-gray-600: #4d4d4d;
+            --shadow-border: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+            --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px, rgb(250,250,250) 0px 0px 0px 1px;
+            --ship-red: #ff5b4f;
+            --link-blue: #0072f5;
+            --radius-standard: 6px;
+            --radius-comfortable: 8px;
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--geist-gray-400);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .breadcrumb a {
+            color: var(--geist-gray-500);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .breadcrumb a:hover { color: var(--link-blue); }
+        .breadcrumb .sep { color: var(--geist-gray-400); }
+        .breadcrumb .current { color: var(--geist-black); font-weight: 500; }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Form Layout */
+        .form-card {
+            background: var(--geist-white);
+            border-radius: var(--radius-comfortable);
+            box-shadow: var(--shadow-card);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--geist-gray-600);
+            margin-bottom: 6px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            color: var(--geist-black);
+            background: var(--geist-white);
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--link-blue);
+            box-shadow: 0 0 0 2px rgba(0,114,245,0.1);
+        }
+        .form-input:disabled,
+        .form-select:disabled {
+            background: var(--geist-gray-50);
+            color: var(--geist-gray-500);
+            cursor: not-allowed;
+        }
+        .form-textarea {
+            height: 100px;
+            padding: 10px 12px;
+            resize: vertical;
+        }
+
+        /* SKU Section */
+        .sku-section {
+            background: var(--geist-white);
+            border-radius: var(--radius-comfortable);
+            box-shadow: var(--shadow-card);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .sku-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--geist-black);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-add-sku {
+            height: 32px;
+            padding: 0 16px;
+            background: var(--geist-white);
+            color: var(--link-blue);
+            border: 1px solid var(--link-blue);
+            border-radius: var(--radius-standard);
+            font-size: 12px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-add-sku:hover {
+            background: var(--link-blue);
+            color: var(--geist-white);
+        }
+
+        .sku-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .sku-table th {
+            background: var(--geist-gray-50);
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--geist-gray-500);
+            text-align: left;
+            border-bottom: 1px solid var(--geist-gray-100);
+        }
+        .sku-table td {
+            padding: 12px 14px;
+            font-size: 13px;
+            color: var(--geist-black);
+            border-bottom: 1px solid var(--geist-gray-100);
+            vertical-align: middle;
+        }
+        .sku-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sku-price-input {
+            width: 100px;
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-standard);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            color: var(--geist-black);
+            outline: none;
+        }
+        .sku-price-input:focus {
+            border-color: var(--link-blue);
+            box-shadow: 0 0 0 2px rgba(0,114,245,0.1);
+        }
+
+        .btn-delete-sku {
+            padding: 4px 12px;
+            background: var(--geist-white);
+            color: var(--ship-red);
+            border: 1px solid var(--ship-red);
+            border-radius: var(--radius-standard);
+            font-size: 12px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-delete-sku:hover {
+            background: var(--ship-red);
+            color: var(--geist-white);
+        }
+
+        /* Bottom Actions */
+        .bottom-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 8px;
+        }
+
+        .btn-primary {
+            height: 40px;
+            padding: 0 28px;
+            background: var(--geist-black);
+            color: var(--geist-white);
+            border: none;
+            border-radius: var(--radius-standard);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        .btn-primary:hover { opacity: 0.85; }
+
+        .btn-secondary {
+            height: 40px;
+            padding: 0 28px;
+            background: var(--geist-white);
+            color: var(--geist-gray-600);
+            border: 1px solid var(--geist-gray-100);
+            border-radius: var(--radius-standard);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-secondary:hover {
+            border-color: var(--geist-gray-400);
+        }
+
+        /* Highlight */
+        .feature-highlight {
+            animation: featureFadeIn 0.5s ease;
+            box-shadow: 0 0 0 2px var(--link-blue), var(--shadow-card) !important;
+            border-radius: var(--radius-comfortable);
+        }
+        @keyframes featureFadeIn {
+            from { opacity: 0.5; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .sku-hint {
+            font-size: 12px;
+            color: var(--link-blue);
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body style="background:#fff;padding:24px;font-family:var(--font-sans);">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a onclick="window.parent.postMessage({action:'navigate',page:'product_list.html'},'*')">商品平台</a>
+        <span class="sep">/</span>
+        <a onclick="window.parent.postMessage({action:'navigate',page:'product_list.html'},'*')">商品列表</a>
+        <span class="sep">/</span>
+        <span class="current">编辑商品</span>
+    </div>
+
+    <!-- Page Title -->
+    <div class="page-title">编辑商品 - 芒芒赏-航海王实物套装</div>
+
+    <!-- Basic Info Form -->
+    <div class="form-card">
+        <div class="form-grid">
+            <!-- Left Column -->
+            <div>
+                <div class="form-group">
+                    <label class="form-label">商品名称</label>
+                    <input type="text" class="form-input" value="芒芒赏-航海王实物套装" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">商品类型</label>
+                    <select class="form-select" disabled>
+                        <option value="physical" selected>芒芒赏实物商品</option>
+                        <option value="virtual">芒芒赏虚拟商品</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">店铺</label>
+                    <select class="form-select" disabled>
+                        <option value="self" selected>自营店</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Right Column -->
+            <div>
+                <div class="form-group">
+                    <label class="form-label">商品状态</label>
+                    <select class="form-select">
+                        <option value="online" selected>上架</option>
+                        <option value="offline">下架</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">商品分类</label>
+                    <input type="text" class="form-input" value="芒芒赏" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">商品描述</label>
+                    <textarea class="form-textarea" placeholder="请输入商品描述"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKU Management -->
+    <div class="prototype-module" data-prototype="admin_product_edit_supply_price">
+        <div class="sku-section">
+            <div class="sku-title">
+                <span>SKU管理（供货价配置）</span>
+                <button class="btn-add-sku">+ 添加SKU</button>
+            </div>
+            <table class="sku-table">
+                <thead>
+                    <tr>
+                        <th>SKU ID</th>
+                        <th>SKU名称</th>
+                        <th>规格</th>
+                        <th>供货价</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SKU001</td>
+                        <td>航海王A款</td>
+                        <td>标准版</td>
+                        <td><input type="text" class="sku-price-input" placeholder="请输入供货价" /></td>
+                        <td><button class="btn-delete-sku">删除</button></td>
+                    </tr>
+                    <tr>
+                        <td>SKU002</td>
+                        <td>航海王B款</td>
+                        <td>豪华版</td>
+                        <td><input type="text" class="sku-price-input" placeholder="请输入供货价" /></td>
+                        <td><button class="btn-delete-sku">删除</button></td>
+                    </tr>
+                    <tr>
+                        <td>SKU003</td>
+                        <td>航海王C款</td>
+                        <td>限定版</td>
+                        <td><input type="text" class="sku-price-input" placeholder="请输入供货价" /></td>
+                        <td><button class="btn-delete-sku">删除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sku-hint">店铺类型为"自营"或"一件代发"时，芒芒赏实物商品可在SKU级别配置供货价，支持添加多个SKU</div>
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="bottom-actions">
+        <button class="btn-primary">保存</button>
+        <button class="btn-secondary" onclick="window.parent.postMessage({action:'navigate',page:'product_list.html'},'*')">取消</button>
+    </div>
+
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                var modules = document.querySelectorAll('.prototype-module');
+                modules.forEach(function(m) { m.classList.remove('feature-highlight'); });
+                var target = document.querySelector('.prototype-module[data-prototype="' + e.data.featureId + '"]');
+                if (target) {
+                    target.classList.add('feature-highlight');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
