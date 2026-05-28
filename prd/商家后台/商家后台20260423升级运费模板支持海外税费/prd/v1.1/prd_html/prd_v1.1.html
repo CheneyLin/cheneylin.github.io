@@ -164,6 +164,12 @@
         <tr><td>下单确认页</td><td>展示运费和税费明细</td><td>P0</td></tr>
         <tr><td>订单详情页</td><td>展示运费和税费明细</td><td>P0</td></tr>
       </table>
+
+      <h3 style="margin-top:20px;">4.3 商家APP端功能</h3>
+      <table>
+        <tr><th>功能模块</th><th>功能点</th><th>优先级</th></tr>
+        <tr><td>运费模板管理</td><td>编辑运费模板数据时，若包含海外税费则禁止保存</td><td>P0</td></tr>
+      </table>
     </div>
 
     <div class="card" id="section5">
@@ -171,17 +177,6 @@
 
       <div class="feature-module">
         <h3>5.1 商家后台端</h3>
-
-        <h4>5.1.1 运费模板管理 <button class="highlight-btn" onclick="highlightPrototype('admin_shipping_template_list')">查看原型</button></h4>
-        <p><strong>功能描述</strong>：展示运费模板列表，支持商家新建模板、编辑现有模板。</p>
-
-        <p><strong>页面结构</strong>：</p>
-        <table>
-          <tr><th>区域</th><th>内容</th></tr>
-          <tr><td>操作区</td><td>新建模板按钮</td></tr>
-          <tr><td>搜索筛选区</td><td>模板名称搜索、筛选按钮</td></tr>
-          <tr><td>数据表格区</td><td>模板列表展示</td></tr>
-        </table>
 
         <p><strong>数据表格字段</strong>：</p>
         <table>
@@ -274,6 +269,13 @@
         <p><strong>功能描述</strong>：展示已完成订单的详细信息，包含税费明细。</p>
 
         <p><strong>交互说明</strong>：支付成功后自动跳转到订单详情页，或从订单列表点击进入。</p>
+
+        <h4>5.3 商家APP端</h4>
+        <p><strong>功能描述</strong>：编辑运费模板数据时，如果模板包含海外税费项，则禁止在商家APP端保存，用户需返回Web后台继续编辑。</p>
+        <ul class="list">
+          <li>编辑运费模板数据时，<code>overseas_fee_items</code> 数组不为空时，禁止保存。</li>
+          <li>提示文案：<strong>“此模板包含海外税费，请在Web后台编辑”</strong></li>
+        </ul>
       </div>
     </div>
 
