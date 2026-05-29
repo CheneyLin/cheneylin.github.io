@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vercel 风格二维码批量生成器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --black: #ffffff;
+      --white: #0a0a0a;
+      --gray-50: #111111;
+      --gray-100: #1f1f1f;
+      --gray-200: #252525;
+      --gray-400: #8f98a7;
+      --gray-600: #a8b0c0;
+      --accent: #0072f5;
+      --shadow-ring: rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
+      --shadow-card: rgba(255, 255, 255, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.25) 0px 14px 40px -20px;
+      --font-sans: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, 'Roboto Mono', Menlo, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-family: var(--font-sans); font-size: 16px; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #090909 0%, #0f0f0f 100%);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 42px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      font-size: 1rem;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      color: #0a0a0a;
+      font-weight: 700;
+    }
+
+    .topbar .action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px 16px;
+      color: var(--black);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .topbar .action:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .hero {
+      display: grid;
+      gap: 20px;
+      padding: 42px 36px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-card);
+      margin-bottom: 36px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.8rem, 4vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.08em;
+      max-width: 860px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 780px;
+      color: var(--gray-400);
+      font-size: 1.03rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 9999px;
+      padding: 12px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .btn-primary {
+      background: var(--black);
+      color: var(--white);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--black);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      display: grid;
+      gap: 20px;
+      padding: 26px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-card);
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.05em;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 1.4fr) minmax(320px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--gray-400);
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--black);
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .field textarea { min-height: 220px; resize: vertical; }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(0, 114, 245, 0.9);
+      box-shadow: 0 0 0 4px rgba(0, 114, 245, 0.14);
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .note {
+      color: var(--gray-400);
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--gray-400);
+      font-size: 0.94rem;
+      margin-top: 6px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .preview-top strong { color: var(--white); }
+
+    .preview-box {
+      display: grid;
+      gap: 18px;
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 430px;
+    }
+
+    .preview-canvas {
+      width: 100%;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.12);
+      margin:0 auto;
+    }
+
+    .list-panel {
+      display: grid;
+      gap: 16px;
+      max-height: 620px;
+      overflow: hidden;
+    }
+
+    .list-panel h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .code-list {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      max-height: 530px;
+      overflow: auto;
+    }
+
+    .code-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .code-item strong { color: var(--accent); font-weight: 600; }
+
+    .code-item button {
+      min-width: 86px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      color: var(--black);
+      transition: background 0.18s ease;
+    }
+
+    .code-item button:hover { background: rgba(255,255,255,0.18); }
+
+    .code-item button.active {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .meta-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+
+    .meta-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .meta-card span.label {
+      display: block;
+      color: var(--gray-400);
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .meta-card span.value {
+      display: block;
+      color: var(--black);
+      font-size: 1rem;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.84);
+      color: #fff;
+      font-size: 0.95rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 30;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+
+    @media (max-width: 960px) {
+      .workspace { grid-template-columns: 1fr; }
+      .preview-canvas { width: 50%; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 20px 16px 32px; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .hero { padding: 28px 20px; }
+      .panel { padding: 20px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .code-list { max-height: 420px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div class="brand"><span class="brand-mark">V</span> 二维码批量生成</div>
+      <a class="action" href="#workspace">开始生成</a>
+    </div>
+
+    <section class="hero">
+      <h1>批量生成二维码，轻松导出.</h1>
+      <p>使用模板链接和券码列表快速创建批量二维码。支持尺寸、前景/背景色、单条预览与 ZIP 导出，配置结果自动保存在浏览器。</p>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>配置参数</h2>
+        </div>
+        <div class="settings-grid">
+          <div>
+            <div class="field">
+              <label for="templateInput">链接模板</label>
+              <input id="templateInput" type="text" placeholder="https://example.com/redeem?code={code}" />
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="sizeSelect">二维码尺寸</label>
+                <select id="sizeSelect">
+                  <option value="128">128</option>
+                  <option value="256">256</option>
+                  <option value="512" selected>512</option>
+                  <option value="1024">1024</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="fgColor">前景颜色</label>
+                <input id="fgColor" type="text" value="#000000" />
+              </div>
+              <div class="field">
+                <label for="bgColor">背景颜色</label>
+                <input id="bgColor" type="text" value="#ffffff" />
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="codesInput">券码列表</label>
+            <textarea id="codesInput" placeholder="每行一个券码，支持批量生成。"></textarea>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" id="generateBtn" type="button">生成预览</button>
+          <!-- <button class="btn btn-secondary" id="exportBtn" type="button" disabled>批量导出 ZIP</button>
+          <button class="btn btn-secondary" id="clearBtn" type="button">清空配置</button> -->
+        </div>
+        <p class="note">链接模板必须包含 <code>{code}</code> 占位符。批量导出会生成 PNG 文件并打包为 ZIP。</p>
+      </div>
+
+      <div class="panel">
+        <div class="preview-top">
+          <div>
+            <strong>实时预览</strong>
+            <div class="chip-row">
+              <span class="chip">尺寸：<span id="currentSize">256</span>px</span>
+              <span class="chip">颜色：<span id="chipColor">#000000 / #ffffff</span></span>
+              <span class="chip">数量：<span id="countText">0</span></span>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="exportBtnSide" type="button" disabled>导出 ZIP</button>
+          </div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-card">
+            <span class="label">链接模板</span>
+            <span class="value" id="metaTemplate">-</span>
+          </div>
+          <div class="meta-card">
+            <span class="label">当前券码</span>
+            <span class="value" id="metaCode">-</span>
+          </div>
+        </div>
+
+        <div class="preview-box">
+          <canvas id="previewCanvas" width="512" height="512" class="preview-canvas" aria-label="二维码预览"></canvas>
+          <p class="note">单击右侧列表中的任意券码，即可查看该券码对应二维码预览。</p>
+        </div>
+
+        <div class="list-panel">
+          <h3>券码列表</h3>
+          <ul id="codeList" class="code-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script>
+    const templateInput = document.getElementById('templateInput');
+    const codesInput = document.getElementById('codesInput');
+    const sizeSelect = document.getElementById('sizeSelect');
+    const fgColor = document.getElementById('fgColor');
+    const bgColor = document.getElementById('bgColor');
+    const generateBtn = document.getElementById('generateBtn');
+    const exportBtnSide = document.getElementById('exportBtnSide');
+    const clearBtn = document.getElementById('clearBtn');
+    const countText = document.getElementById('countText');
+    const currentSize = document.getElementById('currentSize');
+    const metaTemplate = document.getElementById('metaTemplate');
+    const chipColor = document.getElementById('chipColor');
+    const metaCode = document.getElementById('metaCode');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const codeList = document.getElementById('codeList');
+    const toast = document.getElementById('toast');
+    const generateBtnTop = document.getElementById('generateBtnTop');
+
+    const STORAGE = {
+      template: 'qrbatch_template',
+      codes: 'qrbatch_codes',
+      size: 'qrbatch_size',
+      fg: 'qrbatch_fg',
+      bg: 'qrbatch_bg'
+    };
+
+    let currentCodes = [];
+    let selectedCode = null;
+
+    function loadStorage() {
+      const savedTemplate = localStorage.getItem(STORAGE.template);
+      const savedCodes = localStorage.getItem(STORAGE.codes);
+      const savedSize = localStorage.getItem(STORAGE.size);
+      const savedFg = localStorage.getItem(STORAGE.fg);
+      const savedBg = localStorage.getItem(STORAGE.bg);
+
+      if (savedTemplate) templateInput.value = savedTemplate;
+      if (savedCodes) codesInput.value = savedCodes;
+      if (savedSize) sizeSelect.value = savedSize;
+      if (savedFg) fgColor.value = savedFg;
+      if (savedBg) bgColor.value = savedBg;
+    }
+
+    function saveStorage() {
+      localStorage.setItem(STORAGE.template, templateInput.value.trim());
+      localStorage.setItem(STORAGE.codes, codesInput.value.trim());
+      localStorage.setItem(STORAGE.size, sizeSelect.value);
+      localStorage.setItem(STORAGE.fg, fgColor.value.trim());
+      localStorage.setItem(STORAGE.bg, bgColor.value.trim());
+    }
+
+    function normalizeCodes(value) {
+      if (!value) return [];
+      return value.split(/[\n\r,]+/).map(code => code.trim()).filter(Boolean);
+    }
+
+    function getTargetUrl(code) {
+      const template = templateInput.value.trim();
+      return template.replace(/\{code\}/gi, encodeURIComponent(code));
+    }
+
+    function updateMeta(code) {
+      metaTemplate.textContent = templateInput.value.trim() || '-';
+      const colorText = `${fgColor.value.trim() || '#000000'} / ${bgColor.value.trim() || '#ffffff'}`;
+      chipColor.textContent = colorText;
+      metaCode.textContent = code || '-';
+      currentSize.textContent = sizeSelect.value;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast.hideTimer);
+      toast.hideTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    async function renderPreview(code) {
+      const size = Number(sizeSelect.value) || 512;
+      const fg = fgColor.value.trim() || '#000000';
+      const bg = bgColor.value.trim() || '#ffffff';
+      const url = getTargetUrl(code);
+      const canvas = previewCanvas;
+      canvas.width = size;
+      canvas.height = size;
+      try {
+        await QRCode.toCanvas(canvas, url, {
+          width: size,
+          color: { dark: fg, light: bg },
+          margin: 1
+        });
+        updateMeta(code);
+      } catch (error) {
+        console.error(error);
+        showToast('二维码预览生成失败，请检查链接模板和颜色设置。');
+      }
+    }
+
+    function renderCodeList(codes) {
+      codeList.innerHTML = '';
+      if (!codes.length) {
+        const empty = document.createElement('li');
+        empty.textContent = '请填写券码列表并生成预览。';
+        empty.style.color = '#8f98a7';
+        codeList.appendChild(empty);
+        return;
+      }
+
+      codes.forEach((code, index) => {
+        const item = document.createElement('li');
+        item.className = 'code-item';
+
+        const label = document.createElement('div');
+        label.innerHTML = `<strong>${index + 1}.</strong> ${code}`;
+
+        const action = document.createElement('button');
+        action.type = 'button';
+        action.textContent = selectedCode === code ? '当前' : '预览';
+        action.className = selectedCode === code ? 'active' : '';
+        action.addEventListener('click', async () => {
+          selectedCode = code;
+          await renderPreview(code);
+          renderCodeList(codes);
+        });
+
+        item.appendChild(label);
+        item.appendChild(action);
+        codeList.appendChild(item);
+      });
+    }
+
+    async function generateCodes() {
+      saveStorage();
+      const template = templateInput.value.trim();
+      const codes = normalizeCodes(codesInput.value);
+
+      if (!template) { showToast('请填写链接模板。'); return; }
+      if (!template.includes('{code}')) { showToast('链接模板必须包含 {code} 占位符。'); return; }
+      if (!codes.length) { showToast('请填写至少一个券码。'); return; }
+
+      currentCodes = codes;
+      selectedCode = codes[0];
+      countText.textContent = codes.length;
+      updateMeta(selectedCode);
+      renderCodeList(codes);
+      try {
+        await renderPreview(selectedCode);
+        exportBtnSide.disabled = false;
+        showToast('二维码已生成，可点击单个预览或导出 ZIP。');
+      } catch (error) {
+        console.error(error);
+        showToast('二维码生成失败，请检查设置。');
+      }
+    }
+
+    async function exportBatch() {
+      if (!currentCodes.length) { showToast('请先生成二维码列表。'); return; }
+      const size = Number(sizeSelect.value) || 256;
+      const fg = fgColor.value.trim() || '#000000';
+      const bg = bgColor.value.trim() || '#ffffff';
+      const zip = new JSZip();
+      const folder = zip.folder('qrcodes');
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      for (let i = 0; i < currentCodes.length; i += 1) {
+        const code = currentCodes[i];
+        const url = getTargetUrl(code);
+        ctx.clearRect(0, 0, size, size);
+        await QRCode.toCanvas(canvas, url, {
+          width: size,
+          color: { dark: fg, light: bg },
+          margin: 1
+        });
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const filename = `${String(i + 1).padStart(3, '0')}_${code.replace(/[^a-zA-Z0-9-_\.]/g, '_')}.png`;
+        folder.file(filename, blob);
+      }
+
+      const content = await zip.generateAsync({ type: 'blob' });
+      saveAs(content, 'qrcodes.zip');
+      showToast('批量导出已完成。');
+    }
+
+    function clearAll() {
+      templateInput.value = '';
+      codesInput.value = '';
+      sizeSelect.value = '256';
+      fgColor.value = '#000000';
+      bgColor.value = '#ffffff';
+      currentCodes = [];
+      selectedCode = null;
+      countText.textContent = '0';
+      currentSize.textContent = sizeSelect.value;
+      metaTemplate.textContent = '-';
+      if (typeof chipColor !== 'undefined' && chipColor) chipColor.textContent = '#000000 / #ffffff';
+      metaCode.textContent = '-';
+      previewCanvas.getContext('2d').clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      codeList.innerHTML = '';
+      exportBtnSide.disabled = true;
+      localStorage.removeItem(STORAGE.template);
+      localStorage.removeItem(STORAGE.codes);
+      localStorage.removeItem(STORAGE.size);
+      localStorage.removeItem(STORAGE.fg);
+      localStorage.removeItem(STORAGE.bg);
+      showToast('配置已清空。');
+    }
+
+    // Safely attach event listeners only when elements exist
+    if (generateBtn) generateBtn.addEventListener('click', generateCodes);
+    if (generateBtnTop) generateBtnTop.addEventListener('click', generateCodes);
+    if (exportBtnSide) exportBtnSide.addEventListener('click', exportBatch);
+    if (clearBtn) clearBtn.addEventListener('click', clearAll);
+
+    // Attach storage save handlers to available input elements
+    const inputs = [templateInput, codesInput, sizeSelect, fgColor, bgColor].filter(Boolean);
+    inputs.forEach(el => {
+      el.addEventListener('change', saveStorage);
+      el.addEventListener('input', saveStorage);
+    });
+
+    loadStorage();
+    if (templateInput && (templateInput.value.trim() || (codesInput && codesInput.value.trim()))) {
+      generateCodes();
+    }
+  </script>
+</body>
+</html>
