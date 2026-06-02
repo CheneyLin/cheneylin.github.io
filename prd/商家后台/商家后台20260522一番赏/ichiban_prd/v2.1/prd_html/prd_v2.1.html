@@ -128,13 +128,13 @@ graph TD
 
       <div class="feature-module" id="admin_product_edit_supply_price" data-feature="admin_product_edit_supply_price">
         <h3>5.1 商品平台 - SKU级别供货价编辑 <button class="btn-primary" onclick="highlightFeature('admin_product_edit_supply_price')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：在商品编辑页面中，支持为芒芒赏实物商品和虚拟商品的SKU配置供货价。供货价编辑统一在SKU级别进行，实物商品和虚拟商品的区别在于SKU数量和是否允许添加。</p>
+        <p class="meta"><strong>功能描述</strong>：<font color="red">在商品编辑页面中，支持为芒芒赏实物商品和虚拟商品的SKU配置供货价。供货价编辑统一在SKU级别进行，实物商品和虚拟商品的区别在于SKU数量和是否允许添加。</font></p>
         <div class="field-group">
           <div class="field-label">详细逻辑</div>
           <ul class="list">
-            <li>权限控制：仅当店铺类型为"自营"或"一件代发"且商品类型为"芒芒赏实物商品"或"芒芒赏虚拟商品"时，SKU供货价字段可编辑</li>
+            <li>权限控制：<font color="red">仅当店铺类型为"自营"或"一件代发"</font>且商品类型为"芒芒赏实物商品"或"芒芒赏虚拟商品(已有逻辑)"时，SKU供货价字段可编辑</li>
             <li>其他店铺或其他商品类型，SKU供货价字段保持原有逻辑不变</li>
-            <li>供货价输入限制：仅支持正整数</li>
+            <li>供货价输入限制：仅支持正数</li>
             <li><strong>芒芒赏实物商品</strong>：
               <ul>
                 <li>支持多个SKU，每个SKU可单独配置不同的供货价</li>
@@ -143,7 +143,7 @@ graph TD
                 <li>当实物商品选择作为芒芒赏活动的成本载体时，所有SKU都必须配置大于0的供货价</li>
               </ul>
             </li>
-            <li><strong>芒芒赏虚拟商品</strong>：
+            <li><strong>芒芒赏虚拟商品</strong>(已有逻辑)：
               <ul>
                 <li>仅有1个SKU，不支持添加新SKU</li>
                 <li>该SKU的供货价输入框可编辑</li>
@@ -159,7 +159,7 @@ graph TD
             <li>供货价列使用输入框，支持直接编辑</li>
             <li>芒芒赏实物商品：表格底部显示"添加SKU"按钮，删除SKU时需二次确认</li>
             <li>芒芒赏虚拟商品：不显示"添加SKU"按钮，不显示删除操作</li>
-            <li>输入非正整数时，前端实时校验并提示</li>
+            <li>输入非正数时，前端实时校验并提示</li>
           </ul>
         </div>
         <div class="field-group">
@@ -171,12 +171,12 @@ graph TD
 
       <div class="feature-module" id="admin_activity_create_validate" data-feature="admin_activity_create_validate">
         <h3>5.2 营销-芒芒赏-新建活动供货价校验 <button class="btn-primary" onclick="highlightFeature('admin_activity_create_validate')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：在新建芒芒赏活动保存时，对关联的虚拟商品和实物商品的供货价配置进行互斥校验，确保有且仅有一个商品正确配置供货价。</p>
+        <p class="meta"><strong>功能描述</strong>：<font color="red">在新建芒芒赏活动保存时，对关联的虚拟商品和实物商品的供货价配置进行互斥校验，确保有且仅有一个商品正确配置供货价。</font></p>
         <div class="field-group">
           <div class="field-label">详细逻辑</div>
           <ul class="list">
-            <li><strong>互斥规则</strong>：虚拟商品和实物商品必须且只能有一个商品设置供货价（供货价 > 0）</li>
-            <li><strong>完整性规则</strong>：若实物商品配置供货价，则该实物商品的所有SKU都必须配置大于0的供货价</li>
+            <li><strong>互斥规则</strong>：<font color="red">虚拟商品和实物商品必须且只能有一个商品设置供货价（供货价 > 0）</font></li>
+            <li><strong>完整性规则</strong>：<font color="red">若实物商品配置供货价，则该实物商品的所有SKU都必须配置大于0的供货价</font></li>
             <li><strong>校验时机</strong>：仅在新建设番赏活动点击保存时触发</li>
             <li><strong>校验逻辑流程</strong>：
               <ol class="list">
@@ -187,6 +187,7 @@ graph TD
                 <li>若实物商品有供货价，检查是否所有SKU供货价均 > 0（违反完整性规则）</li>
               </ol>
             </li>
+            <li>错误提示文案："供货价配置错误，请检查，确保有且仅有一个商品正确配置供货价。"</li>
           </ul>
         </div>
         <div class="field-group">
@@ -205,34 +206,6 @@ graph TD
         </div>
       </div>
 
-      <div class="feature-module" id="admin_activity_create_error_tip" data-feature="admin_activity_create_error_tip">
-        <h3>5.3 营销-芒芒赏-新建活动校验失败提示 <button class="btn-primary" onclick="highlightFeature('admin_activity_create_error_tip')">查看原型</button></h3>
-        <p class="meta"><strong>功能描述</strong>：当新建芒芒赏活动保存时供货价校验失败，展示标准弹窗提示用户修正配置。</p>
-        <div class="field-group">
-          <div class="field-label">详细逻辑</div>
-          <ul class="list">
-            <li>使用标准弹窗组件展示错误信息</li>
-            <li>错误提示文案："供货价配置错误，请检查，确保有且仅有一个商品正确配置供货价。"</li>
-            <li>弹窗包含"确定"按钮，点击后关闭弹窗，用户可返回修改配置</li>
-            <li>弹窗不可通过点击外部区域关闭</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">交互设计</div>
-          <ul class="list">
-            <li>标准错误弹窗，居中展示</li>
-            <li>弹窗标题："提示"</li>
-            <li>弹窗内容：错误提示文案</li>
-            <li>弹窗按钮："确定"（主按钮）</li>
-          </ul>
-        </div>
-        <div class="field-group">
-          <div class="field-label">数据流向</div>
-          <pre>校验失败 → 触发错误弹窗 → 展示错误信息
-→ 用户点击确定 → 关闭弹窗 → 用户修改配置</pre>
-        </div>
-      </div>
-    </div>
 
     <div class="prd-section" id="section6">
       <h2>6. 业务流程图</h2>
@@ -289,7 +262,7 @@ flowchart TD
       <h2>7. 异常与边界处理</h2>
       <ul class="list">
         <li><strong>非目标店铺访问</strong>：店铺类型非"自营"或"一件代发"的用户编辑芒芒赏商品时，SKU供货价字段保持不可编辑状态，不展示任何额外提示</li>
-        <li><strong>供货价输入非法值</strong>：输入非正整数时，前端实时校验，输入框标红并提示"请输入正整数"</li>
+        <li><strong>供货价输入非法值</strong>：输入非正数时，前端实时校验，输入框标红并提示"请输入正数"</li>
         <li><strong>SKU供货价部分配置</strong>：实物商品部分SKU配置了供货价、部分未配置时，若该商品被选为芒芒赏活动的成本载体，保存活动时校验失败并提示</li>
         <li><strong>网络异常</strong>：保存商品或活动时网络中断，保留表单数据，提示"保存失败，请重试"</li>
         <li><strong>并发编辑</strong>：同一商品被多人同时编辑时，以后保存者为准，前端提示"商品信息已被他人修改，请刷新后重试"</li>
@@ -313,7 +286,7 @@ flowchart TD
       <table>
         <tr><th>规则编号</th><th>规则名称</th><th>规则描述</th><th>适用场景</th></tr>
         <tr><td><code>BR-001</code></td><td>供货价编辑权限</td><td>仅店铺类型为"自营"或"一件代发"且商品类型为芒芒赏商品时，SKU供货价可编辑</td><td>商品编辑</td></tr>
-        <tr><td><code>BR-002</code></td><td>供货价输入限制</td><td>供货价仅支持正整数</td><td>商品编辑</td></tr>
+        <tr><td><code>BR-002</code></td><td>供货价输入限制</td><td>供货价仅支持正数</td><td>商品编辑</td></tr>
         <tr><td><code>BR-003</code></td><td>供货价互斥规则</td><td>虚拟商品和实物商品必须且只能有一个设置供货价</td><td>新建活动保存</td></tr>
         <tr><td><code>BR-004</code></td><td>SKU供货价完整性</td><td>实物商品配置供货价时，所有SKU都必须配置大于0的供货价</td><td>新建活动保存</td></tr>
         <tr><td><code>BR-005</code></td><td>校验时机</td><td>供货价校验仅在新建设番赏活动保存时触发</td><td>新建活动</td></tr>

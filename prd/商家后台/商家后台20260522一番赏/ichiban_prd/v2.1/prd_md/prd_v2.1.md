@@ -75,7 +75,6 @@
 | --- | --- | --- | --- |
 | 商品平台-商品编辑 | SKU级别供货价编辑（实物多SKU可添加，虚拟单SKU不可添加） | P0 | admin_product_edit_supply_price |
 | 营销-芒芒赏-新建活动 | 保存时校验虚拟商品和实物商品供货价互斥规则 | P0 | admin_activity_create_validate |
-| 营销-芒芒赏-新建活动 | 校验失败时展示标准弹窗提示 | P0 | admin_activity_create_error_tip |
 
 ### 4.2 功能依赖关系
 
