@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>活动规则</title>
+<style>
+  :root {
+    --primary: #3B9EFF;
+    --primary-light: #5CB3FF;
+    --bg-light: #F0F9FF;
+    --white: #FFFFFF;
+    --gray-text: #999999;
+    --text-secondary: #666666;
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --radius-lg: 16px;
+    --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-family);
+    background: var(--bg-light);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 20px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, #E8F4FF 0%, var(--bg-light) 100%);
+    border-radius: 0 0 30px 30px;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(0deg, #E8F4FF 0%, transparent 100%);
+    border-radius: 30px 30px 0 0;
+    z-index: 0;
+  }
+
+  .page-header { position: relative; z-index: 1; }
+  .rules-content { position: relative; z-index: 1; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+  }
+
+  .page-header .back {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .page-header .title {
+    font-size: 17px;
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .rules-content {
+    padding: 16px;
+  }
+
+  .rules-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 20px 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .rules-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+
+  .rules-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .rules-item .rules-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .rules-item .rules-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex: 1;
+  }
+
+  .rules-item .rules-text strong {
+    color: var(--primary);
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="back" onclick="goBack()">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </div>
+  <div class="title">活动规则</div>
+  <div style="width:32px;"></div>
+</div>
+
+<div class="rules-content">
+  <div class="rules-card">
+    <div class="rules-item">
+      <div class="rules-num">1</div>
+      <div class="rules-text">活动期间，用户可以 <strong>¥49/个</strong> 的价格购买夏季清凉福袋，每个福袋随机对应一件商品。</div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-num">2</div>
+      <div class="rules-text">福袋抽取后 <strong>不退不换</strong>，请确认后再进行购买操作。</div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-num">3</div>
+      <div class="rules-text">每人每场活动 <strong>限购5个</strong> 福袋，售完即止，库存有限先到先得。</div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-num">4</div>
+      <div class="rules-text">购买成功后，奖品将自动存入 <strong>寄存柜</strong>，请在寄存期限内完成邮寄操作。</div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-num">5</div>
+      <div class="rules-text">商品寄存期限为获得之日起 <strong>30天</strong>，超时未邮寄的商品将自动失效。</div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-num">6</div>
+      <div class="rules-text">邮寄运费全免，提交订单后商品将在 <strong>3-5个工作日</strong> 内发出。</div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-num">7</div>
+      <div class="rules-text">如有任何问题，请联系客服处理，活动最终解释权归平台所有。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function goBack() {
+  window.location.href = 'lucky-bag-page.html';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP 包管理 - 电子吧唧 ADMIN</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../../style/main.css" rel="stylesheet">
+    <link href="../../../style/admin-styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <div class="page-title">IP 包管理</div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-body">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="text" placeholder="搜索 IP 包名称">
+                    <select>
+                        <option value="">全部状态</option>
+                        <option value="1">已上架</option>
+                        <option value="0">已下架</option>
+                    </select>
+                    <button class="btn-primary">查询</button>
+                    <button class="btn-outline">重置</button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-primary" onclick="openDrawer()">
+                        <i class="bi bi-plus-lg"></i> 新增 IP 包
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-header">IP 包列表</div>
+        <div class="admin-section-body no-padding">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>IP 包 ID</th>
+                        <th>IP 名称</th>
+                        <th>图片数量</th>
+                        <th>SSR 库存</th>
+                        <th>SR 库存</th>
+                        <th>状态</th>
+                        <th>上架时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1001</td>
+                        <td>初音未来 2024</td>
+                        <td>20</td>
+                        <td>85/100</td>
+                        <td>320/500</td>
+                        <td><span class="badge badge-active">已上架</span></td>
+                        <td>2026-04-01</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('初音未来 2024')">编辑</button>
+                            <button class="btn-action danger">下架</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1002</td>
+                        <td>原神 雷电将军</td>
+                        <td>15</td>
+                        <td>100/100</td>
+                        <td>500/500</td>
+                        <td><span class="badge badge-active">已上架</span></td>
+                        <td>2026-04-05</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('原神 雷电将军')">编辑</button>
+                            <button class="btn-action danger">下架</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1003</td>
+                        <td>鬼灭之刃 限定</td>
+                        <td>25</td>
+                        <td>0/50</td>
+                        <td>0/300</td>
+                        <td><span class="badge badge-soldout">已售罄</span></td>
+                        <td>2026-03-20</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('鬼灭之刃 限定')">编辑</button>
+                            <button class="btn-action">下架</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1004</td>
+                        <td>咒术回战 五条悟</td>
+                        <td>18</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><span class="badge badge-inactive">已下架</span></td>
+                        <td>2026-03-01</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('咒术回战 五条悟')">编辑</button>
+                            <button class="btn-action">上架</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="drawer-title" id="drawerTitle">编辑 IP 包</div>
+            <button class="drawer-close" onclick="closeDrawer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <div class="admin-section">
+                <div class="admin-section-body">
+                    <div class="tabs">
+                        <div class="tab active">基本信息</div>
+                        <div class="tab">图片库管理</div>
+                        <div class="tab">概率与库存</div>
+                        <div class="tab">整包配置</div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">基本信息</div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> IP 名称</label>
+                                <input type="text" class="form-control" id="ipName" value="初音未来 2024">
+                            </div>
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 封面图</label>
+                                <div class="upload-area upload-area-inline">
+                                    <i class="bi bi-camera" style="font-size: 48px;"></i>
+                                    <div style="color: #666; font-size: 14px;">点击上传封面图</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">简介</label>
+                            <textarea class="form-control" rows="3">全新初音未来系列吧唧，包含 20 张精美图片，涵盖 SSR/SR/R 三个等级。</textarea>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 上架时间</label>
+                                <input type="datetime-local" class="form-control" value="2026-04-01T00:00">
+                            </div>
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 下架时间</label>
+                                <input type="datetime-local" class="form-control" value="2026-06-30T23:59">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">概率与库存配置</div>
+                        <div class="probability-config">
+                            <div class="probability-item">
+                                <div class="probability-label level-ssr">SSR（超稀有）</div>
+                                <div>
+                                    <label class="form-label">抽取概率</label>
+                                    <input type="number" class="form-control" value="2" style="width: 100px; display: inline-block;">
+                                    <span class="text-muted">%</span>
+                                </div>
+                                <div>
+                                    <label class="form-label">库存总量</label>
+                                    <input type="number" class="form-control" value="100" style="width: 100px; display: inline-block;">
+                                    <span class="text-muted">张（-1 表示不限量）</span>
+                                </div>
+                            </div>
+                            <div class="probability-item">
+                                <div class="probability-label level-sr">SR（稀有）</div>
+                                <div>
+                                    <label class="form-label">抽取概率</label>
+                                    <input type="number" class="form-control" value="18" style="width: 100px; display: inline-block;">
+                                    <span class="text-muted">%</span>
+                                </div>
+                                <div>
+                                    <label class="form-label">库存总量</label>
+                                    <input type="number" class="form-control" value="500" style="width: 100px; display: inline-block;">
+                                    <span class="text-muted">张</span>
+                                </div>
+                            </div>
+                            <div class="probability-item">
+                                <div class="probability-label level-r">R（普通）</div>
+                                <div>
+                                    <label class="form-label">抽取概率</label>
+                                    <input type="number" class="form-control" value="80" style="width: 100px; display: inline-block;">
+                                    <span class="text-muted">%</span>
+                                </div>
+                                <div>
+                                    <label class="form-label">库存总量</label>
+                                    <input type="text" class="form-control" value="-1" style="width: 100px; display: inline-block;">
+                                    <span class="text-muted">不限量</span>
+                                </div>
+                            </div>
+                            <div class="probability-summary">
+                                <strong>概率总和：</strong><span>100%</span> ✅
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 10 连抽必中等级</label>
+                                <select class="form-select">
+                                    <option>SR（稀有）</option>
+                                    <option>SSR（超稀有）</option>
+                                </select>
+                                <small>用户 10 连抽必中该等级或以上</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title blue">图片库管理</div>
+                        <div class="upload-area">
+                            <i class="bi bi-upload" style="font-size: 48px;"></i>
+                            <div style="color: #666; font-size: 14px;">拖拽图片到此处，或点击上传</div>
+                            <small class="text-muted" style="display: block; margin-top: 8px;">支持 JPG、PNG 格式，建议尺寸 800x800px</small>
+                        </div>
+                        <div class="image-grid">
+                            <div class="image-item selected">
+                                <div class="image-item-bg" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"><i class="bi bi-person" style="color: white;"></i></div>
+                                <div class="image-level-badge level-ssr">SSR</div>
+                            </div>
+                            <div class="image-item">
+                                <div class="image-item-bg" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"><i class="bi bi-lightning" style="color: white;"></i></div>
+                                <div class="image-level-badge level-sr">SR</div>
+                            </div>
+                            <div class="image-item">
+                                <div class="image-item-bg" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"><i class="bi bi-flower1" style="color: white;"></i></div>
+                                <div class="image-level-badge level-r">R</div>
+                            </div>
+                            <div class="image-item">
+                                <div class="image-item-bg" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"><i class="bi bi-palette" style="color: white;"></i></div>
+                                <div class="image-level-badge level-r">R</div>
+                            </div>
+                            <div class="image-item">
+                                <div class="image-item-bg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">🎪</div>
+                                <div class="image-level-badge level-sr">SR</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.08);">
+                        <button class="btn-outline" onclick="closeDrawer()">取消</button>
+                        <button class="btn-primary" onclick="saveIP()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let drawerOverlay = document.getElementById('drawerOverlay');
+        let drawer = document.getElementById('drawer');
+        let drawerTitle = document.getElementById('drawerTitle');
+        let ipNameInput = document.getElementById('ipName');
+
+        function openDrawer(ipName) {
+            if (ipName) {
+                drawerTitle.textContent = '编辑 IP 包 - ' + ipName;
+                ipNameInput.value = ipName;
+            } else {
+                drawerTitle.textContent = '新增 IP 包';
+                ipNameInput.value = '';
+            }
+            drawerOverlay.classList.add('show');
+            drawer.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            drawerOverlay.classList.remove('show');
+            drawer.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function saveIP() {
+            alert('保存成功！');
+            closeDrawer();
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'PAGE_NAVIGATION') {
+                const targetPage = event.data.page;
+                if (targetPage === 'ip_manage.html') {
+                    closeDrawer();
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>

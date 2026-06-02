@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>使用说明</title>
+<style>
+  :root {
+    --primary: #3B9EFF;
+    --primary-light: #5CB3FF;
+    --bg-light: #F0F9FF;
+    --white: #FFFFFF;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --radius-lg: 16px;
+    --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-family);
+    background: var(--bg-light);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 20px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, #E8F4FF 0%, var(--bg-light) 100%);
+    border-radius: 0 0 30px 30px;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(0deg, #E8F4FF 0%, transparent 100%);
+    border-radius: 30px 30px 0 0;
+    z-index: 0;
+  }
+
+  .page-header { position: relative; z-index: 1; }
+  .guide-content { position: relative; z-index: 1; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+  }
+
+  .page-header .back {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .page-header .title {
+    font-size: 17px;
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .guide-content {
+    padding: 16px;
+  }
+
+  .guide-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .guide-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 20px 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .guide-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+
+  .guide-item:last-child { margin-bottom: 0; }
+
+  .guide-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .guide-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex: 1;
+  }
+
+  .guide-text strong { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="back" onclick="goBack()">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </div>
+  <div class="title">使用说明</div>
+  <div style="width:32px;"></div>
+</div>
+
+<div class="guide-content">
+  <div class="guide-title">寄存柜使用说明</div>
+  <div class="guide-card">
+    <div class="guide-item">
+      <div class="guide-num">1</div>
+      <div class="guide-text">使您可在寄存柜内针对已抽中未发货的商品进行发货处理</div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-num">2</div>
+      <div class="guide-text">预售状态的商品不可操作发货</div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-num">3</div>
+      <div class="guide-text">如果商品在获得后<strong>365天</strong>依然未操作发货则默认您放弃该奖品，商家不再发货</div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-num">4</div>
+      <div class="guide-text">单次发货操作仅可支持对同一商家商品进行合并发货</div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-num">5</div>
+      <div class="guide-text">商品发货会按照地址区域不同征收不同的物流费用，发货则默认表示您同意支付物流费用</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function goBack() { window.history.back(); }
+</script>
+
+</body>
+</html>

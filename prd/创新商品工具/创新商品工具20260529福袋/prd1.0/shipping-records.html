@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>邮寄记录</title>
+<style>
+  :root {
+    --primary: #3B9EFF;
+    --primary-light: #5CB3FF;
+    --bg-light: #F0F9FF;
+    --white: #FFFFFF;
+    --gray-light: #F5F5F5;
+    --gray-text: #999999;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --radius-md: 12px;
+    --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-family);
+    background: var(--bg-light);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 20px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, #E8F4FF 0%, var(--bg-light) 100%);
+    border-radius: 0 0 30px 30px;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(0deg, #E8F4FF 0%, transparent 100%);
+    border-radius: 30px 30px 0 0;
+    z-index: 0;
+  }
+
+  .page-header { position: relative; z-index: 1; }
+  .records-list { position: relative; z-index: 1; }
+  .end-tip { position: relative; z-index: 1; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+  }
+
+  .page-header .back {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .page-header .title {
+    font-size: 17px;
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .records-list { padding: 16px; }
+
+  .record-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .record-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+
+  .record-order {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .record-time {
+    font-size: 12px;
+    color: var(--gray-text);
+  }
+
+  .record-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .record-image {
+    width: 50px;
+    height: 50px;
+    background: var(--gray-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .record-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .record-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .record-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--gray-text);
+  }
+
+  .end-tip {
+    text-align: center;
+    padding: 20px;
+    color: var(--gray-text);
+    font-size: 12px;
+  }
+
+  .end-tip::before,
+  .end-tip::after {
+    content: '————';
+    margin: 0 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="back" onclick="goBack()">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </div>
+  <div class="title">邮寄记录</div>
+  <div style="width:32px;"></div>
+</div>
+
+<div class="records-list" id="recordsList"></div>
+
+<div class="end-tip">没有更多了</div>
+
+<script>
+const shippingRecords = [
+  { id: '7388293103092039', time: '2022-12-22 14:30', name: '白色T恤男款纯棉短袖', price: 89, qty: 12, icon: '👕' },
+  { id: '7388293103092040', time: '2022-12-20 10:15', name: '运动短裤透气速干', price: 59, qty: 4, icon: '🩳' },
+  { id: '7388293103092041', time: '2022-12-18 16:45', name: '防晒衣轻薄透气', price: 129, qty: 4, icon: '🧥' },
+];
+
+function renderRecords() {
+  const list = document.getElementById('recordsList');
+  list.innerHTML = shippingRecords.map(record => `
+    <div class="record-card">
+      <div class="record-header">
+        <span class="record-order">订单编号: ${record.id}</span>
+        <span class="record-time">${record.time}</span>
+      </div>
+      <div class="record-item">
+        <div class="record-image">${record.icon}</div>
+        <div class="record-info">
+          <div class="record-name">${record.name}</div>
+          <div class="record-meta">
+            <span>¥${record.price}</span>
+            <span>x${record.qty}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function goBack() { window.history.back(); }
+
+renderRecords();
+</script>
+
+</body>
+</html>

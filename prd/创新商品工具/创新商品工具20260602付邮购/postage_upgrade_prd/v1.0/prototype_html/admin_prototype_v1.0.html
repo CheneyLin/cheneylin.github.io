@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>付邮购 - ADMIN 运营后台</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../style/main.css" rel="stylesheet" />
+    <link href="../../style/admin-prototype-styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="bi bi-shop"></i>
+            <span style="margin-left: 8px;">付邮购管理</span>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-group-title">付邮购管理</div>
+            <div class="menu-item active" data-page="spu_list.html" onclick="loadPage('spu_list.html', this)">
+                <i class="bi bi-list-ul"></i>
+                <span>SPU 列表</span>
+            </div>
+            <div class="menu-group-title" style="margin-top: 20px;">订单管理</div>
+            <div class="menu-item" data-page="order_manage.html" onclick="loadPage('order_manage.html', this)">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>订单列表</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <iframe id="adminFrame" src="admin_pages/spu_list.html" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        function loadPage(pageUrl, element) {
+            const frame = document.getElementById('adminFrame');
+            frame.src = `admin_pages/${pageUrl}`;
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            if (element) element.classList.add('active');
+            window.location.hash = pageUrl;
+        }
+
+        window.addEventListener('message', function(e) {
+            if (!e.data) return;
+            if (e.data.type === 'OPEN_PAGE') {
+                const page = e.data.page;
+                const menuItem = document.querySelector(`[data-page="${page}"]`);
+                if (menuItem) loadPage(page, menuItem);
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const menuItem = document.querySelector(`[data-page="${hash}"]`);
+                if (menuItem) loadPage(hash, menuItem);
+            }
+        });
+    </script>
+</body>
+</html>

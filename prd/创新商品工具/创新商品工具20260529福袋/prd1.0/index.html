@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>小芒福袋</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* 霓虹色系 */
+    --primary-pink: #FF4D9E;
+    --hot-pink: #FF2D78;
+    --neon-purple: #9D4EDD;
+    --electric-cyan: #00F5D4;
+    --gold: #FFD700;
+    --warm-orange: #FF9E00;
+
+    /* 渐变 */
+    --gradient-pink-purple: linear-gradient(135deg, #FF4D9E 0%, #9D4EDD 100%);
+    --gradient-gold-orange: linear-gradient(135deg, #FFD700 0%, #FF9E00 100%);
+    --gradient-pink-hot: linear-gradient(135deg, #FF4D9E 0%, #FF2D78 100%);
+    --gradient-cyan-pink: linear-gradient(135deg, #00F5D4 0%, #FF4D9E 100%);
+
+    /* 背景 */
+    --bg-black: #000000;
+    --bg-card: #0D0D0D;
+    --bg-card-hover: #141414;
+    --bg-surface: #1A1A1A;
+    --bg-overlay: rgba(0, 0, 0, 0.85);
+
+    /* 文字 */
+    --text-white: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.45);
+    --text-muted: rgba(255, 255, 255, 0.3);
+
+    /* 状态色 */
+    --status-active: #00F5D4;
+    --status-upcoming: #9D4EDD;
+    --status-soldout: #FF4D4F;
+    --status-offline: #555555;
+
+    /* 霓虹发光 */
+    --glow-pink: 0 0 10px rgba(255, 77, 158, 0.4), 0 0 20px rgba(255, 77, 158, 0.2);
+    --glow-purple: 0 0 10px rgba(157, 78, 221, 0.4), 0 0 20px rgba(157, 78, 221, 0.2);
+    --glow-cyan: 0 0 10px rgba(0, 245, 212, 0.4), 0 0 20px rgba(0, 245, 212, 0.2);
+    --glow-gold: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
+    --glow-pink-strong: 0 0 15px rgba(255, 77, 158, 0.6), 0 0 30px rgba(255, 77, 158, 0.3), 0 0 45px rgba(255, 77, 158, 0.15);
+
+    /* 圆角 */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    /* 字体 */
+    --font-sans: 'Noto Sans SC', 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+    /* 间距 */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 20px;
+    --space-2xl: 24px;
+    --space-3xl: 32px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-black);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    color: var(--text-white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ===== 顶部导航 - 深色霓虹 ===== */
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 77, 158, 0.15);
+    padding: 12px 16px;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .back-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: var(--bg-surface);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 77, 158, 0.2);
+  }
+
+  .back-btn:hover {
+    border-color: var(--primary-pink);
+    box-shadow: var(--glow-pink);
+  }
+
+  .back-btn:active {
+    transform: scale(0.95);
+  }
+
+  .back-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .brand-title {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-white);
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  }
+
+  .brand-title span {
+    color: var(--primary-pink);
+    text-shadow: var(--glow-pink);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .header-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+  }
+
+  .header-action:hover {
+    background: var(--bg-surface);
+    color: var(--text-white);
+  }
+
+  .header-action:active {
+    transform: scale(0.95);
+  }
+
+  .header-action .icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .header-action .label {
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  /* ===== 欢迎横幅 - 霓虹风格 ===== */
+  .welcome-banner {
+    position: relative;
+    margin: var(--space-lg);
+    padding: var(--space-2xl);
+    border-radius: var(--radius-xl);
+    color: var(--text-white);
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1.5px solid transparent;
+    border-image: var(--gradient-pink-purple) 1;
+  }
+
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: -10%;
+    width: 140%;
+    height: 160%;
+    background: radial-gradient(ellipse at center, rgba(255, 77, 158, 0.15) 0%, rgba(157, 78, 221, 0.08) 40%, transparent 70%);
+    z-index: 0;
+    animation: bannerGlow 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes bannerGlow {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  .welcome-banner-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .welcome-text {
+    flex: 1;
+  }
+
+  .welcome-greeting {
+    font-size: 13px;
+    opacity: 0.85;
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .welcome-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 15px rgba(255, 77, 158, 0.3);
+  }
+
+  .welcome-subtitle {
+    font-size: 13px;
+    opacity: 0.65;
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+
+  .welcome-deco {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    margin-left: 16px;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 12px rgba(255, 77, 158, 0.4));
+    animation: floatDeco 3s ease-in-out infinite;
+  }
+
+  @keyframes floatDeco {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* ===== 跑马灯 - 深色霓虹 ===== */
+  .marquee-section {
+    margin: 0 var(--space-lg) var(--space-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md) var(--space-lg);
+    border: 1px solid rgba(255, 77, 158, 0.12);
+  }
+
+  .marquee-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: 10px;
+  }
+
+  .marquee-icon {
+    width: 20px;
+    height: 20px;
+    filter: drop-shadow(0 0 6px rgba(255, 77, 158, 0.5));
+  }
+
+  .marquee-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-white);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+  }
+
+  .marquee-container {
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 77, 158, 0.04);
+    padding: 10px 0;
+  }
+
+  .marquee-content {
+    display: flex;
+    gap: 32px;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-size: 12px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .marquee-item .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--primary-pink);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255, 77, 158, 0.6);
+  }
+
+  .marquee-item .name {
+    color: var(--primary-pink);
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 77, 158, 0.3);
+  }
+
+  /* ===== 快捷功能区 ===== */
+  .quick-actions {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-md) var(--space-lg) var(--space-xl);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    justify-content: center;
+  }
+
+  .quick-actions::-webkit-scrollbar { display: none; }
+
+  .quick-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .quick-action-item:active {
+    transform: scale(0.95);
+  }
+
+  .quick-action-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-full);
+    background: var(--bg-surface);
+    border: 1.5px solid rgba(255, 77, 158, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .quick-action-icon img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .quick-action-item:hover .quick-action-icon {
+    border-color: var(--primary-pink);
+    box-shadow: var(--glow-pink);
+  }
+
+  .quick-action-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /* ===== 活动列表标题 ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--gradient-pink-purple);
+    border-radius: 2px;
+    box-shadow: var(--glow-pink);
+  }
+
+  .section-count {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+  }
+
+  /* ===== 活动列表 ===== */
+  .activity-list {
+    padding: 0 var(--space-lg) var(--space-xl);
+    min-height: calc(100vh - 400px);
+  }
+
+  /* ===== 活动卡片 - 使用背景图边框 ===== */
+  .activity-card {
+    position: relative;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-lg);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    /* 删除CSS边框，使用背景图自带边框 */
+    border: none;
+    background: transparent;
+  }
+
+  .activity-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-pink);
+  }
+
+  .activity-card:active {
+    transform: scale(0.98);
+  }
+
+  /* 卡片装饰背景 - 完整展示背景图 */
+  .card-bg-deco {
+    position: relative;
+    width: 100%;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    /* 保持背景图原始比例 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-bg-deco img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* 卡片氛围光 */
+  .card-atmosphere {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* 文字区域 - 叠加在背景图上 */
+  .card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+  }
+
+  .card-title-section {
+    flex: 1;
+    min-width: 0;
+    padding-right: 80px;
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: var(--space-sm);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+  }
+
+  .card-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+  }
+
+  .card-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: var(--glow-gold);
+  }
+
+  .card-price .yen {
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 2px;
+  }
+
+  .card-stock {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+  }
+
+  .card-stock em {
+    font-style: normal;
+    color: var(--electric-cyan);
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(0, 245, 212, 0.3);
+  }
+
+  /* 库存进度条 */
+  .stock-progress {
+    margin-top: 8px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .stock-progress-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--gradient-pink-purple);
+    box-shadow: 0 0 8px rgba(255, 77, 158, 0.4);
+    transition: width 1s ease-out;
+    animation: progressGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes progressGlow {
+    0% { box-shadow: 0 0 6px rgba(255, 77, 158, 0.3); }
+    100% { box-shadow: 0 0 12px rgba(255, 77, 158, 0.6); }
+  }
+
+  /* 状态标签 */
+  .card-status-tag {
+    position: absolute;
+    top: var(--space-lg);
+    right: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .card-status-tag img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .status-upcoming {
+    background: rgba(157, 78, 221, 0.15);
+    color: var(--neon-purple);
+    border: 1px solid rgba(157, 78, 221, 0.3);
+    text-shadow: 0 0 6px rgba(157, 78, 221, 0.3);
+  }
+
+  .status-ongoing {
+    background: rgba(0, 245, 212, 0.1);
+    color: var(--status-active);
+    border: 1px solid rgba(0, 245, 212, 0.3);
+    text-shadow: 0 0 6px rgba(0, 245, 212, 0.3);
+  }
+
+  .status-soldout {
+    background: rgba(255, 77, 79, 0.12);
+    color: var(--status-soldout);
+    border: 1px solid rgba(255, 77, 79, 0.25);
+  }
+
+  .status-offline {
+    background: rgba(85, 85, 85, 0.2);
+    color: var(--status-offline);
+    border: 1px solid rgba(85, 85, 85, 0.3);
+  }
+
+  /* ===== 商品预览滑动 ===== */
+  .product-section {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  .product-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .product-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .product-scroll::-webkit-scrollbar { display: none; }
+
+  .product-thumb {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.2s ease;
+  }
+
+  .product-thumb:hover {
+    border-color: var(--primary-pink);
+    box-shadow: var(--glow-pink);
+    transform: scale(1.05);
+  }
+
+  .product-thumb.soldout {
+    opacity: 0.5;
+  }
+
+  .product-thumb.soldout::after {
+    content: '售罄';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--text-white);
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-thumb.more {
+    background: var(--gradient-pink-purple);
+    color: var(--text-white);
+    font-size: 11px;
+    font-weight: 600;
+    flex-direction: column;
+    gap: 2px;
+    border: none;
+  }
+
+  /* ===== 空状态 ===== */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-tertiary);
+  }
+
+  .empty-state.show { display: block; }
+
+  .empty-state .icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+    opacity: 0.6;
+    filter: drop-shadow(0 0 15px rgba(255, 77, 158, 0.3));
+  }
+
+  .empty-state .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: var(--space-sm);
+  }
+
+  .empty-state .text {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* ===== 加载更多 ===== */
+  .load-more {
+    text-align: center;
+    padding: var(--space-xl);
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  .load-more .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary-pink);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto var(--space-sm);
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== 分享浮层 - 深色 ===== */
+  .share-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg-overlay);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .share-overlay.show { display: flex; }
+
+  .share-panel {
+    width: 100%;
+    max-width: 430px;
+    background: var(--bg-card);
+    border-radius: 24px 24px 0 0;
+    padding: var(--space-2xl) var(--space-xl);
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top: 1px solid rgba(255, 77, 158, 0.2);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .share-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: var(--space-2xl);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+
+  .share-channels {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .share-channel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .share-channel:hover {
+    transform: scale(1.05);
+  }
+
+  .share-channel:active {
+    transform: scale(0.95);
+  }
+
+  .share-channel .icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .share-channel:hover .icon {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .share-channel.wechat .icon { background: linear-gradient(135deg, #07C160 0%, #05a350 100%); }
+  .share-channel.moments .icon { background: linear-gradient(135deg, #07C160 0%, #05a350 100%); }
+  .share-channel.weibo .icon { background: linear-gradient(135deg, #E6162D 0%, #c41226 100%); }
+  .share-channel.xiaohongshu .icon { background: linear-gradient(135deg, #FF2442 0%, #e01e38 100%); }
+
+  .share-channel .name {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .share-cancel {
+    width: 100%;
+    padding: 14px 0;
+    background: var(--bg-surface);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .share-cancel:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* ===== 下拉刷新 ===== */
+  .pull-refresh {
+    height: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text-tertiary);
+    transition: height 0.3s ease;
+    gap: var(--space-sm);
+  }
+
+  .pull-refresh.show { height: 50px; }
+
+  .pull-refresh .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary-pink);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  /* ===== 悬浮按钮 - 霓虹发光 ===== */
+  .fab-button {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: var(--gradient-pink-hot);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glow-pink-strong);
+    cursor: pointer;
+    z-index: 90;
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .fab-button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255, 77, 158, 0.7), 0 0 40px rgba(255, 77, 158, 0.4), 0 0 60px rgba(255, 77, 158, 0.2);
+  }
+
+  .fab-button:active {
+    transform: scale(0.95);
+  }
+
+  .fab-button img {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* ===== 分割线装饰 ===== */
+  .divider-deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm) var(--space-lg);
+  }
+
+  .divider-deco img {
+    height: 16px;
+    opacity: 0.4;
+  }
+
+  /* ===== 响应式优化 ===== */
+  @media (max-width: 375px) {
+    .card-title { font-size: 15px; }
+    .card-price { font-size: 20px; }
+    .welcome-title { font-size: 18px; }
+    .quick-action-icon { width: 44px; height: 44px; }
+    .quick-action-icon img { width: 24px; height: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="back-btn" onclick="goBack()">
+        <img src="assets/icon_13.png" alt="返回">
+      </div>
+      <div class="brand-title">小芒<span>福袋</span></div>
+    </div>
+    <div class="header-actions">
+      <div class="header-action" onclick="showSharePanel()">
+        <img class="icon" src="assets/icon_14.png" alt="分享">
+        <span class="label">分享</span>
+      </div>
+      <div class="header-action" onclick="goToLocker()">
+        <img class="icon" src="assets/icon_18.png" alt="寄存柜">
+        <span class="label">寄存柜</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 欢迎横幅 -->
+<div class="welcome-banner">
+  <div class="welcome-banner-inner">
+    <div class="welcome-text">
+      <div class="welcome-greeting">今日好运</div>
+      <div class="welcome-title">发现专属惊喜</div>
+      <div class="welcome-subtitle">每一份福袋都藏着小确幸</div>
+    </div>
+    <img class="welcome-deco" src="assets/icon_03.png" alt="抽奖轮盘">
+  </div>
+</div>
+
+<!-- 跑马灯 -->
+<div class="marquee-section" id="marqueeSection" style="display: none;">
+  <div class="marquee-header">
+    <img class="marquee-icon" src="assets/icon_17.png" alt="幸运星">
+    <span class="marquee-title">幸运榜单</span>
+  </div>
+  <div class="marquee-container">
+    <div class="marquee-content" id="marqueeContent"></div>
+  </div>
+</div>
+
+<!-- 快捷功能区 -->
+<div class="quick-actions">
+  <div class="quick-action-item" onclick="goToActivity(1)">
+    <div class="quick-action-icon">
+      <img src="assets/icon_03.png" alt="抽奖">
+    </div>
+    <span class="quick-action-label">抽奖</span>
+  </div>
+  <div class="quick-action-item" onclick="goToActivity(1)">
+    <div class="quick-action-icon">
+      <img src="assets/icon_05.png" alt="惊喜礼包">
+    </div>
+    <span class="quick-action-label">惊喜礼包</span>
+  </div>
+  <div class="quick-action-item" onclick="goToActivity(1)">
+    <div class="quick-action-icon">
+      <img src="assets/icon_16.png" alt="礼物盒">
+    </div>
+    <span class="quick-action-label">礼物盒</span>
+  </div>
+  <div class="quick-action-item" onclick="alert('规则说明')">
+    <div class="quick-action-icon">
+      <img src="assets/icon_12.png" alt="规则说明">
+    </div>
+    <span class="quick-action-label">规则说明</span>
+  </div>
+</div>
+
+<!-- 分割线装饰 -->
+<div class="divider-deco">
+  <img src="assets/icon_04.png" alt="分割线">
+</div>
+
+<!-- 下拉刷新 -->
+<div class="pull-refresh" id="pullRefresh">
+  <div class="spinner"></div>
+  <span>松开刷新</span>
+</div>
+
+<!-- 活动列表标题 -->
+<div class="section-header">
+  <div class="section-title">热门福袋</div>
+  <span class="section-count" id="activityCount">共 0 个活动</span>
+</div>
+
+<!-- 活动列表 -->
+<div class="activity-list" id="activityList"></div>
+
+<!-- 空状态 -->
+<div class="empty-state" id="emptyState">
+  <img class="icon" src="assets/icon_02.png" alt="福袋">
+  <div class="title">暂无活动</div>
+  <div class="text">福袋正在准备中，敬请期待～</div>
+</div>
+
+<!-- 加载更多 -->
+<div class="load-more" id="loadMore" style="display:none;">
+  <div class="spinner"></div>
+  <span>加载中...</span>
+</div>
+
+<!-- 分享浮层 -->
+<div class="share-overlay" id="shareOverlay" onclick="hideSharePanel(event)">
+  <div class="share-panel" onclick="event.stopPropagation()">
+    <div class="share-title">分享给好友</div>
+    <div class="share-channels">
+      <div class="share-channel wechat" onclick="shareTo('wechat')">
+        <div class="icon">💬</div>
+        <span class="name">微信</span>
+      </div>
+      <div class="share-channel moments" onclick="shareTo('moments')">
+        <div class="icon">📱</div>
+        <span class="name">朋友圈</span>
+      </div>
+      <div class="share-channel weibo" onclick="shareTo('weibo')">
+        <div class="icon">🔴</div>
+        <span class="name">微博</span>
+      </div>
+      <div class="share-channel xiaohongshu" onclick="shareTo('xiaohongshu')">
+        <div class="icon">📕</div>
+        <span class="name">小红书</span>
+      </div>
+    </div>
+    <button class="share-cancel" onclick="hideSharePanel()">取消</button>
+  </div>
+</div>
+
+<!-- 悬浮按钮 -->
+<div class="fab-button" onclick="goToLocker()" title="查看寄存柜">
+  <img src="assets/icon_18.png" alt="寄存柜">
+</div>
+
+<script>
+// ===== 模拟数据 =====
+const activitiesData = [
+  {
+    id: 1,
+    name: '夏季清凉福袋',
+    price: 49.00,
+    stock: 40,
+    totalStock: 50,
+    status: 'ongoing',
+    sortOrder: 1,
+    hidden: false,
+    atmosphere: 'radial-gradient(ellipse at top right, rgba(0, 245, 212, 0.08) 0%, transparent 60%)',
+    cardBg: 'assets/icon_87.png',
+    products: [
+      { icon: '👕', soldout: false },
+      { icon: '🩳', soldout: false },
+      { icon: '🧥', soldout: true },
+      { icon: '🧢', soldout: false },
+      { icon: '🕶️', soldout: false },
+      { icon: '👜', soldout: false },
+      { icon: '🩴', soldout: false },
+      { icon: '🩱', soldout: true },
+    ]
+  },
+  {
+    id: 2,
+    name: '卡牌活动',
+    price: 99.99,
+    stock: 0,
+    totalStock: 100,
+    status: 'soldout',
+    sortOrder: 2,
+    hidden: false,
+    atmosphere: 'radial-gradient(ellipse at top right, rgba(255, 77, 79, 0.06) 0%, transparent 60%)',
+    cardBg: 'assets/icon_88.png',
+    products: [
+      { icon: '🃏', soldout: true },
+      { icon: '🎴', soldout: true },
+      { icon: '🀄', soldout: true },
+    ]
+  },
+  {
+    id: 3,
+    name: '春季限定福袋',
+    price: 69.90,
+    stock: 15,
+    totalStock: 30,
+    status: 'upcoming',
+    sortOrder: 1,
+    hidden: false,
+    atmosphere: 'radial-gradient(ellipse at top right, rgba(157, 78, 221, 0.08) 0%, transparent 60%)',
+    cardBg: 'assets/icon_89.png',
+    products: [
+      { icon: '👗', soldout: false },
+      { icon: '👠', soldout: false },
+      { icon: '💄', soldout: false },
+    ]
+  },
+  {
+    id: 4,
+    name: '冬季暖心福袋',
+    price: 88.00,
+    stock: 0,
+    totalStock: 50,
+    status: 'offline',
+    sortOrder: 3,
+    hidden: false,
+    atmosphere: 'radial-gradient(ellipse at top right, rgba(85, 85, 85, 0.05) 0%, transparent 60%)',
+    cardBg: 'assets/icon_90.png',
+    products: [
+      { icon: '🧣', soldout: true },
+      { icon: '🧤', soldout: true },
+      { icon: '🧦', soldout: true },
+    ]
+  },
+];
+
+// 抽福袋记录（用于跑马灯）
+const drawRecords = [
+  { nickname: '小**', product: '白色T恤' },
+  { nickname: '明**', product: '运动短裤' },
+  { nickname: '花**', product: '防晒外套' },
+  { nickname: '大**', product: '棒球帽' },
+  { nickname: '甜**', product: '连衣裙' },
+  { nickname: '可**', product: '口红套装' },
+];
+
+// 状态优先级
+const statusPriority = {
+  'upcoming': 1,
+  'ongoing': 2,
+  'soldout': 3,
+  'offline': 4
+};
+
+const statusLabels = {
+  'upcoming': { text: '即将开始', class: 'status-upcoming', icon: 'assets/icon_07.png' },
+  'ongoing': { text: '进行中', class: 'status-ongoing', icon: 'assets/icon_09.png' },
+  'soldout': { text: '已售罄', class: 'status-soldout', icon: 'assets/icon_10.png' },
+  'offline': { text: '已下线', class: 'status-offline', icon: '' }
+};
+
+let currentPage = 1;
+let isLoading = false;
+let hasMore = true;
+
+// ===== 初始化 =====
+function init() {
+  renderMarquee();
+  loadActivities();
+  setupPullRefresh();
+  setupInfiniteScroll();
+}
+
+// ===== 跑马灯 =====
+function renderMarquee() {
+  if (drawRecords.length < 3) return;
+
+  const section = document.getElementById('marqueeSection');
+  const content = document.getElementById('marqueeContent');
+
+  // 复制数据实现无缝滚动
+  const items = [...drawRecords, ...drawRecords];
+  content.innerHTML = items.map(r => `
+    <div class="marquee-item">
+      <span class="dot"></span>
+      <span class="name">${r.nickname[0]}**</span> 抽中 ${r.product}
+    </div>
+  `).join('');
+
+  section.style.display = 'block';
+}
+
+// ===== 加载活动列表 =====
+function loadActivities(isRefresh = false) {
+  if (isLoading) return;
+  isLoading = true;
+
+  if (isRefresh) {
+    currentPage = 1;
+    hasMore = true;
+  }
+
+  // 模拟API请求
+  setTimeout(() => {
+    // 过滤隐藏活动
+    let activities = activitiesData.filter(a => !a.hidden);
+
+    // 按状态优先级 + 排序值排序
+    activities.sort((a, b) => {
+      const priorityDiff = statusPriority[a.status] - statusPriority[b.status];
+      if (priorityDiff !== 0) return priorityDiff;
+      return a.sortOrder - b.sortOrder;
+    });
+
+    // 更新计数
+    document.getElementById('activityCount').textContent = `共 ${activities.length} 个活动`;
+
+    // 分页
+    const pageSize = 10;
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const pageData = activities.slice(start, end);
+
+    if (pageData.length === 0 && currentPage === 1) {
+      document.getElementById('emptyState').classList.add('show');
+      document.getElementById('activityList').innerHTML = '';
+    } else {
+      document.getElementById('emptyState').classList.remove('show');
+
+      if (isRefresh) {
+        document.getElementById('activityList').innerHTML = pageData.map(renderActivityCard).join('');
+      } else {
+        document.getElementById('activityList').innerHTML += pageData.map(renderActivityCard).join('');
+      }
+    }
+
+    hasMore = end < activities.length;
+    isLoading = false;
+    document.getElementById('loadMore').style.display = 'none';
+    document.getElementById('pullRefresh').classList.remove('show');
+  }, 500);
+}
+
+// ===== 渲染活动卡片 =====
+function renderActivityCard(activity) {
+  const status = statusLabels[activity.status];
+  // 售罄商品往后排
+  const sortedProducts = [...activity.products].sort((a, b) => {
+    if (a.soldout === b.soldout) return 0;
+    return a.soldout ? 1 : -1;
+  });
+  const products = sortedProducts.slice(0, 10);
+
+  const stockPercent = activity.totalStock > 0 ? (activity.stock / activity.totalStock * 100) : 0;
+
+  return `
+    <div class="activity-card" onclick="goToActivity(${activity.id})">
+      <div class="card-atmosphere" style="background: ${activity.atmosphere}"></div>
+      ${activity.cardBg ? `
+        <div class="card-bg-deco">
+          <img src="${activity.cardBg}" alt="">
+        </div>
+      ` : ''}
+      <div class="card-content">
+        <div class="card-header">
+          <div class="card-title-section">
+            <div class="card-title">${activity.name}</div>
+            <div class="card-price-row">
+              <span class="card-price"><span class="yen">¥</span>${activity.price.toFixed(2)}</span>
+              <span class="card-stock">剩余 <em>${activity.stock}</em> / ${activity.totalStock}</span>
+            </div>
+            <div class="stock-progress">
+              <div class="stock-progress-bar" style="width: ${stockPercent}%"></div>
+            </div>
+          </div>
+          <span class="card-status-tag ${status.class}">
+            ${status.icon ? `<img src="${status.icon}" alt="${status.text}">` : ''}
+            ${status.text}
+          </span>
+        </div>
+        <div class="product-section">
+          <div class="product-label">福袋内容</div>
+          <div class="product-scroll">
+            ${products.map((p, i) => `
+              <div class="product-thumb ${p.soldout ? 'soldout' : ''}"
+                   onclick="${i === 9 ? `goToActivity(${activity.id}); event.stopPropagation();` : 'event.stopPropagation();'}">
+                ${p.icon}
+              </div>
+            `).join('')}
+            ${activity.products.length >= 10 ? `
+              <div class="product-thumb more" onclick="goToActivity(${activity.id}); event.stopPropagation();">
+                更多
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===== 下拉刷新 =====
+function setupPullRefresh() {
+  let startY = 0;
+  let isPulling = false;
+
+  document.addEventListener('touchstart', (e) => {
+    if (window.scrollY === 0) {
+      startY = e.touches[0].clientY;
+      isPulling = true;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isPulling) return;
+    const diff = e.touches[0].clientY - startY;
+    if (diff > 60 && window.scrollY === 0) {
+      document.getElementById('pullRefresh').classList.add('show');
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    if (document.getElementById('pullRefresh').classList.contains('show')) {
+      loadActivities(true);
+    }
+    isPulling = false;
+  }, { passive: true });
+}
+
+// ===== 上拉加载 =====
+function setupInfiniteScroll() {
+  window.addEventListener('scroll', () => {
+    if (isLoading || !hasMore) return;
+
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY;
+    const clientHeight = window.innerHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight - 100) {
+      currentPage++;
+      document.getElementById('loadMore').style.display = 'block';
+      loadActivities();
+    }
+  }, { passive: true });
+}
+
+// ===== 跳转 =====
+function goBack() { window.history.back(); }
+function goToLocker() { window.location.href = 'locker.html'; }
+function goToActivity(id) { window.location.href = 'lucky-bag-page.html?activity=' + id; }
+
+// ===== 分享 =====
+function showSharePanel() {
+  document.getElementById('shareOverlay').classList.add('show');
+}
+
+function hideSharePanel(event) {
+  if (!event || event.target.id === 'shareOverlay') {
+    document.getElementById('shareOverlay').classList.remove('show');
+  }
+}
+
+function shareTo(channel) {
+  const shareData = {
+    title: '我在抽【小芒福袋】，快来看看吧！',
+    desc: '超多惊喜等你来，快来试试今日的欧气吧～',
+    url: window.location.href
+  };
+
+  console.log('分享到:', channel, shareData);
+  alert(`已唤起${channel}分享`);
+  hideSharePanel();
+}
+
+// ===== 启动 =====
+init();
+</script>
+
+</body>
+</html>

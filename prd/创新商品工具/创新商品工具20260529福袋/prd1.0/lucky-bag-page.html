@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>夏季清凉福袋</title>
+<style>
+  /* ========== CSS Variables & Reset ========== */
+  :root {
+    --primary: #3B9EFF;
+    --primary-dark: #2A8AEB;
+    --primary-light: #5CB3FF;
+    --secondary: #00C6FF;
+    --accent: #FFD700;
+    --bg-blue: #E8F4FF;
+    --bg-light: #F0F9FF;
+    --white: #FFFFFF;
+    --gray-sold: #C8C8CC;
+    --gray-light: #F2F2F4;
+    --gray-text: #999999;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --shadow-soft: 0 2px 12px rgba(59, 158, 255, 0.12);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-btn: 0 4px 16px rgba(59, 158, 255, 0.3);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 24px;
+    --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-family);
+    background: linear-gradient(180deg, var(--bg-blue) 0%, var(--bg-light) 100%);
+    color: var(--text-primary);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 100px;
+    overflow-x: hidden;
+  }
+
+  /* ========== 分期信息区域 ========== */
+  .phase-section {
+    margin: 12px 16px;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .phase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .phase-info {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .phase-current {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .phase-current em {
+    font-style: normal;
+    color: var(--primary);
+    font-size: 20px;
+  }
+
+  .phase-total {
+    font-size: 13px;
+    color: var(--gray-text);
+  }
+
+  .phase-total em {
+    font-style: normal;
+  }
+
+  .phase-history-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    color: var(--primary);
+    cursor: pointer;
+  }
+
+  .phase-next-info {
+    background: linear-gradient(90deg, #FFF7E6 0%, #FFF 100%);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  .phase-next-label {
+    font-size: 11px;
+    color: var(--orange);
+    margin-bottom: 4px;
+  }
+
+  .phase-intro {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--gray-light);
+    margin-bottom: 10px;
+  }
+
+  .phase-intro em {
+    font-style: normal;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .phase-next-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .phase-countdown {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  /* ========== 往期活动弹窗 ========== */
+  .phase-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .phase-modal.show {
+    display: flex;
+  }
+
+  .phase-modal-mask {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .phase-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    max-height: 70vh;
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .phase-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+
+  .phase-modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .phase-modal-close {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text);
+    cursor: pointer;
+  }
+
+  .phase-modal-body {
+    padding: 12px 16px;
+    max-height: calc(70vh - 60px);
+    overflow-y: auto;
+  }
+
+  .phase-history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-light);
+  }
+
+  .phase-history-item:last-child {
+    border-bottom: none;
+  }
+
+  .phase-history-num {
+    width: 36px;
+    height: 36px;
+    background: var(--bg-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .phase-history-info {
+    flex: 1;
+  }
+
+  .phase-history-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .phase-history-status {
+    font-size: 12px;
+    color: var(--gray-text);
+  }
+
+  .phase-history-btn-view {
+    padding: 6px 14px;
+    background: var(--primary);
+    color: var(--white);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  /* ========== 1. 顶部氛围图区域 ========== */
+  .hero-section {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(180deg, #87CEEB 0%, #B8E6FF 50%, #E0F4FF 100%);
+    overflow: hidden;
+  }
+
+  /* 海滩背景装饰 */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255,255,255,0.8) 0%, transparent 50%),
+      linear-gradient(180deg, #4FC3F7 0%, #81D4FA 40%, #B3E5FC 70%, #E1F5FE 100%);
+  }
+
+  /* 太阳 */
+  .sun {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #FFD54F 0%, #FFB300 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(255, 213, 79, 0.5);
+  }
+
+  /* 云朵 */
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50px;
+  }
+  .cloud::before,
+  .cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+  }
+  .cloud-1 {
+    width: 80px;
+    height: 30px;
+    top: 40px;
+    left: 20px;
+  }
+  .cloud-1::before {
+    width: 40px;
+    height: 40px;
+    top: -20px;
+    left: 10px;
+  }
+  .cloud-1::after {
+    width: 50px;
+    height: 35px;
+    top: -15px;
+    right: 10px;
+  }
+  .cloud-2 {
+    width: 60px;
+    height: 25px;
+    top: 80px;
+    right: 80px;
+  }
+  .cloud-2::before {
+    width: 35px;
+    height: 35px;
+    top: -18px;
+    left: 8px;
+  }
+  .cloud-2::after {
+    width: 40px;
+    height: 30px;
+    top: -12px;
+    right: 8px;
+  }
+
+  /* 棕榈树装饰 */
+  .palm-tree {
+    position: absolute;
+    bottom: 0;
+    font-size: 60px;
+    opacity: 0.8;
+  }
+  .palm-left {
+    left: 10px;
+    transform: rotate(-10deg);
+  }
+  .palm-right {
+    right: 10px;
+    transform: scaleX(-1) rotate(-10deg);
+  }
+
+  /* 顶部导航 */
+  .hero-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    z-index: 10;
+  }
+
+  .hero-nav .back-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .hero-nav .back-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .hero-nav .nav-links {
+    display: flex;
+    gap: 10px;
+  }
+
+  .hero-nav .nav-link {
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  /* 活动标题 */
+  .hero-content {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .hero-title {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--white);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.95);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+
+  /* 商品展示台 */
+  .product-showcase {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: -10px;
+    z-index: 8;
+  }
+
+  .showcase-item {
+    width: 70px;
+    height: 70px;
+    background: var(--white);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin: 0 -5px;
+  }
+  .showcase-item:nth-child(1) { transform: rotate(-8deg) translateY(5px); z-index: 3; }
+  .showcase-item:nth-child(2) { transform: rotate(-3deg) translateY(-5px); z-index: 2; }
+  .showcase-item:nth-child(3) { transform: rotate(3deg) translateY(-5px); z-index: 2; }
+  .showcase-item:nth-child(4) { transform: rotate(8deg) translateY(5px); z-index: 3; }
+
+  /* ========== 2. 公告区域 ========== */
+  .notice-section {
+    margin: 16px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .notice-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .notice-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  .notice-text .highlight {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* ========== 3. 福袋购买卡片 ========== */
+  .bag-purchase-card {
+    margin: 0 16px 16px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-btn);
+  }
+
+  .bag-purchase-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    flex-shrink: 0;
+  }
+
+  .bag-purchase-info {
+    flex: 1;
+  }
+
+  .bag-purchase-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .bag-purchase-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 8px;
+  }
+
+  .bag-purchase-price {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--white);
+  }
+
+  .bag-purchase-price .yen {
+    font-size: 14px;
+  }
+
+  .bag-purchase-price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .discount-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, #FF6B35, #FF3E3E);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 20px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .bag-purchase-stock {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+  }
+
+  .bag-purchase-stock .dot {
+    width: 8px;
+    height: 8px;
+    background: #7FFF7F;
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+  }
+
+  .bag-purchase-stock .stock-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .bag-purchase-stock .stock-num {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .bag-purchase-stock .stock-total {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ========== 5. Tab切换区 ========== */
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .tabs-section {
+    margin: 0 16px 16px;
+    display: flex;
+    background: var(--gray-light);
+    border-radius: var(--radius-full);
+    padding: 3px;
+    position: relative;
+  }
+
+  .tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-text);
+    cursor: pointer;
+    border-radius: 22px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tab-item.active {
+    color: var(--white);
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    box-shadow: 0 2px 10px rgba(59, 158, 255, 0.25);
+  }
+
+  /* ========== 6. 内容区域 ========== */
+  .content-section {
+    padding: 0 16px;
+  }
+
+  /* 福袋网格 - 一行5个 */
+  .bags-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .bag-item {
+    aspect-ratio: 1;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s;
+    padding: 4px;
+  }
+
+  .bag-item:active {
+    transform: scale(0.95);
+  }
+
+  .bag-item.selected {
+    border: 2px solid var(--primary);
+  }
+
+  .bag-item.sold-out {
+    cursor: not-allowed;
+  }
+
+  .bag-icon {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .bag-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .bag-item.selected .bag-label {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* 已抽出/已售罄印章 */
+  .sold-stamp {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--gray-sold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--gray-sold);
+    background: rgba(255,255,255,0.9);
+  }
+
+  .bag-item.sold-out .bag-icon {
+    opacity: 0.4;
+    filter: grayscale(1);
+  }
+
+  /* 商品网格 - 一行5个 */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .product-item {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+
+  .product-item.sold-out .product-thumb,
+  .product-item.sold-out .product-info {
+    opacity: 0.5;
+    filter: grayscale(1);
+  }
+
+  .product-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .product-info {
+    padding: 6px 4px;
+    text-align: center;
+  }
+
+  .product-name {
+    font-size: 10px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+
+  .product-price {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  /* ========== 7. 底部结算栏 ========== */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: var(--white);
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+    z-index: 100;
+  }
+
+  .bottom-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .bottom-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .bottom-count em {
+    font-style: normal;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .bottom-price {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .bottom-price .amount {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--primary);
+  }
+
+  .bottom-price .yen {
+    font-size: 14px;
+  }
+
+  .buy-btn {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn);
+    transition: transform 0.15s;
+  }
+
+  .buy-btn:active {
+    transform: scale(0.96);
+  }
+
+  .buy-btn.disabled {
+    background: var(--gray-sold);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* ========== 开奖动画 ========== */
+  .unbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.7);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unbox-overlay.show {
+    display: flex;
+  }
+
+  .unbox-bag {
+    width: 140px;
+    height: 140px;
+    font-size: 100px;
+    animation: unbox-bounce 0.6s ease-in-out infinite alternate;
+  }
+
+  @keyframes unbox-bounce {
+    0% { transform: scale(1) rotate(-3deg); }
+    100% { transform: scale(1.1) rotate(3deg); }
+  }
+
+  .unbox-text {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 20px;
+    animation: text-pulse 0.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes text-pulse {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  /* ========== 结果弹窗 ========== */
+  .result-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(0,0,0,0.6);
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .result-overlay.show {
+    display: flex;
+  }
+
+  .result-modal {
+    width: 100%;
+    max-width: 430px;
+    max-height: 80vh;
+    background: linear-gradient(180deg, #FFF8E1 0%, #FFFFFF 30%);
+    border-radius: 20px 20px 0 0;
+    padding: 0;
+    animation: modal-up 0.4s ease;
+    overflow: hidden;
+  }
+
+  @keyframes modal-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .result-header {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 50%, #FFC107 100%);
+    padding: 24px 20px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+  }
+
+  .result-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+
+  .result-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #FFFFFF;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    margin-top: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-body {
+    padding: 16px 20px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .result-product {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 12px;
+    background: linear-gradient(135deg, #FFF9F0 0%, #FFFFFF 100%);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    border: 1px solid #FFF0E0;
+    position: relative;
+  }
+
+  .result-product .badge {
+    position: absolute;
+    top: -1px;
+    right: 12px;
+    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+    color: #FFF;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .result-product .thumb {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #FFF5EB, #FFE8D6);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    flex-shrink: 0;
+  }
+
+  .result-product .info {
+    flex: 1;
+  }
+
+  .result-product .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .result-product .qty {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .result-product .price {
+    font-size: 18px;
+    font-weight: 800;
+    color: #FF6B6B;
+  }
+
+  .result-product .price span {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .result-summary {
+    text-align: center;
+    padding: 12px 0 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .result-summary em {
+    font-style: normal;
+    color: #FF6B6B;
+    font-weight: 700;
+  }
+
+  .result-btns {
+    display: flex;
+    gap: 12px;
+  }
+
+  .result-btns button {
+    flex: 1;
+    padding: 14px 0;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+  }
+
+  .result-btns .btn-share {
+    background: var(--gray-light);
+    color: var(--text-primary);
+  }
+
+  .result-btns .btn-continue {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+    box-shadow: var(--shadow-btn);
+  }
+
+  .result-locker-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 500;
+    padding: 8px 0 12px;
+    cursor: pointer;
+  }
+
+  .result-locker-hint:active {
+    opacity: 0.7;
+  }
+
+  /* ========== Toast ========== */
+  .toast {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.75);
+    color: var(--white);
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 500;
+    text-align: center;
+  }
+
+  .toast.show {
+    display: block;
+    animation: toast-fade 2s ease forwards;
+  }
+
+  @keyframes toast-fade {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    75% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ===== 1. 顶部氛围图 ===== -->
+<div class="hero-section">
+  <div class="hero-bg"></div>
+  <div class="sun"></div>
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="palm-tree palm-left">🌴</div>
+  <div class="palm-tree palm-right">🌴</div>
+  
+  <div class="hero-nav">
+    <div class="back-btn" onclick="goBack()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="rules.html">活动规则</a>
+      <a class="nav-link" href="locker.html">寄存柜</a>
+      <div class="nav-link share-btn" onclick="sharePage()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        分享
+      </div>
+    </div>
+  </div>
+  
+  <div class="hero-content">
+    <div class="hero-title">夏季清凉福袋</div>
+    <div class="hero-subtitle">南波万短袖短裤防晒服</div>
+  </div>
+  
+  <div class="product-showcase">
+    <div class="showcase-item">👕</div>
+    <div class="showcase-item">🩳</div>
+    <div class="showcase-item">🧢</div>
+    <div class="showcase-item">🕶️</div>
+  </div>
+</div>
+
+<!-- ===== 分期信息区域 ===== -->
+<div class="phase-section">
+  <div class="phase-header">
+    <div class="phase-info">
+      <span class="phase-current">第 <em id="currentPhase">3</em> 期</span>
+      <span class="phase-total">/ 共 <em id="totalPhase">5</em> 期</span>
+    </div>
+    <div class="phase-history-btn" id="historyBtn" onclick="showPhaseHistory()">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+      <span id="historyBtnText">往期活动</span>
+    </div>
+  </div>
+  <div class="phase-intro">
+    <span>一口价<em>49元</em>，每场限量<em>50个</em>售完即止</span>
+  </div>
+  <div class="phase-next-info" id="phaseNextInfo">
+    <div class="phase-next-label">下一期开启</div>
+    <div class="phase-next-desc" id="phaseNextDesc">当前售罄后自动开启第4期</div>
+    <div class="phase-countdown" id="phaseCountdown" style="display:none;">
+      距开始：<span id="countdownTime">02:15:30</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 往期活动弹窗 ===== -->
+<div class="phase-modal" id="phaseModal">
+  <div class="phase-modal-mask" onclick="hidePhaseHistory()"></div>
+  <div class="phase-modal-content">
+    <div class="phase-modal-header">
+      <h3>往期活动</h3>
+      <div class="phase-modal-close" onclick="hidePhaseHistory()">✕</div>
+    </div>
+    <div class="phase-modal-body" id="phaseModalBody">
+      <!-- 动态生成往期列表 -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. 福袋购买卡片（含库存） ===== -->
+<div class="bag-purchase-card">
+  <div class="bag-purchase-icon">🛍️</div>
+  <div class="bag-purchase-info">
+    <div class="bag-purchase-name">夏季清凉福袋</div>
+    <div class="bag-purchase-desc">1个福袋=1件好物</div>
+    <div class="bag-purchase-price-row">
+      <div class="bag-purchase-price"><span class="yen">¥</span>49</div>
+      <span class="discount-tag">限时9折</span>
+    </div>
+  </div>
+  <div class="bag-purchase-stock">
+    <span class="dot"></span>
+    <span class="stock-label">剩余库存</span>
+    <span class="stock-num"><span id="stockCount">40</span><span class="stock-total">/50</span></span>
+  </div>
+</div>
+
+<!-- ===== 5. Tab切换 ===== -->
+<div class="tabs-section">
+  <div class="tab-item active" data-tab="select" onclick="switchTab('select')">选择福袋</div>
+  <div class="tab-item" data-tab="inventory" onclick="switchTab('inventory')">查看福袋库存</div>
+</div>
+
+<!-- ===== 6. 内容区域 ===== -->
+<div class="content-section">
+  <!-- 选择福袋 -->
+  <div id="selectPanel">
+    <div style="font-size:12px;color:var(--gray-text);margin-bottom:12px;line-height:1.6;">💡 每个福袋随机对应不同的商品，福袋抽取后不退不换。</div>
+    <div class="bags-grid" id="bagsGrid"></div>
+  </div>
+  
+  <!-- 查看库存 -->
+  <div id="inventoryPanel" style="display:none;">
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</div>
+
+<!-- ===== 7. 底部结算栏 ===== -->
+<div class="bottom-bar">
+  <div class="bottom-info">
+    <div class="bottom-count">已选 <em id="selectedCount">0</em> 个福袋</div>
+    <div class="bottom-price">合计 <span class="amount"><span class="yen">¥</span><span id="totalPrice">0</span></span></div>
+  </div>
+  <button class="buy-btn disabled" id="buyBtn" onclick="handleBuy()">立即购买</button>
+</div>
+
+<!-- ===== 8. 开奖动画 ===== -->
+<div class="unbox-overlay" id="unboxOverlay">
+  <div class="unbox-bag" id="unboxBag">🛍️</div>
+  <div class="unbox-text" id="unboxText">正在开启福袋...</div>
+</div>
+
+<!-- ===== 9. 结果弹窗 ===== -->
+<div class="result-overlay" id="resultOverlay" onclick="closeResultIfBg(event)">
+  <div class="result-modal">
+    <div class="result-header">
+      <div class="result-title">🎉 恭喜你获得好物！</div>
+      <div class="result-subtitle" id="resultSubtitle">商品已存入寄存柜，请尽快邮寄</div>
+    </div>
+    <div class="result-body">
+      <div id="resultContent"></div>
+      <div class="result-summary" id="resultSummary"></div>
+      <div class="result-locker-hint" onclick="goToLockerFromResult()">去寄存柜查看 ></div>
+    </div>
+    <div class="result-btns">
+      <button class="btn-share" onclick="handleShare()">分享</button>
+      <button class="btn-continue" onclick="closeResult()">继续抽</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== 商品数据 ==========
+const products = [
+  { id: 1, name: '白色T恤', price: 89, icon: '👕', sold: false },
+  { id: 2, name: '粉色背心', price: 69, icon: '🎽', sold: false },
+  { id: 3, name: '防晒外套', price: 129, icon: '🧥', sold: true },
+  { id: 4, name: '运动短裤', price: 59, icon: '🩳', sold: false },
+  { id: 5, name: '棒球帽', price: 49, icon: '🧢', sold: false },
+  { id: 6, name: '太阳镜', price: 79, icon: '🕶️', sold: true },
+  { id: 7, name: '帆布包', price: 39, icon: '👜', sold: false },
+  { id: 8, name: '拖鞋', price: 29, icon: '🩴', sold: false },
+  { id: 9, name: '泳衣', price: 99, icon: '🩱', sold: true },
+  { id: 10, name: '沙滩裤', price: 59, icon: '🩳', sold: false },
+  { id: 11, name: '遮阳帽', price: 45, icon: '👒', sold: false },
+  { id: 12, name: '冰袖', price: 19, icon: '🧤', sold: false },
+  { id: 13, name: '防晒喷雾', price: 35, icon: '🧴', sold: false },
+  { id: 14, name: '水杯', price: 25, icon: '🥤', sold: true },
+  { id: 15, name: '风扇', price: 55, icon: '🌀', sold: false },
+  { id: 16, name: '毛巾', price: 15, icon: '🧣', sold: false },
+  { id: 17, name: '泳镜', price: 49, icon: '🥽', sold: false },
+  { id: 18, name: '防水袋', price: 22, icon: '🛍️', sold: false },
+  { id: 19, name: '凉鞋', price: 69, icon: '👡', sold: true },
+  { id: 20, name: '连衣裙', price: 109, icon: '👗', sold: false },
+];
+
+// 福袋数据 (30个)
+const bags = [];
+for (let i = 0; i < 30; i++) {
+  bags.push({
+    id: i + 1,
+    selected: false,
+    opened: Math.random() < 0.3 // 30%已被抽出
+  });
+}
+
+
+
+// ========== 渲染福袋网格 (一行5个) ==========
+function renderBags() {
+  const grid = document.getElementById('bagsGrid');
+  grid.innerHTML = bags.map(bag => `
+    <div class="bag-item ${bag.selected ? 'selected' : ''} ${bag.opened ? 'sold-out' : ''}" 
+         onclick="${bag.opened ? '' : `toggleBag(${bag.id})`}">
+      <div class="bag-icon">🛍️</div>
+      <div class="bag-label">${bag.opened ? '已抽出' : (bag.selected ? '已选' : `No.${bag.id}`)}</div>
+      ${bag.opened ? '<div class="sold-stamp">已抽出</div>' : ''}
+    </div>
+  `).join('');
+}
+
+// ========== 渲染商品库存 (一行5个) ==========
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = products.map(p => `
+    <div class="product-item ${p.sold ? 'sold-out' : ''}">
+      <div class="product-thumb">${p.icon}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">¥${p.price}</div>
+      </div>
+      ${p.sold ? '<div class="sold-stamp">已售罄</div>' : ''}
+    </div>
+  `).join('');
+}
+
+// ========== 选择福袋 ==========
+function toggleBag(id) {
+  const bag = bags.find(b => b.id === id);
+  if (!bag || bag.opened) return;
+  bag.selected = !bag.selected;
+  renderBags();
+  updateBottom();
+}
+
+// ========== 更新底部栏 ==========
+function updateBottom() {
+  const selected = bags.filter(b => b.selected);
+  const count = selected.length;
+  const total = count * 49;
+  document.getElementById('selectedCount').textContent = count;
+  document.getElementById('totalPrice').textContent = total;
+  document.getElementById('buyBtn').classList.toggle('disabled', count === 0);
+}
+
+// ========== Tab切换 ==========
+function switchTab(tab) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('selectPanel').style.display = tab === 'select' ? 'block' : 'none';
+  document.getElementById('inventoryPanel').style.display = tab === 'inventory' ? 'block' : 'none';
+}
+
+// ========== 快速购买 ==========
+function quickBuy() {
+  // 找一个未选中的福袋
+  const available = bags.find(b => !b.opened && !b.selected);
+  if (available) {
+    toggleBag(available.id);
+    showToast('已选择1个福袋');
+  } else {
+    showToast('暂无可用福袋');
+  }
+}
+
+// ========== 购买流程 ==========
+function handleBuy() {
+  const selected = bags.filter(b => b.selected);
+  if (selected.length === 0) return;
+
+  const overlay = document.getElementById('unboxOverlay');
+  const text = document.getElementById('unboxText');
+  overlay.classList.add('show');
+  text.textContent = `正在开启 ${selected.length} 个福袋...`;
+
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    
+    // 抽奖
+    const prizes = selected.map(() => {
+      const available = products.filter(p => !p.sold);
+      return available[Math.floor(Math.random() * available.length)];
+    });
+    
+    showResult(prizes);
+    
+    // 标记福袋为已抽出
+    selected.forEach(b => {
+      b.opened = true;
+      b.selected = false;
+    });
+    
+    // 存入寄存柜（使用localStorage跨页面共享）
+    const existingItems = JSON.parse(localStorage.getItem('lockerItems') || '[]');
+    prizes.forEach(p => {
+      existingItems.push({
+        ...p,
+        time: new Date().toLocaleString(),
+        shop: '南波万旗舰店',
+        qty: 1,
+        days: 0,
+        status: 'normal',
+        presale: false,
+        selected: false
+      });
+    });
+    localStorage.setItem('lockerItems', JSON.stringify(existingItems));
+    
+    renderBags();
+    updateBottom();
+    updateStock();
+  }, 2000);
+}
+
+// ========== 显示结果 ==========
+function showResult(prizes) {
+  const content = document.getElementById('resultContent');
+
+  // 统计每个商品的数量
+  const countMap = {};
+  prizes.forEach(p => {
+    if (!countMap[p.name]) {
+      countMap[p.name] = { ...p, qty: 0 };
+    }
+    countMap[p.name].qty++;
+  });
+  const items = Object.values(countMap);
+
+  content.innerHTML = items.map(item => `
+    <div class="result-product">
+      <div class="badge">×${item.qty}</div>
+      <div class="thumb">${item.icon}</div>
+      <div class="info">
+        <div class="name">${item.name}</div>
+        <div class="qty">数量：${item.qty}</div>
+        <div class="price"><span>价值 </span>¥${item.price * item.qty}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // 汇总信息
+  const totalValue = prizes.reduce((sum, p) => sum + p.price, 0);
+  const totalQty = prizes.length;
+  document.getElementById('resultSummary').innerHTML =
+    `共获得 <em>${totalQty}</em> 件商品，总价值 <em>¥${totalValue}</em>`;
+
+  document.getElementById('resultOverlay').classList.add('show');
+}
+
+function closeResult() {
+  document.getElementById('resultOverlay').classList.remove('show');
+}
+
+function closeResultIfBg(e) {
+  if (e.target.id === 'resultOverlay') closeResult();
+}
+
+// ========== 更新库存 ==========
+function updateStock() {
+  const opened = bags.filter(b => b.opened).length;
+  document.getElementById('stockCount').textContent = 50 - opened;
+}
+
+// ========== 分享 ==========
+function handleShare() {
+  showToast('分享功能开发中');
+}
+
+// ========== 从结果弹窗跳转寄存柜 ==========
+function goToLockerFromResult() {
+  window.location.href = 'locker.html';
+}
+
+// ========== 活动规则 ==========
+function showRules() {
+  window.location.href = 'rules.html';
+}
+
+// ========== 寄存柜 ==========
+function showLocker() {
+  window.location.href = 'locker.html';
+}
+
+// ========== 返回 ==========
+function goBack() {
+  window.location.href = 'index.html';
+}
+
+function sharePage() {
+  // 调用系统分享或显示分享弹窗
+  if (navigator.share) {
+    navigator.share({
+      title: '夏季清凉福袋',
+      text: '快来看看这个超值福袋活动！',
+      url: window.location.href
+    }).catch(err => console.log('分享取消'));
+  } else {
+    // 复制链接到剪贴板
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      showToast('链接已复制到剪贴板');
+    }).catch(() => {
+      showToast('分享功能暂不可用');
+    });
+  }
+}
+
+// ========== 分期功能 ==========
+// 模拟分期数据
+const phaseData = {
+  total: 5,
+  current: 3,
+  phases: [
+    { id: 1, name: '第1期', status: 'ended', soldCount: 50, totalCount: 50, startTime: '2024-01-01', endTime: '2024-01-15' },
+    { id: 2, name: '第2期', status: 'ended', soldCount: 50, totalCount: 50, startTime: '2024-01-16', endTime: '2024-02-01' },
+    { id: 3, name: '第3期', status: 'ongoing', soldCount: 35, totalCount: 50, startTime: '2024-02-02', endTime: null },
+    { id: 4, name: '第4期', status: 'upcoming', soldCount: 0, totalCount: 50, startTime: null, endTime: null, autoStart: 'soldout' },
+    { id: 5, name: '第5期', status: 'upcoming', soldCount: 0, totalCount: 50, startTime: null, endTime: null, autoStart: 'time', startAt: '2024-03-01 10:00:00' },
+  ]
+};
+
+// 下一期开启类型：'soldout' 售罄开启 / 'time' 定时开启
+let nextPhaseType = 'soldout'; // 默认售罄开启
+let countdownInterval = null;
+
+function initPhase() {
+  // 更新期数显示
+  document.getElementById('currentPhase').textContent = phaseData.current;
+  document.getElementById('totalPhase').textContent = phaseData.total;
+
+  // 更新下一期信息
+  updateNextPhaseInfo();
+}
+
+function updateNextPhaseInfo() {
+  const currentPhase = phaseData.phases.find(p => p.id === phaseData.current);
+  const nextPhase = phaseData.phases.find(p => p.id === phaseData.current + 1);
+
+  if (!nextPhase || nextPhase.status !== 'upcoming') {
+    document.getElementById('phaseNextInfo').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('phaseNextInfo').style.display = 'block';
+
+  if (nextPhase.autoStart === 'time' && nextPhase.startAt) {
+    // 定时开启
+    nextPhaseType = 'time';
+    document.getElementById('phaseNextDesc').textContent = `第${nextPhase.id}期将于指定时间自动开启`;
+    document.getElementById('phaseCountdown').style.display = 'block';
+    startCountdown(nextPhase.startAt);
+  } else {
+    // 售罄开启
+    nextPhaseType = 'soldout';
+    const remaining = currentPhase.totalCount - currentPhase.soldCount;
+    document.getElementById('phaseNextDesc').textContent = remaining > 0
+      ? `当前售罄后自动开启第${nextPhase.id}期（剩余${remaining}个）`
+      : `第${nextPhase.id}期将在售罄后自动开启`;
+    document.getElementById('phaseCountdown').style.display = 'none';
+  }
+}
+
+function startCountdown(targetTime) {
+  if (countdownInterval) clearInterval(countdownInterval);
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const target = new Date(targetTime).getTime();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdownTime').textContent = '即将开启';
+      clearInterval(countdownInterval);
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    let timeStr = '';
+    if (days > 0) timeStr += `${days}天 `;
+    timeStr += `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    document.getElementById('countdownTime').textContent = timeStr;
+  }
+
+  updateCountdown();
+  countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+function switchPhase(phaseId) {
+  const phase = phaseData.phases.find(p => p.id === phaseId);
+  if (!phase) return;
+
+  // 更新当前期数
+  phaseData.current = phaseId;
+
+  // 重新渲染
+  initPhase();
+
+  // 更新页面内容
+  showToast(`已切换到${phase.name}`);
+}
+
+function showPhaseHistory() {
+  const modal = document.getElementById('phaseModal');
+  const body = document.getElementById('phaseModalBody');
+
+  // 渲染往期列表（已结束的期数）
+  const historyPhases = phaseData.phases.filter(p => p.status === 'ended');
+
+  body.innerHTML = historyPhases.map(phase => `
+    <div class="phase-history-item">
+      <div class="phase-history-num">${phase.id}</div>
+      <div class="phase-history-info">
+        <div class="phase-history-name">${phase.name}</div>
+      </div>
+      <div class="phase-history-btn-view" onclick="viewHistoryPhase(${phase.id})">查看</div>
+    </div>
+  `).join('');
+
+  modal.classList.add('show');
+}
+
+function hidePhaseHistory() {
+  document.getElementById('phaseModal').classList.remove('show');
+}
+
+function viewHistoryPhase(phaseId) {
+  hidePhaseHistory();
+  switchPhase(phaseId);
+  // 切换到往期活动，禁用购买，并改变按钮为"回到当前活动"
+  disableBuyForHistory();
+  // 改变右上角按钮为"回到当前活动"
+  const historyBtn = document.getElementById('historyBtn');
+  const historyBtnText = document.getElementById('historyBtnText');
+  historyBtnText.textContent = '回到当前活动';
+  historyBtn.onclick = backToCurrentPhase;
+}
+
+function backToCurrentPhase() {
+  // 找到当前进行中的期数
+  const currentPhase = phaseData.phases.find(p => p.status === 'ongoing');
+  if (currentPhase) {
+    switchPhase(currentPhase.id);
+    // 恢复购买功能
+    enableBuyForCurrent();
+    // 恢复按钮为"往期活动"
+    const historyBtn = document.getElementById('historyBtn');
+    const historyBtnText = document.getElementById('historyBtnText');
+    historyBtnText.textContent = '往期活动';
+    historyBtn.onclick = showPhaseHistory;
+    showToast(`已回到当前活动`);
+  }
+}
+
+function disableBuyForHistory() {
+  // 禁用福袋选择
+  document.querySelectorAll('.bag-item').forEach(item => {
+    item.style.pointerEvents = 'none';
+    item.style.opacity = '0.6';
+  });
+  // 禁用底部购买按钮，改为"活动已结束"
+  const buyBtn = document.getElementById('buyBtn');
+  buyBtn.textContent = '活动已结束';
+  buyBtn.disabled = true;
+  buyBtn.classList.add('disabled');
+  buyBtn.onclick = null;
+  // 隐藏选择数量
+  document.querySelector('.bottom-info').style.display = 'none';
+}
+
+function enableBuyForCurrent() {
+  // 启用福袋选择
+  document.querySelectorAll('.bag-item').forEach(item => {
+    item.style.pointerEvents = 'auto';
+    item.style.opacity = '1';
+  });
+  // 恢复底部购买按钮
+  const buyBtn = document.getElementById('buyBtn');
+  buyBtn.textContent = '立即购买';
+  buyBtn.disabled = false;
+  buyBtn.classList.remove('disabled');
+  buyBtn.onclick = handleBuy;
+  // 显示选择数量
+  document.querySelector('.bottom-info').style.display = 'block';
+}
+
+// 模拟购买后检查是否触发下一期
+function checkNextPhaseTrigger() {
+  const currentPhase = phaseData.phases.find(p => p.id === phaseData.current);
+  if (currentPhase && currentPhase.soldCount >= currentPhase.totalCount) {
+    // 当前期售罄，自动开启下一期
+    const nextPhase = phaseData.phases.find(p => p.id === phaseData.current + 1);
+    if (nextPhase && nextPhase.status === 'upcoming' && nextPhase.autoStart === 'soldout') {
+      nextPhase.status = 'ongoing';
+      phaseData.current = nextPhase.id;
+      initPhase();
+      showToast(`第${nextPhase.id}期已自动开启！`);
+    }
+  }
+}
+
+// ========== Toast ==========
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ========== 初始化 ==========
+renderBags();
+renderProducts();
+updateStock();
+initPhase();
+
+// ========== 自动跳转 ==========
+// 如果没有活动ID参数，自动跳转到首页（福袋列表页）
+(function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  if (!urlParams.get('activity') && window.location.pathname.indexOf('index.html') === -1) {
+    window.location.href = 'index.html';
+  }
+})();
+</script>
+
+</body>
+</html>

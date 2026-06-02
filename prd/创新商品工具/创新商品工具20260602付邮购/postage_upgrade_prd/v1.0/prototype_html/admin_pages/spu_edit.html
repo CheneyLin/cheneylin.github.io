@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>编辑 SPU - 付邮购</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;background:#f6f8fb}
+    .container{max-width:800px;margin:0 auto;background:#fff;padding:16px;border-radius:8px}
+    label{display:block;margin-top:12px;font-weight:600}
+    input,select{width:100%;padding:8px;margin-top:6px;border:1px solid #ddd;border-radius:6px}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .btn{display:inline-block;padding:8px 12px;background:#0b69ff;color:#fff;border-radius:6px;text-decoration:none;margin-top:12px}
+    .chip{display:inline-block;padding:6px 8px;border-radius:6px;background:#f0f4ff;margin-right:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="title">编辑 SPU</h2>
+    <form id="spuForm">
+      <label>SPU 名称</label>
+      <input id="spuName" placeholder="示例：挂绳付邮购" />
+
+      <label>SPU 底价（基础价格，留空则兼容旧逻辑）</label>
+      <input id="basePrice" placeholder="填写后表示底价，示例：0.00" />
+
+      <label>升款 SKU 列表（仅供参考，用户端仅可选择一项）</label>
+      <div id="upgrades">
+        <div class="row" style="margin-top:8px">
+          <div class="col"><input class="upgrade-name" placeholder="示例：挂钩" /></div>
+          <div style="width:110px"><input class="upgrade-price" placeholder="4.00" /></div>
+          <div><a href="#" onclick="removeUpgrade(event)">删除</a></div>
+        </div>
+      </div>
+      <p><a href="#" class="btn" onclick="addUpgrade(event)">添加升款 SKU</a></p>
+
+      <p><a href="#" class="btn" onclick="saveSPU(event)">保存</a></p>
+    </form>
+  </div>
+
+  <script>
+    function addUpgrade(e){
+      e.preventDefault();
+      const container = document.getElementById('upgrades');
+      const el = document.createElement('div');
+      el.className = 'row';
+      el.style.marginTop = '8px';
+      el.innerHTML = `<div class="col"><input class="upgrade-name" placeholder="升款名称" /></div><div style="width:110px"><input class="upgrade-price" placeholder="金额" /></div><div><a href="#" onclick="removeUpgrade(event)">删除</a></div>`;
+      container.appendChild(el);
+    }
+    function removeUpgrade(e){
+      e.preventDefault();
+      const row = e.target.closest('.row');
+      if(row) row.remove();
+    }
+    function saveSPU(e){
+      e.preventDefault();
+      // 这里仅模拟保存，真实场景调用 API
+      alert('已保存 SPU（示例）。\n注意：实际保存需调用后端接口）');
+      // 返回 SPU 列表
+      parent.postMessage({type:'OPEN_PAGE', page:'spu_list.html'}, '*');
+    }
+
+    // 初始化示例数据（从查询字符串读取 spu 参数）
+    (function(){
+      const qs = location.search.substring(1);
+      const params = new URLSearchParams(qs);
+      const spu = params.get('spu');
+      if(spu && spu !== 'new'){
+        document.getElementById('title').innerText = '编辑 SPU ' + spu;
+        document.getElementById('spuName').value = '示例 SPU ' + spu;
+        document.getElementById('basePrice').value = '0.00';
+      } else if(spu === 'new'){
+        document.getElementById('title').innerText = '新建 SPU';
+      }
+    })();
+  </script>
+</body>
+</html>

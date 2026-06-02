@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小芒定制活动页</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#f8f9fb; margin:0; padding:16px; }
+    .page { max-width: 420px; margin: 0 auto; background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,0.08); }
+    .header { padding:20px; border-bottom:1px solid #eef0f3; }
+    .header h1 { margin:0; font-size:20px; color:#111; }
+    .card { padding:16px; border-bottom:1px solid #eef0f3; }
+    .card:last-child { border-bottom:none; }
+    .card-title { font-size:16px; font-weight:600; color:#111; margin-bottom:8px; }
+    .badge { display:inline-block; padding:2px 8px; font-size:12px; border-radius:999px; background:#e5f0ff; color:#0d4d9d; margin-bottom:10px; }
+    .price-row { display:flex; justify-content:space-between; align-items:center; margin:8px 0; }
+    .price-row span { color:#444; }
+    .tag { font-size:12px; color:#888; }
+    .button { display:inline-flex; align-items:center; justify-content:center; width:100%; padding:12px 0; margin-top:12px; border-radius:12px; background:#111; color:#fff; text-decoration:none; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>小芒定制付邮购活动</h1>
+      <p class="tag">基础 SKU 可 0 元领取，付运费；升级 SKU 仅可选择一个升款服务。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">挂绳付邮购</div>
+      <div class="badge">基础款</div>
+      <div class="price-row"><span>运费</span><strong>¥9.00</strong></div>
+      <div class="price-row"><span>总价</span><strong>¥9.00</strong></div>
+      <a class="button" href="product_detail.html">查看详情</a>
+    </div>
+    <div class="card">
+      <div class="card-title">挂绳付邮购</div>
+      <div class="badge">升款服务</div>
+      <div class="price-row"><span>升款服务</span><strong>¥4.00</strong></div>
+      <div class="price-row"><span>运费</span><strong>¥9.00</strong></div>
+      <div class="price-row"><span>总价</span><strong>¥13.00</strong></div>
+      <a class="button" href="product_detail.html">切换升款</a>
+    </div>
+  </div>
+</body>
+</html>

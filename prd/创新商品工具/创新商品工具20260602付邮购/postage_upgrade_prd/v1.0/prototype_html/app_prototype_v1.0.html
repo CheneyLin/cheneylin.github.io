@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小芒定制活动页 原型</title>
+  <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../style/main.css" rel="stylesheet" />
+  <link href="../../style/app-prototype-styles.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="page-selector-bar single-only">
+    <div class="page-item-bar active" data-page="product_list.html" onclick="loadPage('product_list.html', this)">
+      <i class="bi bi-house"></i>
+      <span>活动页</span>
+    </div>
+    <div class="page-item-bar" data-page="product_detail.html" onclick="loadPage('product_detail.html', this)">
+      <i class="bi bi-info-circle"></i>
+      <span>商品详情</span>
+    </div>
+    <div class="page-item-bar" data-page="order_detail.html" onclick="loadPage('order_detail.html', this)">
+      <i class="bi bi-receipt"></i>
+      <span>订单详情</span>
+    </div>
+  </div>
+
+  <div class="page-dropdown single-only">
+    <button class="dropdown-toggle" onclick="toggleDropdown()">
+      <i class="bi bi-list"></i>
+      <span id="currentPageLabel">活动页</span>
+      <i class="bi bi-chevron-down" style="margin-left: 4px;"></i>
+    </button>
+    <div class="dropdown-menu" id="pageDropdownMenu">
+      <div class="dropdown-item active" data-page="product_list.html" onclick="loadPage('product_list.html', this)">
+        <i class="bi bi-house"></i>
+        <span>活动页</span>
+      </div>
+      <div class="dropdown-item" data-page="product_detail.html" onclick="loadPage('product_detail.html', this)">
+        <i class="bi bi-info-circle"></i>
+        <span>商品详情</span>
+      </div>
+      <div class="dropdown-item" data-page="order_detail.html" onclick="loadPage('order_detail.html', this)">
+        <i class="bi bi-receipt"></i>
+        <span>订单详情</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-bar">
+    <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
+      <i class="bi bi-phone"></i>
+      <span>单页面</span>
+    </button>
+    <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
+      <i class="bi bi-grid-3x3"></i>
+      <span>全局视图</span>
+    </button>
+  </div>
+
+  <div id="prototypeContainer" class="single-view">
+    <div class="phone-frame-container single-only" data-page-label="活动页">
+      <div class="phone-screen">
+        <iframe id="prototypeFrame" src="app_pages/product_list.html" frameborder="0"></iframe>
+      </div>
+    </div>
+    <div class="global-view global-only" style="display: none;">
+      <div class="global-view-grid">
+        <div class="phone-frame-container" data-page-label="活动页">
+          <div class="phone-screen"><iframe src="app_pages/product_list.html" frameborder="0"></iframe></div>
+        </div>
+        <div class="phone-frame-container" data-page-label="商品详情">
+          <div class="phone-screen"><iframe src="app_pages/product_detail.html" frameborder="0"></iframe></div>
+        </div>
+        <div class="phone-frame-container" data-page-label="订单详情">
+          <div class="phone-screen"><iframe src="app_pages/order_detail.html" frameborder="0"></iframe></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentView = 'single';
+    let dropdownOpen = false;
+
+    function toggleDropdown() {
+      dropdownOpen = !dropdownOpen;
+      document.getElementById('pageDropdownMenu').classList.toggle('show', dropdownOpen);
+    }
+
+    document.addEventListener('click', function(event) {
+      const dropdown = document.querySelector('.page-dropdown');
+      if (dropdown && !dropdown.contains(event.target)) {
+        dropdownOpen = false;
+        document.getElementById('pageDropdownMenu').classList.remove('show');
+      }
+    });
+
+    function switchView(mode) {
+      currentView = mode;
+      const btnSingle = document.getElementById('btnSingleView');
+      const btnGlobal = document.getElementById('btnGlobalView');
+      const singleEls = document.querySelectorAll('.single-only');
+      const globalEls = document.querySelectorAll('.global-only');
+
+      if (mode === 'single') {
+        btnSingle.classList.add('active');
+        btnGlobal.classList.remove('active');
+        singleEls.forEach(el => el.style.display = '');
+        globalEls.forEach(el => el.style.display = 'none');
+      } else {
+        btnGlobal.classList.add('active');
+        btnSingle.classList.remove('active');
+        singleEls.forEach(el => el.style.display = 'none');
+        globalEls.forEach(el => el.style.display = '');
+      }
+    }
+
+    function loadPage(pageUrl, element) {
+      document.getElementById('prototypeFrame').src = 'app_pages/' + pageUrl;
+      const labelMap = {
+        'product_list.html': '活动页',
+        'product_detail.html': '商品详情',
+        'order_detail.html': '订单详情'
+      };
+      document.getElementById('currentPageLabel').innerText = labelMap[pageUrl] || '页面';
+      document.querySelectorAll('.page-item-bar').forEach(bar => bar.classList.toggle('active', bar.getAttribute('data-page') === pageUrl));
+      document.querySelectorAll('.dropdown-item').forEach(item => item.classList.toggle('active', item.getAttribute('data-page') === pageUrl));
+      dropdownOpen = false;
+      document.getElementById('pageDropdownMenu').classList.remove('show');
+    }
+  </script>
+</body>
+</html>

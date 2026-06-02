@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SPU 列表 - 付邮购管理</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;background:#f6f8fb}
+    .container{max-width:1000px;margin:0 auto;background:#fff;padding:16px;border-radius:8px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+    .btn{display:inline-block;padding:6px 10px;background:#0b69ff;color:#fff;border-radius:6px;text-decoration:none}
+    .muted{color:#888;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>SPU 列表</h2>
+    <p class="muted">在此创建或管理付邮购活动的 SPU 与底价、升款 SKU 配置。</p>
+    <table>
+      <thead>
+        <tr><th>SPU ID</th><th>名称</th><th>底价</th><th>升款 SKU 数</th><th>操作</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1001</td>
+          <td>挂绳付邮购</td>
+          <td>¥0.00</td>
+          <td>2</td>
+          <td>
+            <a class="btn" href="#" onclick="openEdit('1001')">编辑</a>
+          </td>
+        </tr>
+        <tr>
+          <td>1002</td>
+          <td>冰箱贴付邮购</td>
+          <td>¥0.00</td>
+          <td>1</td>
+          <td>
+            <a class="btn" href="#" onclick="openEdit('1002')">编辑</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px"><a class="btn" href="#" onclick="createSPU()">新建 SPU</a></p>
+  </div>
+
+  <script>
+    function openEdit(spuId){
+      const frame = parent.document.getElementById('adminFrame');
+      frame.src = 'admin_pages/spu_edit.html?spu=' + spuId;
+    }
+    function createSPU(){
+      const frame = parent.document.getElementById('adminFrame');
+      frame.src = 'admin_pages/spu_edit.html?spu=new';
+    }
+  </script>
+</body>
+</html>

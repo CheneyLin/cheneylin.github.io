@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单管理 - 电子吧唧 ADMIN</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../../style/main.css" rel="stylesheet">
+    <link href="../../../style/admin-styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <div class="page-title">订单管理</div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-body">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="text" placeholder="搜索订单号/用户手机号">
+                    <select>
+                        <option value="">全部 IP 包</option>
+                        <option value="1">初音未来 2024</option>
+                        <option value="2">原神 雷电将军</option>
+                    </select>
+                    <button class="btn-primary">查询</button>
+                    <button class="btn-outline">重置</button>
+                </div>
+                <div class="toolbar-right">
+        <button class="btn-primary">
+            <i class="bi bi-download"></i> 导出 Excel
+        </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-header">订单列表</div>
+        <div class="admin-section-body no-padding">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>订单号</th>
+                        <th>IP 包</th>
+                        <th>抽选类型</th>
+                        <th>金额</th>
+                        <th>获得图片</th>
+                        <th>支付状态</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ORD202604080001</td>
+                        <td>初音未来 2024</td>
+                        <td>10 连抽</td>
+                        <td>¥99.00</td>
+                        <td>
+                            <div class="order-images">
+                                <div class="order-image" style="background: #fff1f0;"><i class="bi bi-star-fill" style="color: #ff5b4f;"></i></div>
+                                <div class="order-image" style="background: #fff7e6;"><i class="bi bi-person" style="color: #fa8c16;"></i></div>
+                                <span style="color: #808080; font-size: 12px;">+8</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-active">已支付</span></td>
+                        <td>2026-04-08 09:30</td>
+                        <td>
+                            <button class="btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD202604080002</td>
+                        <td>原神 雷电将军</td>
+                        <td>单抽</td>
+                        <td>¥9.90</td>
+                        <td>
+                            <div class="order-images">
+                                <div class="order-image" style="background: #fff7e6;"><i class="bi bi-lightning" style="color: #fa8c16;"></i></div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-active">已支付</span></td>
+                        <td>2026-04-08 09:25</td>
+                        <td>
+                            <button class="btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD202604080003</td>
+                        <td>初音未来 2024</td>
+                        <td>整包购买</td>
+                        <td>¥150.00</td>
+                        <td>
+                            <div class="order-images">
+                                <div class="order-image" style="background: #f6ffed;"><i class="bi bi-person" style="color: #52c41a;"></i></div>
+                                <span style="color: #808080; font-size: 12px;">20 张</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-active">已支付</span></td>
+                        <td>2026-04-08 09:15</td>
+                        <td>
+                            <button class="btn-action" onclick="showModal('orderDetailModal')">详情</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
+
+    <!-- 订单详情弹窗 -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">订单详情 - ORD202604080001</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div style="font-size: 13px; color: #999; margin-bottom: 6px;">订单号</div>
+                                <div style="font-size: 14px; color: #333;">ORD202604080001</div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="font-size: 13px; color: #999; margin-bottom: 6px;">用户信息</div>
+                                <div style="font-size: 14px; color: #333;">用户 ID: 10086 | 手机号: 138****1234</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-size: 13px; color: #999; margin-bottom: 6px;">IP 包</div>
+                        <div style="font-size: 14px; color: #333;">初音未来 2024（ID: 1001）</div>
+                    </div>
+                    <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-size: 13px; color: #999; margin-bottom: 6px;">抽选类型</div>
+                        <div style="font-size: 14px; color: #333;">10 连抽（必中 SR）</div>
+                    </div>
+                    <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-size: 13px; color: #999; margin-bottom: 6px;">支付金额</div>
+                        <div style="font-size: 18px; color: #ff4d4f; font-weight: 600;">¥99.00</div>
+                    </div>
+                    <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-size: 13px; color: #999; margin-bottom: 6px;">获得图片</div>
+                        <div class="order-images" style="margin-top: 8px;">
+                            <div class="order-image" style="background: #fff1f0;"><i class="bi bi-star-fill" style="color: #ff5b4f;"></i></div>
+                            <div class="order-image" style="background: #fff7e6;"><i class="bi bi-person" style="color: #fa8c16;"></i></div>
+                            <div class="order-image" style="background: #fff7e6;"><i class="bi bi-person" style="color: #fa8c16;"></i></div>
+                            <div class="order-image" style="background: #f6ffed;"><i class="bi bi-circle" style="color: #52c41a;"></i></div>
+                            <div class="order-image" style="background: #f6ffed;"><i class="bi bi-circle" style="color: #52c41a;"></i></div>
+                            <div class="order-image" style="background: #f6ffed;"><i class="bi bi-circle" style="color: #52c41a;"></i></div>
+                            <span style="color: #808080; font-size: 12px;">+4</span>
+                        </div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #666;">
+                            SSR × 1（保底）, SR × 3, R × 6
+                        </div>
+                    </div>
+                    <div style="padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-size: 13px; color: #999; margin-bottom: 6px;">支付状态</div>
+                        <div style="font-size: 14px; color: #333;"><span class="badge badge-active">已支付</span></div>
+                    </div>
+                    <div style="padding: 20px;">
+                        <div style="font-size: 13px; color: #999; margin-bottom: 6px;">支付时间</div>
+                        <div style="font-size: 14px; color: #333;">2026-04-08 09:30:15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/bootstrap.min.js"></script>
+    <script>
+        // 显示弹窗
+        function showModal(modalId) {
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+        }
+        
+        // 页面导航函数
+        function navigateToPage(pageUrl) {
+            window.parent.postMessage({
+                type: 'PAGE_NAVIGATION',
+                page: pageUrl
+            }, '*');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽选结算弹窗 - 电子吧唧 2 期</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet" />
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../../style/main.css" rel="stylesheet">
+    <link href="../../../style/app-styles.css" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+    <div id="app_draw_result" class="phone-frame">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <div class="demo-hint">
+                <p>抽选结算弹窗演示</p>
+                <button class="demo-btn" onclick="showModal()">
+                    <i class="bi bi-play-fill"></i> 展示弹窗
+                </button>
+            </div>
+        </div>
+
+        <!-- 弹窗遮罩 -->
+        <div class="modal-overlay" id="resultModal" style="display: none;">
+            <div class="modal-content">
+                <!-- 弹窗头部 -->
+                <div class="modal-header">
+                    <h2 id="modalTitle">恭喜获得稀有吧唧！</h2>
+                    <p id="modalSubtitle">本次抽选获得 3 张图片</p>
+                </div>
+
+                <!-- 弹窗主体 -->
+                <div class="modal-body">
+                    <!-- 稀有提示 -->
+                    <div class="rare-notice" id="rareNotice">
+                        <i class="bi bi-stars"></i>
+                        <div>
+                            <p><strong>SSR 超稀有！</strong></p>
+                            <p>稀有吧唧支持实体配送，请填写收货地址</p>
+                        </div>
+                    </div>
+
+                    <!-- 结果网格 -->
+                    <div class="result-grid">
+                        <!-- SSR 卡片 -->
+                        <div class="result-item ssr">
+                            <div class="result-item-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <i class="bi bi-emoji-smile" style="color: var(--geist-white);"></i>
+                            </div>
+                            <span class="result-item-badge result-level-ssr">SSR</span>
+                        </div>
+
+                        <!-- SR 卡片 -->
+                        <div class="result-item">
+                            <div class="result-item-image" style="background: linear-gradient(135deg, #0a72ef, #00c6ff);">
+                                <i class="bi bi-ghost" style="color: var(--geist-white);"></i>
+                            </div>
+                            <span class="result-item-badge result-level-sr">SR</span>
+                        </div>
+
+                        <!-- R 卡片 -->
+                        <div class="result-item">
+                            <div class="result-item-image" style="background: var(--geist-gray-100);">
+                                <i class="bi bi-image" style="color: var(--geist-gray-400);"></i>
+                            </div>
+                            <span class="result-item-badge result-level-r">R</span>
+                        </div>
+                    </div>
+
+                    <!-- 地址提示 -->
+                    <div class="address-hint" id="addressHint">
+                        <p><i class="bi bi-geo-alt"></i> 您还未填写收货地址</p>
+                        <a href="#" onclick="goToAddress(); return false;">
+                            去填写 <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 弹窗底部按钮 -->
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="goToGallery()">
+                        去查看
+                    </button>
+                    <button class="btn-secondary" onclick="closeModal()">
+                        继续抽选
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal() {
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+            // 返回 IP 包详情页
+            navigateToPage('ip_detail.html');
+        }
+
+        function goToGallery() {
+            // 跳转到图库
+            navigateToPage('badge_gallery.html');
+        }
+
+        function goToAddress() {
+            // 跳转到邮寄页面
+            navigateToPage('badge_delivery.html');
+        }
+
+        // 页面加载时自动显示弹窗
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                showModal();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

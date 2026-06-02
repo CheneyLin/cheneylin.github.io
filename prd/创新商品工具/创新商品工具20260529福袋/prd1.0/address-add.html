@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>新增收货地址</title>
+<style>
+  :root {
+    --primary: #3B9EFF;
+    --primary-light: #5CB3FF;
+    --bg-light: #F0F9FF;
+    --white: #FFFFFF;
+    --gray-light: #F5F5F5;
+    --gray-text: #999999;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --yellow: #FFD700;
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-full: 24px;
+    --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-family);
+    background: var(--bg-light);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, #E8F4FF 0%, var(--bg-light) 100%);
+    border-radius: 0 0 30px 30px;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(0deg, #E8F4FF 0%, transparent 100%);
+    border-radius: 30px 30px 0 0;
+    z-index: 0;
+  }
+
+  .page-header { position: relative; z-index: 1; }
+  .form-section { position: relative; z-index: 1; }
+  .switch-row { position: relative; z-index: 1; }
+  .bottom-bar { z-index: 100; }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+  }
+
+  .page-header .back {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .page-header .title {
+    font-size: 17px;
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .form-section {
+    padding: 16px;
+  }
+
+  .form-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  .form-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+
+  .form-row:last-child { border-bottom: none; }
+
+  .form-label {
+    width: 80px;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .form-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+  }
+
+  .form-input::placeholder { color: var(--gray-text); }
+
+  .form-row.with-action {
+    padding-right: 0;
+  }
+
+  .region-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .region-text {
+    font-size: 14px;
+    color: var(--gray-text);
+  }
+
+  .region-text.selected { color: var(--text-primary); }
+
+  .region-arrow {
+    width: 20px;
+    height: 20px;
+    color: var(--gray-text);
+  }
+
+  /* 默认地址开关 */
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--white);
+    margin-top: 12px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+  }
+
+  .switch-label {
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+
+  .switch-toggle {
+    width: 44px;
+    height: 26px;
+    background: var(--gray-text);
+    border-radius: 13px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .switch-toggle.active { background: var(--yellow); }
+
+  .switch-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  .switch-toggle.active::after { transform: translateX(18px); }
+
+  /* 保存按钮 */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: var(--white);
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .save-btn {
+    width: 100%;
+    padding: 14px 0;
+    background: var(--yellow);
+    color: var(--text-primary);
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* 地区选择弹窗（简化版） */
+  .region-picker {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: var(--white);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    z-index: 200;
+    padding: 16px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  }
+
+  .region-picker.show { display: block; }
+
+  .picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .picker-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .picker-close {
+    width: 24px;
+    height: 24px;
+    color: var(--gray-text);
+    cursor: pointer;
+  }
+
+  .picker-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .picker-option {
+    padding: 8px 16px;
+    background: var(--gray-light);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  .picker-option.selected {
+    background: var(--primary);
+    color: var(--white);
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="back" onclick="goBack()">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </div>
+  <div class="title">新增收货地址</div>
+  <div style="width:32px;"></div>
+</div>
+
+<div class="form-section">
+  <div class="form-card">
+    <div class="form-row">
+      <span class="form-label">收件人</span>
+      <input type="text" class="form-input" id="contactInput" placeholder="请填写收件人姓名">
+    </div>
+    <div class="form-row">
+      <span class="form-label">联系电话</span>
+      <input type="tel" class="form-input" id="phoneInput" placeholder="收件人号码">
+    </div>
+    <div class="form-row with-action" onclick="showRegionPicker()">
+      <span class="form-label">所在地区</span>
+      <div class="region-btn">
+        <span class="region-text" id="regionText">请选择</span>
+        <svg class="region-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+    </div>
+    <div class="form-row">
+      <span class="form-label">详细地址</span>
+      <input type="text" class="form-input" id="detailInput" placeholder="街道、楼牌号等">
+    </div>
+  </div>
+
+  <div class="switch-row">
+    <span class="switch-label">设置为默认地址</span>
+    <div class="switch-toggle" id="defaultSwitch" onclick="toggleDefault()"></div>
+  </div>
+</div>
+
+<!-- 地区选择弹窗 -->
+<div class="region-picker" id="regionPicker">
+  <div class="picker-header">
+    <span class="picker-title">选择地区</span>
+    <svg class="picker-close" onclick="hideRegionPicker()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </div>
+  <div class="picker-options" id="pickerOptions"></div>
+</div>
+
+<div class="bottom-bar">
+  <button class="save-btn" onclick="saveAddress()">保存</button>
+</div>
+
+<script>
+let isDefault = false;
+let selectedRegion = { province: '', city: '', district: '' };
+
+const regions = {
+  provinces: ['湖南省', '广东省', '黑龙江省', '北京市', '上海市'],
+  cities: {
+    '湖南省': ['长沙市', '益阳市', '衡阳市'],
+    '广东省': ['深圳市', '广州市', '东莞市'],
+    '黑龙江省': ['牡丹江市', '哈尔滨市', '大庆市'],
+    '北京市': ['北京市'],
+    '上海市': ['上海市']
+  }
+};
+
+function toggleDefault() {
+  isDefault = !isDefault;
+  document.getElementById('defaultSwitch').classList.toggle('active', isDefault);
+}
+
+function showRegionPicker() {
+  const options = document.getElementById('pickerOptions');
+  options.innerHTML = regions.provinces.map(p => 
+    `<div class="picker-option" onclick="selectProvince('${p}')">${p}</div>`
+  ).join('');
+  document.getElementById('regionPicker').classList.add('show');
+}
+
+function selectProvince(province) {
+  selectedRegion.province = province;
+  selectedRegion.city = '';
+  selectedRegion.district = '';
+  
+  const options = document.getElementById('pickerOptions');
+  const cities = regions.cities[province] || [];
+  
+  options.innerHTML = `
+    <div class="picker-option selected">${province}</div>
+    ${cities.map(c => `<div class="picker-option" onclick="selectCity('${province}', '${c}')">${c}</div>`).join('')}
+  `;
+}
+
+function selectCity(province, city) {
+  selectedRegion.province = province;
+  selectedRegion.city = city;
+  
+  document.getElementById('regionText').textContent = province + ' ' + city;
+  document.getElementById('regionText').classList.add('selected');
+  document.getElementById('regionPicker').classList.remove('show');
+}
+
+function hideRegionPicker() {
+  document.getElementById('regionPicker').classList.remove('show');
+}
+
+function goBack() { window.history.back(); }
+
+function saveAddress() {
+  const contact = document.getElementById('contactInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
+  const detail = document.getElementById('detailInput').value.trim();
+  
+  if (!contact) { alert('请填写收件人'); return; }
+  if (!phone) { alert('请填写联系电话'); return; }
+  if (!selectedRegion.province || !selectedRegion.city) { alert('请选择所在地区'); return; }
+  if (!detail) { alert('请填写详细地址'); return; }
+  
+  // 保存地址（这里简化处理，实际应该存到localStorage或服务器）
+  const addresses = JSON.parse(localStorage.getItem('userAddresses') || '[]');
+  addresses.push({
+    id: Date.now(),
+    contact,
+    phone,
+    province: selectedRegion.province,
+    city: selectedRegion.city,
+    district: selectedRegion.district,
+    street: detail,
+    isDefault
+  });
+  localStorage.setItem('userAddresses', JSON.stringify(addresses));
+  
+  alert('地址保存成功');
+  window.history.back();
+}
+</script>
+
+</body>
+</html>
