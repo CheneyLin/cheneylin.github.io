@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>小芒定制活动页 原型</title>
+  <title>付邮购升级 - APP 端原型</title>
   <link href="../../assets/bootstrap-icons.css" rel="stylesheet" />
   <link href="../../style/main.css" rel="stylesheet" />
   <link href="../../style/app-prototype-styles.css" rel="stylesheet" />
 </head>
 <body>
+  <!-- Top Center Page Selector Bar (Single View Only) - Desktop -->
   <div class="page-selector-bar single-only">
     <div class="page-item-bar active" data-page="product_list.html" onclick="loadPage('product_list.html', this)">
       <i class="bi bi-house"></i>
@@ -24,6 +25,7 @@
     </div>
   </div>
 
+  <!-- Top Center Page Dropdown (Single View Only) - Mobile -->
   <div class="page-dropdown single-only">
     <button class="dropdown-toggle" onclick="toggleDropdown()">
       <i class="bi bi-list"></i>
@@ -46,10 +48,11 @@
     </div>
   </div>
 
+  <!-- Top Right Controls Bar -->
   <div class="controls-bar">
     <button class="control-btn active" id="btnSingleView" onclick="switchView('single')">
       <i class="bi bi-phone"></i>
-      <span>单页面</span>
+      <span>单独界面</span>
     </button>
     <button class="control-btn" id="btnGlobalView" onclick="switchView('global')">
       <i class="bi bi-grid-3x3"></i>
@@ -57,22 +60,32 @@
     </button>
   </div>
 
+  <!-- Main Prototype Container -->
   <div id="prototypeContainer" class="single-view">
+    <!-- Single View: One Phone Frame -->
     <div class="phone-frame-container single-only" data-page-label="活动页">
       <div class="phone-screen">
         <iframe id="prototypeFrame" src="app_pages/product_list.html" frameborder="0"></iframe>
       </div>
     </div>
+
+    <!-- Global View: All Phone Frames -->
     <div class="global-view global-only" style="display: none;">
       <div class="global-view-grid">
         <div class="phone-frame-container" data-page-label="活动页">
-          <div class="phone-screen"><iframe src="app_pages/product_list.html" frameborder="0"></iframe></div>
+          <div class="phone-screen">
+            <iframe src="app_pages/product_list.html" frameborder="0"></iframe>
+          </div>
         </div>
         <div class="phone-frame-container" data-page-label="商品详情">
-          <div class="phone-screen"><iframe src="app_pages/product_detail.html" frameborder="0"></iframe></div>
+          <div class="phone-screen">
+            <iframe src="app_pages/product_detail.html" frameborder="0"></iframe>
+          </div>
         </div>
         <div class="phone-frame-container" data-page-label="订单详情">
-          <div class="phone-screen"><iframe src="app_pages/order_detail.html" frameborder="0"></iframe></div>
+          <div class="phone-screen">
+            <iframe src="app_pages/order_detail.html" frameborder="0"></iframe>
+          </div>
         </div>
       </div>
     </div>
@@ -80,54 +93,185 @@
 
   <script>
     let currentView = 'single';
+    let currentPage = 'product_list.html';
     let dropdownOpen = false;
 
+    // Toggle dropdown menu
     function toggleDropdown() {
       dropdownOpen = !dropdownOpen;
-      document.getElementById('pageDropdownMenu').classList.toggle('show', dropdownOpen);
+      const menu = document.getElementById('pageDropdownMenu');
+      if (dropdownOpen) {
+        menu.classList.add('show');
+      } else {
+        menu.classList.remove('show');
+      }
     }
 
+    // Close dropdown when clicking outside
     document.addEventListener('click', function(event) {
       const dropdown = document.querySelector('.page-dropdown');
       if (dropdown && !dropdown.contains(event.target)) {
         dropdownOpen = false;
-        document.getElementById('pageDropdownMenu').classList.remove('show');
+        const menu = document.getElementById('pageDropdownMenu');
+        if (menu) {
+          menu.classList.remove('show');
+        }
       }
     });
 
+    // Switch between single and global view
     function switchView(mode) {
       currentView = mode;
+      const container = document.getElementById('prototypeContainer');
       const btnSingle = document.getElementById('btnSingleView');
       const btnGlobal = document.getElementById('btnGlobalView');
-      const singleEls = document.querySelectorAll('.single-only');
-      const globalEls = document.querySelectorAll('.global-only');
 
       if (mode === 'single') {
+        container.className = 'single-view';
         btnSingle.classList.add('active');
         btnGlobal.classList.remove('active');
-        singleEls.forEach(el => el.style.display = '');
-        globalEls.forEach(el => el.style.display = 'none');
+
+        document.querySelectorAll('.single-only').forEach(el => {
+          el.style.display = '';
+        });
+        document.querySelectorAll('.global-only').forEach(el => {
+          el.style.display = 'none';
+        });
       } else {
+        container.className = 'global-view';
         btnGlobal.classList.add('active');
         btnSingle.classList.remove('active');
-        singleEls.forEach(el => el.style.display = 'none');
-        globalEls.forEach(el => el.style.display = '');
+
+        document.querySelectorAll('.single-only').forEach(el => {
+          el.style.display = 'none';
+        });
+        document.querySelectorAll('.global-only').forEach(el => {
+          el.style.display = '';
+        });
       }
+
+      window.location.hash = mode;
     }
 
+    // Load specific page in single view
     function loadPage(pageUrl, element) {
-      document.getElementById('prototypeFrame').src = 'app_pages/' + pageUrl;
-      const labelMap = {
+      currentPage = pageUrl;
+      const frame = document.getElementById('prototypeFrame');
+      frame.src = `app_pages/${pageUrl}`;
+
+      const phoneFrame = document.querySelector('.phone-frame-container.single-only');
+      if (phoneFrame) {
+        const pageLabels = {
+          'product_list.html': '活动页',
+          'product_detail.html': '商品详情',
+          'order_detail.html': '订单详情'
+        };
+        phoneFrame.setAttribute('data-page-label', pageLabels[pageUrl] || '页面');
+      }
+
+      document.querySelectorAll('.page-item-bar').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      if (element) {
+        element.classList.add('active');
+        const pageName = element.getAttribute('data-page');
+        const otherItem = document.querySelector(`[data-page="${pageName}"]:not(.${element.className.split(' ')[0]})`);
+        if (otherItem) {
+          otherItem.classList.add('active');
+        }
+      }
+
+      updateDropdownLabel();
+
+      dropdownOpen = false;
+      const menu = document.getElementById('pageDropdownMenu');
+      if (menu) {
+        menu.classList.remove('show');
+      }
+
+      window.location.hash = `single-${pageUrl}`;
+    }
+
+    // Update dropdown label
+    function updateDropdownLabel() {
+      const pageNames = {
         'product_list.html': '活动页',
         'product_detail.html': '商品详情',
         'order_detail.html': '订单详情'
       };
-      document.getElementById('currentPageLabel').innerText = labelMap[pageUrl] || '页面';
-      document.querySelectorAll('.page-item-bar').forEach(bar => bar.classList.toggle('active', bar.getAttribute('data-page') === pageUrl));
-      document.querySelectorAll('.dropdown-item').forEach(item => item.classList.toggle('active', item.getAttribute('data-page') === pageUrl));
-      dropdownOpen = false;
-      document.getElementById('pageDropdownMenu').classList.remove('show');
+      const label = document.getElementById('currentPageLabel');
+      if (label) {
+        label.textContent = pageNames[currentPage] || '页面';
+      }
     }
+
+    // Handle URL hash changes
+    window.addEventListener('hashchange', function() {
+      const hash = window.location.hash.substring(1);
+      handleHashChange(hash);
+    });
+
+    // Handle hash on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        handleHashChange(hash);
+      }
+      updateDropdownLabel();
+    });
+
+    function handleHashChange(hash) {
+      if (hash === 'global') {
+        switchView('global');
+      } else if (hash === 'single') {
+        switchView('single');
+      } else if (hash.startsWith('single-')) {
+        const pageUrl = hash.substring(7);
+        switchView('single');
+        const pageItem = document.querySelector(`[data-page="${pageUrl}"]`);
+        if (pageItem) {
+          loadPage(pageUrl, pageItem);
+        }
+      }
+    }
+
+    // Listen for messages from PRD (highlight functionality)
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.action === 'highlight' && event.data.featureId) {
+        const featureId = event.data.featureId;
+
+        let targetPage = null;
+        if (featureId.startsWith('app_product_list')) targetPage = 'product_list.html';
+        else if (featureId.startsWith('app_product_detail')) targetPage = 'product_detail.html';
+        else if (featureId.startsWith('app_order_detail')) targetPage = 'order_detail.html';
+
+        if (targetPage) {
+          if (currentView !== 'single') {
+            switchView('single');
+          }
+
+          setTimeout(() => {
+            const pageItem = document.querySelector(`[data-page="${targetPage}"]`);
+            if (pageItem) {
+              loadPage(targetPage, pageItem);
+
+              const phoneFrame = document.querySelector('.phone-frame-container.single-only');
+              if (phoneFrame) {
+                const originalBoxShadow = phoneFrame.style.boxShadow;
+                phoneFrame.style.boxShadow = '0 0 0 3px #0070f3, rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 4px';
+                setTimeout(() => {
+                  phoneFrame.style.boxShadow = originalBoxShadow;
+                }, 2000);
+              }
+            }
+          }, 100);
+        }
+      }
+    });
   </script>
 </body>
 </html>
