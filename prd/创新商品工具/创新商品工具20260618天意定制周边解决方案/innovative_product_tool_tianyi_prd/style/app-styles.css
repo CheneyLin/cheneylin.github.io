@@ -1,0 +1,493 @@
+/* ============================================
+   APP 端页面样式
+   APP Prototype Pages Styles
+   ============================================ */
+
+/* === Phone Frame (APP Mobile Container - Minimal) === */
+.phone-frame {
+    width: 375px;
+    height: 812px;
+    background: var(--geist-white);
+    border-radius: var(--radius-comfortable);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    border: 1px solid var(--shadow-border-light);
+}
+
+.phone-frame.highlighted {
+    border-color: var(--develop-blue);
+    box-shadow: 0 0 0 3px var(--focus-blue), var(--shadow-card-full);
+}
+
+/* === Status Bar === */
+.status-bar {
+    height: 44px;
+    background: var(--geist-white);
+    position: relative;
+    padding: 0 var(--space-16);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--geist-black);
+    box-shadow: var(--shadow-border-light);
+}
+
+/* === Page Content === */
+.page-content {
+    height: calc(812px - 44px);
+    overflow-y: auto;
+    position: relative;
+    background: var(--geist-white);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.page-content::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+/* === Navigation Bar === */
+.nav-bar {
+    height: 44px;
+    background: var(--geist-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-16);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+
+.nav-back {
+    font-size: 20px;
+    color: var(--geist-black);
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.nav-back:hover {
+    color: var(--geist-gray-600);
+}
+
+.nav-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.34px;
+    color: var(--geist-black);
+}
+
+.nav-action {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--link-blue);
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.nav-action:hover {
+    opacity: 0.85;
+}
+
+/* === TabBar (Fixed Bottom) === */
+.tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--geist-white);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -1px 0 0 var(--geist-gray-100);
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: var(--geist-gray-400);
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: color 0.15s;
+}
+
+.tab-item i {
+    font-size: 22px;
+}
+
+.tab-item.active {
+    color: var(--geist-black);
+}
+
+.tab-item:hover {
+    color: var(--geist-gray-600);
+}
+
+/* === Image Grid === */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.image-card {
+    aspect-ratio: 1;
+    border-radius: var(--radius-image);
+    overflow: hidden;
+    position: relative;
+}
+
+.image-card .w-full.h-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-level-tag {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+}
+
+/* === Draw Animation === */
+.draw-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.draw-result-image {
+    width: 120px;
+    height: 120px;
+    background: var(--geist-gray-100);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    color: var(--geist-gray-400);
+}
+
+/* === Purchase Option === */
+.purchase-option {
+    background: var(--geist-white);
+    border: 1px solid var(--geist-gray-100);
+    border-radius: var(--radius-comfortable);
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.purchase-option:hover {
+    border-color: var(--geist-gray-200);
+    box-shadow: var(--shadow-subtle);
+}
+
+.purchase-option.recommended {
+    border-color: var(--geist-black);
+    box-shadow: 0 0 0 1px var(--geist-black);
+}
+
+.purchase-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.purchase-option-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--geist-black);
+}
+
+.purchase-option-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ship-red);
+}
+
+.purchase-option-desc {
+    font-size: 13px;
+    color: var(--geist-gray-500);
+}
+
+/* === Probability Table === */
+.probability-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.probability-table th {
+    text-align: left;
+    padding: 8px 0;
+    color: var(--geist-gray-500);
+    font-weight: 500;
+    border-bottom: 1px solid var(--geist-gray-100);
+}
+
+.probability-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--geist-gray-50);
+}
+
+/* === IP Card Gradient === */
+.ip-card-gradient-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+.ip-card-gradient-2 { background: linear-gradient(135deg, #0a72ef, #00c6ff); }
+.ip-card-gradient-3 { background: linear-gradient(135deg, #ff5b4f, #ff9a76); }
+.ip-cover-gradient { background: linear-gradient(135deg, #667eea, #764ba2); }
+
+/* === Result Card Animation === */
+.result-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.result-card.ssr::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+}
+
+.result-level-ssr {
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    color: #fff;
+    font-weight: 700;
+}
+
+.result-level-sr {
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    font-weight: 700;
+}
+
+.result-level-r {
+    background: var(--geist-gray-100);
+    color: var(--geist-gray-600);
+    font-weight: 600;
+}
+
+/* === Result Grid === */
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.result-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: var(--geist-gray-50);
+    border: 1px solid var(--geist-gray-100);
+}
+
+.result-item-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+}
+
+.result-item-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* === Rare Notice === */
+.rare-notice {
+    background: linear-gradient(135deg, #fff9e6, #fff3cc);
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rare-notice i {
+    font-size: 24px;
+    color: #ffaa00;
+}
+
+.rare-notice p {
+    font-size: 13px;
+    color: var(--geist-gray-600);
+}
+
+.rare-notice p strong {
+    color: var(--geist-black);
+}
+
+/* === Address Hint === */
+.address-hint {
+    background: var(--geist-gray-50);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+/* === Upgrade Rule Card === */
+.upgrade-rule-card {
+    background: var(--geist-gray-50);
+    border: 1px solid var(--geist-gray-100);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.upgrade-rule-card.active {
+    border-color: var(--geist-black);
+    background: var(--geist-white);
+    box-shadow: 0 0 0 2px var(--geist-black);
+}
+
+.upgrade-rule-card.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* === Material Grid === */
+.material-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.material-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: var(--geist-gray-50);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.material-item.selected {
+    border-color: var(--geist-black);
+    box-shadow: 0 0 0 2px var(--geist-black);
+}
+
+.material-item-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+
+.material-item-check {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: var(--geist-black);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--geist-white);
+    font-size: 14px;
+}
+
+.material-item.selected .material-item-check {
+    display: flex;
+}
+
+/* === Upgrade Arrow === */
+.upgrade-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: var(--geist-gray-400);
+}
+
+.upgrade-arrow i {
+    font-size: 32px;
+}
+
+/* === Upgrade Preview === */
+.upgrade-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--geist-gray-50);
+    border-radius: 12px;
+    margin: 16px 0;
+}
+
+.upgrade-preview-item {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+}
+
+.upgrade-preview-arrow {
+    color: var(--geist-gray-400);
+    font-size: 24px;
+}
+
+/* === Size Utilities === */
+.w-16 { width: 64px; }
+.h-16 { height: 64px; }
+.w-20 { width: 80px; }
+.h-20 { height: 80px; }
+.w-32 { width: 128px; }
+.h-32 { height: 128px; }
+.w-40 { width: 160px; }
+.h-40 { height: 160px; }
+.h-48 { height: 192px; }
+
+/* === Position Utilities === */
+.top-2 { top: 8px; }
+.left-2 { left: 8px; }
+.bottom-2 { bottom: 8px; }
+.right-2 { right: 8px; }

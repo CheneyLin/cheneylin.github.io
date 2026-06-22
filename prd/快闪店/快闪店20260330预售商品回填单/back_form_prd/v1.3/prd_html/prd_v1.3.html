@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>快闪店预售商品回填单 PRD v1.3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../assets/mermaid.min.js"></script>
+  <style>
+    :root { --bg:#fff; --fg:#1f2329; --muted:#606266; --border:#e4e7ed; --primary:#667eea; }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; }
+    .page { min-width:1024px; margin:0 auto; padding:24px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>快闪店预售商品回填单 <span style="font-size:16px;color:#666;">产品需求文档</span></h1>
+    <p class="meta">版本：v1.3｜状态：草案｜创建时间：2026-06-12｜产品经理：林长宇</p>
+
+    <!-- 为了简洁，本文件为 v1.2 内容的复制并新增发货管理模块占位 -->
+    <div class="card">
+      <h2>5. 详细方案（节选）</h2>
+      <div class="feature-module" id="admin_shipments_admin">
+        <h3>5.2.3 快闪店 - 商家发货管理 <button class="highlight-btn" onclick="highlightFeature('admin_shipments_admin')">查看原型</button></h3>
+        <p class="meta"><strong>功能描述</strong>：商家在后台管理发货，包括单个/批量发货、填写物流公司与运单号、导出发货清单和处理异常。</p>
+        <div class="field-group">
+          <div class="field-label">主要字段</div>
+          <ul class="list">
+            <li>订单号、回填单号、商家订单号</li>
+            <li>订单类型（支持商家发货的订单类型）</li>
+            <li>物流公司（下拉选择）</li>
+            <li>运单号（文本）</li>
+            <li>包裹数、仓库、发货时间</li>
+          </ul>
+        </div>
+        <div class="field-group" style="margin-top:12px;">
+          <div class="field-label">操作</div>
+          <ul class="list">
+            <li>单个发货：在订单详情填写物流信息并标记为已发货</li>
+            <li>批量发货：列表批量选择订单，导入运单号或组合填写后批量提交</li>
+            <li>异常处理：支持标记异常、回退发货、备注和导出异常列表</li>
+            <li>导出：支持筛选后导出发货清单（CSV）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+    function highlightFeature(featureId) {
+      if (window.parent !== window) {
+        window.parent.postMessage({ action: 'highlight', featureId: featureId }, '*');
+      }
+    }
+  </script>
+</body>
+</html>

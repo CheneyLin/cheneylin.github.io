@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快闪店预售商品回填单 - ADMIN 运营后台 v1.3</title>
+    <link href="../../assets/bootstrap-icons.css" rel="stylesheet">
+    <style>/* styles copied from v1.2 */</style>
+    </head>
+<body>
+    <div class="sidebar"> <!-- simplified shell for v1.3 -->
+        <div class="sidebar-logo"><i class="bi bi-shop"></i><span style="margin-left:8px;">快闪店管理</span></div>
+        <div class="sidebar-menu">
+            <div class="menu-group-title">快闪店</div>
+            <div class="menu-item active" data-page="admin_activity.html" onclick="loadPage('admin_activity.html', this)">线下场次管理</div>
+            <div class="menu-group-title">回填单管理</div>
+            <div class="menu-item" data-page="admin_back_form.html" onclick="loadPage('admin_back_form.html', this)">回填单审核</div>
+            <div class="menu-group-title">发货管理</div>
+            <div class="menu-item" data-page="admin_shipments.html" onclick="loadPage('admin_shipments.html', this)">商家发货管理</div>
+        </div>
+    </div>
+    <div class="main-content"><iframe id="adminFrame" src="admin_pages/admin_activity.html"></iframe></div>
+    <script>
+        function loadPage(pageUrl, element) {
+            document.getElementById('adminFrame').src = `admin_pages/${pageUrl}`;
+            document.querySelectorAll('.menu-item').forEach(i=>i.classList&&i.classList.remove('active'));
+            if (element) element.classList.add('active');
+            window.location.hash = pageUrl;
+        }
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'highlight' && event.data.featureId) {
+                const featureId = event.data.featureId;
+                let target = null;
+                if (featureId.startsWith('admin_activity')) target = 'admin_activity.html';
+                else if (featureId.startsWith('admin_back_form')) target = 'admin_back_form.html';
+                else if (featureId.startsWith('admin_shipments')) target = 'admin_shipments.html';
+                if (target) {
+                    const menuItem = document.querySelector(`[data-page="${target}"]`);
+                    if (menuItem) loadPage(target, menuItem);
+                    setTimeout(()=>{
+                        const frame = document.getElementById('adminFrame');
+                        if (frame && frame.contentWindow) frame.contentWindow.postMessage({ action:'highlight', featureId: featureId }, '*');
+                    },300);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - 天意定制</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet" />
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../../style/main.css" rel="stylesheet" />
+    <link href="../../../style/app-styles.css" rel="stylesheet" />
+    <style>
+        .hero-gradient {
+            background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+        }
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--geist-gray-50);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .spec-label {
+            color: var(--geist-gray-500);
+            font-size: 13px;
+        }
+        .spec-value {
+            color: var(--geist-black);
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .notice-box {
+            background: #fff9e6;
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+        .notice-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #8b6914;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notice-content {
+            font-size: 12px;
+            color: #8b6914;
+            line-height: 1.6;
+        }
+        .goods-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 64px;
+        }
+        .fixed-bottom-bar {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 12px 16px;
+            border-top: 1px solid var(--geist-gray-100);
+            z-index: 100;
+        }
+        .pay-button {
+            background: linear-gradient(135deg, var(--ship-red) 0%, #ff6b5a 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pay-button:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        .pay-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px;
+            background: #fff9e6;
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .custom-checkbox.checked {
+            background: var(--ship-red);
+            border-color: var(--ship-red);
+        }
+        .custom-checkbox.checked i {
+            color: white;
+            font-size: 12px;
+        }
+        .checkbox-text {
+            font-size: 13px;
+            color: #8b6914;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body style="margin:0;padding:0;">
+    <div id="app_goods_detail" class="phone-frame">
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="flex items-center gap-1">
+                <i class="bi bi-reception-4"></i>
+                <i class="bi bi-wifi"></i>
+                <i class="bi bi-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <div class="nav-bar">
+                <div class="nav-back cursor-pointer" onclick="navigateToPage('goods_detail.html')">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="nav-title">商品详情</div>
+                <div class="nav-action cursor-pointer">
+                    <i class="bi bi-share"></i>
+                </div>
+            </div>
+
+            <div class="hero-gradient p-4">
+                <div class="goods-image">
+                    <i class="bi bi-star"></i>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <h1 style="font-size: 18px; font-weight: 700; color: var(--geist-black); line-height: 1.4;">初音未来 2024 票根</h1>
+                </div>
+                
+                <p style="color: var(--geist-gray-500); font-size: 13px; margin-bottom: 16px;">
+                    经典动漫IP定制票根，支持个性化定制
+                </p>
+
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span style="font-size: 24px; font-weight: 800; color: var(--ship-red);">¥128</span>
+                </div>
+
+                <div class="notice-box">
+                    <div class="notice-title">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        重要声明
+                    </div>
+                    <div class="notice-content">
+                        本商品为定制类商品，<strong>不支持7天无理由退款</strong>。制作周期约7天，预计发货时间为3天。请确认后再下单。
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--geist-black); margin-bottom: 12px;">商品信息</h3>
+                    <div class="spec-item">
+                        <span class="spec-label">关联天意SKU</span>
+                        <span class="spec-value">TNG-0001</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">制作周期</span>
+                        <span class="spec-value">7天</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">预计发货</span>
+                        <span class="spec-value">3天</span>
+                    </div>
+                </div>
+
+                <div class="checkbox-wrapper" id="agreementCheckbox" onclick="toggleAgreement()">
+                    <div class="custom-checkbox" id="checkboxEl">
+                        <i class="bi bi-check-lg" style="display: none;"></i>
+                    </div>
+                    <span class="checkbox-text">
+                        我已阅读并同意<strong>《定制类商品购买须知》</strong>，确认此订单为定制类商品，不支持7天无理由退款。
+                    </span>
+                </div>
+
+                <div style="height: 40px;"></div>
+            </div>
+        </div>
+
+        <div class="fixed-bottom-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex gap-10">
+                    <div class="flex flex-col items-center cursor-pointer">
+                        <i class="bi bi-shop" style="font-size: 22px; color: var(--geist-gray-400);"></i>
+                        <span style="font-size: 11px; color: var(--geist-gray-400); margin-top: 4px;">店铺</span>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer">
+                        <i class="bi bi-headset" style="font-size: 22px; color: var(--geist-gray-400);"></i>
+                        <span style="font-size: 11px; color: var(--geist-gray-400); margin-top: 4px;">客服</span>
+                    </div>
+                </div>
+                
+                <button class="pay-button" id="customizeBtn" onclick="navigateToOrderConfirm()">
+                    <i class="bi bi-pencil mr-1"></i>立即定制
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let agreed = false;
+
+        function navigateToPage(pageUrl) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'PAGE_NAVIGATION', page: pageUrl }, '*');
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+
+        function navigateToOrderConfirm() {
+            if (!agreed) {
+                showToast('请先阅读并同意购买须知');
+                return;
+            }
+            navigateToPage('order_confirm.html');
+        }
+
+        function toggleAgreement() {
+            agreed = !agreed;
+            const checkbox = document.getElementById('checkboxEl');
+            const btn = document.getElementById('customizeBtn');
+            
+            if (agreed) {
+                checkbox.classList.add('checked');
+                checkbox.querySelector('i').style.display = 'flex';
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            } else {
+                checkbox.classList.remove('checked');
+                checkbox.querySelector('i').style.display = 'none';
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toast.style.cssText = 'position:fixed;bottom:120px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,0.85);color:white;padding:12px 24px;border-radius:999px;font-size:14px;font-weight:500;opacity:0;transition:all 0.3s ease;z-index:2000;white-space:nowrap;';
+            document.body.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // 初始化按钮状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('customizeBtn');
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+        });
+    </script>
+</body>
+</html>
