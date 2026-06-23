@@ -42,7 +42,7 @@
         <tr><td>上线可用性</td><td>支持天意定制IP票根商品在小芒平台下单并同步至天意进行生产</td><td>接入链路通畅率</td><td>99%</td></tr>
         <tr><td>业务闭环</td><td>小芒下单→支付→同步给天意→天意发货登记</td><td>同步成功率（订单）</td><td>≥99%</td></tr>
         <tr><td>用户体验</td><td>用户能在订单确认页看到定制预览图和最终价格并完成支付</td><td>定制提交→支付转化率</td><td>≥70%</td></tr>
-        <tr><td>运营效率</td><td>运营可在后台人工录入并关联天意SKU完成商品上架</td><td>后台配置成功率</td><td>≥98%</td></tr>
+        <tr><td>运营效率</td><td>运营可在后台人工录入定制信息（制作周期、预计发货天数等）完成商品上架</td><td>后台配置成功率</td><td>≥98%</td></tr>
       </table>
     </div>
 
@@ -51,7 +51,7 @@
       <h3>2.1 目标用户</h3>
       <table>
         <tr><th>用户</th><th>场景</th></tr>
-        <tr><td>运营人员</td><td>后台配置天意定制商品并关联天意SKU</td></tr>
+        <tr><td>运营人员</td><td>后台配置天意定制商品</td></tr>
         <tr><td>小芒App用户</td><td>商品详情页点击定制，进入天意H5并支付</td></tr>
       </table>
       <h3 style="margin-top:16px;">2.2 使用场景</h3>
@@ -62,7 +62,7 @@
       <h3 style="margin-top:16px;">2.3 核心用户旅程（User Journey Map）</h3>
       <table>
         <tr><th>阶段</th><th>触点</th><th>行为</th><th>痛点/情绪</th><th>机会点</th></tr>
-        <tr><td>配置</td><td>后台</td><td>运营录入关联天意SKU、制作周期</td><td>配置易错</td><td>提供校验与说明</td></tr>
+        <tr><td>配置</td><td>后台</td><td>运营录入商品详情、制作周期、预计发货天数等</td><td>配置易错</td><td>提供校验与说明</td></tr>
         <tr><td>发现</td><td>商品列表/详情</td><td>看到可定制商品</td><td>需清晰说明定制不可退、制作周期</td><td>在详情页及确认页展示不可退声明与制作周期</td></tr>
         <tr><td>定制</td><td>商品详情页</td><td>点击定制进入H5</td><td>担心订单链路是否通畅</td><td>引导说明不可退及价格一致</td></tr>
         <tr><td>编辑</td><td>天意H5编辑器</td><td>在H5内完成定制内容并生成定制生产订单</td><td>用户担心预览与最终成品差异</td><td>在确认页展示定制预览图并保存到订单记录</td></tr>
@@ -76,7 +76,7 @@
       <h2>三、产品范围</h2>
       <h3>3.1 商家后台</h3>
       <ul class="list">
-        <li>商品管理（新建天意定制商品类型，关联天意SKU字段，SPU级别配置制作周期/预计发货天数）</li>
+        <li>商品管理（新建天意定制商品类型，配置制作周期、预计发货天数）</li>
         <li>发货登记（填写物流单号，显示天意定制生产订单号）</li>
       </ul>
       <h3 style="margin-top:16px;">3.2 小芒App</h3>
@@ -105,14 +105,21 @@
     <div class="prd-section" id="section5">
       <h2>四、功能清单</h2>
       <h3>4.1 功能清单</h3>
+      <h4>4.1.1 小芒侧</h4>
       <table>
         <tr><th>功能</th><th>描述</th><th>优先级</th><th>标识</th></tr>
-        <tr><td>商品管理</td><td>商家后台关联天意SKU、配置制作周期</td><td>P0</td><td><code>admin_feature_01</code></td></tr>
-        <tr><td>用户昵称接口</td><td>实现用户昵称显示和定制内容数据</td><td>P0</td><td><code>api_01</code></td></tr>
+        <tr><td>商品管理</td><td>商家后台录入商品详情、制作周期、预计发货天数等字段</td><td>P0</td><td><code>admin_feature_01</code></td></tr>
+        <tr><td>用户昵称接口</td><td>天意侧调用实现用户昵称显示和定制内容数据</td><td>P0</td><td><code>api_01</code></td></tr>
         <tr><td>商品详情页定制入口</td><td>跳转天意H5编辑</td><td>P0</td><td><code>app_feature_01</code></td></tr>
         <tr><td>订单确认页摘要</td><td>展示预览图、最终价格、不可退款声明</td><td>P0</td><td><code>app_feature_02</code></td></tr>
-        <tr><td>订单同步接口</td><td>支付后同步给天意并记录生产订单号</td><td>P0</td><td><code>api_02</code></td></tr>
+        <tr><td>下单接口</td><td>天意侧调用在小芒下单，返回订单号后，跳转订单确认页引导用户支付</td><td>P0</td><td><code>api_02</code></td></tr>
         <tr><td>发货登记</td><td>商家后台录入运单号并显示天意定制生产订单号</td><td>P1</td><td><code>admin_feature_02</code></td></tr>
+      </table>
+      <h4 style="margin-top:16px;">4.1.2 天意侧</h4>
+      <table>
+        <tr><th>功能</th><th>描述</th><th>优先级</th><th>标识</th></tr>
+        <tr><td>天意编辑器</td><td>接受小芒SPU、SKU参数，实现指定定制商品定制流程，完成天意生产下单、小芒订单下单后跳转小芒订单确认页</td><td>P0</td><td><code>ty_01</code></td></tr>
+        <tr><td>订单同步接口</td><td>支付后同步给天意侧，通知天意定制生产订单号支付成功</td><td>P0</td><td><code>ty_02</code></td></tr>
       </table>
       <h3 style="margin-top:16px;">4.2 基础业务规则</h3>
       <ol style="padding-left:20px;">
@@ -131,7 +138,7 @@ sequenceDiagram
   participant 用户
   participant 天意编辑器
   
-  天意系统-->>小芒系统: 生成天意SKU
+  天意系统-->>小芒系统: 对接商品详情
   小芒系统-->>小芒客户端: 生成小芒SKU 
   小芒客户端-->>用户: 商品上架
   用户->>+天意编辑器: 定制商品，生成天意订单号
@@ -151,7 +158,7 @@ sequenceDiagram
       <h3>5.1 Admin（商家后台）</h3>
       <h4>5.1.1 商品管理（admin_feature_01）</h4>
       <ul class="list">
-        <li>运营在后台新增/编辑商品时，录入关联天意SKU并配置制作周期/预计发货天数</li>
+        <li>运营在后台新增/编辑商品时，录入制作周期、预计发货天数等字段</li>
         <li>该字段为人工一对一录入</li>
         <li>一期仅IP票根定制</li>
       </ul>
@@ -172,16 +179,32 @@ sequenceDiagram
       <ul class="list">
         <li>展示定制预览图、最终价格及不可退款声明，并将定制项目编号/昵称保存到订单扩展字段</li>
       </ul>
+      天意侧调用在小芒下单，返回订单号后，跳转订单确认页引导用户支付
       <h3 style="margin-top:24px;">5.3 API（系统接口）</h3>
       <h4>5.3.1 用户昵称接口（api_01）</h4>
       <ul class="list">
         <li>天意编辑器调用，实现用户昵称显示和定制内容数据</li>
         <li>接口参数待确认</li>
       </ul>
-      <h4 style="margin-top:16px;">5.3.2 订单同步接口（api_02）</h4>
+      <h4 style="margin-top:16px;">5.3.2 下单接口（api_02）</h4>
+      <ul class="list">
+        <li>天意侧调用在小芒下单，返回订单号后，跳转订单确认页引导用户支付</li>
+        <li>接口需支持幂等</li>
+        <li>接口参数待确认</li>
+      </ul>
+      
+      
+      <h3 style="margin-top:24px;">5.4 天意侧</h3>
+      
+      <h4>5.4.1 天意编辑器</h4>
+      <ul class="list">
+        <li>略</li>
+      </ul>
+      
+      <h4>5.4.2 订单同步接口</h4>
       <ul class="list">
         <li>支付完成后同步订单给天意，字段包括：小芒订单号、天意定制生产订单号、支付时间</li>
-        <li>接口需支持幂等与重试告警</li>
+        <li>接口需支持幂等</li>
         <li>接口参数待确认</li>
       </ul>
       <table style="margin-top:12px;">
@@ -212,7 +235,7 @@ sequenceDiagram
         </li>
         <li><strong>商家/供应商后台配置</strong>：
           <ul style="margin-top:8px;">
-            <li>配置第三方关联信息：天意关联SKU、制作周期、预计发货天数（已有）</li>
+            <li>配置定制信息：制作周期、预计发货天数</li>
           </ul>
         </li>
         <li><strong>前端展示规范</strong>：
