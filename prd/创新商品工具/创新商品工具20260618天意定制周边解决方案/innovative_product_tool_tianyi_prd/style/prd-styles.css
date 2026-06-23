@@ -1,201 +1,295 @@
 /* ============================================
-   PRD 文档样式
-   PRD Document Styles
+   PRD 文档样式 - Vercel Design System
    ============================================ */
 
 .page {
+    max-width: 1200px;
     min-width: 1024px;
     margin: 0 auto;
-    padding: 32px;
+    padding: 48px 32px;
 }
 
-/* === PRD Section (no border/shadow, distinct from global .card) === */
+/* === PRD Section === */
 .prd-section {
-    padding: 20px;
-    margin: 16px 0;
+    padding: 24px;
+    margin: 24px 0;
 }
 
-.prd-section h2 {
-    font-size: 20px;
+/* === Typography Hierarchy === */
+
+/* h1 - Section Heading */
+h1 {
+    font-size: 2.50rem;
     font-weight: 600;
-    letter-spacing: -0.02em;
-    margin: 0 0 16px;
-    padding-left: 12px;
-    border-left: 4px solid var(--fg);
+    line-height: 1.20;
+    letter-spacing: -2.4px;
+    margin: 0 0 24px;
+    color: #171717;
+    border-bottom: 3px solid #171717;
+    padding-bottom: 16px;
 }
 
-.prd-section h3 {
-    font-size: 16px;
+/* h2 - Sub-section */
+h2 {
+    font-size: 2.00rem;
     font-weight: 600;
-    margin: 20px 0 10px;
+    line-height: 1.25;
+    letter-spacing: -1.28px;
+    margin: 40px 0 16px;
+    color: #171717;
+    padding-left: 16px;
+    border-left: 4px solid #171717;
 }
 
-.prd-section p {
-    margin: 8px 0;
-    color: var(--muted);
+/* h3 - Feature Title */
+h3 {
+    font-size: 1.50rem;
+    font-weight: 600;
+    line-height: 1.33;
+    letter-spacing: -0.96px;
+    margin: 24px 0 12px;
+    color: #171717;
 }
+
+/* h4 - Field Label / Detail */
+h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.40;
+    letter-spacing: -0.6px;
+    margin: 16px 0 8px;
+    color: #171717;
+}
+
+/* Body Text */
+p {
+    font-size: 1.13rem;
+    font-weight: 400;
+    line-height: 1.56;
+    margin: 12px 0;
+    color: #4d4d4d;
+}
+
+/* Small Body */
+.small {
+    font-size: 1.00rem;
+    line-height: 1.50;
+}
+
+/* Caption */
+.caption {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #808080;
+}
+
+/* Strong / Emphasis */
+strong {
+    font-weight: 600;
+    color: #171717;
+}
+
+/* === Lists === */
+
+/* Base List */
+.list,
+.prd-section ul,
+.prd-section ol {
+    margin: 0;
+    padding-left: 24px;
+    font-size: 1.13rem;
+    line-height: 1.56;
+    color: #4d4d4d;
+}
+
+/* List Items */
+.list li,
+.prd-section ul li,
+.prd-section ol li {
+    margin: 10px 0;
+    padding-left: 8px;
+}
+
+/* Nested Lists - Level 1 */
+.list ul,
+.list ol,
+.prd-section ul ul,
+.prd-section ul ol,
+.prd-section ol ul,
+.prd-section ol ol {
+    padding-left: 28px;
+    font-size: 1.00rem;
+    line-height: 1.50;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+/* Nested Lists - Level 2 */
+.list ul ul,
+.list ul ol,
+.list ol ul,
+.list ol ol,
+.prd-section ul ul ul,
+.prd-section ul ul ol,
+.prd-section ol ul ul,
+.prd-section ol ul ol {
+    padding-left: 32px;
+    font-size: 0.88rem;
+    line-height: 1.50;
+    color: #666666;
+}
+
+/* Ordered List */
+.prd-section ol {
+    counter-reset: item;
+}
+
+.prd-section ol li {
+    counter-increment: item;
+}
+
+.prd-section ol li::marker {
+    font-weight: 600;
+    color: #171717;
+}
+
+/* === Tables === */
 
 .prd-section table {
     width: 100%;
     border-collapse: collapse;
-    margin: 12px 0;
+    margin: 16px 0;
+    font-size: 1.00rem;
+    line-height: 1.50;
 }
 
 .prd-section th,
 .prd-section td {
-    border-bottom: 1px solid var(--border);
-    padding: 10px 12px;
+    padding: 12px 16px;
     text-align: left;
     vertical-align: top;
 }
 
 .prd-section th {
-    background: var(--geist-gray-50);
+    background: #fafafa;
     font-weight: 600;
-    font-size: 13px;
-    color: var(--muted);
-    width: 120px;
+    font-size: 0.88rem;
+    color: #808080;
+    white-space: nowrap;
 }
 
-.prd-section .list {
-    margin: 0;
-    padding-left: 18px;
+.prd-section td {
+    border-bottom: 1px solid #ebebeb;
+    color: #4d4d4d;
 }
+
+.prd-section tr:last-child td {
+    border-bottom: none;
+}
+
+/* === Meta === */
 
 .prd-section .meta {
-    color: var(--geist-gray-400);
-    font-size: 13px;
+    color: #808080;
+    font-size: 0.88rem;
+    line-height: 1.43;
     margin-bottom: 20px;
 }
 
+/* === Field Group === */
+
 .prd-section .field-group {
-    background: var(--geist-gray-50);
-    border-radius: var(--radius-standard);
-    padding: 16px;
+    background: #ffffff;
+    padding: 20px;
     margin: 16px 0;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px, #fafafa 0px 0px 0px 1px;
+    border-radius: 8px;
 }
 
 .prd-section .field-label {
     font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--fg);
+    font-size: 1.00rem;
+    letter-spacing: -0.32px;
+    margin-bottom: 12px;
+    color: #171717;
 }
 
 .prd-section .field-hint {
-    color: var(--geist-gray-400);
-    font-size: 12px;
-    margin-top: 4px;
+    color: #808080;
+    font-size: 0.75rem;
+    line-height: 1.33;
+    margin-top: 6px;
 }
 
-.prd-section .feature-id {
-    display: inline-block;
-    background: var(--fg);
-    color: var(--geist-white);
-    padding: 2px 8px;
-    border-radius: var(--radius-subtle);
-    font-size: 11px;
-    margin-left: 8px;
-}
+/* === Feature Module === */
 
 .prd-section .feature-module {
-    border: 1px dashed var(--border);
-    border-radius: var(--radius-comfortable);
-    padding: 16px;
-    margin: 16px 0;
+    border: 1px dashed #ebebeb;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
 }
 
 .prd-section .feature-module:hover {
-    border-color: var(--fg);
+    border-color: #171717;
+    background: #fafafa;
 }
 
-/* === Global Styles (for backward compatibility) === */
-h1 {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin: 0 0 12px;
-    border-bottom: 3px solid var(--fg);
-    padding-bottom: 12px;
-}
+/* === Feature ID === */
 
-h2 {
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin: 32px 0 12px;
-    padding-left: 12px;
-    border-left: 4px solid var(--fg);
-}
-
-h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 20px 0 10px;
-}
-
-p {
-    margin: 8px 0;
-    color: var(--muted);
-}
-table { width:100%; border-collapse:collapse; margin:12px 0; }
-    th, td { border-bottom:1px solid var(--border); padding:10px 12px; text-align:left; vertical-align:top; }
-    th { background:#fafafa; font-weight:600; font-size:13px; color:var(--muted); }
-    
-.list {
-    margin: 0;
-    padding-left: 18px;
-}
-
-.meta {
-    color: var(--geist-gray-400);
-    font-size: 13px;
-}
-
-.field-group {
-    background: var(--geist-gray-50);
-    border-radius: var(--radius-standard);
-    padding: 16px;
-    margin: 16px 0;
-}
-
-.field-label {
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--fg);
-}
-
-.field-hint {
-    color: var(--geist-gray-400);
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.feature-id {
+.prd-section .feature-id {
     display: inline-block;
-    background: var(--fg);
-    color: var(--geist-white);
-    padding: 2px 8px;
-    border-radius: var(--radius-subtle);
-    font-size: 11px;
+    background: #171717;
+    color: #ffffff;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
     margin-left: 8px;
 }
 
-.feature-module {
-    border: 1px dashed var(--border);
-    border-radius: var(--radius-comfortable);
-    padding: 16px;
+/* === Code & Pre === */
+
+pre {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 6px;
+    overflow-x: auto;
     margin: 16px 0;
+    font-size: 1.00rem;
+    line-height: 1.50;
 }
 
-.feature-module:hover {
-    border-color: var(--fg);
+code {
+    background: #fafafa;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-size: 0.81rem;
+    font-weight: 500;
+    font-family: ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
 }
+
+/* === Links === */
+
+a {
+    color: #0072f5;
+    text-decoration: underline;
+    font-weight: 400;
+}
+
+a:hover {
+    opacity: 0.85;
+}
+
+/* === TOC === */
 
 .toc {
-    background: var(--geist-gray-50);
-    border-radius: var(--radius-comfortable);
-    padding: 16px;
-    margin: 16px 0;
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 24px 0;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .toc ul {
@@ -208,126 +302,131 @@ table { width:100%; border-collapse:collapse; margin:12px 0; }
 }
 
 .toc a {
-    color: var(--link-blue);
+    color: #0072f5;
     text-decoration: none;
+    font-size: 1.00rem;
+    line-height: 1.50;
 }
 
 .toc a:hover {
     text-decoration: underline;
 }
 
-pre {
-    background: var(--geist-gray-50);
-    padding: 16px;
-    border-radius: var(--radius-standard);
-    overflow-x: auto;
-    margin: 12px 0;
-}
-
-code {
-    background: var(--geist-gray-50);
-    padding: 2px 6px;
-    border-radius: var(--radius-micro);
-    font-size: 13px;
-}
-
-strong {
-    color: var(--fg);
-}
-
-a {
-    color: var(--link-blue);
-    text-decoration: underline;
-}
-
-a:hover {
-    opacity: 0.85;
-}
+/* === Focus === */
 
 :focus-visible {
-    outline: 2px solid var(--focus-blue);
+    outline: 2px solid hsla(212, 100%, 48%, 1);
     outline-offset: 2px;
 }
 
-/* === Mermaid Vercel Theme Overrides === */
+/* === Mermaid Vercel Theme === */
+
 .mermaid {
-    background: var(--geist-white);
+    background: #ffffff;
     text-align: center;
-    margin: 16px 0;
-    padding: 24px;
-    border-radius: var(--radius-comfortable);
-    box-shadow: var(--shadow-border);
+    margin: 20px 0;
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px;
 }
 
 .mermaid svg {
-    font-family: var(--font-sans);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .mermaid .node {
-    fill: var(--geist-white);
-    stroke: var(--geist-black);
+    fill: #ffffff;
+    stroke: #171717;
     stroke-width: 1px;
 }
 
 .mermaid .node rect {
-    fill: var(--geist-white);
-    stroke: var(--geist-black);
+    fill: #ffffff;
+    stroke: #171717;
     stroke-width: 1px;
     rx: 6px;
 }
 
 .mermaid .node circle {
-    fill: var(--geist-white);
-    stroke: var(--geist-black);
+    fill: #ffffff;
+    stroke: #171717;
     stroke-width: 1px;
 }
 
 .mermaid .node polygon {
-    fill: var(--geist-white);
-    stroke: var(--geist-black);
+    fill: #ffffff;
+    stroke: #171717;
     stroke-width: 1px;
 }
 
 .mermaid .edgePath .path {
-    stroke: var(--geist-black);
+    stroke: #171717;
     stroke-width: 1.5px;
 }
 
 .mermaid .edgeLabel {
-    background-color: var(--geist-gray-50);
-    color: var(--geist-gray-600);
+    background-color: #fafafa;
+    color: #666666;
     font-size: 12px;
     padding: 4px 8px;
-    border-radius: var(--radius-subtle);
-    border: 1px solid var(--geist-gray-100);
+    border-radius: 4px;
+    border: 1px solid #ebebeb;
 }
 
 .mermaid .cluster rect {
-    fill: var(--geist-gray-50);
-    stroke: var(--geist-gray-100);
+    fill: #fafafa;
+    stroke: #ebebeb;
     stroke-width: 1px;
     rx: 6px;
 }
 
 .mermaid text {
-    fill: var(--geist-black);
+    fill: #171717;
     font-size: 13px;
 }
 
 .mermaid .label {
-    color: var(--geist-black);
+    color: #171717;
     font-size: 13px;
 }
 
 .mermaid .edgeToken {
-    stroke: var(--geist-gray-100);
+    stroke: #ebebeb;
 }
 
 .mermaid .marker {
-    fill: var(--geist-black);
-    stroke: var(--geist-black);
+    fill: #171717;
+    stroke: #171717;
 }
 
 .mermaid .arrowhead {
-    fill: var(--geist-black);
+    fill: #171717;
+}
+
+/* === Responsive === */
+
+@media (max-width: 1024px) {
+    .page {
+        min-width: auto;
+        padding: 24px 16px;
+    }
+    
+    h1 {
+        font-size: 2.00rem;
+        letter-spacing: -1.28px;
+    }
+    
+    h2 {
+        font-size: 1.50rem;
+        letter-spacing: -0.96px;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        letter-spacing: -0.6px;
+    }
+    
+    .prd-section {
+        padding: 16px;
+    }
 }
