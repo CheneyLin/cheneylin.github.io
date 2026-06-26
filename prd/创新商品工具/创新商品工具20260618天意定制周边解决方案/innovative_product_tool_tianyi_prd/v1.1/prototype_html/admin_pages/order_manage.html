@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单发货登记</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../../style/main.css" rel="stylesheet">
+    <link href="../../../style/admin-styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <div class="page-title">订单发货登记</div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-body">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="text" placeholder="搜索订单号 / 天意生产单号">
+                    <select>
+                        <option value="">全部发货状态</option>
+                        <option value="1">已发货</option>
+                        <option value="0">待发货</option>
+                    </select>
+                    <button class="btn-primary">查询</button>
+                    <button class="btn-outline">重置</button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-primary">
+                        <i class="bi bi-download"></i> 导出 Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-header">订单列表</div>
+        <div class="admin-section-body no-padding">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>订单号</th>
+                        <th>商品名称</th>
+                        <th>天意生产单号</th>
+                        <th>订单金额</th>
+                        <th>支付时间</th>
+                        <th>发货状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>XM202604080001</td>
+                        <td>初音未来 2024 票根</td>
+                        <td>TY-PO-1001</td>
+                        <td>¥128.00</td>
+                        <td>2026-04-08 09:30</td>
+                        <td><span class="badge badge-soldout">待发货</span></td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('XM202604080001', '初音未来 2024 票根', 'TY-PO-1001', '¥128.00', '2026-04-08 09:30', false)">发货登记</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>XM202604080002</td>
+                        <td>原神 雷电将军 限定票根</td>
+                        <td>TY-PO-1002</td>
+                        <td>¥158.00</td>
+                        <td>2026-04-08 10:15</td>
+                        <td><span class="badge badge-active">已发货</span></td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('XM202604080002', '原神 雷电将军 限定票根', 'TY-PO-1002', '¥158.00', '2026-04-08 10:15', true, '顺丰速运', 'SF1234567890', '2026-04-09 14:20', '王小明')">发货详情</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>XM202604080003</td>
+                        <td>鬼灭之刃 特别版票根</td>
+                        <td>TY-PO-1003</td>
+                        <td>¥99.00</td>
+                        <td>2026-04-07 15:45</td>
+                        <td><span class="badge badge-active">已发货</span></td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('XM202604080003', '鬼灭之刃 特别版票根', 'TY-PO-1003', '¥99.00', '2026-04-07 15:45', true, '京东物流', 'JD9876543210', '2026-04-08 10:30', '李小华')">发货详情</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
+
+    <!-- 订单详情抽屉 -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="drawer-title" id="drawerTitle">订单详情</div>
+            <button class="drawer-close" onclick="closeDrawer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <div class="admin-section">
+                <div class="admin-section-body">
+                    <div class="form-section">
+                        <div class="form-section-title">基本信息</div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label">订单号</label>
+                                <input type="text" class="form-control" id="modalOrderId" value="XM202604080001" disabled>
+                            </div>
+                            <div>
+                                <label class="form-label">支付时间</label>
+                                <input type="text" class="form-control" id="modalPayTime" value="2026-04-08 09:30" disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label">商品名称</label>
+                                <input type="text" class="form-control" id="modalGoodsName" value="初音未来 2024 票根" disabled>
+                            </div>
+                            <div>
+                                <label class="form-label">订单金额</label>
+                                <input type="text" class="form-control" id="modalAmount" value="¥128.00" disabled>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">天意生产单号</label>
+                            <input type="text" class="form-control" id="modalProductionId" value="TY-PO-1001" disabled>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">发货状态</label>
+                            <div><span class="badge badge-soldout" id="modalShipStatus">待发货</span></div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">发货信息</div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 物流公司</label>
+                                <input type="text" class="form-control" id="modalLogisticsCompany" placeholder="例如：顺丰速运">
+                            </div>
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 运单号</label>
+                                <input type="text" class="form-control" id="modalWaybill" placeholder="填写运单号">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 发货时间</label>
+                                <input type="datetime-local" class="form-control" id="modalShipDate">
+                            </div>
+                            <div>
+                                <label class="form-label"><span class="text-danger">*</span> 操作人</label>
+                                <input type="text" class="form-control" id="modalOperator" placeholder="填写操作人姓名">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.08);">
+                        <button class="btn-outline" onclick="closeDrawer()">关闭</button>
+                        <button class="btn-primary" id="modalShipButton" onclick="registerShipment()">登记发货</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let drawerOverlay = document.getElementById('drawerOverlay');
+        let drawer = document.getElementById('drawer');
+        let drawerTitle = document.getElementById('drawerTitle');
+
+        // 显示抽屉
+        function openDrawer(orderId, goodsName, productionId, amount, payTime, shipped, logistics, waybill, shipDate, operator) {
+            document.getElementById('drawerTitle').textContent = '订单详情 - ' + orderId;
+            document.getElementById('modalOrderId').value = orderId;
+            document.getElementById('modalGoodsName').value = goodsName;
+            document.getElementById('modalProductionId').value = productionId;
+            document.getElementById('modalAmount').value = amount;
+            document.getElementById('modalPayTime').value = payTime;
+            document.getElementById('modalShipStatus').textContent = shipped ? '已发货' : '待发货';
+            document.getElementById('modalShipStatus').className = shipped ? 'badge badge-active' : 'badge badge-soldout';
+            document.getElementById('modalLogisticsCompany').value = logistics || '';
+            document.getElementById('modalWaybill').value = waybill || '';
+            document.getElementById('modalShipDate').value = shipDate ? shipDate.replace(' ', 'T') : '';
+            document.getElementById('modalOperator').value = operator || '';
+            
+            const shipButton = document.getElementById('modalShipButton');
+            if (shipped) {
+                shipButton.style.display = 'none';
+                document.getElementById('modalLogisticsCompany').disabled = true;
+                document.getElementById('modalWaybill').disabled = true;
+                document.getElementById('modalShipDate').disabled = true;
+                document.getElementById('modalOperator').disabled = true;
+            } else {
+                shipButton.style.display = 'inline-flex';
+                document.getElementById('modalLogisticsCompany').disabled = false;
+                document.getElementById('modalWaybill').disabled = false;
+                document.getElementById('modalShipDate').disabled = false;
+                document.getElementById('modalOperator').disabled = false;
+            }
+            
+            drawerOverlay.classList.add('show');
+            drawer.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            drawerOverlay.classList.remove('show');
+            drawer.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function registerShipment() {
+            const logistics = document.getElementById('modalLogisticsCompany').value.trim();
+            const waybill = document.getElementById('modalWaybill').value.trim();
+            const shipDate = document.getElementById('modalShipDate').value;
+            const operator = document.getElementById('modalOperator').value.trim();
+
+            if (!logistics || !waybill || !shipDate || !operator) {
+                alert('请补充完整发货信息。');
+                return;
+            }
+            document.getElementById('modalShipStatus').textContent = '已发货';
+            document.getElementById('modalShipStatus').className = 'badge badge-active';
+            alert('发货登记成功！\n物流公司：' + logistics + '\n运单号：' + waybill + '\n操作人：' + operator);
+            const shipButton = document.getElementById('modalShipButton');
+            shipButton.style.display = 'none';
+            document.getElementById('modalLogisticsCompany').disabled = true;
+            document.getElementById('modalWaybill').disabled = true;
+            document.getElementById('modalShipDate').disabled = true;
+            document.getElementById('modalOperator').disabled = true;
+        }
+        
+        // 页面导航函数
+        function navigateToPage(pageUrl) {
+            window.parent.postMessage({
+                type: 'PAGE_NAVIGATION',
+                page: pageUrl
+            }, '*');
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>

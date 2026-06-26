@@ -11,7 +11,7 @@
 <body>
   <div class="header">
     <span class="header-title">创新商品工具 - 天意定制</span>
-    <span class="version-badge">v1.0</span>
+    <span class="version-badge">v1.1</span>
     <div class="divider"></div>
     <div class="controls">
       <div class="product-btns">
@@ -28,18 +28,19 @@
       <div class="width-control">
         <label for="versionSelect">版本</label>
         <select id="versionSelect" onchange="switchVersion(this.value)">
-          <option value="1.0" selected>v1.0</option>
+          <option value="1.0">v1.0</option>
+          <option value="1.1" selected>v1.1</option>
         </select>
       </div>
     </div>
   </div>
   <div class="main">
     <div class="left">
-      <iframe id="prdFrame" class="frame" src="./v1.0/prd_html/prd_v1.0.html"></iframe>
+      <iframe id="prdFrame" class="frame" src="./v1.1/prd_html/prd_v1.1.html"></iframe>
     </div>
     <div class="split" id="splitter" title="拖动调整左右宽度"></div>
     <div class="right">
-      <iframe id="protoFrame" class="frame" src="./v1.0/prototype_html/app_prototype_v1.0.html"></iframe>
+      <iframe id="protoFrame" class="frame" src="./v1.1/prototype_html/app_prototype_v1.1.html"></iframe>
     </div>
   </div>
 
@@ -57,7 +58,7 @@
     const splitter = document.getElementById('splitter');
     const preloadContainer = document.getElementById('preloadContainer');
     let currentProduct = 'app';
-    let currentVersion = '1.0';
+    let currentVersion = '1.1';
     let pendingHighlightId = null;
 
     // 原型预加载管理器
@@ -201,7 +202,7 @@
     // 初始化window.protoFrame指向当前显示的iframe
     window.protoFrame = protoFrame;
     setupProtoFrameListener(protoFrame);
-    PrototypePreloader.currentVisibleSrc = protoFrame.src;
+    PrototypePreloader.currentVisibleSrc = './v1.1/prototype_html/app_prototype_v1.1.html';
 
     function switchVersion(version) {
       currentVersion = version;
@@ -307,7 +308,7 @@
     // 页面加载完成后开始预加载
     window.addEventListener('DOMContentLoaded', () => {
       // 预加载所有版本和产品的原型
-      const versions = ['1.0'];
+      const versions = ['1.0', '1.1'];
       const products = ['app', 'admin'];
       PrototypePreloader.preloadAllPrototypes(versions, products);
     });

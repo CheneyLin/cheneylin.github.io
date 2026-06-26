@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天意定制</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../../style/main.css" rel="stylesheet">
+    <link href="../../../style/admin-styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <div class="page-title">天意定制</div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-body">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="text" placeholder="搜索商品名称 / 商品ID">
+                    <select>
+                        <option value="">全部状态</option>
+                        <option value="1">已上架</option>
+                        <option value="0">已下架</option>
+                    </select>
+                    <button class="btn-primary">查询</button>
+                    <button class="btn-outline">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-header">商品列表</div>
+        <div class="admin-section-body no-padding">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th>商品名称</th>
+                        <th>关联天意SKU</th>
+                        <th>已绑定图集</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SPU20260401001</td>
+                        <td>初音未来 2024 票根</td>
+                        <td>TNG-0001</td>
+                        <td><span class="badge badge-active">2个</span></td>
+                        <td><span class="badge badge-active">已上架</span></td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('SPU20260401001', '初音未来 2024 票根', 'TNG-0001', ['IMGSET-0001', 'IMGSET-0002'])">绑定图集</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SPU20260405002</td>
+                        <td>原神 雷电将军 限定票根</td>
+                        <td>TY-20260405002</td>
+                        <td><span class="badge badge-soldout">未绑定</span></td>
+                        <td><span class="badge badge-active">已上架</span></td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('SPU20260405002', '原神 雷电将军 限定票根', 'TY-20260405002', [])">绑定图集</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SPU20260320003</td>
+                        <td>鬼灭之刃 特别版票根</td>
+                        <td>TY-20260320003</td>
+                        <td><span class="badge badge-active">1个</span></td>
+                        <td><span class="badge badge-inactive">已下架</span></td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('SPU20260320003', '鬼灭之刃 特别版票根', 'TY-20260320003', ['IMGSET-0003'])">绑定图集</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="drawer-title" id="drawerTitle">绑定图集</div>
+            <button class="drawer-close" onclick="closeDrawer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <div class="admin-section">
+                <div class="admin-section-body">
+                    <div class="form-section">
+                        <div class="form-section-title">商品信息</div>
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label">商品ID</label>
+                                <input type="text" class="form-control" id="modalGoodsId" disabled>
+                            </div>
+                            <div>
+                                <label class="form-label">关联天意SKU</label>
+                                <input type="text" class="form-control" id="modalTianyiSku" disabled>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">商品名称</label>
+                            <input type="text" class="form-control" id="modalGoodsName" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">选择图集</div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="搜索图集名称" id="imageSetSearch" oninput="filterImageSets()">
+                        </div>
+                        <div class="image-set-list" id="imageSetList">
+                            <div class="image-set-item" data-id="IMGSET-0001">
+                                <input type="checkbox" id="check-IMGSET-0001" class="image-set-checkbox">
+                                <label for="check-IMGSET-0001">
+                                    <div class="image-set-preview">
+                                        <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20anime%20character%20beautiful%20portrait&image_size=square" alt="图集预览">
+                                    </div>
+                                    <div class="image-set-info">
+                                        <div class="image-set-name">初音未来 2024 系列</div>
+                                        <div class="image-set-detail">图集ID：IMGSET-0001 | 图片数量：12 | 分类：IP票根</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="image-set-item" data-id="IMGSET-0002">
+                                <input type="checkbox" id="check-IMGSET-0002" class="image-set-checkbox">
+                                <label for="check-IMGSET-0002">
+                                    <div class="image-set-preview">
+                                        <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=raiden%20shogun%20genshin%20impact%20anime%20portrait&image_size=square" alt="图集预览">
+                                    </div>
+                                    <div class="image-set-info">
+                                        <div class="image-set-name">原神 雷电将军 系列</div>
+                                        <div class="image-set-detail">图集ID：IMGSET-0002 | 图片数量：8 | 分类：IP票根</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="image-set-item" data-id="IMGSET-0003">
+                                <input type="checkbox" id="check-IMGSET-0003" class="image-set-checkbox">
+                                <label for="check-IMGSET-0003">
+                                    <div class="image-set-preview">
+                                        <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=kimetsu%20no%20yaiba%20anime%20character%20portrait&image_size=square" alt="图集预览">
+                                    </div>
+                                    <div class="image-set-info">
+                                        <div class="image-set-name">鬼灭之刃 特别版</div>
+                                        <div class="image-set-detail">图集ID：IMGSET-0003 | 图片数量：15 | 分类：IP票根</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="select-all-row">
+                            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()">
+                            <label for="selectAll">全选</label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.08);">
+                        <button class="btn-outline" onclick="closeDrawer()">取消</button>
+                        <button class="btn-primary" onclick="saveBind()">保存绑定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let drawerOverlay = document.getElementById('drawerOverlay');
+        let drawer = document.getElementById('drawer');
+        let drawerTitle = document.getElementById('drawerTitle');
+        let currentGoodsId = null;
+
+        function openDrawer(goodsId, goodsName, tianyiSku, boundSets) {
+            currentGoodsId = goodsId;
+            drawerTitle.textContent = '绑定图集 - ' + goodsName;
+            document.getElementById('modalGoodsId').value = goodsId;
+            document.getElementById('modalGoodsName').value = goodsName;
+            document.getElementById('modalTianyiSku').value = tianyiSku;
+
+            document.querySelectorAll('.image-set-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            if (boundSets && boundSets.length > 0) {
+                boundSets.forEach(setId => {
+                    const checkbox = document.getElementById('check-' + setId);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+
+            drawerOverlay.classList.add('show');
+            drawer.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            drawerOverlay.classList.remove('show');
+            drawer.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function saveBind() {
+            const checkedBoxes = document.querySelectorAll('.image-set-checkbox:checked');
+            const selectedSets = Array.from(checkedBoxes).map(checkbox => checkbox.parentElement.dataset.id);
+            
+            if (selectedSets.length === 0) {
+                alert('请至少选择一个图集');
+                return;
+            }
+
+            alert('绑定成功！\n已绑定图集：' + selectedSets.join(', '));
+            closeDrawer();
+        }
+
+        function filterImageSets() {
+            const keyword = document.getElementById('imageSetSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.image-set-item');
+            
+            items.forEach(item => {
+                const name = item.querySelector('.image-set-name').textContent.toLowerCase();
+                if (name.includes(keyword)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.image-set-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>

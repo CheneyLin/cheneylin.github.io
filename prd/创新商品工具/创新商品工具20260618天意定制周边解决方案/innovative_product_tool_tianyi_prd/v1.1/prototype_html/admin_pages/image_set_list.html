@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图集管理</title>
+    <link href="../../../assets/bootstrap.main.css" rel="stylesheet">
+    <link href="../../../assets/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/tailwind.min.css" rel="stylesheet">
+    <link href="../../../style/main.css" rel="stylesheet">
+    <link href="../../../style/admin-styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <div class="page-title">图集管理</div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-body">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="text" placeholder="搜索图集名称">
+                    <select>
+                        <option value="">全部状态</option>
+                        <option value="1">已启用</option>
+                        <option value="0">已禁用</option>
+                    </select>
+                    <button class="btn-primary">查询</button>
+                    <button class="btn-outline">重置</button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-primary" onclick="openDrawer()">
+                        <i class="bi bi-plus-lg"></i> 新增图集
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <div class="admin-section-header">图集列表</div>
+        <div class="admin-section-body no-padding">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>图集ID</th>
+                        <th>图集名称</th>
+                        <th>图片数量</th>
+                        <th>分类</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IMGSET-0001</td>
+                        <td>初音未来 2024 系列</td>
+                        <td>12</td>
+                        <td>IP票根</td>
+                        <td><span class="badge badge-active">已启用</span></td>
+                        <td>2026-04-01</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('IMGSET-0001', '初音未来 2024 系列', 12, 'IP票根', true)">编辑</button>
+                            <button class="btn-action" onclick="viewImages('IMGSET-0001', '初音未来 2024 系列')">查看图片</button>
+                            <button class="btn-action danger">禁用</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>IMGSET-0002</td>
+                        <td>原神 雷电将军 系列</td>
+                        <td>8</td>
+                        <td>IP票根</td>
+                        <td><span class="badge badge-active">已启用</span></td>
+                        <td>2026-04-05</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('IMGSET-0002', '原神 雷电将军 系列', 8, 'IP票根', true)">编辑</button>
+                            <button class="btn-action" onclick="viewImages('IMGSET-0002', '原神 雷电将军 系列')">查看图片</button>
+                            <button class="btn-action danger">禁用</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>IMGSET-0003</td>
+                        <td>鬼灭之刃 特别版</td>
+                        <td>15</td>
+                        <td>IP票根</td>
+                        <td><span class="badge badge-inactive">已禁用</span></td>
+                        <td>2026-03-20</td>
+                        <td>
+                            <button class="btn-action" onclick="openDrawer('IMGSET-0003', '鬼灭之刃 特别版', 15, 'IP票根', false)">编辑</button>
+                            <button class="btn-action" onclick="viewImages('IMGSET-0003', '鬼灭之刃 特别版')">查看图片</button>
+                            <button class="btn-action">启用</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ul class="pagination">
+        <li><a href="#">上一页</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">下一页</a></li>
+    </ul>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="drawer-title" id="drawerTitle">新增图集</div>
+            <button class="drawer-close" onclick="closeDrawer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <div class="admin-section">
+                <div class="admin-section-body">
+                    <div class="form-section">
+                        <div class="form-section-title">基本信息</div>
+                        <div class="mb-4">
+                            <label class="form-label"><span class="text-danger">*</span> 图集名称</label>
+                            <input type="text" class="form-control" id="imageSetName" placeholder="请输入图集名称">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label"><span class="text-danger">*</span> 分类</label>
+                            <select class="form-control" id="imageSetCategory">
+                                <option value="">请选择分类</option>
+                                <option value="IP票根">IP票根</option>
+                                <option value="海报">海报</option>
+                                <option value="周边">周边</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">图集描述</label>
+                            <textarea class="form-control" rows="3" placeholder="请输入图集描述..." id="imageSetDesc"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">上传图片</div>
+                        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                            <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleFileSelect()">
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-upload"></i>
+                            </div>
+                            <div class="upload-text">点击或拖拽上传图片</div>
+                            <div class="upload-hint">支持 JPG、PNG、GIF 格式，单张不超过 5MB</div>
+                        </div>
+                        <div class="image-preview" id="imagePreview">
+                            <div class="preview-title">已选择图片</div>
+                            <div class="preview-grid" id="previewGrid">
+                                <div class="preview-item">
+                                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20anime%20character%20beautiful%20portrait&image_size=square" alt="图片1">
+                                    <div class="preview-name">miku_01.jpg</div>
+                                    <button class="preview-delete" onclick="removeImage(this)"><i class="bi bi-x"></i></button>
+                                </div>
+                                <div class="preview-item">
+                                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20stage%20performance%20anime&image_size=square" alt="图片2">
+                                    <div class="preview-name">miku_02.jpg</div>
+                                    <button class="preview-delete" onclick="removeImage(this)"><i class="bi bi-x"></i></button>
+                                </div>
+                                <div class="preview-item">
+                                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20blue%20hair%20anime%20art&image_size=square" alt="图片3">
+                                    <div class="preview-name">miku_03.jpg</div>
+                                    <button class="preview-delete" onclick="removeImage(this)"><i class="bi bi-x"></i></button>
+                                </div>
+                                <div class="preview-item">
+                                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20concert%20anime%20style&image_size=square" alt="图片4">
+                                    <div class="preview-name">miku_04.jpg</div>
+                                    <button class="preview-delete" onclick="removeImage(this)"><i class="bi bi-x"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.08);">
+                        <button class="btn-outline" onclick="closeDrawer()">取消</button>
+                        <button class="btn-primary" onclick="saveImageSet()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drawer-overlay" id="imageDrawerOverlay" onclick="closeImageDrawer()"></div>
+
+    <div class="drawer" id="imageDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title" id="imageDrawerTitle">图集图片预览</div>
+            <button class="drawer-close" onclick="closeImageDrawer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <div class="admin-section">
+                <div class="admin-section-body">
+                    <div class="image-gallery">
+                        <div class="gallery-item">
+                            <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20anime%20character%20beautiful%20portrait&image_size=square" alt="图片1">
+                            <div class="gallery-info">
+                                <span>图片名称：miku_01.jpg</span>
+                                <span>尺寸：1024×1024</span>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20stage%20performance%20anime&image_size=square" alt="图片2">
+                            <div class="gallery-info">
+                                <span>图片名称：miku_02.jpg</span>
+                                <span>尺寸：1024×1024</span>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20blue%20hair%20anime%20art&image_size=square" alt="图片3">
+                            <div class="gallery-info">
+                                <span>图片名称：miku_03.jpg</span>
+                                <span>尺寸：1024×1024</span>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=miku%20hatsune%20concert%20anime%20style&image_size=square" alt="图片4">
+                            <div class="gallery-info">
+                                <span>图片名称：miku_04.jpg</span>
+                                <span>尺寸：1024×1024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let drawerOverlay = document.getElementById('drawerOverlay');
+        let drawer = document.getElementById('drawer');
+        let drawerTitle = document.getElementById('drawerTitle');
+        let imageSetNameInput = document.getElementById('imageSetName');
+        let imageSetCategoryInput = document.getElementById('imageSetCategory');
+        let imageSetDescInput = document.getElementById('imageSetDesc');
+
+        let imageDrawerOverlay = document.getElementById('imageDrawerOverlay');
+        let imageDrawer = document.getElementById('imageDrawer');
+        let imageDrawerTitle = document.getElementById('imageDrawerTitle');
+
+        function openDrawer(id, name, count, category, status) {
+            if (id) {
+                drawerTitle.textContent = '编辑图集 - ' + name;
+                imageSetNameInput.value = name;
+                imageSetCategoryInput.value = category;
+            } else {
+                drawerTitle.textContent = '新增图集';
+                imageSetNameInput.value = '';
+                imageSetCategoryInput.value = '';
+                imageSetDescInput.value = '';
+            }
+            drawerOverlay.classList.add('show');
+            drawer.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            drawerOverlay.classList.remove('show');
+            drawer.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function saveImageSet() {
+            const name = imageSetNameInput.value.trim();
+            const category = imageSetCategoryInput.value;
+            
+            if (!name) {
+                alert('请输入图集名称');
+                return;
+            }
+            if (!category) {
+                alert('请选择分类');
+                return;
+            }
+            
+            alert('保存成功！');
+            closeDrawer();
+        }
+
+        function viewImages(id, name) {
+            imageDrawerTitle.textContent = '图集图片预览 - ' + name;
+            imageDrawerOverlay.classList.add('show');
+            imageDrawer.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageDrawer() {
+            imageDrawerOverlay.classList.remove('show');
+            imageDrawer.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function handleFileSelect() {
+            alert('文件选择功能演示');
+        }
+
+        function removeImage(btn) {
+            btn.parentElement.remove();
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDrawer();
+                closeImageDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
