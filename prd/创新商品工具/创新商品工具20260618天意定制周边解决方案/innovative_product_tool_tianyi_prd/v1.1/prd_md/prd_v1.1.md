@@ -179,6 +179,29 @@ sequenceDiagram
 
 #### 5.2.2 订单确认页摘要（app_feature_02）
 - 用户收件地址选择、最终价格确认，并将天意订单号、缩略图保存到订单扩展字段
+- 跳转示例：https://m.ecom.mgtv.com/order-confirm?path=goods&goods_id=271319&sku_id=1715284&goods_num=1&trans_from=undefined&trans_from_id=undefined&customizeNo=EGDpROxZ&thumbUrl=https://img06.songzhaopian.cn/yov/2026/06/29/175f4aae-3f61-43ac-8c97-89a811f08225.png&idxFlag=ecomindex
+
+| 前端参数 | 示例 | 备注 | 订单对应字段 |
+|---------|---------|---------|---------|
+| path | goods | 前端使用 | ｜
+| goods_id | 271319 | 商品ID | goods_id |
+| sku_id | 1715284 | 商品SKU | sku_id |
+| goods_num | 1 | 采购数量 | goods_num |
+| trans_from | activity | 跳转来源 | trans_from |
+| trans_from_id | 20260501act | 跳转来源ID | trans_from_id |
+| source_channel | mgtv | 来源渠道 | source_channel |
+| source | tab_4 | 来源ID | source_id |
+| rch | mgtv_tab_4 | 客户端持久来源ID | rch |
+| customizeNo | EGDpROxZ | 天意订单号 | out_order_no |
+| thumbUrl | 图片URL | 商品缩略图 | other_info->thumbUrl |
+
+
+| 更多订单参数 | 示例 | 备注 | 订单对应字段 |
+|---------|---------|---------|---------|
+| session_id | 会话ID | 不用传，用于关联用户会话，需要在订单确认页自行处理 | session_id |
+| order_type | 126 | 订单类型 | order_type |
+| order_source | 0 | 下单产品端 | order_source |
+
 
 ### 5.3 API（系统接口）
 
