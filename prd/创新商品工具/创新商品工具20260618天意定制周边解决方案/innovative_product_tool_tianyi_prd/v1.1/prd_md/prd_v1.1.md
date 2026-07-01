@@ -328,7 +328,8 @@ sequenceDiagram
 - 小芒定制编辑器设计物料：https://u0t1gqhnrt.feishu.cn/docx/GpEAdGwUrofJRDxd8tbcBlyEnHc
 ### 9.2 会议纪要
 - 2026-6-15 : https://u0t1gqhnrt.feishu.cn/docx/TqY6dkNgXo1juFxVYxichQ0QnVc
-
+### 9.3 技术文档
+- 后端接口：https://wiki.imgo.tv/pages/viewpage.action?pageId=123922613
 
 
 ---
