@@ -260,24 +260,51 @@
         <h4>5.2.1 商品详情页 <button class="highlight-btn" onclick="highlightPrototype('app_product_detail')">查看原型</button></h4>
         <p><strong>功能描述</strong>：展示商品详情，包含配送信息和海外税费明细。</p>
 
+        <p><strong>页面内容</strong>：</p>
+        <table>
+          <tr><th>内容模块</th><th>说明</th></tr>
+          <tr><td>商品信息</td><td>商品图片、名称、价格</td></tr>
+          <tr><td>配送信息</td><td>在 运费 行基础上增加海外税费合计项</td></tr>
+          <tr><td>配送信息</td><td>支持KV配置指定商品ID隐藏海外税费行</td></tr>
+          <tr><td>配送信息</td><td>支持KV配置自定义文案：其他费用 （MGECOM_OVERSEAS_SHIP_INFO_PREFIX）</td></tr>
+        </table>
+
         <h4>5.2.2 下单确认页 <button class="highlight-btn" onclick="highlightPrototype('app_checkout')">查看原型</button></h4>
         <p><strong>功能描述</strong>：展示订单确认信息，包含商品、运费和海外税费明细。</p>
+
+        <p><strong>页面内容</strong>：</p>
+        <table>
+          <tr><th>内容模块</th><th>说明</th></tr>
+          <tr><td>收货地址</td><td>收货人、联系电话、收货地址</td></tr>
+          <tr><td>商品信息</td><td>商品图片、名称、单价、数量</td></tr>
+          <tr><td>配送信息</td><td>在 运费 行基础上增加海外税费行</td></tr>
+          <tr><td>费用汇总</td><td>商品金额+运费+海外税费=实付金额</td></tr>
+        </table>
 
         <p><strong>交互说明</strong>：从商品详情页点击"立即购买"或"加入购物车"后进入此页面。</p>
 
         <h4>5.2.3 订单详情页 <button class="highlight-btn" onclick="highlightPrototype('app_order_detail')">查看原型</button></h4>
         <p><strong>功能描述</strong>：展示已完成订单的详细信息，包含税费明细。</p>
 
+        <p><strong>页面内容</strong>：</p>
+        <table>
+          <tr><th>内容模块</th><th>说明</th></tr>
+          <tr><td>订单状态</td><td>当前订单状态（待支付/已支付/运输中/已完成等）</td></tr>
+          <tr><td>物流信息</td><td>运单号、物流进度</td></tr>
+          <tr><td>收货地址</td><td>收货人、联系电话、收货地址</td></tr>
+          <tr><td>商品信息</td><td>商品图片、名称、单价、数量</td></tr>
+          <tr><td>配送信息</td><td>在 运费 行基础上增加海外税费行</td></tr>
+          <tr><td>订单费用明细</td><td>商品金额、运费、海外税费合计、实付金额</td></tr>
+          <tr><td>下单时间</td><td>订单创建时间</td></tr>
+        </table>
+
         <p><strong>交互说明</strong>：支付成功后自动跳转到订单详情页，或从订单列表点击进入。</p>
       </div>
       <div class="feature-module">
         <h3>5.3 商家APP端</h3>
-        <p><strong>功能描述</strong>：编辑运费模板数据时，如果模板包含海外税费项，则禁止在商家APP端保存，用户需返回Web后台继续编辑。</p>
-        <ul class="list">
-          <li>编辑运费模板数据时，<code>overseas_fee_items</code> 数组不为空时，禁止保存。</li>
-          <li>提示文案：<strong>“此模板包含海外税费，请在Web后台编辑”</strong></li>
-          <li>技术文档：<strong><a href="https://wiki.imgo.tv/pages/viewpage.action?pageId=32127691#id-%E4%BE%9B%E5%BA%94%E5%95%86%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-%E5%BA%97%E9%93%BA%E8%BF%90%E8%B4%B9%E6%A8%A1%E6%9D%BF%E8%AF%A6%E6%83%85">WIKI：供应商基本信息-店铺运费模板详情</a></strong></li>
-        </ul>
+
+        <h4>5.3.1 运费模板管理 <button class="highlight-btn" onclick="highlightPrototype('mapp_shipping_template')">查看原型</button></h4>
+        <p><strong>功能描述</strong>：编辑运费模板数据时，overseas_fee_items数组不为空时，禁止保存，提示"此模板包含海外税费，请在Web后台编辑"</p>
       </div>
     </div>
 
