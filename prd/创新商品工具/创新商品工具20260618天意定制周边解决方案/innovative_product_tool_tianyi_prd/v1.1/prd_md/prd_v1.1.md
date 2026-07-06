@@ -176,7 +176,8 @@ sequenceDiagram
 
 #### 5.2.1 商品详情页定制入口（app_feature_01）
 - 详情页展示"定制"按钮，用户点击确认相关协议后，跳转天意H5编辑器，定制完成进入小芒订单确认页
-- 跳转示例：https://songzhaopian.com/reseller-xmxmxm/cusflow_recommend?goods_id=271319&sku_id=1715284&uuid=6a30ccf62c399d605151dc022796721e&callback=https%3A%2F%2Fm.ecom.mgtv.com%2Forder-confirm%3Fpath%3Dgoods%26goods_id%3D271319%26sku_id%3D1715284%26goods_num%3D1
+- 跳转地址：https://d.tazai.com/zK-1b （天意定制编辑器真实地址待确认）
+- 印鸽示例：https://songzhaopian.com/reseller-xmxmxm/cusflow_recommend?goods_id=271319&sku_id=1715284&uuid=6a30ccf62c399d605151dc022796721e&callback=https%3A%2F%2Fm.ecom.mgtv.com%2Forder-confirm%3Fpath%3Dgoods%26goods_id%3D271319%26sku_id%3D1715284%26goods_num%3D1
 
 
 | 前端参数 | 示例 | 备注 | 
