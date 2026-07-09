@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../../assets/app_styles.css" rel="stylesheet">
+    <title>订单详情页</title>
+</head>
+<body class="app-page-body">
+    <div class="app-header">
+        <div class="app-header-btn">←</div>
+        <div class="app-header-title">订单详情</div>
+        <div class="app-header-btn">⋮</div>
+    </div>
+
+    <div class="app-order-status">
+        <div class="app-status-icon">📦</div>
+        <div class="app-status-text">商品运输中</div>
+        <div class="app-status-desc">预计3天后送达</div>
+    </div>
+
+    <div class="app-address-section">
+        <div class="app-address-row align-start">
+            <div class="app-address-icon">📍</div>
+            <div class="app-address-info">
+                <div class="app-address-name">张三 13800138000</div>
+                <div class="app-address-detail">北京市朝阳区建国路88号SOHO现代城</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-product-section" data-prototype="app_order_detail">
+        <div class="app-section-title">商品信息</div>
+        <div class="app-product-row">
+            <div class="app-product-img">🎁</div>
+            <div class="app-product-info">
+                <div class="app-product-name">海外直邮限定款手办</div>
+                <div class="app-product-sku">SKU: OVERSEAS-001</div>
+                <div class="app-product-price">¥299.00</div>
+            </div>
+            <div class="app-product-qty">x1</div>
+        </div>
+    </div>
+
+    <div class="app-tax-section">
+        <div class="app-section-title">运费明细</div>
+        <div class="app-tax-row">
+            <span class="app-tax-label">运费</span>
+            <span class="app-tax-value">¥50.00</span>
+        </div>
+        <div class="app-tax-row">
+            <span class="app-tax-label">海外运费</span>
+            <span class="app-tax-value">¥8.00</span>
+        </div>
+        <div class="app-tax-row">
+            <span class="app-tax-label">关税与清关费</span>
+            <span class="app-tax-value">¥15.00</span>
+        </div>
+        <div class="app-tax-row">
+            <span class="app-tax-label">保险费</span>
+            <span class="app-tax-value">¥5.00</span>
+        </div>
+    </div>
+    <div class="app-order-summary">
+        <div class="app-section-title">订单信息</div>
+        <div class="app-summary-row">
+            <span class="app-summary-label">订单编号</span>
+            <span class="app-summary-value">2026042312345678</span>
+        </div>
+        <div class="app-summary-row">
+            <span class="app-summary-label">下单时间</span>
+            <span class="app-summary-value">2026-04-23 14:30:25</span>
+        </div>
+        <div class="app-summary-row">
+            <span class="app-summary-label">商品金额</span>
+            <span class="app-summary-value">¥299.00</span>
+        </div>
+        <div class="app-summary-row">
+            <span class="app-summary-label">运费</span>
+            <span class="app-summary-value">¥50.00</span>
+        </div>
+        <div class="app-summary-row">
+            <span class="app-summary-label">海外税费</span>
+            <span class="app-summary-value">¥28.00</span>
+        </div>
+        <div class="app-summary-row">
+            <span class="app-summary-label">实付金额</span>
+            <span class="app-summary-value app-summary-total">¥377.00</span>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.action === 'highlight' && e.data.featureId) {
+                const featureId = e.data.featureId;
+                document.querySelectorAll('[data-prototype]').forEach(el => {
+                    el.classList.remove('feature-highlight');
+                    if (el.dataset.prototype === featureId) {
+                        el.classList.add('feature-highlight');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
