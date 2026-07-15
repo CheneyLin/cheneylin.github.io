@@ -242,22 +242,26 @@
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .form-group label {
-            display: block;
             font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-weight: 500;
+            color: #666666;
+            min-width: 120px;
         }
 
         .form-group .value {
             font-size: 14px;
             color: #333333;
-            padding: 8px 12px;
-            background: #fafafa;
-            border-radius: 8px;
+            font-weight: 500;
+            text-align: right;
+            flex: 1;
+            margin-left: 16px;
         }
 
         .form-group .value.highlight {
@@ -313,6 +317,15 @@
             font-size: 14px;
             font-weight: 600;
             color: #ef4444;
+        }
+
+        #refundOptionsGroup {
+            display: block;
+        }
+
+        #refundOptionsGroup label {
+            display: block;
+            margin-bottom: 8px;
         }
 
         .form-group textarea {
@@ -557,12 +570,11 @@
 
                 <div class="form-group" id="modalOverseasStopTimeGroup" style="display:none;">
                     <label>跨境停售时间</label>
-                    <div class="value" id="modalOverseasStopTime">2026-07-10 18:00:00</div>
+                    <div class="value" id="modalOverseasStopTime">2026-07-10 0:00:00</div>
                 </div>
 
                 <div class="form-group" id="refundOptionsGroup">
                     <label>跨境服务费退款选项</label>
-                    <div class="default-reason" id="defaultReason" style="display:none;color:#f59e0b;font-size:12px;margin-bottom:8px;padding:8px;background:#fffbeb;border-radius:4px;"></div>
                     <div class="refund-options" id="refundOptions">
                         <div class="refund-option refund-option-readonly">
                             <input type="checkbox" name="refundItem" value="product" checked disabled>
@@ -607,10 +619,9 @@
                 overseasStopTime: '',
                 refundItems: [
                     { name: '商品货款', amount: '¥8,999.00', checked: true, readonly: true },
-                    { name: '国内运费', amount: '¥49.00', checked: true, readonly: false },
-                    { name: '跨境服务费', amount: '¥539.94', checked: true, readonly: false }
-                ],
-                defaultReason: '商品未命中"跨境服务费售后"标签，订单待发货，建议全额退款'
+                    { name: '国内运费', amount: '¥49.00', checked: false, readonly: false },
+                    { name: '跨境服务费', amount: '¥539.94', checked: false, readonly: false }
+                ]
             },
             'overseas_shipped': {
                 productAmount: '¥16,999.00',
@@ -625,8 +636,7 @@
                     { name: '商品货款', amount: '¥16,999.00', checked: true, readonly: true },
                     { name: '国内运费', amount: '¥59.00', checked: false, readonly: false },
                     { name: '跨境服务费', amount: '¥1,019.94', checked: false, readonly: false }
-                ],
-                defaultReason: '订单已发货，建议仅退款商品货款'
+                ]
             },
             'overseas_pending_not_refundable': {
                 productAmount: '¥4,999.00',
@@ -639,10 +649,9 @@
                 overseasStopTime: '2026-07-10 18:00:00',
                 refundItems: [
                     { name: '商品货款', amount: '¥4,999.00', checked: true, readonly: true },
-                    { name: '国内运费', amount: '¥15.00', checked: true, readonly: false },
+                    { name: '国内运费', amount: '¥15.00', checked: false, readonly: false },
                     { name: '跨境服务费', amount: '¥113.94', checked: false, readonly: false }
-                ],
-                defaultReason: '商品命中"跨境服务费售后"标签且已过停售时间，订单待发货，建议退款商品货款+国内运费'
+                ]
             },
             'overseas_shipped_not_refundable': {
                 productAmount: '¥3,999.00',
@@ -657,8 +666,7 @@
                     { name: '商品货款', amount: '¥3,999.00', checked: true, readonly: true },
                     { name: '国内运费', amount: '¥15.00', checked: false, readonly: false },
                     { name: '跨境服务费', amount: '¥113.94', checked: false, readonly: false }
-                ],
-                defaultReason: '订单已发货，建议仅退款商品货款'
+                ]
             },
             'domestic_pending': {
                 productAmount: '¥6,999.00',
@@ -671,9 +679,8 @@
                 overseasStopTime: '',
                 refundItems: [
                     { name: '商品货款', amount: '¥6,999.00', checked: true, readonly: true },
-                    { name: '国内运费', amount: '¥12.00', checked: true, readonly: false }
-                ],
-                defaultReason: ''
+                    { name: '国内运费', amount: '¥12.00', checked: false, readonly: false }
+                ]
             },
             'domestic_shipped': {
                 productAmount: '¥3,999.00',
@@ -686,8 +693,7 @@
                 overseasStopTime: '',
                 refundItems: [
                     { name: '商品货款', amount: '¥3,999.00', checked: true, readonly: true }
-                ],
-                defaultReason: ''
+                ]
             }
         };
 
@@ -742,14 +748,6 @@
                 }
                 optionsContainer.appendChild(optionDiv);
             });
-            
-            var defaultReasonEl = document.getElementById('defaultReason');
-            if (order.defaultReason) {
-                defaultReasonEl.textContent = '💡 默认选项说明：' + order.defaultReason;
-                defaultReasonEl.style.display = 'block';
-            } else {
-                defaultReasonEl.style.display = 'none';
-            }
             
             document.getElementById('refundModal').classList.add('active');
         }
