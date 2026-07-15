@@ -550,23 +550,34 @@
                     <div class="value" id="modalShippingFee">¥588.94</div>
                 </div>
 
+                <div class="form-group">
+                    <label>是否整单退款</label>
+                    <div class="value" id="modalIsFullRefund">整单退款</div>
+                </div>
+
+                <div class="form-group" id="modalOverseasStopTimeGroup" style="display:none;">
+                    <label>跨境停售时间</label>
+                    <div class="value" id="modalOverseasStopTime">2026-07-10 18:00:00</div>
+                </div>
+
                 <div class="form-group" id="refundOptionsGroup">
-                    <label>退款选项</label>
+                    <label>跨境服务费退款选项</label>
+                    <div class="default-reason" id="defaultReason" style="display:none;color:#f59e0b;font-size:12px;margin-bottom:8px;padding:8px;background:#fffbeb;border-radius:4px;"></div>
                     <div class="refund-options" id="refundOptions">
-                        <div class="refund-option" onclick="selectRefundOption(1)">
-                            <input type="radio" name="refundOption" value="1">
-                            <span class="option-label">商品货款+运费+跨境服务费</span>
-                            <span class="option-amount">¥9,587.94</span>
-                        </div>
-                        <div class="refund-option" onclick="selectRefundOption(2)">
-                            <input type="radio" name="refundOption" value="2">
-                            <span class="option-label">商品货款+运费</span>
-                            <span class="option-amount">¥9,048.00</span>
-                        </div>
-                        <div class="refund-option" onclick="selectRefundOption(3)">
-                            <input type="radio" name="refundOption" value="3">
+                        <div class="refund-option refund-option-readonly">
+                            <input type="checkbox" name="refundItem" value="product" checked disabled>
                             <span class="option-label">商品货款</span>
                             <span class="option-amount">¥8,999.00</span>
+                        </div>
+                        <div class="refund-option">
+                            <input type="checkbox" name="refundItem" value="domestic_shipping">
+                            <span class="option-label">国内运费</span>
+                            <span class="option-amount">¥49.00</span>
+                        </div>
+                        <div class="refund-option">
+                            <input type="checkbox" name="refundItem" value="overseas_tax">
+                            <span class="option-label">跨境服务费</span>
+                            <span class="option-amount">¥539.94</span>
                         </div>
                     </div>
                 </div>
@@ -589,75 +600,94 @@
                 productAmount: '¥8,999.00',
                 orderStatus: '待发货',
                 refundRatio: '100%',
+                isFullRefund: '整单退款',
                 shippingFee: '¥588.94',
                 shippingDetails: '<div class="shipping-fee-wrapper"><div class="shipping-fee-main">¥588.94</div><div class="shipping-fee-sub"><span class="shipping-fee-domestic">国内运费 ¥49.00</span><span class="shipping-fee-tax">跨境服务费 ¥539.94</span></div></div>',
                 hasTax: true,
-                taxNotRefundable: false,
-                productOnShelf: true,
-                options: [
-                    { label: '商品货款+运费+跨境服务费', amount: '¥9,587.94' }
-                ]
+                overseasStopTime: '',
+                refundItems: [
+                    { name: '商品货款', amount: '¥8,999.00', checked: true, readonly: true },
+                    { name: '国内运费', amount: '¥49.00', checked: true, readonly: false },
+                    { name: '跨境服务费', amount: '¥539.94', checked: true, readonly: false }
+                ],
+                defaultReason: '商品未命中"跨境服务费售后"标签，订单待发货，建议全额退款'
             },
             'overseas_shipped': {
                 productAmount: '¥16,999.00',
                 orderStatus: '已发货',
-                refundRatio: '100%',
+                refundRatio: '50%',
+                isFullRefund: '仅部分商品退款',
                 shippingFee: '¥1,078.94',
                 shippingDetails: '<div class="shipping-fee-wrapper"><div class="shipping-fee-main">¥1,078.94</div><div class="shipping-fee-sub"><span class="shipping-fee-domestic">国内运费 ¥59.00</span><span class="shipping-fee-tax">跨境服务费 ¥1,019.94</span></div></div>',
                 hasTax: true,
-                taxNotRefundable: false,
-                productOnShelf: true,
-                options: [
-                    { label: '商品货款+跨境服务费', amount: '¥18,018.94' }
-                ]
+                overseasStopTime: '',
+                refundItems: [
+                    { name: '商品货款', amount: '¥16,999.00', checked: true, readonly: true },
+                    { name: '国内运费', amount: '¥59.00', checked: false, readonly: false },
+                    { name: '跨境服务费', amount: '¥1,019.94', checked: false, readonly: false }
+                ],
+                defaultReason: '订单已发货，建议仅退款商品货款'
             },
             'overseas_pending_not_refundable': {
                 productAmount: '¥4,999.00',
                 orderStatus: '待发货',
                 refundRatio: '100%',
+                isFullRefund: '整单退款',
                 shippingFee: '¥128.94',
                 shippingDetails: '<div class="shipping-fee-wrapper"><div class="shipping-fee-main">¥128.94</div><div class="shipping-fee-sub"><span class="shipping-fee-domestic">国内运费 ¥15.00</span><span class="shipping-fee-tax">跨境服务费 ¥113.94</span></div></div>',
                 hasTax: true,
-                taxNotRefundable: true,
-                productOnShelf: false,
-                options: [
-                    { label: '商品货款+运费', amount: '¥5,127.94' }
-                ]
+                overseasStopTime: '2026-07-10 18:00:00',
+                refundItems: [
+                    { name: '商品货款', amount: '¥4,999.00', checked: true, readonly: true },
+                    { name: '国内运费', amount: '¥15.00', checked: true, readonly: false },
+                    { name: '跨境服务费', amount: '¥113.94', checked: false, readonly: false }
+                ],
+                defaultReason: '商品命中"跨境服务费售后"标签且已过停售时间，订单待发货，建议退款商品货款+国内运费'
             },
             'overseas_shipped_not_refundable': {
                 productAmount: '¥3,999.00',
                 orderStatus: '已发货',
                 refundRatio: '100%',
+                isFullRefund: '整单退款',
                 shippingFee: '¥128.94',
                 shippingDetails: '<div class="shipping-fee-wrapper"><div class="shipping-fee-main">¥128.94</div><div class="shipping-fee-sub"><span class="shipping-fee-domestic">国内运费 ¥15.00</span><span class="shipping-fee-tax">跨境服务费 ¥113.94</span></div></div>',
                 hasTax: true,
-                taxNotRefundable: true,
-                productOnShelf: false,
-                options: [
-                    { label: '商品货款', amount: '¥3,999.00' }
-                ]
+                overseasStopTime: '2026-07-08 12:00:00',
+                refundItems: [
+                    { name: '商品货款', amount: '¥3,999.00', checked: true, readonly: true },
+                    { name: '国内运费', amount: '¥15.00', checked: false, readonly: false },
+                    { name: '跨境服务费', amount: '¥113.94', checked: false, readonly: false }
+                ],
+                defaultReason: '订单已发货，建议仅退款商品货款'
             },
             'domestic_pending': {
                 productAmount: '¥6,999.00',
                 orderStatus: '待发货',
                 refundRatio: '100%',
+                isFullRefund: '整单退款',
                 shippingFee: '¥12.00',
                 shippingDetails: '<div class="shipping-fee-wrapper"><div class="shipping-fee-main">¥12.00</div></div>',
                 hasTax: false,
-                options: [
-                    { label: '商品货款+运费', amount: '¥7,011.00' }
-                ]
+                overseasStopTime: '',
+                refundItems: [
+                    { name: '商品货款', amount: '¥6,999.00', checked: true, readonly: true },
+                    { name: '国内运费', amount: '¥12.00', checked: true, readonly: false }
+                ],
+                defaultReason: ''
             },
             'domestic_shipped': {
                 productAmount: '¥3,999.00',
                 orderStatus: '已发货',
                 refundRatio: '100%',
+                isFullRefund: '整单退款',
                 shippingFee: '¥15.00',
                 shippingDetails: '<div class="shipping-fee-wrapper"><div class="shipping-fee-main">¥15.00</div></div>',
                 hasTax: false,
-                options: [
-                    { label: '商品货款', amount: '¥3,999.00' }
-                ]
+                overseasStopTime: '',
+                refundItems: [
+                    { name: '商品货款', amount: '¥3,999.00', checked: true, readonly: true }
+                ],
+                defaultReason: ''
             }
         };
 
@@ -667,6 +697,7 @@
             document.getElementById('modalProductAmount').textContent = order.productAmount;
             document.getElementById('modalOrderStatus').textContent = order.orderStatus;
             document.getElementById('modalRefundRatio').textContent = order.refundRatio;
+            document.getElementById('modalIsFullRefund').textContent = order.isFullRefund;
             
             var shippingFeeGroup = document.getElementById('modalShippingFeeGroup');
             var shippingFeeEl = document.getElementById('modalShippingFee');
@@ -683,23 +714,42 @@
                 }
             }
             
+            var overseasStopTimeGroup = document.getElementById('modalOverseasStopTimeGroup');
+            var overseasStopTimeEl = document.getElementById('modalOverseasStopTime');
+            if (order.overseasStopTime) {
+                overseasStopTimeEl.textContent = order.overseasStopTime;
+                overseasStopTimeGroup.style.display = 'block';
+            } else {
+                overseasStopTimeGroup.style.display = 'none';
+            }
+            
             var optionsContainer = document.getElementById('refundOptions');
             optionsContainer.innerHTML = '';
             
-            order.options.forEach(function(opt, index) {
+            order.refundItems.forEach(function(item, index) {
                 var optionDiv = document.createElement('div');
-                optionDiv.className = 'refund-option';
-                optionDiv.onclick = function() { selectRefundOption(index + 1); };
+                optionDiv.className = 'refund-option' + (item.readonly ? ' refund-option-readonly' : '');
                 optionDiv.innerHTML = `
-                    <input type="radio" name="refundOption" value="${index + 1}">
-                    <span class="option-label">${opt.label}</span>
-                    <span class="option-amount">${opt.amount}</span>
+                    <input type="checkbox" name="refundItem" value="${index + 1}" ${item.checked ? 'checked' : ''} ${item.readonly ? 'disabled' : ''}>
+                    <span class="option-label">${item.name}</span>
+                    <span class="option-amount">${item.amount}</span>
                 `;
+                if (!item.readonly) {
+                    optionDiv.onclick = function() {
+                        var checkbox = optionDiv.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    };
+                }
                 optionsContainer.appendChild(optionDiv);
             });
             
-            document.querySelector('input[name="refundOption"][value="1"]').checked = true;
-            selectRefundOption(1);
+            var defaultReasonEl = document.getElementById('defaultReason');
+            if (order.defaultReason) {
+                defaultReasonEl.textContent = '💡 默认选项说明：' + order.defaultReason;
+                defaultReasonEl.style.display = 'block';
+            } else {
+                defaultReasonEl.style.display = 'none';
+            }
             
             document.getElementById('refundModal').classList.add('active');
         }
