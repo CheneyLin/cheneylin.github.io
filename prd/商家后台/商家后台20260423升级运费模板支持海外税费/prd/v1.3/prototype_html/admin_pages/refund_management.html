@@ -710,11 +710,11 @@
             
             if (order.hasTax) {
                 shippingFeeEl.innerHTML = order.shippingDetails;
-                shippingFeeGroup.style.display = 'block';
+                shippingFeeGroup.style.display = 'flex';
             } else {
                 if (order.orderStatus === '待发货') {
                     shippingFeeEl.innerHTML = order.shippingDetails;
-                    shippingFeeGroup.style.display = 'block';
+                    shippingFeeGroup.style.display = 'flex';
                 } else {
                     shippingFeeGroup.style.display = 'none';
                 }
@@ -724,7 +724,7 @@
             var overseasStopTimeEl = document.getElementById('modalOverseasStopTime');
             if (order.overseasStopTime) {
                 overseasStopTimeEl.textContent = order.overseasStopTime;
-                overseasStopTimeGroup.style.display = 'block';
+                overseasStopTimeGroup.style.display = 'flex';
             } else {
                 overseasStopTimeGroup.style.display = 'none';
             }
