@@ -230,7 +230,10 @@ sequenceDiagram
 ### 5.4 天意侧
 
 #### 5.4.1 天意编辑器
-- 略
+- 天意编辑器短链：https://d.tazai.com/zK-1b
+  - 测试：http://test.xmg.tyfoto.cn/
+  - 正式：https://xmg.tyfoto.cn/
+- 天意编辑器错误页：https://d.tazai.com/zK-8b
 
 #### 5.4.2 订单同步接口
 - 支付完成后同步订单给天意，字段包括：小芒订单号、天意定制生产订单号、支付时间
